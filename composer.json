@@ -1,0 +1,39 @@
+{
+    "name": "streber/project-management",
+    "description": "Streber - Wiki-driven project management tool",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4.0",
+        "ext-mysqli": "*",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Streber\\": "src/"
+        },
+        "files": [
+            "std/common.inc.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Streber\\Tests\\": "tests/unit/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse -c phpstan.neon",
+        "cs-fix": "php-cs-fixer fix",
+        "cs-check": "php-cs-fixer fix --dry-run --diff"
+    }
+}
