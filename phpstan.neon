@@ -1,0 +1,15 @@
+parameters:
+    level: 0
+    paths:
+        - .
+    excludePaths:
+        - 'lib/*'
+        - 'tests/*'
+        - 'vendor/*'
+    ignoreErrors:
+        -
+            message: '#^Unsafe usage of new static\(\)\.$#'
+            paths:
+                - db/db_item.inc.php
+includes:
+    - phpstan-baseline.neon
