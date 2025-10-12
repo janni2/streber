@@ -1,0 +1,2421 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class Form_HiddenField referenced with incorrect case\\: Form_Hiddenfield\\.$#"
+			count: 2
+			path: blocks/login_block.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$file$#"
+			count: 2
+			path: db/class_file.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$filepath$#"
+			count: 1
+			path: db/class_file.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'num_need_approval' \\('num_need_approval', 'num_need_approval'\\)\\.$#"
+			count: 1
+			path: db/class_task.inc.php
+
+		-
+			message: "#^Class FieldDatetime referenced with incorrect case\\: FieldDateTime\\.$#"
+			count: 2
+			path: db/class_task.inc.php
+
+		-
+			message: "#^Function isOfCategory not found\\.$#"
+			count: 2
+			path: db/class_task.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$PH$#"
+			count: 4
+			path: db/class_task.inc.php
+
+		-
+			message: "#^Class Diff does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 1
+			path: db/db_item.inc.php
+
+		-
+			message: "#^Class WordLevelDiff does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 1
+			path: db/db_item.inc.php
+
+		-
+			message: "#^Instantiated class DbItemChange not found\\.$#"
+			count: 1
+			path: db/db_itemchange.inc.php
+
+		-
+			message: "#^Access to an undefined property sql_class\\:\\:\\$errorno\\.$#"
+			count: 1
+			path: db/db_mysql_class.php
+
+		-
+			message: "#^Function get_magic_quotes_gpc not found\\.$#"
+			count: 1
+			path: db/db_mysql_class.php
+
+		-
+			message: "#^Function mysql_connect not found\\.$#"
+			count: 1
+			path: db/db_mysql_class.php
+
+		-
+			message: "#^Function mysql_fetch_array not found\\.$#"
+			count: 2
+			path: db/db_mysql_class.php
+
+		-
+			message: "#^Function mysql_insert_id not found\\.$#"
+			count: 1
+			path: db/db_mysql_class.php
+
+		-
+			message: "#^Function mysql_query not found\\.$#"
+			count: 1
+			path: db/db_mysql_class.php
+
+		-
+			message: "#^Function mysql_select_db not found\\.$#"
+			count: 1
+			path: db/db_mysql_class.php
+
+		-
+			message: "#^Access to an undefined property sql_class\\:\\:\\$errorno\\.$#"
+			count: 1
+			path: db/db_mysqli_class.php
+
+		-
+			message: "#^Function get_magic_quotes_gpc not found\\.$#"
+			count: 1
+			path: db/db_mysqli_class.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_name\\.$#"
+			count: 5
+			path: install/db_backup.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_password\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_username\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$hostname\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_error not found\\.$#"
+			count: 5
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_fetch_array not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_fetch_row not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_field_name not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_field_type not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_free_result not found\\.$#"
+			count: 2
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_list_tables not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_num_fields not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_num_rows not found\\.$#"
+			count: 2
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_numrows not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_pconnect not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_query not found\\.$#"
+			count: 5
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_select_db not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_tablename not found\\.$#"
+			count: 1
+			path: install/db_backup.php
+
+		-
+			message: "#^Function mysql_error not found\\.$#"
+			count: 1
+			path: install/install.php
+
+		-
+			message: "#^Function mysqli_error invoked with 0 parameters, 1 required\\.$#"
+			count: 1
+			path: install/install.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/_new_.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Login' \\('Login', 'Login'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Move\\|page function to move current task' \\('Move\\|page function to move current task', 'Move\\|page function to move current task'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Number of open tasks is hilighted if shown home\\.' \\('Number of open tasks is hilighted if shown home\\.', 'Number of open tasks is hilighted if shown home\\.'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Person details' \\('Person details', 'Person details'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Production build' \\('Production build', 'Production build'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'View effort' \\('View effort', 'View effort'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'View multiple efforts' \\('View multiple efforts', 'View multiple efforts'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'client_edit\\|pub_level_name' \\('client_edit\\|pub_level_name', 'client_edit\\|pub_level_name'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'closed' \\('closed', 'closed'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'keep different' \\('keep different', 'keep different'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'no company' \\('no company', 'no company'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'related projects of %%s' \\('related projects of %%s', 'related projects of %%s'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'show tasks in home' \\('show tasks in home', 'show tasks in home'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'new bug for this folder' \\('new bug for this folder', 'new bug for this folder', 'new bug for this folder'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'new task for this milestone' \\('new task for this milestone', 'new task for this milestone', 'new task for this milestone'\\)\\.$#"
+			count: 1
+			path: lang/cz.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s by %%s\\|time ago by nickname' \\('%%s by %%s\\|time ago by nickname', '%%s by %%s\\|time ago by nickname'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Bookmarks' \\('Bookmarks', 'Bookmarks'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Changes' \\('Changes', 'Changes'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Description' \\('Description', 'Description'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit bookmarks' \\('Edit bookmarks', 'Edit bookmarks'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'List title and description in project overview' \\('List title and description in project overview', 'List title and description in project overview'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'No people selected\\.\\.\\.' \\('No people selected\\.\\.\\.', 'No people selected\\.\\.\\.'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Notify on change' \\('Notify on change', 'Notify on change'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: \\(eg\\. Poststreet 28\\)' \\('Optional\\: \\(eg\\. Poststreet 28\\)', 'Optional\\: \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: Private \\(eg\\. Poststreet 28\\)' \\('Optional\\: Private \\(eg\\. Poststreet 28\\)', 'Optional\\: Private \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Overall changes' \\('Overall changes', 'Overall changes'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People\\|Pagetitle for person list' \\('People\\|Pagetitle for person list', 'People\\|Pagetitle for person list'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored' \\('Task \\<b\\>%%s\\</b\\> doesn´t need to be restored', 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Yesterday' \\('Yesterday', 'Yesterday'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Your Tasks' \\('Your Tasks', 'Your Tasks'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Your efforts' \\('Your efforts', 'Your efforts'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'balanced\\|effort status' \\('balanced\\|effort status', 'balanced\\|effort status'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'discounted\\|effort status' \\('discounted\\|effort status', 'discounted\\|effort status'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new\\|effort status' \\('new\\|effort status', 'new\\|effort status'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'no efforts booked yet' \\('no efforts booked yet', 'no efforts booked yet'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'not available' \\('not available', 'not available'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'open' \\('open', 'open'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'open\\|effort status' \\('open\\|effort status', 'open\\|effort status'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'passwords don´t match' \\('passwords don´t match', 'passwords don´t match', 'passwords don´t match'\\)\\.$#"
+			count: 1
+			path: lang/de.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value ' ungrouped %%s subtasks to above parents\\.' \\(' ungrouped %%s subtasks to above parents\\.', ' ungrouped %%s subtasks to above parents\\.'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%A, %%B %%e\\|strftime format string' \\('%%A, %%B %%e\\|strftime format string', '%%A, %%B %%e\\|strftime format string'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%I\\:%%M%%P\\|strftime format string' \\('%%I\\:%%M%%P\\|strftime format string', '%%I\\:%%M%%P\\|strftime format string'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%a %%b %%e, %%Y %%I\\:%%M%%P\\|strftime format string' \\('%%a %%b %%e, %%Y %%I\\:%%M%%P\\|strftime format string', '%%a %%b %%e, %%Y %%I\\:%%M%%P\\|strftime format string'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%b %%e, %%Y\\|strftime format string' \\('%%b %%e, %%Y\\|strftime format string', '%%b %%e, %%Y\\|strftime format string'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s min' \\('%%s min', '%%s min'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '\\<span class\\=accesskey\\>H\\</span\\>ome' \\('\\<span class\\=accesskey\\>H\\</span\\>ome', '\\<span class\\=accesskey\\>H\\</span\\>ome'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '\\<span class\\=accesskey\\>P\\</span\\>rojects' \\('\\<span class\\=accesskey\\>P\\</span\\>rojects', '\\<span class\\=accesskey\\>P\\</span\\>rojects'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Add an \\! to your search request to jump to the best result\\.' \\('Add an \\! to your search request to jump to the best result\\.', 'Add an \\! to your search request to jump to the best result\\.'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Bookmark\\: %%s' \\('Bookmark\\: %%s', 'Bookmark\\: %%s'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Build' \\('Build', 'Build'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Can not move task \\<b\\>%%s\\</b\\> to own child\\.' \\('Can not move task \\<b\\>%%s\\</b\\> to own child\\.', 'Can not move task \\<b\\>%%s\\</b\\> to own child\\.'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Due to limitations of MySQL fulltext search, searching will not work for\\.\\.\\.\\<br\\>\\- words with 3 or less characters\\<br\\>\\- Lists with less than 3 entries\\<br\\>\\- words containing special charaters' \\('Due to limitations of MySQL fulltext search, searching will not work for\\.\\.\\.\\<br\\>\\- words with 3 or less characters\\<br\\>\\- Lists with less than 3 entries\\<br\\>\\- words containing special charaters', 'Due to limitations of MySQL fulltext search, searching will not work for\\.\\.\\.\\<br\\>\\- words with 3 or less characters\\<br\\>\\- Lists with less than 3 entries\\<br\\>\\- words containing special charaters'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'E\\-Mail\\|label for person office email' \\('E\\-Mail\\|label for person office email', 'E\\-Mail\\|label for person office email'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'E\\-Mail\\|label for person personal email' \\('E\\-Mail\\|label for person personal email', 'E\\-Mail\\|label for person personal email'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'E\\-Mail\\|label' \\('E\\-Mail\\|label', 'E\\-Mail\\|label'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit bookmarks' \\('Edit bookmarks', 'Edit bookmarks'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Please consider that activating login\\-accounts might trigger security\\-issues\\.' \\('Please consider that activating login\\-accounts might trigger security\\-issues\\.', 'Please consider that activating login\\-accounts might trigger security\\-issues\\.'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Pub\\|column header for public level' \\('Pub\\|column header for public level', 'Pub\\|column header for public level'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Sending an activation mail does not make sense, until the user is allowed to login\\. Please adjust his profile\\.' \\('Sending an activation mail does not make sense, until the user is allowed to login\\. Please adjust his profile\\.', 'Sending an activation mail does not make sense, until the user is allowed to login\\. Please adjust his profile\\.'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Since the user does not have the right to edit his own profile and therefore to adjust his password, sending an activation does not make sense\\.' \\('Since the user does not have the right to edit his own profile and therefore to adjust his password, sending an activation does not make sense\\.', 'Since the user does not have the right to edit his own profile and therefore to adjust his password, sending an activation does not make sense\\.'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Turned parent task into a folder\\. Note, that folders are only listed in tree' \\('Turned parent task into a folder\\. Note, that folders are only listed in tree', 'Turned parent task into a folder\\. Note, that folders are only listed in tree'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Versions\\|Project option' \\('Versions\\|Project option', 'Versions\\|Project option'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Y\\-m\\-d' \\('Y\\-m\\-d', 'Y\\-m\\-d'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'deferred\\|resolve reason' \\('deferred\\|resolve reason', 'deferred\\|resolve reason'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'Found no people to add\\. Go to `People` to create some\\.' \\('Found no people to add\\. Go to `People` to create some\\.', 'Found no people to add\\. Go to `People` to create some\\.', 'Found no people to add\\. Go to `People` to create some\\.'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/es.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/fi.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/fi.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/fi.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/fi.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/fi.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'License\\|page title' \\('License\\|page title', 'License\\|page title'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'License\\|tab in top navigation' \\('License\\|tab in top navigation', 'License\\|tab in top navigation'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Login\\|tab in top navigation' \\('Login\\|tab in top navigation', 'Login\\|tab in top navigation'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Name\\|label in login form' \\('Name\\|label in login form', 'Name\\|label in login form'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'No people selected\\.\\.\\.' \\('No people selected\\.\\.\\.', 'No people selected\\.\\.\\.'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: \\(eg\\. Poststreet 28\\)' \\('Optional\\: \\(eg\\. Poststreet 28\\)', 'Optional\\: \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: Private \\(eg\\. Poststreet 28\\)' \\('Optional\\: Private \\(eg\\. Poststreet 28\\)', 'Optional\\: Private \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Password\\|label in login form' \\('Password\\|label in login form', 'Password\\|label in login form'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Select some file to display' \\('Select some file to display', 'Select some file to display'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored' \\('Task \\<b\\>%%s\\</b\\> doesn´t need to be restored', 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Welcome to streber\\|Page title' \\('Welcome to streber\\|Page title', 'Welcome to streber\\|Page title'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'invalid login\\|message when login failed' \\('invalid login\\|message when login failed', 'invalid login\\|message when login failed'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'modified by unknown' \\('modified by unknown', 'modified by unknown'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'passwords don´t match' \\('passwords don´t match', 'passwords don´t match', 'passwords don´t match'\\)\\.$#"
+			count: 1
+			path: lang/fr.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Created by' \\('Created by', 'Created by'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Download' \\('Download', 'Download'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Home' \\('Home', 'Home'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Notify on change' \\('Notify on change', 'Notify on change'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Version' \\('Version', 'Version'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'changes since YOUR last logout' \\('changes since YOUR last logout', 'changes since YOUR last logout'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'recent changes\\|column header' \\('recent changes\\|column header', 'recent changes\\|column header'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/hu.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '\\<b\\>%%s\\</b\\> has been assigned to projects and can not be deleted\\. But you can deativate his right to login\\.' \\('\\<b\\>%%s\\</b\\> has been assigned to projects and can not be deleted\\. But you can deativate his right to login\\.', '\\<b\\>%%s\\</b\\> has been assigned to projects and can not be deleted\\. But you can deativate his right to login\\.'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '\\<b\\>%%s\\</b\\> isn`t a known format for date\\.' \\('\\<b\\>%%s\\</b\\> isn`t a known format for date\\.', '\\<b\\>%%s\\</b\\> isn`t a known format for date\\.'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Found no people to add\\. Go to `People` to create some\\.' \\('Found no people to add\\. Go to `People` to create some\\.', 'Found no people to add\\. Go to `People` to create some\\.'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/it.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Description' \\('Description', 'Description'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'License\\|page title' \\('License\\|page title', 'License\\|page title'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'License\\|tab in top navigation' \\('License\\|tab in top navigation', 'License\\|tab in top navigation'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Login\\|tab in top navigation' \\('Login\\|tab in top navigation', 'Login\\|tab in top navigation'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Name\\|label in login form' \\('Name\\|label in login form', 'Name\\|label in login form'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'No people selected\\.\\.\\.' \\('No people selected\\.\\.\\.', 'No people selected\\.\\.\\.'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: \\(eg\\. Poststreet 28\\)' \\('Optional\\: \\(eg\\. Poststreet 28\\)', 'Optional\\: \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: Private \\(eg\\. Poststreet 28\\)' \\('Optional\\: Private \\(eg\\. Poststreet 28\\)', 'Optional\\: Private \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Password\\|label in login form' \\('Password\\|label in login form', 'Password\\|label in login form'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Select some file to display' \\('Select some file to display', 'Select some file to display'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored' \\('Task \\<b\\>%%s\\</b\\> doesn´t need to be restored', 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'This task seems to be related' \\('This task seems to be related', 'This task seems to be related'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Welcome to streber\\|Page title' \\('Welcome to streber\\|Page title', 'Welcome to streber\\|Page title'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'invalid login\\|message when login failed' \\('invalid login\\|message when login failed', 'invalid login\\|message when login failed'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'modified by unknown' \\('modified by unknown', 'modified by unknown'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'passwords don´t match' \\('passwords don´t match', 'passwords don´t match', 'passwords don´t match'\\)\\.$#"
+			count: 1
+			path: lang/no.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Bookmark\\: \"%%s\"' \\('Bookmark\\: \"%%s\"', 'Bookmark\\: \"%%s\"'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit bookmark\\: \"%%s\"\\|page title' \\('Edit bookmark\\: \"%%s\"\\|page title', 'Edit bookmark\\: \"%%s\"\\|page title'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit bookmarks' \\('Edit bookmarks', 'Edit bookmarks'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Error' \\('Error', 'Error'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'If you do not know your nickname, please contact your administrator\\: %%s\\.' \\('If you do not know your nickname, please contact your administrator\\: %%s\\.', 'If you do not know your nickname, please contact your administrator\\: %%s\\.'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Login\\-accounts require a unique nickname' \\('Login\\-accounts require a unique nickname', 'Login\\-accounts require a unique nickname'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Note' \\('Note', 'Note'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Versions\\|Project option' \\('Versions\\|Project option', 'Versions\\|Project option'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/pl.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Company\\|form label' \\('Company\\|form label', 'Company\\|form label'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'No people selected\\.\\.\\.' \\('No people selected\\.\\.\\.', 'No people selected\\.\\.\\.'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: \\(eg\\. Poststreet 28\\)' \\('Optional\\: \\(eg\\. Poststreet 28\\)', 'Optional\\: \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: Private \\(eg\\. Poststreet 28\\)' \\('Optional\\: Private \\(eg\\. Poststreet 28\\)', 'Optional\\: Private \\(eg\\. Poststreet 28\\)'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored' \\('Task \\<b\\>%%s\\</b\\> doesn´t need to be restored', 'Task \\<b\\>%%s\\</b\\> doesn´t need to be restored'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'passwords don´t match' \\('passwords don´t match', 'passwords don´t match', 'passwords don´t match'\\)\\.$#"
+			count: 1
+			path: lang/pt-br.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Optional\\: \\(eg\\. thomas@pixtur\\.de\\)' \\('Optional\\: \\(eg\\. thomas@pixtur\\.de\\)', 'Optional\\: \\(eg\\. thomas@pixtur\\.de\\)'\\)\\.$#"
+			count: 1
+			path: lang/ru.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/ru.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Versions' \\('Versions', 'Versions'\\)\\.$#"
+			count: 1
+			path: lang/ru.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'en_US\\.utf8,en_US,enu\\|list of locales' \\('en_US\\.utf8,en_US,enu\\|list of locales', 'en_US\\.utf8,en_US,enu\\|list of locales'\\)\\.$#"
+			count: 1
+			path: lang/ru.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Number of open tasks is hilighted if shown home\\.' \\('Number of open tasks is hilighted if shown home\\.', 'Number of open tasks is hilighted if shown home\\.'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Production build' \\('Production build', 'Production build'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'client_edit\\|pub_level_name' \\('client_edit\\|pub_level_name', 'client_edit\\|pub_level_name'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'closed' \\('closed', 'closed'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit' \\('edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'keep different' \\('keep different', 'keep different'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'related projects of %%s' \\('related projects of %%s', 'related projects of %%s'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'show tasks in home' \\('show tasks in home', 'show tasks in home'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'Click Tab for complex search or enter word\\* or Id and hit return\\. Use ALT\\-S as shortcut\\. Use `Search\\!` for `Good Luck`' \\('Click Tab for complex search or enter word\\* or Id and hit return\\. Use ALT\\-S as shortcut\\. Use `Search\\!` for `Good Luck`', 'Click Tab for complex search or enter word\\* or Id and hit return\\. Use ALT\\-S as shortcut\\. Use `Search\\!` for `Good Luck`', 'Click Tab for complex search or enter word\\* or Id and hit return\\. Use ALT\\-S as shortcut\\. Use `Search\\!` for `Good Luck`'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/sk.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value ' \\-\\- ' \\(' \\-\\- ', ' \\-\\- '\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s days max' \\('%%s days max', '%%s days max'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s days' \\('%%s days', '%%s days'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s hours max' \\('%%s hours max', '%%s hours max'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s hours' \\('%%s hours', '%%s hours'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s required' \\('%%s required', '%%s required'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s search results for `%%s`' \\('%%s search results for `%%s`', '%%s search results for `%%s`'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s tasks could not be written' \\('%%s tasks could not be written', '%%s tasks could not be written'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s weeks max' \\('%%s weeks max', '%%s weeks max'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '%%s weeks' \\('%%s weeks', '%%s weeks'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value '\\<b\\>%%s\\</b\\> isn`t a known format for date\\.' \\('\\<b\\>%%s\\</b\\> isn`t a known format for date\\.', '\\<b\\>%%s\\</b\\> isn`t a known format for date\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Add Details\\|page function' \\('Add Details\\|page function', 'Add Details\\|page function'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Add an \\! to your search request to jump to the best result\\.' \\('Add an \\! to your search request to jump to the best result\\.', 'Add an \\! to your search request to jump to the best result\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Admin\\|profile name' \\('Admin\\|profile name', 'Admin\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Approve Task' \\('Approve Task', 'Approve Task'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Artist\\|profile name' \\('Artist\\|profile name', 'Artist\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Attached to\\|Column header' \\('Attached to\\|Column header', 'Attached to\\|Column header'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Can not edit file %%s' \\('Can not edit file %%s', 'Can not edit file %%s'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Changed task %%s with ID %%s' \\('Changed task %%s with ID %%s', 'Changed task %%s with ID %%s'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Click on the file ids for details\\.' \\('Click on the file ids for details\\.', 'Click on the file ids for details\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Client trusted\\|profile name' \\('Client trusted\\|profile name', 'Client trusted\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Client\\|profile name' \\('Client\\|profile name', 'Client\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Company\\|Column header' \\('Company\\|Column header', 'Company\\|Column header'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Completed\\|Label in Task summary' \\('Completed\\|Label in Task summary', 'Completed\\|Label in Task summary'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Could not find task' \\('Could not find task', 'Could not find task'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Could not insert object' \\('Could not insert object', 'Could not insert object'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Could not update task' \\('Could not update task', 'Could not update task'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Create another task after submit' \\('Create another task after submit', 'Create another task after submit'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Created task %%s with ID %%s' \\('Created task %%s with ID %%s', 'Created task %%s with ID %%s'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Created\\|Label in Task summary' \\('Created\\|Label in Task summary', 'Created\\|Label in Task summary'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Delete errors\\.log' \\('Delete errors\\.log', 'Delete errors\\.log'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Deleted People' \\('Deleted People', 'Deleted People'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Deleted\\|page option' \\('Deleted\\|page option', 'Deleted\\|page option'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Developer\\|profile name' \\('Developer\\|profile name', 'Developer\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit %%s tasks\\|Page title' \\('Edit %%s tasks\\|Page title', 'Edit %%s tasks\\|Page title'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit files' \\('Edit files', 'Edit files'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit multiple Tasks' \\('Edit multiple Tasks', 'Edit multiple Tasks'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Edit multiple tasks\\|Page title' \\('Edit multiple tasks\\|Page title', 'Edit multiple tasks\\|Page title'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Error\\-Log' \\('Error\\-Log', 'Error\\-Log'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Estimated\\|Label in Task summary' \\('Estimated\\|Label in Task summary', 'Estimated\\|Label in Task summary'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to change %%s projects' \\('Failed to change %%s projects', 'Failed to change %%s projects'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to delete %%s comments' \\('Failed to delete %%s comments', 'Failed to delete %%s comments'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to delete %%s companies' \\('Failed to delete %%s companies', 'Failed to delete %%s companies'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to delete %%s efforts' \\('Failed to delete %%s efforts', 'Failed to delete %%s efforts'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to delete %%s files' \\('Failed to delete %%s files', 'Failed to delete %%s files'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to delete %%s people' \\('Failed to delete %%s people', 'Failed to delete %%s people'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to delete %%s projects' \\('Failed to delete %%s projects', 'Failed to delete %%s projects'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to mail %%s people' \\('Failed to mail %%s people', 'Failed to mail %%s people'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to remove %%s members from team' \\('Failed to remove %%s members from team', 'Failed to remove %%s members from team'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Failed to restore %%s items' \\('Failed to restore %%s items', 'Failed to restore %%s items'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'File\\|Column header' \\('File\\|Column header', 'File\\|Column header'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Filter errors\\.log' \\('Filter errors\\.log', 'Filter errors\\.log'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'For Milestone\\|Label in Task summary' \\('For Milestone\\|Label in Task summary', 'For Milestone\\|Label in Task summary'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'For editing all tasks must be of same project\\.' \\('For editing all tasks must be of same project\\.', 'For editing all tasks must be of same project\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Found no people to add\\. Go to `People` to create some\\.' \\('Found no people to add\\. Go to `People` to create some\\.', 'Found no people to add\\. Go to `People` to create some\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Guest\\|profile name' \\('Guest\\|profile name', 'Guest\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'History' \\('History', 'History'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'ID' \\('ID', 'ID'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'If you do not want to get further notifications or you forgot your password feel free to\\|notification' \\('If you do not want to get further notifications or you forgot your password feel free to\\|notification', 'If you do not want to get further notifications or you forgot your password feel free to\\|notification'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Invalid checksum for hidden form elements' \\('Invalid checksum for hidden form elements', 'Invalid checksum for hidden form elements'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Item did not exists at %%s' \\('Item did not exists at %%s', 'Item did not exists at %%s'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Item has been modified during your editing by %%s \\(%%s minutes ago\\)\\. Your changes can not be submitted\\.' \\('Item has been modified during your editing by %%s \\(%%s minutes ago\\)\\. Your changes can not be submitted\\.', 'Item has been modified during your editing by %%s \\(%%s minutes ago\\)\\. Your changes can not be submitted\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Last of %%s comments\\:' \\('Last of %%s comments\\:', 'Last of %%s comments\\:'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'List Deleted People' \\('List Deleted People', 'List Deleted People'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Mark tasks as Open' \\('Mark tasks as Open', 'Mark tasks as Open'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Member\\|profile name' \\('Member\\|profile name', 'Member\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Move files to folder' \\('Move files to folder', 'Move files to folder'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Move files' \\('Move files', 'Move files'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Move\\|page function to move current task' \\('Move\\|page function to move current task', 'Move\\|page function to move current task'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New Comment' \\('New Comment', 'New Comment'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New milestone' \\('New milestone', 'New milestone'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'New released Version' \\('New released Version', 'New released Version'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Nickname has been converted to lowercase' \\('Nickname has been converted to lowercase', 'Nickname has been converted to lowercase'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Nickname has to be unique' \\('Nickname has to be unique', 'Nickname has to be unique'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'No folders available' \\('No folders available', 'No folders available'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'No open tasks for this milestone' \\('No open tasks for this milestone', 'No open tasks for this milestone'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'No search results for `%%s`' \\('No search results for `%%s`', 'No search results for `%%s`'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Open tasks for milestone' \\('Open tasks for milestone', 'Open tasks for milestone'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Operation aborted \\(%%s\\)' \\('Operation aborted \\(%%s\\)', 'Operation aborted \\(%%s\\)'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Operation aborted with an fatal data\\-base structure error \\(%%s\\)\\. This may have happened do to an inconsistency in your database\\. We strongly suggest to rewind to a recent back\\-up\\.' \\('Operation aborted with an fatal data\\-base structure error \\(%%s\\)\\. This may have happened do to an inconsistency in your database\\. We strongly suggest to rewind to a recent back\\-up\\.', 'Operation aborted with an fatal data\\-base structure error \\(%%s\\)\\. This may have happened do to an inconsistency in your database\\. We strongly suggest to rewind to a recent back\\-up\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Operation aborted with an fatal error \\(%%s\\)\\.' \\('Operation aborted with an fatal error \\(%%s\\)\\.', 'Operation aborted with an fatal error \\(%%s\\)\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Operation aborted with an fatal error which was cause by an programming error \\(%%s\\)\\.' \\('Operation aborted with an fatal error which was cause by an programming error \\(%%s\\)\\.', 'Operation aborted with an fatal error which was cause by an programming error \\(%%s\\)\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Other People\\|page option' \\('Other People\\|page option', 'Other People\\|page option'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Parent item' \\('Parent item', 'Parent item'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Parent task not found\\.' \\('Parent task not found\\.', 'Parent task not found\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Passwords do not match' \\('Passwords do not match', 'Passwords do not match'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Person already in project' \\('Person already in project', 'Person already in project'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Person already related to company' \\('Person already related to company', 'Person already related to company'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Person details' \\('Person details', 'Person details'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Please set a password to activate it\\.\\|notification' \\('Please set a password to activate it\\.\\|notification', 'Please set a password to activate it\\.\\|notification'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Prio' \\('Prio', 'Prio'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Project manager\\|profile name' \\('Project manager\\|profile name', 'Project manager\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Projects' \\('Projects', 'Projects'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Reanimated person as team\\-member' \\('Reanimated person as team\\-member', 'Reanimated person as team\\-member'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Reopened %%s tasks\\.' \\('Reopened %%s tasks\\.', 'Reopened %%s tasks\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Select folder to move files into' \\('Select folder to move files into', 'Select folder to move files into'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Select some files to move' \\('Select some files to move', 'Select some files to move'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Select some task\\(s\\) to reopen' \\('Select some task\\(s\\) to reopen', 'Select some task\\(s\\) to reopen'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Status\\|Short status column header' \\('Status\\|Short status column header', 'Status\\|Short status column header'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Task called %%s already exists' \\('Task called %%s already exists', 'Task called %%s already exists'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Task name' \\('Task name', 'Task name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Tester\\|profile name' \\('Tester\\|profile name', 'Tester\\|profile name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'The changed profile \\<b\\>does not affect existing project roles\\</b\\>\\! Those has to be adjusted inside the projects\\.' \\('The changed profile \\<b\\>does not affect existing project roles\\</b\\>\\! Those has to be adjusted inside the projects\\.', 'The changed profile \\<b\\>does not affect existing project roles\\</b\\>\\! Those has to be adjusted inside the projects\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Unassigned %%s team member\\(s\\) from project' \\('Unassigned %%s team member\\(s\\) from project', 'Unassigned %%s team member\\(s\\) from project'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Unknown' \\('Unknown', 'Unknown'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Updated %%s tasks tasks' \\('Updated %%s tasks tasks', 'Updated %%s tasks tasks'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Versions\\|Project option' \\('Versions\\|Project option', 'Versions\\|Project option'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'View history of item' \\('View history of item', 'View history of item'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'View task' \\('View task', 'View task'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Wiki format' \\('Wiki format', 'Wiki format'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'Wiki' \\('Wiki', 'Wiki'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'You do not have enough rights to edit this task' \\('You do not have enough rights to edit this task', 'You do not have enough rights to edit this task'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'assigned' \\('assigned', 'assigned'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'attached file to' \\('attached file to', 'attached file to'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'attached' \\('attached', 'attached'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'changes' \\('changes', 'changes'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'client_edit\\|pub_level_name' \\('client_edit\\|pub_level_name', 'client_edit\\|pub_level_name'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'edit wiki' \\('edit wiki', 'edit wiki'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'for milestone' \\('for milestone', 'for milestone'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'from' \\('from', 'from'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'hide' \\('hide', 'hide'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'in' \\('in', 'in'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'in\\|\\.\\.\\. folder' \\('in\\|\\.\\.\\. folder', 'in\\|\\.\\.\\. folder'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'item has not been edited history' \\('item has not been edited history', 'item has not been edited history'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'itemsSetPubLevel requires item_pub_level' \\('itemsSetPubLevel requires item_pub_level', 'itemsSetPubLevel requires item_pub_level'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'jumped to best of %%s search results' \\('jumped to best of %%s search results', 'jumped to best of %%s search results'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'keep different' \\('keep different', 'keep different'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'my open' \\('my open', 'my open'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'needs approval' \\('needs approval', 'needs approval'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'new' \\('new', 'new'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'next released version' \\('next released version', 'next released version'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'no changes between %%s and %%s' \\('no changes between %%s and %%s', 'no changes between %%s and %%s'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'no company' \\('no company', 'no company'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'no project templates' \\('no project templates', 'no project templates'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'not assigned to a closed project' \\('not assigned to a closed project', 'not assigned to a closed project'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'notification\\:' \\('notification\\:', 'notification\\:'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'ok' \\('ok', 'ok'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'on' \\('on', 'on'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'only one item expected\\.' \\('only one item expected\\.', 'only one item expected\\.'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'open' \\('open', 'open'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'renamed' \\('renamed', 'renamed'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'status\\:' \\('status\\:', 'status\\:'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'summary' \\('summary', 'summary'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'unknown' \\('unknown', 'unknown'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'view changes' \\('view changes', 'view changes'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 'edit' \\('edit', 'edit', 'edit'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 4 duplicate keys with value 'insufficient rights' \\('insufficient rights', 'insufficient rights', 'insufficient rights', 'insufficient rights'\\)\\.$#"
+			count: 1
+			path: lang/sv.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
+			count: 1
+			path: lang/zh_CN.inc.php
+
+		-
+			message: "#^Call to an undefined static method DbProjectItem\\:\\:getChanges\\(\\)\\.$#"
+			count: 1
+			path: lists/list_changes.inc.php
+
+		-
+			message: "#^Class ListBlockColDate referenced with incorrect case\\: listBlockColDate\\.$#"
+			count: 1
+			path: lists/list_changes.inc.php
+
+		-
+			message: "#^Instantiated class ListBlockCol_ChangesByPerson not found\\.$#"
+			count: 1
+			path: lists/list_changes.inc.php
+
+		-
+			message: "#^Instantiated class ListBlockCol_ChangesEditType not found\\.$#"
+			count: 1
+			path: lists/list_changes.inc.php
+
+		-
+			message: "#^Instantiated class ListBlockCol_ChangesItemType not found\\.$#"
+			count: 1
+			path: lists/list_changes.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$renderTimestampHtml$#"
+			count: 1
+			path: lists/list_changes.inc.php
+
+		-
+			message: "#^Access to an undefined property ListBlockCol_EffortName\\:\\:\\$format\\.$#"
+			count: 1
+			path: lists/list_efforts.inc.php
+
+		-
+			message: "#^Class ListBlockCol_MilestoneDate referenced with incorrect case\\: listBlockCol_MilestoneDate\\.$#"
+			count: 1
+			path: lists/list_milestones.inc.php
+
+		-
+			message: "#^Method ListBlock_taskfolders\\:\\:__toString\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: lists/list_taskfolders.inc.php
+
+		-
+			message: "#^Class ListBlockColDate referenced with incorrect case\\: listBlockColDate\\.$#"
+			count: 2
+			path: lists/list_tasks.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'valid_for_crawlers' \\('valid_for_crawlers', 'valid_for_crawlers'\\)\\.$#"
+			count: 3
+			path: pages/_handles.inc.php
+
+		-
+			message: "#^Class Form_Checkbox referenced with incorrect case\\: Form_checkbox\\.$#"
+			count: 1
+			path: pages/bookmark.inc.php
+
+		-
+			message: "#^Class NaviOption referenced with incorrect case\\: naviOption\\.$#"
+			count: 1
+			path: pages/effort.inc.php
+
+		-
+			message: "#^Class NaviOption referenced with incorrect case\\: naviOption\\.$#"
+			count: 1
+			path: pages/effort_show_as_csv.inc.php
+
+		-
+			message: "#^Class File referenced with incorrect case\\: file\\.$#"
+			count: 1
+			path: pages/file.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$PH$#"
+			count: 1
+			path: pages/file.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$file$#"
+			count: 1
+			path: pages/file.inc.php
+
+		-
+			message: "#^Class ListBlock_changes referenced with incorrect case\\: ListBlock_Changes\\.$#"
+			count: 1
+			path: pages/home.inc.php
+
+		-
+			message: "#^Class NaviOption referenced with incorrect case\\: naviOption\\.$#"
+			count: 1
+			path: pages/home_monthly_report.inc.php
+
+		-
+			message: "#^Class Form_Checkbox referenced with incorrect case\\: Form_checkbox\\.$#"
+			count: 6
+			path: pages/person.inc.php
+
+		-
+			message: "#^Class Form_HiddenField referenced with incorrect case\\: Form_Hiddenfield\\.$#"
+			count: 1
+			path: pages/person.inc.php
+
+		-
+			message: "#^Class Form_Password referenced with incorrect case\\: Form_password\\.$#"
+			count: 2
+			path: pages/person.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$person$#"
+			count: 1
+			path: pages/person.inc.php
+
+		-
+			message: "#^Class Form_Password referenced with incorrect case\\: Form_password\\.$#"
+			count: 2
+			path: pages/person_register.inc.php
+
+		-
+			message: "#^Class Form_Checkbox referenced with incorrect case\\: Form_checkbox\\.$#"
+			count: 7
+			path: pages/project_more.inc.php
+
+		-
+			message: "#^Class Form_HiddenField referenced with incorrect case\\: Form_Hiddenfield\\.$#"
+			count: 1
+			path: pages/project_more.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$milestone$#"
+			count: 1
+			path: pages/project_view_tasks_in_groups.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$preset$#"
+			count: 2
+			path: pages/project_view_tasks_in_groups.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$preset_id$#"
+			count: 1
+			path: pages/project_view_tasks_in_groups.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'would' \\(\"would\", \"would\"\\)\\.$#"
+			count: 1
+			path: pages/search.inc.php
+
+		-
+			message: "#^Class DbProjectItem referenced with incorrect case\\: DBProjectItem\\.$#"
+			count: 1
+			path: pages/search.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$rate_deleted$#"
+			count: 1
+			path: pages/search.inc.php
+
+		-
+			message: "#^Class Form_CustomHTML referenced with incorrect case\\: Form_CustomHtml\\.$#"
+			count: 1
+			path: pages/task_edit.inc.php
+
+		-
+			message: "#^Class NaviOption referenced with incorrect case\\: naviOption\\.$#"
+			count: 1
+			path: pages/task_more.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$prj$#"
+			count: 1
+			path: pages/task_more.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$task$#"
+			count: 1
+			path: pages/task_more.inc.php
+
+		-
+			message: "#^Call to static method getEditableById\\(\\) on an unknown class Version\\.$#"
+			count: 3
+			path: pages/version.inc.php
+
+		-
+			message: "#^Call to static method getVisibleById\\(\\) on an unknown class Version\\.$#"
+			count: 1
+			path: pages/version.inc.php
+
+		-
+			message: "#^Instantiated class Version not found\\.$#"
+			count: 2
+			path: pages/version.inc.php
+
+		-
+			message: "#^Class Form_CustomHTML referenced with incorrect case\\: Form_CustomHtml\\.$#"
+			count: 2
+			path: render/render_fields.inc.php
+
+		-
+			message: "#^Function trigger_warning not found\\.$#"
+			count: 1
+			path: render/render_list.inc.php
+
+		-
+			message: "#^Instantiated class ListFilter_project not found\\.$#"
+			count: 1
+			path: render/render_list.inc.php
+
+		-
+			message: "#^Instantiated class ListFilter_status not found\\.$#"
+			count: 1
+			path: render/render_list.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$for_milestone$#"
+			count: 1
+			path: render/render_list.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$id$#"
+			count: 1
+			path: render/render_list.inc.php
+
+		-
+			message: "#^Access to an undefined property ListBlockCol\\:\\:\\$functions\\.$#"
+			count: 1
+			path: render/render_list_column.inc.php
+
+		-
+			message: "#^Access to an undefined property ListBlockColFormat\\:\\:\\$format\\.$#"
+			count: 2
+			path: render/render_list_column_special.inc.php
+
+		-
+			message: "#^Access to an undefined property ListBlockColMethod\\:\\:\\$func\\.$#"
+			count: 1
+			path: render/render_list_column_special.inc.php
+
+		-
+			message: "#^Class Diff does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 1
+			path: render/render_misc.inc.php
+
+		-
+			message: "#^Class WordLevelDiff does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 1
+			path: render/render_misc.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$PH$#"
+			count: 1
+			path: render/render_misc.inc.php
+
+		-
+			message: "#^Call to an undefined method PageElement\\:\\:__toString\\(\\)\\.$#"
+			count: 2
+			path: render/render_page.inc.php
+
+		-
+			message: "#^Access to an undefined property FormatBlockCode\\:\\:\\$str_code\\.$#"
+			count: 3
+			path: render/render_wiki.inc.php
+
+		-
+			message: "#^Access to an undefined property FormatBlockListLine\\:\\:\\$type\\.$#"
+			count: 1
+			path: render/render_wiki.inc.php
+
+		-
+			message: "#^Access to an undefined property FormatBlockQuote\\:\\:\\$children\\.$#"
+			count: 2
+			path: render/render_wiki.inc.php
+
+		-
+			message: "#^Access to an undefined property Email\\:\\:\\$reply\\.$#"
+			count: 2
+			path: std/class_email.inc.php
+
+		-
+			message: "#^Access to an undefined property Email\\:\\:\\$subject\\.$#"
+			count: 1
+			path: std/class_email.inc.php
+
+		-
+			message: "#^Call to an undefined method Email\\:\\:initSubject\\(\\)\\.$#"
+			count: 1
+			path: std/class_email.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$to$#"
+			count: 1
+			path: std/class_email.inc.php
+
+		-
+			message: "#^Access to an undefined property EmailNotification\\:\\:\\$subject\\.$#"
+			count: 2
+			path: std/class_email_notification.inc.php
+
+		-
+			message: "#^Access to an undefined property EmailPasswordReminder\\:\\:\\$subject\\.$#"
+			count: 2
+			path: std/class_email_password_reminder.inc.php
+
+		-
+			message: "#^Access to an undefined property EmailWelcome\\:\\:\\$subject\\.$#"
+			count: 2
+			path: std/class_email_welcome.inc.php
+
+		-
+			message: "#^Instantiated class FeedItem not found\\.$#"
+			count: 1
+			path: std/class_rss.inc.php
+
+		-
+			message: "#^Instantiated class UniversalFeedCreator not found\\.$#"
+			count: 1
+			path: std/class_rss.inc.php
+
+		-
+			message: "#^Call to static method getInstance\\(\\) on an unknown class FirePHP\\.$#"
+			count: 1
+			path: std/common.inc.php
+
+		-
+			message: "#^Function get_magic_quotes_gpc not found\\.$#"
+			count: 1
+			path: std/common.inc.php
+
+		-
+			message: "#^Undefined variable\\: \\$r$#"
+			count: 1
+			path: std/common.inc.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 512 \\(\\\\RIGHT_PERSON_CREATE, \\\\RIGHT_PERSON_EDIT\\)\\.$#"
+			count: 1
+			path: std/constant_names.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$in_seq\\.$#"
+			count: 3
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$lcs\\.$#"
+			count: 4
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$seq\\.$#"
+			count: 7
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$xchanged\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$xind\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$xv\\.$#"
+			count: 5
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$ychanged\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$yind\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _DiffEngine\\:\\:\\$yv\\.$#"
+			count: 5
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _HWLDF_WordAccumulator\\:\\:\\$_group\\.$#"
+			count: 3
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _HWLDF_WordAccumulator\\:\\:\\$_line\\.$#"
+			count: 4
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _HWLDF_WordAccumulator\\:\\:\\$_lines\\.$#"
+			count: 4
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Access to an undefined property _HWLDF_WordAccumulator\\:\\:\\$_tag\\.$#"
+			count: 4
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Class _DiffOp_Add does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Class _DiffOp_Change does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Class _DiffOp_Copy does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Class _DiffOp_Delete does not have a constructor and must be instantiated without any parameters\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Function each not found\\.$#"
+			count: 2
+			path: std/difference_engine.inc.php
+
+		-
+			message: "#^Call to sprintf contains 1 placeholder, 2 values given\\.$#"
+			count: 1
+			path: std/errorhandler.inc.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_name\\.$#"
+			count: 5
+			path: std/mysqldump.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_password\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_username\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$hostname\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_error not found\\.$#"
+			count: 4
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_fetch_array not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_fetch_row not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_field_name not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_field_type not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_free_result not found\\.$#"
+			count: 2
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_list_tables not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_num_fields not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_num_rows not found\\.$#"
+			count: 2
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_numrows not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_pconnect not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_query not found\\.$#"
+			count: 4
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_select_db not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Function mysql_tablename not found\\.$#"
+			count: 1
+			path: std/mysqldump.php
+
+		-
+			message: "#^Undefined variable\\: \\$mime_type$#"
+			count: 1
+			path: std/mysqldump.php
