@@ -1,4 +1,4 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php if (PHP_SAPI !== 'cli' && !function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
 
 /**
  * function different purposes relating to:
@@ -89,7 +89,7 @@ function addRequestVars(&$referred_vars)
                 default:
                     trigger_error("unknown setting for CLEAN_REFERRED_VARS: '".confGet('CLEAN_REFERRED_VARS')."'",E_USER_WARNING);
             }
-            
+
             ### remove slashes if magic quotes
             if(get_magic_quotes_gpc()) {
                 $value= stripslashes($value);
@@ -592,10 +592,10 @@ function setLang($lang) {
 
         # this warning might be annoying, but we need a way to detect that setlocale failed
         # eventually the list of locales will be long enough to include all supported platforms
-        # 
+        #
         # pixtur: changed from warning to log_message that will only be displayed when
-        # 
-        
+        #
+
         if($res === FALSE) {
             log_message("Could not set locale to '$locale'", E_USER_WARNING);
         }
@@ -662,12 +662,12 @@ function asSearchQuery($str) {
 }
 
 function asMatchString($str) {
-    #return preg_replace("/[^0-9A-Z_]/i",' ', $str); 
-    return preg_replace("/[\/\<\>\`\´_%&?\"\'()\[\]%]/",' ', $str); 
+    #return preg_replace("/[^0-9A-Z_]/i",' ', $str);
+    return preg_replace("/[\/\<\>\`\´_%&?\"\'()\[\]%]/",' ', $str);
 }
 
 function asIdentifier($str) {
-    return strtolower( preg_replace("/[^0-9A-Z_]/i",'_', $str) ); 
+    return strtolower( preg_replace("/[^0-9A-Z_]/i",'_', $str) );
 }
 
 /**
@@ -677,7 +677,7 @@ function asIdentifier($str) {
 */
 function asCleanString($str)
 {
-    return preg_replace("/[^\w ,.\/:-]/","",$str);  
+    return preg_replace("/[^\w ,.\/:-]/","",$str);
 }
 
 
@@ -873,7 +873,7 @@ function getSpamProbability($str) {
 }
 
 
-function isSpam($str) 
+function isSpam($str)
 {
     $probability = getSpamProbability($str);
     if( $probability > confGet('REJECT_SPAM_CONTENT') )  {
@@ -885,13 +885,13 @@ function isSpam($str)
 }
 
 
-function validateNotSpam($str) 
+function validateNotSpam($str)
 {
     global $PH;
     global $auth;
-    
-    if(     confGet('REJECT_SPAM_CONTENT')  
-        && $auth->cur_user->id == confGet('ANONYMOUS_USER') 
+
+    if(     confGet('REJECT_SPAM_CONTENT')
+        && $auth->cur_user->id == confGet('ANONYMOUS_USER')
         && isSpam($str)
     ) {
         log_message(sprintf("rejected spam comment from %s with %s", getServerVar('REMOTE_ADDR'), getSpamProbability($str)),  LOG_MESSAGE_HACKING_ALERT);
@@ -902,7 +902,7 @@ function validateNotSpam($str)
 /**
 * helper function to clear global variables used in render_misc time rendering.
 */
-function clearCachedTimeFormats() 
+function clearCachedTimeFormats()
 {
     global $g_userFormatTimestamp;
     $g_userFormatTimestamp = NULL;
@@ -930,7 +930,7 @@ function trace($message, $options= '')
                  'useNativeJsonEncode' => true,
                  'includeLineNumbers' => true
                  );
- 
+
              $g_firephp->setOptions($options);
         }
         $g_firephp->trace($message, $options);

@@ -1,3 +1,5 @@
 _settings
 _tmp
 /vendor/
+composer.phar
+.phpunit.result.cache
