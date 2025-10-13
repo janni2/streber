@@ -55,145 +55,15 @@ parameters:
 			count: 1
 			path: db/db_mysql_class.php
 
-		-
-			message: "#^Function get_magic_quotes_gpc not found\\.$#"
-			count: 1
-			path: db/db_mysql_class.php
-
-		-
-			message: "#^Function mysql_connect not found\\.$#"
-			count: 1
-			path: db/db_mysql_class.php
-
-		-
-			message: "#^Function mysql_fetch_array not found\\.$#"
-			count: 2
-			path: db/db_mysql_class.php
-
-		-
-			message: "#^Function mysql_insert_id not found\\.$#"
-			count: 1
-			path: db/db_mysql_class.php
-
-		-
-			message: "#^Function mysql_query not found\\.$#"
-			count: 1
-			path: db/db_mysql_class.php
-
-		-
-			message: "#^Function mysql_select_db not found\\.$#"
-			count: 1
-			path: db/db_mysql_class.php
 
 		-
 			message: "#^Access to an undefined property sql_class\\:\\:\\$errorno\\.$#"
 			count: 1
 			path: db/db_mysqli_class.php
 
-		-
-			message: "#^Function get_magic_quotes_gpc not found\\.$#"
-			count: 1
-			path: db/db_mysqli_class.php
 
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_name\\.$#"
-			count: 5
-			path: install/db_backup.php
 
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_password\\.$#"
-			count: 1
-			path: install/db_backup.php
 
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_username\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$hostname\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_error not found\\.$#"
-			count: 5
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_fetch_array not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_fetch_row not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_field_name not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_field_type not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_free_result not found\\.$#"
-			count: 2
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_list_tables not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_num_fields not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_num_rows not found\\.$#"
-			count: 2
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_numrows not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_pconnect not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_query not found\\.$#"
-			count: 5
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_select_db not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_tablename not found\\.$#"
-			count: 1
-			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_error not found\\.$#"
-			count: 1
-			path: install/install.php
-
-		-
-			message: "#^Function mysqli_error invoked with 0 parameters, 1 required\\.$#"
-			count: 1
-			path: install/install.php
 
 		-
 			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
@@ -2215,10 +2085,6 @@ parameters:
 			count: 1
 			path: std/common.inc.php
 
-		-
-			message: "#^Function get_magic_quotes_gpc not found\\.$#"
-			count: 1
-			path: std/common.inc.php
 
 		-
 			message: "#^Undefined variable\\: \\$r$#"
@@ -2315,107 +2181,10 @@ parameters:
 			count: 2
 			path: std/difference_engine.inc.php
 
-		-
-			message: "#^Function each not found\\.$#"
-			count: 2
-			path: std/difference_engine.inc.php
 
 		-
 			message: "#^Call to sprintf contains 1 placeholder, 2 values given\\.$#"
 			count: 1
 			path: std/errorhandler.inc.php
 
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_name\\.$#"
-			count: 5
-			path: std/mysqldump.php
 
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_password\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_username\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$hostname\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_error not found\\.$#"
-			count: 4
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_fetch_array not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_fetch_row not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_field_name not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_field_type not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_free_result not found\\.$#"
-			count: 2
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_list_tables not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_num_fields not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_num_rows not found\\.$#"
-			count: 2
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_numrows not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_pconnect not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_query not found\\.$#"
-			count: 4
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_select_db not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Function mysql_tablename not found\\.$#"
-			count: 1
-			path: std/mysqldump.php
-
-		-
-			message: "#^Undefined variable\\: \\$mime_type$#"
-			count: 1
-			path: std/mysqldump.php

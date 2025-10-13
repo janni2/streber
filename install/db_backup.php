@@ -59,6 +59,10 @@ class MySQLDumper {
     var $use_backquotes     = true;
     var $use_gzip           = true;
     var $line_buffer        = array();
+    var $hostname;
+    var $db_username;
+    var $db_password;
+    var $db_name;
 
     function connect($hostname,$db_username,$db_password,$db_name) {
 
@@ -67,20 +71,20 @@ class MySQLDumper {
         $this->db_password  = $db_password;
         $this->db_name      = $db_name;
 
-    	$this->dbh = mysql_pconnect(
-            $this->hostname,        # hostname
+	$this->dbh = mysqli_connect(
+            "p:" . $this->hostname,        # hostname
             $this->db_username,     # db_username
             $this->db_password      # db_password
         );
 
         if(!$this->dbh || !is_resource($this->dbh)) {
-            echo "mysql-error:<pre>".mysql_error()."</pre>";
+            echo "mysqli-error:<pre>".mysqli_error($this->dbh)."</pre>";
             return NULL;
         }
 
         ### select db ###
-        if(!mysql_select_db($this->db_name, $this->dbh)) {
-            echo "mysql-error:<pre>".mysql_error()."</pre>";
+        if(!mysqli_select_db($this->dbh, $this->db_name)) {
+            echo "mysqli-error:<pre>".mysqli_error($this->dbh)."</pre>";
             return NULL;
         }
         return true;
@@ -96,7 +100,7 @@ class MySQLDumper {
         }
     }
 
-    function dump( ) 
+    function dump( )
     {
         /**
          * Increase time limit for script execution and initializes some variables
@@ -105,16 +109,16 @@ class MySQLDumper {
 
         $hostname="";
         if(isset($_SERVER["HTTP_HOST"])) {
-    	    $hostname= $_SERVER["HTTP_HOST"];
+	    $hostname= $_SERVER["HTTP_HOST"];
         }
 
         if($this->use_gzip) {
             $filename   = $hostname . "_". $this->db_name.'_'. gmdate("Y-m-d_H:i"). '.gzip';
             $mime_type  ='application/x-gzip';
-        } 
+        }
         else {
             $filename   = $hostname . "_". $this->db_name.'_'. gmdate("Y-m-d_H:i"). '.sql';
-            $mime_type  ='';            
+            $mime_type  ='';
         }
 
         ### Send headers
@@ -133,19 +137,18 @@ class MySQLDumper {
 
 
         ### Builds the dump
-        $tables     = mysql_list_tables($this->db_name);
+        $tables_result     = mysqli_query($this->dbh, "SHOW TABLES");
 
-        if(!$num_tables = mysql_numrows($tables)) {
-            echo "mysql-error:<pre>".mysql_error()."</pre>";
+        if(!$num_tables = mysqli_num_rows($tables_result)) {
+            echo "mysqli-error:<pre>".mysqli_error($this->dbh)."</pre>";
             trigger_error("no tables found", E_USER_ERROR);
             exit(0);
         }
 
         $this->write("# slim phpMyAdmin MySQL-Dump\n");
 
-        for($i=0; $i < $num_tables; $i++) {
-
-            $table_name = mysql_tablename($tables, $i);
+        while($row = mysqli_fetch_row($tables_result)) {
+            $table_name = $row[0];
             $this->write( $this->crlf
                         .  '#' . $this->crlf
                         .  '#' . $this->backquote($table_name) . $this->crlf
@@ -158,7 +161,7 @@ class MySQLDumper {
         $this->write($this->crlf);
 
         ### Displays the dump as gzip-file
-        if($this->use_gzip) {            
+        if($this->use_gzip) {
             if (function_exists('gzencode')) {
                 echo gzencode(implode("",$this->line_buffer));                    # without the optional parameter level because it bugs
             }
@@ -170,7 +173,7 @@ class MySQLDumper {
 
 
 
-    function executeFromFile($filename) 
+    function executeFromFile($filename)
     {
         /**
          * Increase time limit for script execution and initializes some variables
@@ -180,14 +183,14 @@ class MySQLDumper {
         if ($handle) {
             $exec_buffer= '';
             while (!feof($handle)) {
-            
+
                 $line_buffer = fgets($handle, 4096);
                 $exec_buffer.= $line_buffer;
 
                 if(preg_match("/;\s*\n$/s", $line_buffer))     {
-                    $result= mysql_query($exec_buffer);
+                    $result= mysqli_query($this->dbh, $exec_buffer);
                     if($result == FALSE) {
-                        echo "<pre>" . mysql_error() . "</pre>";                        
+                        echo "<pre>" . mysqli_error($this->dbh) . "</pre>";
                         echo "<pre>$exec_buffer</pre>";
                     }
                     $exec_buffer="";
@@ -209,24 +212,24 @@ class MySQLDumper {
 
         // Whether to quote table and fields names or not
         if ($this->use_backquotes) {
-            mysql_query('SET SQL_QUOTE_SHOW_CREATE = 1');
+            mysqli_query($this->dbh, 'SET SQL_QUOTE_SHOW_CREATE = 1');
         }
         else {
-            mysql_query('SET SQL_QUOTE_SHOW_CREATE = 0');
+            mysqli_query($this->dbh, 'SET SQL_QUOTE_SHOW_CREATE = 0');
         }
 
-        $result = mysql_query('SHOW CREATE TABLE ' . $this->backquote($this->db_name) . '.' . $this->backquote($table));
+        $result = mysqli_query($this->dbh, 'SHOW CREATE TABLE ' . $this->backquote($this->db_name) . '.' . $this->backquote($table));
 
-        if ($result != FALSE &&  mysql_num_rows($result) > 0) {
-            $tmpres        = mysql_fetch_array($result);
+        if ($result != FALSE &&  mysqli_num_rows($result) > 0) {
+            $tmpres        = mysqli_fetch_array($result);
             $schema_create .= $tmpres[1];
 
-            mysql_free_result($result);
+            mysqli_free_result($result);
             return $schema_create;
 
         }
         else {
-            echo "<pre>".mysql_error()."</pre>";
+            echo "<pre>".mysqli_error($this->dbh)."</pre>";
 
             trigger_error("SHOW CREATE TABLE failed", E_USER_ERROR);
         }
@@ -245,15 +248,15 @@ class MySQLDumper {
 
 
         $local_query = 'SELECT * FROM ' . '.' . $this->backquote($table);
-        $result      = mysql_query($local_query);
+        $result      = mysqli_query($this->dbh, $local_query);
         if ($result) {
-            $fields_cnt = mysql_num_fields($result);
-            $rows_cnt   = mysql_num_rows($result);
+            $fields_cnt = mysqli_num_fields($result);
+            $rows_cnt   = mysqli_num_rows($result);
 
             ### Checks whether the field is an integer or not
             for ($j = 0; $j < $fields_cnt; $j++) {
-                $field_set[$j] = $this->backquote(mysql_field_name($result, $j));
-                $type          = mysql_field_type($result, $j);
+                $field_set[$j] = $this->backquote(mysqli_fetch_field_direct($result, $j)->name);
+                $type          = mysqli_fetch_field_direct($result, $j)->type;
                 if ($type == 'tinyint' || $type == 'smallint' || $type == 'mediumint' || $type == 'int' ||
                     $type == 'bigint'  ||$type == 'timestamp') {
                     $field_num[$j] = TRUE;
@@ -272,10 +275,10 @@ class MySQLDumper {
             $replace      = array('\0', '\n', '\r', '\Z');
             $current_row  = 0;
 
-            while ($row = mysql_fetch_row($result)) {
+            while ($row = mysqli_fetch_row($result)) {
 
                 $values= array();
-            	$current_row++;
+		$current_row++;
                 for ($j = 0; $j < $fields_cnt; $j++) {
                     if (!isset($row[$j])) {
                         $values[]     = 'NULL';
@@ -307,7 +310,7 @@ class MySQLDumper {
                 }
             }
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
         return $buffer;
     }
 

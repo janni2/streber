@@ -24,7 +24,7 @@ interface sql_interface{
     // Execute query
     function execute($tmp_query);
     // Fetch Array
-    function fetchArray($type = "MYSQL_ASSOC");
+    function fetchArray($type = "MYSQLI_ASSOC");
     // Fetch row
     function fetchRow();
     // Secure variable
@@ -70,15 +70,15 @@ class sql_class implements sql_interface{
         $this->user = $tmpuser;
         $this->pwd = $tmppwd;
         $this->database = $tmpdb;
-        if(!function_exists('mysql_connect')){
+        if(!function_exists('mysqli_connect')){
 
-            if(function_exists('mysql_error')) {
-                $this->error = mysql_error();
+            if(function_exists('mysqli_error')) {
+                $this->error = mysqli_error($this->connect);
             }
-            if(function_exists('mysql_errno')) {
-                $this->errorno = mysql_errno();
+            if(function_exists('mysqli_errno')) {
+                $this->errorno = mysqli_errno($this->connect);
             }
-            trigger_error('Function mysql_connect() does not exists. mysql extension is not enabled?', E_USER_ERROR);
+            trigger_error('Function mysqli_connect() does not exists. mysqli extension is not enabled?', E_USER_ERROR);
             return false;
         }
         return true;
@@ -95,20 +95,20 @@ class sql_class implements sql_interface{
     * method connect: Connect DB
     */
     public function connect(){
-        if($this->connect = @mysql_connect(
+        if($this->connect = @mysqli_connect(
             $this->server,
             $this->user,
             $this->pwd
         )){
-            $this->error('Connection using mysql_connect SUCCESSFUL');
+            $this->error('Connection using mysqli_connect SUCCESSFUL');
             return true;
         }
-        $this->error('Connection using mysql_connect FAILED');
+        $this->error('Connection using mysqli_connect FAILED');
         return false;
     }
 
     public function selectdb(){
-        if(@mysql_select_db($this->database)){
+        if(@mysqli_select_db($this->connect, $this->database)){
             $this->error('Base '.$this->database.' exists');
             return true;
         }
@@ -123,7 +123,7 @@ class sql_class implements sql_interface{
         global $g_count_db_statements;
         $g_count_db_statements++;
 
-        if($this->result = @mysql_query($tmp_query)){
+        if($this->result = @mysqli_query($this->connect, $tmp_query)){
             $this->error('Query successful: '.$tmp_query);
             if(DEBUG_SQL_DISPLAY == 1){echo $tmp_query.'<br /><br />';}
             return true;
@@ -135,10 +135,10 @@ class sql_class implements sql_interface{
     /**
     * method fetchArray: fetch array
     */
-    public function fetchArray($type = "MYSQL_ASSOC"){
+    public function fetchArray($type = "MYSQLI_ASSOC"){
 
         if(isset($this->result)){
-            $tmp = @mysql_fetch_array($this->result, constant($type));
+            $tmp = @mysqli_fetch_array($this->result, constant($type));
         }else{
             return false;
         }
@@ -152,8 +152,8 @@ class sql_class implements sql_interface{
     public function fetchRow(){
 
         if(isset($this->result)){
-            $tmp = @mysql_fetch_array($this->result);
-        } 
+            $tmp = @mysqli_fetch_array($this->result);
+        }
         else{
             return false;
         }
@@ -166,14 +166,14 @@ class sql_class implements sql_interface{
     * method secure: secure variable
     */
     public function secure($var){
-        return mysql_real_escape_string(addSlashes($var));
+        return mysqli_real_escape_string($this->connect, addSlashes($var));
     }
 
     /**
     * method lastId: get last ID
     */
     function lastId(){
-        $this->lastId = mysql_insert_id();
+        $this->lastId = mysqli_insert_id($this->connect);
 
         if(DEBUG_SQL_DISPLAY == 1){echo 'LAST ID: '.$this->lastId.'<br />';}
         return $this->lastId;
@@ -181,13 +181,12 @@ class sql_class implements sql_interface{
 }
 
 # Function to secure values if $sql_obj not available
-if(!function_exists('mysql_real_escape_string')){
-    function mysql_real_escape_string($var){
-        if(get_magic_quotes_gpc()){
-            return $var;
-        }else{
-            return addslashes($var);
+if(!function_exists('mysqli_real_escape_string')){
+    function mysqli_real_escape_string($con, $var){
+        if (is_object($con)) {
+            return $con->real_escape_string($var);
         }
+        return addslashes($var);
     }
 }
 ?>

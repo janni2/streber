@@ -185,14 +185,4 @@ class sql_class implements sql_interface{
     }
 }
 
-# Function to secure values if $sql_obj not available
-if(!function_exists('mysql_real_escape_string')){
-    function mysql_real_escape_string($var){
-        if(get_magic_quotes_gpc()){
-            return $var;
-        }else{
-            return addslashes($var);
-        }
-    }
-}
 ?>

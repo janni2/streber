@@ -151,14 +151,15 @@ $image->descriptionHtmlSyndicated = true;
 
 $rss->image = $image; 
 
-// get your news items from somewhere, e.g. your database: 
-mysql_select_db($dbHost, $dbUser, $dbPass); 
-$res = mysql_query("SELECT * FROM news ORDER BY newsdate DESC"); 
-while ($data = mysql_fetch_object($res)) { 
-    $item = new FeedItem(); 
-    $item->title = $data->title; 
-    $item->link = $data->url; 
-    $item->description = $data->short; 
+// get your news items from somewhere, e.g. your database:
+global $sql_obj;
+$sql_obj->selectdb();
+$res = $sql_obj->execute("SELECT * FROM news ORDER BY newsdate DESC");
+while ($data = $sql_obj->fetchArray()) {
+    $item = new FeedItem();
+    $item->title = $data['title'];
+    $item->link = $data['url'];
+    $item->description = $data['short'];
     
     //optional
     item->descriptionTruncSize = 500;
@@ -2022,9 +2023,6 @@ $image->descriptionHtmlSyndicated = true;
 $rss->image = $image; 
 
 // get your news items from somewhere, e.g. your database: 
-//mysql_select_db($dbHost, $dbUser, $dbPass); 
-//$res = mysql_query("SELECT * FROM news ORDER BY newsdate DESC"); 
-//while ($data = mysql_fetch_object($res)) { 
 	$item = new FeedItem(); 
 	$item->title = "This is an the test title of an item"; 
 	$item->link = "http://localhost/item/"; 

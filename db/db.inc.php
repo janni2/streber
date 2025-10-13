@@ -24,10 +24,7 @@ class MysqlException extends Exception {
       $this->code = $sql_obj->errno;
     }
 
-    if(function_exists('mysql_error') && mysql_error()) {
-        $mysql_error= mysql_error();
-    }
-    else if(confGet('DB_TYPE') == 'mysqli' && $sql_obj && function_exists('mysqli_error') && $sql_obj->getConnect() && mysqli_error($sql_obj->getConnect())) {
+    if(function_exists('mysqli_error') && $sql_obj->getConnect()) {
         $mysql_error= mysqli_error($sql_obj->getConnect());
     }
     else {

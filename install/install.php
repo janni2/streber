@@ -30,9 +30,6 @@ if (function_exists('date_default_timezone_set')) {
 */
 $g_supported_db_types= array();
 
-if(function_exists('mysql_connect')){
-    $g_supported_db_types[]='mysql';
-}
 
 if(function_exists('mysqli_connect')){
     $g_supported_db_types[]='mysqli';
@@ -446,7 +443,7 @@ function step_02_proceed()
                 return false;
             }
         }    
-        if(!parse_mysql_dump($filename, $f_db_table_prefix, $sql_obj)) {
+        if(!parse_mysqli_dump($filename, $f_db_table_prefix, $sql_obj)) {
             print_testResult(RESULT_FAILED,"SQL-Error[" . __LINE__ . "]:<br><pre>".$sql_obj->error."</pre>");
             return false;
         }
@@ -707,16 +704,7 @@ function upgrade($args=NULL)
         #}
 
         if(!$result=$sql_obj->execute($q)){
-            if(function_exists('mysql_error') && mysql_error()) {
-                $mysql_error= mysql_error();
-            }
-            else if(function_exists('mysqli_error') && mysqli_error()) {
-                $mysql_error= mysql_error();
-            }
-            else {
-                $mysql_error = $sql_obj->error;
-            }
-            print_testResult(RESULT_FAILED,"Failed:<pre>".$sql_obj -> error."</pre><br>Error:<pre>". $mysql_error . "</pre>");
+            print_testResult(RESULT_FAILED,"Failed:<pre>".$sql_obj -> error."</pre><br>Error:<pre>". mysqli_error($sql_obj->getConnect()) . "</pre>");
 
             if(isset($flag_continue_on_sql_errors) && $flag_continue_on_sql_errors) {
                 print_testStart("proceeding upgrade...");

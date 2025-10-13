@@ -90,10 +90,6 @@ function addRequestVars(&$referred_vars)
                     trigger_error("unknown setting for CLEAN_REFERRED_VARS: '".confGet('CLEAN_REFERRED_VARS')."'",E_USER_WARNING);
             }
 
-            ### remove slashes if magic quotes
-            if(get_magic_quotes_gpc()) {
-                $value= stripslashes($value);
-            }
 
             ### strip length ###
             $value= substr( $value,0,confGet('STRING_SIZE_MAX'));
@@ -119,12 +115,8 @@ function get($key, $default_value= NULL) {
 
     if(isset($g_request_vars[$key])) {
         $value=$g_request_vars[$key];
-        /**
-        * weird boolean conversion
-        */
-        if(gettype($value) == 'boolean') {
-
-            $value="";
+        if (is_bool($value)) {
+            return '';
         }
         return $value;
     }
@@ -348,7 +340,7 @@ function validateFormCaptcha($abort_on_failure = false)
 * - This function is a hack to quickly set up the db-structure. Sooner
 *   or later it will be replaced with a real table-creation-function.
 */
-function parse_mysql_dump($url, $table_prefix, $sql_obj)
+function parse_mysqli_dump($url, $table_prefix, $sql_obj)
 {
     $file_content = file($url);
     $query = "";
