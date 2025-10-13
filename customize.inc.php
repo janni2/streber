@@ -8,6 +8,7 @@
 * read http://www.streber-pm.org/3719  or have a look at conf/conf.inc
 */
 
+confChange('PHP_VERSION_REQUIRED', '8.3.0');
 confChange('LOG_LEVEL', LOG_MESSAGE_ALL);
 confChange('DISPLAY_ERROR_LIST', 'DETAILS');
 confChange('USE_MOD_REWRITE', true);

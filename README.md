@@ -19,32 +19,74 @@ Streber is a free, wiki-driven project management tool written in PHP. This docu
 2.  **Build and start the Docker containers:**
 
     ```bash
-    docker-compose up -d --build
+    docker-compose up --build
     ```
 
-3.  **Install Composer dependencies:**
+    This will start two services:
+    - `php`: PHP 8.3 with Apache web server (port 8080)
+    - `db`: MySQL 5.7 database server (port 3306)
 
-    Run the following command to install the project's PHP dependencies:
-
-    ```bash
-    docker-compose exec php sh -c "curl -sS https://getcomposer.org/installer | php && php composer.phar install"
-    ```
-
-4.  **Complete the web-based installation:**
+3.  **Complete the web-based installation:**
 
     - Open your web browser and navigate to `http://localhost:8080/install/install.php`.
     - Follow the on-screen instructions to configure the application.
-    - For the database setup, use the following credentials:
-      - **Database Host:** `db`
+    - **IMPORTANT:** For the database setup, use the following credentials:
+      - **Database Host:** `db` ⚠️ **NOT** `localhost` (use the Docker service name)
       - **Database Name:** `streber`
-      - **Database User:** `user`
-      - **Database Password:** `password`
+      - **Database User:** `user` (or `root` for root access)
+      - **Database Password:** `password` (or `rootpassword` for root)
 
     After the installation is complete, a `db_settings.php` file will be created in the `_settings/` directory. This file is ignored by Git.
 
-5.  **Access the application:**
+    **Why `db` and not `localhost`?** In Docker Compose, services communicate via service names defined in `docker-compose.yml`. The PHP container cannot reach MySQL via `localhost` because that refers to the PHP container itself. Use `db` to connect to the MySQL service.
+
+4.  **Access the application:**
 
     Once the installation is complete, you can access the application at `http://localhost:8080`.
+
+## Docker Architecture
+
+The Docker setup consists of:
+
+- **PHP Container**: Runs PHP 8.3 with Apache, includes Composer for dependency management
+- **MySQL Container**: Runs MySQL 5.7 for the database
+- **Named Volumes**: Persistent storage for:
+  - `_settings/` - Database configuration (generated during installation)
+  - `_tmp/` - Temporary files and caches
+  - `_files/` - User-uploaded files
+  - `_image_cache/` - Cached images
+  - `_rss/` - RSS feed cache
+  - `db_data` - MySQL database files
+
+The application source code is mounted from your host into the container, so changes take effect immediately (no rebuild needed for PHP code changes).
+
+## Troubleshooting
+
+### "No such file or directory" MySQL connection error
+
+If you see `mysqli_sql_exception: No such file or directory`, you likely entered `localhost` as the database host during installation. Use `db` instead.
+
+### Permission errors for `_settings/`, `_tmp/`, etc.
+
+These directories use Docker named volumes with proper permissions. If you see permission errors, try:
+
+```bash
+docker-compose down
+docker-compose up --build
+```
+
+### Container won't start or build fails
+
+Check for:
+- Port conflicts (8080, 3306 already in use)
+- Docker daemon running
+- Sufficient disk space for volumes
+
+View logs:
+```bash
+docker-compose logs php
+docker-compose logs db
+```
 
 ## Development Tasks
 

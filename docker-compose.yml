@@ -9,8 +9,18 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www/html
+      - settings_data:/var/www/html/_settings
+      - tmp_data:/var/www/html/_tmp
+      - files_data:/var/www/html/_files
+      - image_cache_data:/var/www/html/_image_cache
+      - rss_data:/var/www/html/_rss
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
+      - DB_HOST=db
+      - DB_NAME=streber
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_ROOT_PASSWORD=rootpassword
     depends_on:
       - db
 
@@ -28,3 +38,8 @@ services:
 
 volumes:
   db_data:
+  settings_data:
+  tmp_data:
+  files_data:
+  image_cache_data:
+  rss_data:

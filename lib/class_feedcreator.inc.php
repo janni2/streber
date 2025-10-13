@@ -1674,13 +1674,13 @@ class MBOXCreator extends FeedCreator {
 		$this->encoding = "ISO-8859-15";
 	}
     
-	function qp_enc($input = "", $line_max = 76) { 
-		$hex = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'); 
-		$lines = preg_split("/(?:\r\n|\r|\n)/", $input); 
-		$eol = "\r\n"; 
-		$escape = "="; 
-		$output = ""; 
-		while( list(, $line) = each($lines) ) { 
+	function qp_enc($input = "", $line_max = 76) {
+		$hex = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
+		$lines = preg_split("/(?:\r\n|\r|\n)/", $input);
+		$eol = "\r\n";
+		$escape = "=";
+		$output = "";
+		foreach($lines as $line) { 
 			//$line = rtrim($line); // remove trailing white space -> no =20\r\n necessary 
 			$linlen = strlen($line); 
 			$newline = ""; 

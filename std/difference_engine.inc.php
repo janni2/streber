@@ -287,15 +287,20 @@ class _DiffEngine
 					if (empty($ymatches[$line]))
 						continue;
 				$matches = $ymatches[$line];
-				reset($matches);
-				while (list ($junk, $y) = each($matches))
+				$matches_keys = array_keys($matches);
+				$matches_index = 0;
+				while ($matches_index < count($matches_keys))
+				{
+					$y = $matches[$matches_keys[$matches_index++]];
 					if (empty($this->in_seq[$y])) {
 						$k = $this->_lcs_pos($y);
 						USE_ASSERTS && assert($k > 0);
 						$ymids[$k] = $ymids[$k-1];
 						break;
 					}
-				while (list ($junk, $y) = each($matches)) {
+				}
+				while ($matches_index < count($matches_keys)) {
+					$y = $matches[$matches_keys[$matches_index++]];
 					if ($y > $this->seq[$k-1]) {
 						USE_ASSERTS && assert($y < $this->seq[$k]);
 						// Optimization: this is a common case:

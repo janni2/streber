@@ -91,9 +91,8 @@ function addRequestVars(&$referred_vars)
             }
 
             ### remove slashes if magic quotes
-            if(get_magic_quotes_gpc()) {
-                $value= stripslashes($value);
-            }
+            ### Note: get_magic_quotes_gpc() was removed in PHP 8.0
+            ### Magic quotes are always disabled in PHP 8.0+, so no need to check
 
             ### strip length ###
             $value= substr( $value,0,confGet('STRING_SIZE_MAX'));
