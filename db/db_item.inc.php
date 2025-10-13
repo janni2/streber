@@ -1619,7 +1619,7 @@ class DbProjectItem extends DbItem {
         foreach($diffs as $d) {
             foreach($d as $do) {
                 if($do->type == 'copy') {
-                    $new_lines[].= join("\n", $do->orig);
+                    $new_lines[]= join("\n", $do->orig);
                 }
                 else if($do->type == 'add') {
                     $new_lines[]= "[added word]" . join("\n", $do->closing) . "[/added word]";
