@@ -65,7 +65,6 @@ return $config
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
         'return_type_declaration' => true,
         'short_scalar_cast' => true,
-        'single_blank_line_before_namespace' => true,
         'single_class_element_per_statement' => true,
         'single_import_per_statement' => true,
         'single_line_after_imports' => true,
