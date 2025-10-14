@@ -13,6 +13,7 @@
             "Streber\\": "src/"
         },
         "files": [
+            "src/helpers.php",
             "std/common.inc.php"
         ]
     },
