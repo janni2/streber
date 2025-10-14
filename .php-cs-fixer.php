@@ -11,6 +11,7 @@ $finder = PhpCsFixer\Finder::create()
     ->name('*.php')
     ->name('*.inc.php')
     ->notName('*.tpl.php')
+    ->notName('test_with_parse_error.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
