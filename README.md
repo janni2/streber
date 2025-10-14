@@ -64,6 +64,29 @@ The application source code is mounted from your host into the container, so cha
 
 ## Troubleshooting
 
+### "What a Bummer! The wiki is offline" / Maintenance View
+
+If you see this message with "could not connect to database", it means the database settings file is missing or incorrect. This typically happens when:
+
+1. **First-time setup**: You haven't run the installer yet
+2. **Volume reset**: The `_settings/` volume was deleted or cleared
+3. **Wrong database type**: The installer was configured with MySQL instead of MySQLi
+
+**Solution:**
+
+1. Navigate to the installer: `http://localhost:8080/install/install.php`
+2. Fill in the database configuration:
+   - **Database Server**: `db` (NOT `localhost`)
+   - **Database Name**: `streber`
+   - **Username**: `user`
+   - **Password**: `password`
+   - **Table Prefix**: `streber_` (or leave default)
+   - **Database Type**: Select **MySQLi** ⚠️ (NOT MySQL - the old extension is not available in PHP 8)
+3. Complete the installation wizard
+4. After successful installation, remove the installer by visiting: `http://localhost:8080/install/remove_install_dir.php`
+
+**Note:** The installer creates `_settings/db_settings.php` which contains the database connection configuration. This file is stored in a named volume and is not tracked in Git.
+
 ### "No such file or directory" MySQL connection error
 
 If you see `mysqli_sql_exception: No such file or directory`, you likely entered `localhost` as the database host during installation. Use `db` instead.
