@@ -247,7 +247,7 @@ class DB_MysqlStatement implements DB_Statement
 
         foreach ($this->binds as $ph => $pv) {
             #$query = @str_replace(":$ph", , $query);
-            $query = preg_replace("/ƒ$ph\b/", "'" . $pv . "'", $query);
+            $query = preg_replace("/ï¿½$ph\b/", "'" . $pv . "'", $query);
         }
 
         if (!$sql_obj->execute($query)) {
@@ -274,7 +274,8 @@ class DB_MysqlStatement implements DB_Statement
 
         if ($res = $sql_obj->fetchArray()) {
             foreach ($res as $key => $value) {
-                $row[$key] = stripslashes($value);
+                // stripslashes() does not accept null in PHP 8.1+
+                $row[$key] = $value === null ? null : stripslashes($value);
             }
         }
         return $row;

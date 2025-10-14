@@ -109,26 +109,50 @@ class sql_class implements sql_interface
     */
     public function connect()
     {
-        if ($this->connect = @mysqli_connect(
-            $this->server,
-            $this->user,
-            $this->pwd
-        )) {
-            $this->error('Connection using mysqli_connect SUCCESSFUL');
-            return true;
+        try {
+            // Disable mysqli exception mode for legacy error handling
+            mysqli_report(MYSQLI_REPORT_OFF);
+
+            $this->connect = mysqli_connect(
+                $this->server,
+                $this->user,
+                $this->pwd
+            );
+
+            if ($this->connect) {
+                $this->error('Connection using mysqli_connect SUCCESSFUL');
+                return true;
+            }
+
+            // Get detailed error information
+            $error_msg = 'Connection using mysqli_connect FAILED';
+            if (function_exists('mysqli_connect_error')) {
+                $error_msg .= ': ' . mysqli_connect_error();
+            }
+            if (function_exists('mysqli_connect_errno')) {
+                $error_msg .= ' (errno: ' . mysqli_connect_errno() . ')';
+            }
+            $this->error($error_msg);
+            return false;
+        } catch (\mysqli_sql_exception $e) {
+            $this->error('Connection using mysqli_connect FAILED: ' . $e->getMessage() . ' (Code: ' . $e->getCode() . ')');
+            return false;
         }
-        $this->error('Connection using mysqli_connect FAILED');
-        return false;
     }
 
     public function selectdb()
     {
-        if (@mysqli_select_db($this->connect, $this->database)) {
-            $this->error('Database ' . $this->database . ' exists');
-            return true;
+        try {
+            if (@mysqli_select_db($this->connect, $this->database)) {
+                $this->error('Database ' . $this->database . ' exists');
+                return true;
+            }
+            $this->error('Database ' . $this->database . ' does NOT exist');
+            return false;
+        } catch (\mysqli_sql_exception $e) {
+            $this->error('Database ' . $this->database . ' does NOT exist: ' . $e->getMessage());
+            return false;
         }
-        $this->error('Database ' . $this->database . ' does NOT exist');
-        return false;
     }
 
     /**
@@ -136,15 +160,20 @@ class sql_class implements sql_interface
     */
     public function execute($tmp_query)
     {
-        if ($this->result = @mysqli_query($this->connect, $tmp_query)) {
-            $this->error('Query successful: ' . $tmp_query);
-            if (DEBUG_SQL_DISPLAY == 1) {
-                echo $tmp_query . '<br /><br />';
+        try {
+            if ($this->result = @mysqli_query($this->connect, $tmp_query)) {
+                $this->error('Query successful: ' . $tmp_query);
+                if (DEBUG_SQL_DISPLAY == 1) {
+                    echo $tmp_query . '<br /><br />';
+                }
+                return true;
             }
-            return true;
+            $this->error('Query error: ' . $tmp_query);
+            return false;
+        } catch (\mysqli_sql_exception $e) {
+            $this->error('Query error: ' . $tmp_query . ' - ' . $e->getMessage());
+            return false;
         }
-        $this->error('Query error: ' . $tmp_query);
-        return false;
     }
 
     /**
@@ -205,7 +234,9 @@ class sql_class implements sql_interface
 if (!function_exists('mysql_real_escape_string')) {
     function mysql_real_escape_string($var)
     {
-        if (get_magic_quotes_gpc()) {
+        // get_magic_quotes_gpc() was removed in PHP 8.0
+        // Magic quotes are always off in PHP 8+, so just use addslashes
+        if (PHP_VERSION_ID < 80000 && function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
             return $var;
         } else {
             return addslashes($var);

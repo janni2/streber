@@ -483,7 +483,9 @@ class PageHandler extends BaseObject
         $stored_handles = [];
 
         ### use modified version of user-cookie as filename ###
-        $filename = confGet('DIR_TEMP') . md5($auth->cur_user->identifier);
+        // md5() does not accept null in PHP 8.1+
+        $identifier = $auth->cur_user->identifier ?? '';
+        $filename = confGet('DIR_TEMP') . md5($identifier);
 
         ### read current from-handles ###
         if (is_readable($filename)) {
@@ -526,7 +528,7 @@ class PageHandler extends BaseObject
                 $result = rename($filename, $filename . '_tmp');     # surpressing FILE-EXISTs notice
             }
             $FH = fopen($filename . '_tmp', 'w');
-            fputs($FH, join($stored_handles, "\n"));                       # join the array
+            fputs($FH, join("\n", $stored_handles));                       # join the array
             fclose($FH);
             if (file_exists($filename . '_tmp')) {
                 $result = rename($filename . '_tmp', $filename);     # surpressing FILE-EXISTs notice
@@ -552,7 +554,9 @@ class PageHandler extends BaseObject
         }
 
         ### use modified version of user-cookie as filename ###
-        $filename = confGet('DIR_TEMP') . md5($auth->cur_user->identifier);
+        // md5() does not accept null in PHP 8.1+
+        $identifier = $auth->cur_user->identifier ?? '';
+        $filename = confGet('DIR_TEMP') . md5($identifier);
 
         ### read current from-handles ###
         if (is_readable($filename)) {

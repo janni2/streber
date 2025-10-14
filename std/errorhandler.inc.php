@@ -34,7 +34,7 @@ define('ERROR_DATASTRUCTURE', 6);
 global $g_error_list;
 $g_error_list = [];
 
-function customHandler($number, $error_string, $file, $line, $context)
+function customHandler($number, $error_string, $file, $line, $context = [])
 {
     global $g_error_list;
 

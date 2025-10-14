@@ -40,6 +40,7 @@ if (!function_exists('startedIndexPhp')) {
 * @usedby   all derived DbItem-classes (task, person, etc.)
 *
 */
+#[AllowDynamicProperties]
 class Field
 {
     public $type;                      #field
@@ -61,6 +62,11 @@ class Field
     public $export = true;        # may be exported as csv or xml (should be false for passwords, etc)
 
     public $export_csv = false;
+
+    # Properties dynamically set by subclasses - declared here for PHP 8.2+ compatibility
+    public $in_db_object;              # whether field exists in db object table
+    public $in_db_item;                # whether field exists in db item table
+    public $required;                  # whether field is required in forms
     /**
     * constructor
     *

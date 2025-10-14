@@ -641,6 +641,10 @@ function asIdentifier($str)
 */
 function asCleanString($str)
 {
+    // preg_replace() does not accept null in PHP 8.1+
+    if ($str === null) {
+        return '';
+    }
     return preg_replace("/[^\w ,.\/:-]/", '', $str);
 }
 
