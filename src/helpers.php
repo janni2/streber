@@ -8,6 +8,7 @@
  */
 
 use Streber\Container;
+use Streber\Config;
 
 if (!function_exists('container')) {
     /**
@@ -31,5 +32,39 @@ if (!function_exists('service')) {
     function service(string $id)
     {
         return Container::getInstance()->get($id);
+    }
+}
+
+if (!function_exists('config')) {
+    /**
+     * Get configuration value or Config instance
+     *
+     * When called without arguments, returns the Config instance.
+     * When called with a key, returns the configuration value.
+     *
+     * @param string|null $key Configuration key
+     * @param mixed $default Default value if key doesn't exist
+     * @return mixed Config instance or configuration value
+     */
+    function config(?string $key = null, $default = null)
+    {
+        $container = Container::getInstance();
+
+        // Register config service if not already registered
+        if (!$container->has('config')) {
+            $container->setFactory('config', function() {
+                return new Config();
+            });
+        }
+
+        $configService = $container->get('config');
+
+        // If no key provided, return Config instance
+        if ($key === null) {
+            return $configService;
+        }
+
+        // Return specific config value
+        return $configService->get($key, $default);
     }
 }

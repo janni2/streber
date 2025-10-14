@@ -6,6 +6,7 @@ This directory contains the modernized PHP code using namespaces, type hints, an
 
 ```
 src/
+├── Config.php             - Configuration service wrapper
 ├── Container.php          - Dependency injection container
 ├── helpers.php            - Global helper functions
 └── README.md             - This file
@@ -89,10 +90,46 @@ function myFunction() {
 - Nullable types (`?Container`)
 - Property type declarations
 
+## Config Service
+
+The `Config` class provides object-oriented access to configuration:
+
+```php
+// Get config instance
+$config = config();
+
+// Get specific value
+$appName = config('APP_NAME');
+$appName = config('APP_NAME', 'Default Name'); // with default
+
+// Set value
+config()->set('MY_KEY', 'my_value');
+
+// Check if key exists
+if (config()->has('SOME_KEY')) {
+    // ...
+}
+
+// Magic property access
+$appName = config()->APP_NAME;
+config()->APP_NAME = 'New Name';
+```
+
+**Backward Compatibility:** The Config service automatically syncs with the global `$g_config` array, so both old and new code continue to work.
+
+**Migration Example:**
+```php
+// Before:
+global $g_config;
+$name = $g_config['APP_NAME'];
+
+// After:
+$name = config('APP_NAME');
+```
+
 ## Future Additions
 
 - Database connection wrapper
-- Configuration service
 - Logger service
 - Event dispatcher
 - Router (modern alternative to PageHandler)
