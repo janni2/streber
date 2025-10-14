@@ -86,7 +86,7 @@ abstract class DbItem
                 $this->$attr = $value;
             }
         } else {
-            unset($this);
+            // Cannot unset($this) in PHP 7.4+. Object will be garbage collected when no references remain.
             return null;     # returning false does not makes sense
         }
     }
@@ -105,7 +105,7 @@ abstract class DbItem
         $dbh->prepare($query)->execute($this->id);
 
         #--- deleting yourself? ----
-        unset($this);
+        // Cannot unset($this) in PHP 7.4+. Object remains in memory until no references exist.
         return true;
     }
 
@@ -123,7 +123,7 @@ abstract class DbItem
         $dbh->prepare($query)->execute();
 
         #--- deleting yourself? ----
-        unset($this);
+        // Cannot unset($this) in PHP 7.4+. Object remains in memory until no references exist.
         return true;
     }
 
@@ -540,7 +540,7 @@ class DbProjectItem extends DbItem
                     * this might happen very often (like when searching for id)
                     */
                     #trigger_error("item id='$id' not found in table", E_USER_WARNING);
-                    unset($this);                   #@@@ not sure if abort called construction like this works
+                    // Cannot unset($this) in PHP 7.4+. Returning null allows caller to check.
                     return null;
                 }
             }
