@@ -91,11 +91,6 @@ parameters:
 			path: db/db_mysqli_class.php
 
 		-
-			message: "#^Function get_magic_quotes_gpc not found\\.$#"
-			count: 1
-			path: db/db_mysqli_class.php
-
-		-
 			message: "#^Access to an undefined property MySQLDumper\\:\\:\\$db_name\\.$#"
 			count: 5
 			path: install/db_backup.php
@@ -184,16 +179,6 @@ parameters:
 			message: "#^Function mysql_tablename not found\\.$#"
 			count: 1
 			path: install/db_backup.php
-
-		-
-			message: "#^Function mysql_error not found\\.$#"
-			count: 1
-			path: install/install.php
-
-		-
-			message: "#^Function mysqli_error invoked with 0 parameters, 1 required\\.$#"
-			count: 1
-			path: install/install.php
 
 		-
 			message: "#^Array has 2 duplicate keys with value 'People' \\('People', 'People'\\)\\.$#"
