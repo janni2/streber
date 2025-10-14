@@ -526,7 +526,7 @@ class PageHandler extends BaseObject
                 $result = rename($filename, $filename . '_tmp');     # surpressing FILE-EXISTs notice
             }
             $FH = fopen($filename . '_tmp', 'w');
-            fputs($FH, join($stored_handles, "\n"));                       # join the array
+            fputs($FH, join("\n", $stored_handles));                       # join the array
             fclose($FH);
             if (file_exists($filename . '_tmp')) {
                 $result = rename($filename . '_tmp', $filename);     # surpressing FILE-EXISTs notice
