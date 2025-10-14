@@ -2056,7 +2056,7 @@ function getWikiChapters($text)
     foreach ($blocks as $b) {
         $tmp[] = $b->str;
     }
-    $buffer = implode('',$tmp);
+    $buffer = implode('', $tmp);
     $parts = explode('__SPLITTER__', $buffer);
     return $parts;
 }

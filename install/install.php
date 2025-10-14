@@ -809,10 +809,10 @@ function checkLogfileIsSecure()
 
     ### try to create
     if ($FO = @fopen('../' . confGet('DIR_TEMP') . '/errors.log.php', 'w')) {
-        @fputs($FO,'<? header("Location: ../index.php");exit(); ?>');
+        @fputs($FO, '<? header("Location: ../index.php");exit(); ?>');
         fclose($FO);
     } else {
-        print_testResult(RESULT_FAILED,'Failed to create secure version of error.log.php.');
+        print_testResult(RESULT_FAILED, 'Failed to create secure version of error.log.php.');
         $error_flag = true;
     }
 

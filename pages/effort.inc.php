@@ -1132,7 +1132,7 @@ function effortsDelete()
     if ($errors) {
         new FeedbackWarning(sprintf(__('Failed to delete %s efforts'), $errors));
     } else {
-        new FeedbackMessage(sprintf(__('Moved %s efforts to trash'),$counter));
+        new FeedbackMessage(sprintf(__('Moved %s efforts to trash'), $counter));
     }
 
     if (!$PH->showFromPage()) {

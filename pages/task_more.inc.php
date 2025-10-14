@@ -1526,7 +1526,7 @@ function taskExpandAllComments()
         * if user has not enough rights
         **/
         ### abort, if not enough rights ###
-        $PH->abortWarning(__('insufficient rights'),ERROR_RIGHTS);
+        $PH->abortWarning(__('insufficient rights'), ERROR_RIGHTS);
     }
 
     ### display taskView ####

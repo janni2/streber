@@ -1140,12 +1140,12 @@ function taskEditSubmit()
     } else {
         ### go to task, if new
         if ($tsk_id == 0) {
-            $PH->show('taskView',['tsk' => $task->id]);
+            $PH->show('taskView', ['tsk' => $task->id]);
             exit();
         }
         ### display taskView ####
         elseif (!$PH->showFromPage()) {
-            $PH->show('home',[]);
+            $PH->show('home', []);
         }
     }
 }

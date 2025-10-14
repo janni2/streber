@@ -1310,7 +1310,7 @@ class ListBlockCol_TasknameWithFolder extends ListBlockCol
                    ? 'isDone'
                    : '';
 
-            $link = $PH->getLink('taskView',$name,['tsk' => $task->id]);
+            $link = $PH->getLink('taskView', $name, ['tsk' => $task->id]);
             #echo "<td class=taskwithfolder><span class='name $isDone'>{$link}</span><br><span class=sub>$html_details</span></td>";
             echo "<td class=taskwithfolder><span class='$isDone'>{$link}</span><br><span class=sub>$html_details</span></td>";
         }

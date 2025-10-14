@@ -180,6 +180,7 @@ class TestOfAuthenticator extends UnitTestCase
         $authenticator = &$this->createSingleRealm();
         $authenticator->addHeaders(
             $request,
-            new SimpleUrl('http://here.com/path/hello.html'));
+            new SimpleUrl('http://here.com/path/hello.html')
+        );
     }
 }

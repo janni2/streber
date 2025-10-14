@@ -405,6 +405,7 @@ class TestOfAuthorisation extends UnitTestCase
         $agent->SimpleUserAgent();
         $response = &$agent->fetchResponse(
             new SimpleUrl('http://test:secret@this.host'),
-            new SimpleGetEncoding());
+            new SimpleGetEncoding()
+        );
     }
 }

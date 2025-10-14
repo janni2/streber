@@ -732,6 +732,6 @@ function itemBookmarkEditMultipleSubmit()
     }
     ### display fromPage ####
     if (!$PH->showFromPage()) {
-        $PH->show('home',[]);
+        $PH->show('home', []);
     }
 }

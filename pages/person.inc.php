@@ -2547,6 +2547,6 @@ function personToggleFilterOwnChanges()
 
     ### display taskView ####
     if (!$PH->showFromPage()) {
-        $PH->show('projView',['prj' => $person->project]);
+        $PH->show('projView', ['prj' => $person->project]);
     }
 }

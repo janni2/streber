@@ -494,7 +494,7 @@ class Company extends DbProjectItem
         } elseif ($count > 1) {
             $PH->abortWarning(__('not available'), ERROR_RIGHTS);
         } else {
-            $PH->abortWarning(__('not available'),ERROR_RIGHTS);
+            $PH->abortWarning(__('not available'), ERROR_RIGHTS);
         }
     }
 }

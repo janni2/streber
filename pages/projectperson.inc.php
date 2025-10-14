@@ -311,6 +311,6 @@ function projectPersonDelete()
     }
 
     if (!$PH->showFromPage()) {
-        $PH->show('projView',['prj' => $pp->project]);
+        $PH->show('projView', ['prj' => $pp->project]);
     }
 }

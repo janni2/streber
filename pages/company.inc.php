@@ -944,7 +944,7 @@ function companyDelete()
     if ($errors) {
         new FeedbackWarning(sprintf(__('Failed to delete %s companies'), $errors));
     } else {
-        new FeedbackMessage(sprintf(__('Moved %s companies to trash'),$counter));
+        new FeedbackMessage(sprintf(__('Moved %s companies to trash'), $counter));
     }
 
     ### display companyList ####
