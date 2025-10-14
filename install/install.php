@@ -613,6 +613,12 @@ function upgrade($args = null)
         return false;
     }
 
+    # Connection DB
+    if (!$sql_obj->connect()) {
+        print_testResult(RESULT_FAILED, 'mySQL-Error[' . __LINE__ . ']:<pre>' . $sql_obj->error . '</pre>');
+        return false;
+    }
+
     ### select db? ###
     if (!$sql_obj->selectdb()) {
         print_testResult(RESULT_FAILED, 'Database does not exists mySQL-Error[' . __LINE__ . ']:<pre>' . $sql_obj->error . '</pre>');
@@ -659,12 +665,10 @@ function upgrade($args = null)
         #}
 
         if (!$result = $sql_obj->execute($q)) {
-            if (function_exists('mysql_error') && mysql_error()) {
-                $mysql_error = mysql_error();
-            } elseif (function_exists('mysqli_error') && mysqli_error()) {
-                $mysql_error = mysql_error();
-            } else {
-                $mysql_error = $sql_obj->error;
+            // Get error message from the connection object
+            $mysql_error = $sql_obj->error;
+            if (function_exists('mysqli_error') && $sql_obj->getConnect()) {
+                $mysql_error = mysqli_error($sql_obj->getConnect());
             }
             print_testResult(RESULT_FAILED, 'Failed:<pre>' . $sql_obj->error . '</pre><br>Error:<pre>' . $mysql_error . '</pre>');
 
