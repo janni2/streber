@@ -18,6 +18,7 @@ require_once(confGet('DIR_STREBER') . 'render/render_fields.inc.php');
 // DbItem
 // - handles connection of objects to database
 //====================================================================
+#[AllowDynamicProperties]
 abstract class DbItem
 {
     public $id = -1;                 # all items need to have an id
@@ -465,6 +466,7 @@ function addProjectItemFields(&$ref_fields)
 *   item-table those are directly derived from DbItem.
 *
 */
+#[AllowDynamicProperties]
 class DbProjectItem extends DbItem
 {
     public $fields_project;
