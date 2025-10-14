@@ -2216,11 +2216,6 @@ parameters:
 			path: std/common.inc.php
 
 		-
-			message: "#^Function get_magic_quotes_gpc not found\\.$#"
-			count: 1
-			path: std/common.inc.php
-
-		-
 			message: "#^Undefined variable\\: \\$r$#"
 			count: 1
 			path: std/common.inc.php
@@ -2312,11 +2307,6 @@ parameters:
 
 		-
 			message: "#^Class _DiffOp_Delete does not have a constructor and must be instantiated without any parameters\\.$#"
-			count: 2
-			path: std/difference_engine.inc.php
-
-		-
-			message: "#^Function each not found\\.$#"
 			count: 2
 			path: std/difference_engine.inc.php
 
