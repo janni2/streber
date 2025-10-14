@@ -793,7 +793,7 @@ class PageHeaderSections extends PageElement
         $tab_found = false;
         if (!isset($this->page->tabs) || !is_array($this->page->tabs)) {
             trigger_error('tabs not defined', E_USER_WARNING);
-            return;
+            return '';
         }
 
         $page = $this->page;
