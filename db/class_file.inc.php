@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -8,51 +13,48 @@
  * @author         Thomas Mann
  */
 
-
-
-
 /**
 * class for handling project - files
 */
 class File extends DbProjectItem
 {
-    public $tmp_filename="";                               #  filename relative to index.php to which file is moved unti insert()
+    public $tmp_filename = '';                               #  filename relative to index.php to which file is moved unti insert()
 
-	//=== constructor ================================================
-	function __construct ($id_or_array=false)
+    //=== constructor ================================================
+    public function __construct($id_or_array = false)
     {
         global $g_file_fields;
-        $this->fields= &$g_file_fields;
+        $this->fields = &$g_file_fields;
 
         parent::__construct($id_or_array);
-        if(!$this->type) {
-            $this->type= ITEM_FILE;
+        if (!$this->type) {
+            $this->type = ITEM_FILE;
         }
-   	}
+    }
 
     /**
     *  setup the database fields for file-object as global assoc-array
     */
-    static function initFields() 
+    public static function initFields()
     {
         global $g_file_fields;
-        $g_file_fields= [];
+        $g_file_fields = [];
         addProjectItemFields($g_file_fields);
-    
-        foreach([
-            new FieldInternal([    'name'=>'id',
-                'default'=>0,
-                'in_db_object'=>1,
-                'in_db_item'=>1,
+
+        foreach ([
+            new FieldInternal(['name' => 'id',
+                'default' => 0,
+                'in_db_object' => 1,
+                'in_db_item' => 1,
             ]),
-                new FieldString([      'name'=>'name',
-                    'title'=>__('Name'),
-                    'view_in_forms'=>true
+                new FieldString(['name' => 'name',
+                    'title' => __('Name'),
+                    'view_in_forms' => true,
                 ]),
-                new FieldString([      'name'=>'org_filename',
-                    'view_in_forms'=>false
+                new FieldString(['name' => 'org_filename',
+                    'view_in_forms' => false,
                 ]),
-    
+
                 /**
                 * filepath and name under which file is stored on server
                 * - relative to DIR_FILES
@@ -62,120 +64,115 @@ class File extends DbProjectItem
                 * e.g. prj321/bla.gif
                 *      prj321/bla.gif.1
                 */
-                new FieldString([      'name'=>'tmp_filename',
-                    'view_in_forms'=>false
+                new FieldString(['name' => 'tmp_filename',
+                    'view_in_forms' => false,
                 ]),
-    
-                new FieldString([      'name'=>'tmp_dir',
-                    'view_in_forms'=>false
+
+                new FieldString(['name' => 'tmp_dir',
+                    'view_in_forms' => false,
                 ]),
-    
-                new FieldString([      'name'=>'mimetype',
-                    'view_in_forms'=>false
+
+                new FieldString(['name' => 'mimetype',
+                    'view_in_forms' => false,
                 ]),
-                new FieldInternal([    'name'=>'status',
-                    'view_in_forms'=>false
+                new FieldInternal(['name' => 'status',
+                    'view_in_forms' => false,
                 ]),
-                new FieldInt([         'name'=>'filesize',
-                    'view_in_forms'=>false
+                new FieldInt(['name' => 'filesize',
+                    'view_in_forms' => false,
                 ]),
-                new FieldInt([         'name'=>'version',
-                    'view_in_forms'=>false,
-                    'default'=>1,
+                new FieldInt(['name' => 'version',
+                    'view_in_forms' => false,
+                    'default' => 1,
                 ]),
-    
+
                 /**
                 * DEPRECIATED: if true, a thumbnail will be displayed in wiki-texts
-                * 
+                *
                 * The filetype is taken from mimetype
                 */
-                new FieldBool([         'name'=>'is_image',
-                    'view_in_forms' =>false,
-                    'default'       =>0
+                new FieldBool(['name' => 'is_image',
+                    'view_in_forms' => false,
+                    'default' => 0,
                 ]),
-    
+
                 /**
                 * if several versions of a file with the same filenames are uploaded,
                 * the current / recent version is marked with this flag
                 */
-                new FieldBool([         'name'=>'is_latest',
-                    'view_in_forms' =>false,
-                    'default'       =>1
+                new FieldBool(['name' => 'is_latest',
+                    'view_in_forms' => false,
+                    'default' => 1,
                 ]),
-    
+
                 /**
                 * if a thumbnail has been created this is the absolute
                 * path
                 */
-                new FieldString([      'name'=>'thumbnail',
-                    'view_in_forms'=>false
+                new FieldString(['name' => 'thumbnail',
+                    'view_in_forms' => false,
                 ]),
-    
-                new FieldInternal([      'name'=>'parent_item',
-                    'view_in_forms'=>false
+
+                new FieldInternal(['name' => 'parent_item',
+                    'view_in_forms' => false,
                 ]),
-    
+
                 /**
                 * if this is not zero file is and update of file with this id
                 */
-                new FieldInternal([      'name'=>'org_file',
-                    'view_in_forms'=>false
+                new FieldInternal(['name' => 'org_file',
+                    'view_in_forms' => false,
                 ]),
-    
-    
-                new FieldText([        'name'=>'description',
-                    'title'=>__('Description'),
-    
+
+                new FieldText(['name' => 'description',
+                    'title' => __('Description'),
                 ]),
         ] as $f) {
-            $g_file_fields[$f->name]=$f;
+            $g_file_fields[$f->name] = $f;
         }
     }
-
 
     /**
     * query from db
     *
     * - returns NULL if failed
     */
-    static function getById($id)
+    public static function getById($id)
     {
-        $c= new File(intval($id));
-        if($c->id) {
+        $c = new File(intval($id));
+        if ($c->id) {
             return $c;
         }
-        return NULL;
+        return null;
     }
 
-
-    static function getVisibleById($id)
+    public static function getVisibleById($id)
     {
-        if($c= File::getById(intval($id))) {
-            if($c->id) {
-                if($p= Project::getById($c->project)) {
-                    if($p->validateViewItem($c,false)) {
+        if ($c = File::getById(intval($id))) {
+            if ($c->id) {
+                if ($p = Project::getById($c->project)) {
+                    if ($p->validateViewItem($c, false)) {
                         return $c;
                     }
                 }
             }
         }
-        return NULL;
+        return null;
     }
-
 
     /**
     * query if editable for current user
     */
-    static function getEditableById($id)
+    public static function getEditableById($id)
     {
-        if($c= File::getById(intval($id))) {
-            if($p= Project::getById($c->project)) {
-                if($p->validateEditItem($c,false)) {
+        if ($c = File::getById(intval($id))) {
+            if ($p = Project::getById($c->project)) {
+                if ($p->validateEditItem($c, false)) {
                     return $c;
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -184,98 +181,93 @@ class File extends DbProjectItem
     * - refacture status_min/max evaluation only if !is_null
     *
     */
-    static function getAll( $args=NULL)
-        {
+    public static function getAll($args = null)
+    {
         global $auth;
-		$prefix = confGet('DB_TABLE_PREFIX');
+        $prefix = confGet('DB_TABLE_PREFIX');
 
         ### default params ###
-        $project            = NULL;
-        $latest_only        = true;
-        $order_by           = "name";
-        $status_min         = STATUS_UNDEFINED;
-        $status_max         = STATUS_CLOSED;
-        $visible_only       = true;       # use project rights settings
-        $alive_only         = true;       # ignore deleted
-        $parent_item        = NULL;       #
-        $images_only        = false;
-        $date_min           = NULL;
-        $date_max           = NULL;
-        $org_file           = NULL;
-		$id			        = NULL;
-	    $created_by         = NULL;
+        $project = null;
+        $latest_only = true;
+        $order_by = 'name';
+        $status_min = STATUS_UNDEFINED;
+        $status_max = STATUS_CLOSED;
+        $visible_only = true;       # use project rights settings
+        $alive_only = true;       # ignore deleted
+        $parent_item = null;       #
+        $images_only = false;
+        $date_min = null;
+        $date_max = null;
+        $org_file = null;
+        $id = null;
+        $created_by = null;
 
         ### filter params ###
-        if($args) {
-            foreach($args as $key=>$value) {
-                if(!isset($$key) && !is_null($$key) && !$$key==="") {
-                    trigger_error("unknown parameter",E_USER_NOTICE);
-                }
-                else {
-                    $$key= $value;
+        if ($args) {
+            foreach ($args as $key => $value) {
+                if (!isset($$key) && !is_null($$key) && !$$key === '') {
+                    trigger_error('unknown parameter', E_USER_NOTICE);
+                } else {
+                    $$key = $value;
                 }
             }
         }
 
-        $str_project= $project
+        $str_project = $project
             ? 'AND i.project=' . intval($project)
             : '';
 
-        $str_project2= $project
+        $str_project2 = $project
             ? 'AND upp.project=' . intval($project)
             : '';
 
-        $str_is_alive= $alive_only
+        $str_is_alive = $alive_only
             ? 'AND i.state=' . ITEM_STATE_OK
             : '';
 
-
-        $str_date_min= $date_min
+        $str_date_min = $date_min
             ? "AND i.modified >= '" . asCleanString($date_min) . "'"
             : '';
 
-        $str_date_max= $date_max
-            ? "AND i.modified <= ' ". asCleanString($date_max) . "'"
+        $str_date_max = $date_max
+            ? "AND i.modified <= ' " . asCleanString($date_max) . "'"
             : '';
 
-        $str_is_image= $images_only
+        $str_is_image = $images_only
             ? 'AND f.is_image!=0'
             : '';
 
-        $str_latest_only= $latest_only
+        $str_latest_only = $latest_only
             ? 'AND f.is_latest!=0'
             : '';
 
-        $str_created_by= $created_by
-            ? 'AND i.modified_by ='. intval($created_by)
+        $str_created_by = $created_by
+            ? 'AND i.modified_by =' . intval($created_by)
             : '';
 
-        $str_parent_item= !is_null($parent_item)
+        $str_parent_item = !is_null($parent_item)
             ? 'AND f.parent_item=' . intval($parent_item)
             : '';
 
-        $str_org_file= $org_file
+        $str_org_file = $org_file
             ? "AND f.org_file = '" . intval($org_file) . "'"
-            : "";
+            : '';
 
-		$str_id = $id
-            ? "AND f.id = " . intval($id)
-            : "";
+        $str_id = $id
+            ? 'AND f.id = ' . intval($id)
+            : '';
 
-		if ($auth->cur_user->user_rights & RIGHT_VIEWALL)
-		{
-			$str_projectperson = "";
-		}
-		else
-		{
-			$str_projectperson = "AND upp.person = {$auth->cur_user->id}";
-		}
+        if ($auth->cur_user->user_rights & RIGHT_VIEWALL) {
+            $str_projectperson = '';
+        } else {
+            $str_projectperson = "AND upp.person = {$auth->cur_user->id}";
+        }
 
-        if($visible_only) {
-            $str_query=
+        if ($visible_only) {
+            $str_query =
             "SELECT DISTINCT i.*, f.* from {$prefix}item i, {$prefix}file f, {$prefix}projectperson upp
             WHERE
-                    i.type = '".ITEM_FILE."'
+                    i.type = '" . ITEM_FILE . "'
                 $str_project
                 $str_projectperson
                 $str_project2
@@ -298,15 +290,15 @@ class File extends DbProjectItem
                  $str_date_max
                  $str_date_min
 
-            ". getOrderByString($order_by)
+            " . getOrderByString($order_by)
             ;
         }
         ### show all ###
         else {
-            $str_query=
-        	"SELECT i.*, f.* from {$prefix}item i, {$prefix}file f
+            $str_query =
+            "SELECT i.*, f.* from {$prefix}item i, {$prefix}file f
             WHERE
-                i.type = '".ITEM_FILE."'
+                i.type = '" . ITEM_FILE . "'
             $str_project
             $str_is_alive
 
@@ -321,20 +313,20 @@ class File extends DbProjectItem
              $str_date_max
              $str_date_min
 
-            ". getOrderByString($order_by)
+            " . getOrderByString($order_by)
             ;
         }
 
-        $dbh = new DB_Mysql;
-        $sth= $dbh->prepare($str_query);
+        $dbh = new DB_Mysql();
+        $sth = $dbh->prepare($str_query);
 
-    	$sth->execute("",1);
-    	$tmp=$sth->fetchall_assoc();
-    	$files=[];
+        $sth->execute('', 1);
+        $tmp = $sth->fetchall_assoc();
+        $files = [];
         require_once(confGet('DIR_STREBER') . 'db/class_file.inc.php');
-        foreach($tmp as $t) {
-            $file=new File($t);
-            $files[]=$file;
+        foreach ($tmp as $t) {
+            $file = new File($t);
+            $files[] = $file;
         }
         return $files;
     }
@@ -344,15 +336,14 @@ class File extends DbProjectItem
     */
     public function getOriginal()
     {
-        if($this->org_file == 0) {
+        if ($this->org_file == 0) {
             return $this;
         }
-        if($org_file= File::getVisibleById($this->org_file)) {    # NOTE: this is slow!
+        if ($org_file = File::getVisibleById($this->org_file)) {    # NOTE: this is slow!
             return $org_file;
-        }
-        else {
+        } else {
             trigger_error("failed to get original file of $file->id", E_USER_WARNING);
-            return NULL;
+            return null;
         }
     }
 
@@ -361,71 +352,68 @@ class File extends DbProjectItem
     */
     public function getLatest()
     {
-        if($this->is_latest) {
+        if ($this->is_latest) {
             return $this;
         }
-        $org_file= $this->org_file;
+        $org_file = $this->org_file;
 
-        if($org_file == 0) {
-            $org_file= $this->id;
+        if ($org_file == 0) {
+            $org_file = $this->id;
         }
 
-        if(!$project= Project::getVisibleById($this->project)) {
+        if (!$project = Project::getVisibleById($this->project)) {
             trigger_error("file $file->id has no project", E_USER_WARNING);
-            return NULL;
+            return null;
         }
 
-        $files= File::getAll([
+        $files = File::getAll([
             'latest_only' => true,
-            'org_file'    => $org_file,
-            'project'     => $project->id,
+            'org_file' => $org_file,
+            'project' => $project->id,
         ]);
-        if(count($files) > 1) {
-
-            foreach($files as $f) {
-                $list[]=$f->id;
+        if (count($files) > 1) {
+            foreach ($files as $f) {
+                $list[] = $f->id;
             }
 
-            trigger_error("unexpected number (". join(",",$list) .") of latest files for file id $this->id", E_USER_WARNING);
+            trigger_error('unexpected number (' . join(',', $list) . ") of latest files for file id $this->id", E_USER_WARNING);
             $files[0];
         }
         return $files[0];
     }
 
     /*
-    * if available, returns a cached image src for html img-tags, 
+    * if available, returns a cached image src for html img-tags,
     */
-    public function getCachedUrl($max_size= 0) {
-        
+    public function getCachedUrl($max_size = 0)
+    {
         $max_size = intval($max_size);
-        if($max_size) {
-        
-            if (!$dimensions= $this->getImageDimensions($max_size)) {
-                return "";
+        if ($max_size) {
+            if (!$dimensions = $this->getImageDimensions($max_size)) {
+                return '';
             }
-            $filepath   = $dimensions['filepath'];
-            $new_width  = $dimensions['new_width'];
+            $filepath = $dimensions['filepath'];
+            $new_width = $dimensions['new_width'];
             $new_height = $dimensions['new_height'];
-            $width  = $dimensions['width'];
+            $width = $dimensions['width'];
             $height = $dimensions['height'];
-            $filesize= filesize($filepath);
+            $filesize = filesize($filepath);
 
-            if ($dimensions['downscale'] ) {
-
+            if ($dimensions['downscale']) {
                 ### check if cached file exists
-                $md5= md5( http_build_query(['filepath'=> $filepath,
+                $md5 = md5(http_build_query(['filepath' => $filepath,
                                 'new_width' => $new_width,
                                 'new_height' => $new_height,
                             ]));
-                $cached_filepath= confGet('DIR_IMAGE_CACHE') . "/" . $md5 . ".jpg";
+                $cached_filepath = confGet('DIR_IMAGE_CACHE') . '/' . $md5 . '.jpg';
 
-                if( file_exists($cached_filepath )) {
+                if (file_exists($cached_filepath)) {
                     return $cached_filepath;
                 }
             }
         }
         global $PH;
-        return $PH->getUrl('fileDownloadAsImage', ['file'=>$this->id,'max_size'=>$max_size]);
+        return $PH->getUrl('fileDownloadAsImage', ['file' => $this->id, 'max_size' => $max_size]);
         #return "index.php&go=fileDownloadAsImage&file=" . $this->id;
     }
 
@@ -442,46 +430,46 @@ class File extends DbProjectItem
     {
         global $auth;
 
-        $upload_id= 'userfile';                            # id of upload field
+        $upload_id = 'userfile';                            # id of upload field
 
         switch ($_FILES[$upload_id]['error']) {
             case UPLOAD_ERR_OK:
                 break;
             case UPLOAD_ERR_INI_SIZE:
-                trigger_error("The uploaded file exceeds the upload_max_filesize directive (".ini_get("upload_max_filesize").") in php.ini.", E_USER_NOTICE);
+                trigger_error('The uploaded file exceeds the upload_max_filesize directive (' . ini_get('upload_max_filesize') . ') in php.ini.', E_USER_NOTICE);
                 break;
             case UPLOAD_ERR_FORM_SIZE:
-                trigger_error("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.", E_USER_NOTICE);
+                trigger_error('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', E_USER_NOTICE);
                 break;
             case UPLOAD_ERR_PARTIAL:
-                trigger_error("The uploaded file was only partially uploaded.", E_USER_NOTICE);
+                trigger_error('The uploaded file was only partially uploaded.', E_USER_NOTICE);
                 break;
             case UPLOAD_ERR_NO_FILE:
-                trigger_error("No file was uploaded.", E_USER_NOTICE);
+                trigger_error('No file was uploaded.', E_USER_NOTICE);
                 break;
             case UPLOAD_ERR_NO_TMP_DIR:
-                trigger_error("Missing a temporary folder.", E_USER_NOTICE);
+                trigger_error('Missing a temporary folder.', E_USER_NOTICE);
                 break;
             case UPLOAD_ERR_CANT_WRITE:
-                trigger_error("Failed to write file to disk", E_USER_NOTICE);
+                trigger_error('Failed to write file to disk', E_USER_NOTICE);
                 break;
             default:
-                trigger_error("Unknown File Error", E_USER_NOTICE);
+                trigger_error('Unknown File Error', E_USER_NOTICE);
         }
 
-        $org_filename=  $_FILES[$upload_id]['name'];
-        $filesize=      $_FILES[$upload_id]['size'];
+        $org_filename = $_FILES[$upload_id]['name'];
+        $filesize = $_FILES[$upload_id]['size'];
 
-        if(!$filesize || $org_filename == "") {
+        if (!$filesize || $org_filename == '') {
             #trigger_error("there was nothing to upload", E_USER_NOTICE);
-            return NULL;
+            return null;
         }
 
-        $tmp_filename   = preg_replace("/[^a-z0-9-_]/i", '_', $org_filename);
+        $tmp_filename = preg_replace('/[^a-z0-9-_]/i', '_', $org_filename);
 
         ### figure mimetype ###
         {
-            $mimetype       = $_FILES[$upload_id]['type'];
+            $mimetype = $_FILES[$upload_id]['type'];
         }
 
         ### is an image ? ###
@@ -489,36 +477,30 @@ class File extends DbProjectItem
         ### check temporary upload dir ###
         $upload_dir = confGet('DIR_TEMP') . 'uploads';
 
-
-        if(!file_exists($upload_dir)) {
-            if(!mkdir($upload_dir)) {
+        if (!file_exists($upload_dir)) {
+            if (!mkdir($upload_dir)) {
                 trigger_error("could not create temporary file upload directory: '$upload_dir'");
-                return NULL;
+                return null;
             }
         }
 
-        if(move_uploaded_file($_FILES[$upload_id]['tmp_name'], $upload_dir."/".$tmp_filename)) {
-
-            $f= new File([
-                'id'            =>0,
-                'name'          => $org_filename,
-                'org_filename'  => $org_filename,
-                'tmp_filename'  => $tmp_filename,
-                'mimetype'      => $mimetype,
-                'filesize'      => $filesize,
+        if (move_uploaded_file($_FILES[$upload_id]['tmp_name'], $upload_dir . '/' . $tmp_filename)) {
+            $f = new File([
+                'id' => 0,
+                'name' => $org_filename,
+                'org_filename' => $org_filename,
+                'tmp_filename' => $tmp_filename,
+                'mimetype' => $mimetype,
+                'filesize' => $filesize,
             ]);
             return $f;
-
-        }
-        else {
+        } else {
             #print "Possible file upload attack!  Here's some debugging info:\n";
             #print_r($_FILES);
-            trigger_error("failure getting uploaded file-object", E_USER_NOTICE);
-            return NULL;
+            trigger_error('failure getting uploaded file-object', E_USER_NOTICE);
+            return null;
         }
     }
-
-
 
     /**
     * insert uploaded files to database is done AFTER moving the
@@ -529,92 +511,87 @@ class File extends DbProjectItem
     */
     public function insert()
     {
-        $upload_filepath= confGet('DIR_TEMP') . 'uploads/' . $this->tmp_filename;
-        if(!file_exists($upload_filepath)) {
-            trigger_error("Uploaded field no longer exists in $upload_filepath",  E_USER_WARNING);
-            return NULL;
+        $upload_filepath = confGet('DIR_TEMP') . 'uploads/' . $this->tmp_filename;
+        if (!file_exists($upload_filepath)) {
+            trigger_error("Uploaded field no longer exists in $upload_filepath", E_USER_WARNING);
+            return null;
         }
-        if(!file_exists(confGet('DIR_FILES'))) {
-            trigger_error("Directory for files '" . confGet('DIR_FILES') .  "' does not exists",  E_USER_WARNING);
-            return NULL;
+        if (!file_exists(confGet('DIR_FILES'))) {
+            trigger_error("Directory for files '" . confGet('DIR_FILES') . "' does not exists", E_USER_WARNING);
+            return null;
         }
 
         ### create project directory ###
-        $this->tmp_dir= "prj{$this->project}";
-        if(! file_exists(confGet('DIR_FILES') . $this->tmp_dir)) {
-            if(  !mkdir(confGet('DIR_FILES') . $this->tmp_dir, 0777)) {
-                trigger_error("could not create target directory for uploaded file '" .confGet('DIR_FILES') . $this->tmp_dir. "/'", E_USER_WARNING);
-                return NULL;
+        $this->tmp_dir = "prj{$this->project}";
+        if (!file_exists(confGet('DIR_FILES') . $this->tmp_dir)) {
+            if (!mkdir(confGet('DIR_FILES') . $this->tmp_dir, 0777)) {
+                trigger_error("could not create target directory for uploaded file '" . confGet('DIR_FILES') . $this->tmp_dir . "/'", E_USER_WARNING);
+                return null;
             }
         }
 
         /**
         * insert into DB to get the item-id as prefix for temp-name
         *
-        * This has to be done before moving the file, because we need the 
+        * This has to be done before moving the file, because we need the
         * new item id for the filename.
-        */        
-        if(! parent::insert() || !$this->id ) {
-            trigger_error("inserting file object failed");
-            return NULL;
+        */
+        if (!parent::insert() || !$this->id) {
+            trigger_error('inserting file object failed');
+            return null;
         }
-        $this->tmp_filename= $this->id . "_" .$this->tmp_filename;
+        $this->tmp_filename = $this->id . '_' . $this->tmp_filename;
 
         ### use original function to write to Db
         parent::update();
 
         ### move file ###
-        if(!rename($upload_filepath, confGet('DIR_FILES') . $this->tmp_dir ."/". $this->tmp_filename)) {
-            trigger_error("could not move uploaded file from '$upload_filepath' to '" .confGet('DIR_FILES') . $this->tmp_dir ."/". $this->tmp_filename. "'", E_USER_WARNING);
+        if (!rename($upload_filepath, confGet('DIR_FILES') . $this->tmp_dir . '/' . $this->tmp_filename)) {
+            trigger_error("could not move uploaded file from '$upload_filepath' to '" . confGet('DIR_FILES') . $this->tmp_dir . '/' . $this->tmp_filename . "'", E_USER_WARNING);
 
             ### remove invalid database entry ###
             $this->DeleteFromDb();
-            return NULL;
+            return null;
         }
 
         return true;
     }
-
-
 
     /**
     * send the attached file as download
     */
     public function download()
     {
-        $filepath= confGet('DIR_FILES') . $this->tmp_dir . '/'. $this->tmp_filename;
+        $filepath = confGet('DIR_FILES') . $this->tmp_dir . '/' . $this->tmp_filename;
 
-        if(file_exists($filepath)) {
-            header('Content-Length: '   . filesize($filepath));
-            header('Content-Type: '     . $this->mimetype);
+        if (file_exists($filepath)) {
+            header('Content-Length: ' . filesize($filepath));
+            header('Content-Type: ' . $this->mimetype);
             header("Content-Disposition: attachment; filename=\"$this->org_filename\"");
-            header("Cache-Control: public");
+            header('Cache-Control: public');
             readfile_chunked($filepath);
-        }
-        else {
+        } else {
             trigger_error("can not find file '$filepath'");
         }
     }
 
     public function view()
     {
-        $filepath= confGet('DIR_FILES') . $this->tmp_dir . '/' . $this->tmp_filename;
-        $filesize= filesize($filepath);
-        if(file_exists($filepath)) {
-            header('Content-Length: '   . $filesize);
-            header('Content-Type: '     . $this->mimetype);
+        $filepath = confGet('DIR_FILES') . $this->tmp_dir . '/' . $this->tmp_filename;
+        $filesize = filesize($filepath);
+        if (file_exists($filepath)) {
+            header('Content-Length: ' . $filesize);
+            header('Content-Type: ' . $this->mimetype);
             header("Content-Disposition: inline; filename=\"$this->org_filename\"");
-            header("Cache-Control: public");
-            header('Last-Modified: '    . gmdate("D, j M Y G:i:s T", strToClientTime($this->modified)));
-            if( $filesize > 1000000) {
+            header('Cache-Control: public');
+            header('Last-Modified: ' . gmdate('D, j M Y G:i:s T', strToClientTime($this->modified)));
+            if ($filesize > 1000000) {
                 readfile_chunked($filepath);
-            }
-            else {
+            } else {
                 readfile($filepath);
             }
-        }
-        else {
-            log_message("file::download($this->id) can not find file '$filepath'",LOG_MESSAGE_MISSING_FILES);
+        } else {
+            log_message("file::download($this->id) can not find file '$filepath'", LOG_MESSAGE_MISSING_FILES);
         }
     }
 
@@ -625,70 +602,65 @@ class File extends DbProjectItem
     */
     public function getImageDimensions($max_size = 0)
     {
-        $filepath= confGet('DIR_FILES') . $this->tmp_dir . '/'. $this->tmp_filename;
-        if(file_exists($filepath)) {
+        $filepath = confGet('DIR_FILES') . $this->tmp_dir . '/' . $this->tmp_filename;
+        if (file_exists($filepath)) {
             list($width, $height, $type, $attr) = getimagesize($filepath);
-        }
-        else {
+        } else {
             return;
         }
 
         if ($max_size && ($width > $max_size || $height > $max_size)) {
-            $ratio= $width/$height;
+            $ratio = $width / $height;
             if ($width > $height) {
-                $new_width= $max_size;
-                $new_height= $max_size / $ratio;
-            }
-            else {
-                $new_height=  $max_size;
-                $new_width= $max_size * $ratio;
+                $new_width = $max_size;
+                $new_height = $max_size / $ratio;
+            } else {
+                $new_height = $max_size;
+                $new_width = $max_size * $ratio;
             }
             $downscale = true;
-        }
-        else {
+        } else {
             $downscale = false;
             $new_width = $width;
             $new_height = $height;
         }
         return [
-            'new_width' => $new_width, 
-            'new_height'=> $new_height, 
-            'width'     => $width,
-            'height'    => $height,
+            'new_width' => $new_width,
+            'new_height' => $new_height,
+            'width' => $width,
+            'height' => $height,
             'downscale' => $downscale,
-            'filepath'  => $filepath
+            'filepath' => $filepath,
         ];
     }
-
 
     public function viewAsImage($max_size = 0)
     {
         $max_size = intval($max_size);
-        if (!$dimensions= $this->getImageDimensions($max_size)) {
-            log_message("file::viewAsImage($this->id) can not find file1 '$filepath'",LOG_MESSAGE_MISSING_FILES);
+        if (!$dimensions = $this->getImageDimensions($max_size)) {
+            log_message("file::viewAsImage($this->id) can not find file1 '$filepath'", LOG_MESSAGE_MISSING_FILES);
             return;
         }
-        $filepath   = $dimensions['filepath'];
-        $new_width  = $dimensions['new_width'];
+        $filepath = $dimensions['filepath'];
+        $new_width = $dimensions['new_width'];
         $new_height = $dimensions['new_height'];
-        $width  = $dimensions['width'];
+        $width = $dimensions['width'];
         $height = $dimensions['height'];
-        $filesize= filesize($filepath);
-        
+        $filesize = filesize($filepath);
+
         /**
         * just provide the original file
         */
-        if (! $dimensions['downscale'] ) {
-            header('Content-Length: '   . $filesize);
-            header('Content-Type: '     . $this->mimetype);
+        if (!$dimensions['downscale']) {
+            header('Content-Length: ' . $filesize);
+            header('Content-Type: ' . $this->mimetype);
             header("Content-Disposition: inline; filename=$this->org_filename");
-            header("Cache-Control: public");
-            header('Last-Modified: '    . gmdate("D, j M Y G:i:s T", strToClientTime($this->modified)));
-            if($filesize > 1000000) {
+            header('Cache-Control: public');
+            header('Last-Modified: ' . gmdate('D, j M Y G:i:s T', strToClientTime($this->modified)));
+            if ($filesize > 1000000) {
                 readfile_chunked($filepath);
-            }
-            else {
-                readfile($filepath);                
+            } else {
+                readfile($filepath);
             }
             return;
         }
@@ -696,116 +668,106 @@ class File extends DbProjectItem
         /**
         * rescale with gd
         */
-        if(!function_exists('imagecreatetruecolor')) {
-            log_message("file::viewAsImage($this->id) gd not installed",LOG_MESSAGE_MISSING_FILES);
-            return; 
+        if (!function_exists('imagecreatetruecolor')) {
+            log_message("file::viewAsImage($this->id) gd not installed", LOG_MESSAGE_MISSING_FILES);
+            return;
         }
-        
+
         ### check if cached file exists
-        $md5= md5( http_build_query(['filepath'=> $filepath,
+        $md5 = md5(http_build_query(['filepath' => $filepath,
                         'new_width' => $new_width,
                         'new_height' => $new_height,
                     ]));
-        $cached_filepath= confGet('DIR_IMAGE_CACHE') . "/" . $md5 . ".jpg";
+        $cached_filepath = confGet('DIR_IMAGE_CACHE') . '/' . $md5 . '.jpg';
 
-        if( file_exists($cached_filepath )) {
-            header('Content-Length: '   . filesize($cached_filepath));
-            header('Content-Type: '     . $this->mimetype);
+        if (file_exists($cached_filepath)) {
+            header('Content-Length: ' . filesize($cached_filepath));
+            header('Content-Type: ' . $this->mimetype);
             header("Content-Disposition: inline; filename= $this->org_filename");
-            header("Cache-Control: public");
-            header('Last-Modified: '    . gmdate("D, j M Y G:i:s T", strToClientTime($this->modified)));
-            header("Expires: " . gmdate("D, d M Y H:i:s", time() + 60 * 60 * 24 * 365) . " GMT");
-            readfile($cached_filepath);           
+            header('Cache-Control: public');
+            header('Last-Modified: ' . gmdate('D, j M Y G:i:s T', strToClientTime($this->modified)));
+            header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 60 * 60 * 24 * 365) . ' GMT');
+            readfile($cached_filepath);
             return;
-        }        
-        $image_new = NULL;
+        }
+        $image_new = null;
 
         ### downscale
-        if($this->mimetype == 'image/jpeg'
+        if ($this->mimetype == 'image/jpeg'
            ||
            $this->mimetype == 'image/jpg'
            ||
            $this->mimetype == 'image/pjpeg'
         ) {
-            $image=     imagecreatefromjpeg($filepath);
-        }
-        else if($this->mimetype == 'image/png' || $this->mimetype == 'image/x-png') {
-            $image=     imagecreatefrompng($filepath);
-        }
-        
-        else if($this->mimetype == 'image/gif') {
-            $image=     imagecreatefromgif($filepath);
-        }
-        else {
-             return NULL;
+            $image = imagecreatefromjpeg($filepath);
+        } elseif ($this->mimetype == 'image/png' || $this->mimetype == 'image/x-png') {
+            $image = imagecreatefrompng($filepath);
+        } elseif ($this->mimetype == 'image/gif') {
+            $image = imagecreatefromgif($filepath);
+        } else {
+            return null;
         }
 
         ### Downscale image and stream content
         header('Content-Type: ' . 'image/jpeg');
-        header("Cache-Control: public");
-        
-        ### Tell browser to cache forever, because the file will never change
-        header("Last-Modified: ". gmdate('r',strToClientTime($this->modified)));
-        header("Expires: " . gmdate("D, d M Y H:i:s", time() + 60 * 60 * 24 * 365) . " GMT");
+        header('Cache-Control: public');
 
-        $image_new= imagecreatetruecolor($new_width,$new_height)  or die("Cannot Initialize new GD image stream");
-        if(imagecopyresampled(
-             $image_new,                    #resource dst_im,
-             $image,                        #resource src_im,
-             0,                             #int dstX,
-             0,                             #int dstY,
-             0,                             #int srcX,
-             0,                             #int srcY,
-             $new_width,      #int dstW,
-             $new_height,     #int dstH,
-             $width,          #int srcW,
-             $height          #int srcH
+        ### Tell browser to cache forever, because the file will never change
+        header('Last-Modified: ' . gmdate('r', strToClientTime($this->modified)));
+        header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 60 * 60 * 24 * 365) . ' GMT');
+
+        $image_new = imagecreatetruecolor($new_width, $new_height) or die('Cannot Initialize new GD image stream');
+        if (imagecopyresampled(
+            $image_new,                    #resource dst_im,
+            $image,                        #resource src_im,
+            0,                             #int dstX,
+            0,                             #int dstY,
+            0,                             #int srcX,
+            0,                             #int srcY,
+            $new_width,      #int dstW,
+            $new_height,     #int dstH,
+            $width,          #int srcW,
+            $height          #int srcH
         )) {
             imagejpeg($image_new);
-        }
-        else {
+        } else {
             imagejpeg($image);
         }
 
         ### write cached file
-        if($image_new) {
-            imagejpeg( $image_new, $cached_filepath );
+        if ($image_new) {
+            imagejpeg($image_new, $cached_filepath);
             imagedestroy($image_new);
         }
     }
-    
-    
+
     /**
     * renders the location of the file as a html string with links to project and parent tasks
     *
-    */    
-    public function renderLocation($project=NULL, $show_project = true) 
+    */
+    public function renderLocation($project = null, $show_project = true)
     {
-        if(is_null($project)) {
-            if(!$project = Project::getVisibleById($this->project)) {
-                trigger_error("file without visible project?", E_USER_NOTICE);                
+        if (is_null($project)) {
+            if (!$project = Project::getVisibleById($this->project)) {
+                trigger_error('file without visible project?', E_USER_NOTICE);
                 $show_project = false;
             }
-            
-        }
-        
-        $html= __('in');
-        if($show_project) {
-            $html.=  " <b>" . $project->getLink() . " </b>"; 
         }
 
-        if($this->parent_item) {        
-            if($task= Task::getVisibleById($this->parent_item)) {
-                if($folders= $task->getFolderLinks()) {
-                      $html .= ' &gt; '. $folders;
+        $html = __('in');
+        if ($show_project) {
+            $html .= ' <b>' . $project->getLink() . ' </b>';
+        }
+
+        if ($this->parent_item) {
+            if ($task = Task::getVisibleById($this->parent_item)) {
+                if ($folders = $task->getFolderLinks()) {
+                    $html .= ' &gt; ' . $folders;
                 }
-                $html.=' &gt; '. $task->getLink(false);
+                $html .= ' &gt; ' . $task->getLink(false);
             }
         }
         return $html;
     }
-    
 }
 File::initFields();
-
-?>

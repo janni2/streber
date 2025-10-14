@@ -1,7 +1,11 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
-
 
 define('MAX_PAGE_RECURSIONS', 10);
 
@@ -14,55 +18,51 @@ define('MAX_PAGE_RECURSIONS', 10);
 class PageHandle extends BaseObject
 {
     #--- members ----
-    public  $id                 = NULL;
-    public  $title              = '';
-    public  $req                = NULL;
-    public  $type               = 'norm';
-    public  $rights_required    = 0;
-    public  $valid_for_anonymous= false;
-    public  $valid_for_tuid     = false;
-    public  $http_auth          = false;    # enables http authentication e.g. for RSS feeds
+    public $id = null;
+    public $title = '';
+    public $req = null;
+    public $type = 'norm';
+    public $rights_required = 0;
+    public $valid_for_anonymous = false;
+    public $valid_for_tuid = false;
+    public $http_auth = false;    # enables http authentication e.g. for RSS feeds
 
-    public  $ignore_from_handles=0;         # this blocks invalid from-handle-warnings
-    public  $valid_params       =NULL;
-    public  $test_params        =NULL;      # params required for unit-tests
-    public  $test               =NULL;      # params required for unit-tests
-    public  $called_with_from_handle=false; # links to this pageHandle will NOT include a from-handle
-    public  $valid_for_crawlers = true;
+    public $ignore_from_handles = 0;         # this blocks invalid from-handle-warnings
+    public $valid_params = null;
+    public $test_params = null;      # params required for unit-tests
+    public $test = null;      # params required for unit-tests
+    public $called_with_from_handle = false; # links to this pageHandle will NOT include a from-handle
+    public $valid_for_crawlers = true;
 
-    public  $cleanurl           =NULL;      # construction string for usage of clean urls like "123/files"
-    public  $cleanurl_mapping   =NULL;      # array with variable mapping to build clean urls
+    public $cleanurl = null;      # construction string for usage of clean urls like "123/files"
+    public $cleanurl_mapping = null;      # array with variable mapping to build clean urls
 
-
-
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         global $PH;
-        if(!$args) {
+        if (!$args) {
             trigger_error("can't create page-handle without params", E_USER_ERROR);
         }
-        foreach($args as $key=>$value) {
+        foreach ($args as $key => $value) {
             is_null($this->$key);           # cause a notice-message if undefined member used
-            $this->$key= $value;
+            $this->$key = $value;
         }
 
-        if(!$this->id || !$this->req) {
+        if (!$this->id || !$this->req) {
             trigger_error("A PageHandle needs at lest 'id' and 'required' as params", E_USER_ERROR);
         }
         $PH->addPage($this);
     }
 }
 
-
 /**
 * pages containing forms (e.g. taskEdit). Pass from-handle
 */
 class PageHandleForm extends PageHandle
 {
-    public  $type='form';
-    public  $valid_for_crawlers     = false;
-    public  $called_with_from_handle=true; # links to this pageHandle will include a from-handle
-
+    public $type = 'form';
+    public $valid_for_crawlers = false;
+    public $called_with_from_handle = true; # links to this pageHandle will include a from-handle
 }
 
 /**
@@ -70,9 +70,9 @@ class PageHandleForm extends PageHandle
 */
 class PageHandleSubm extends PageHandle
 {
-    public  $type                   ='subm';
-    public  $valid_for_crawlers     = false;
-    public  $called_with_from_handle=true; # links to this pageHandle will include a from-handle
+    public $type = 'subm';
+    public $valid_for_crawlers = false;
+    public $called_with_from_handle = true; # links to this pageHandle will include a from-handle
 }
 
 /**
@@ -82,11 +82,10 @@ class PageHandleSubm extends PageHandle
 */
 class PageHandleFunc extends PageHandle
 {
-    public  $type                   ='func';
-    public  $valid_for_crawlers     = false;
-    public  $called_with_from_handle=true; # links to this pageHandle will include a from-handle
+    public $type = 'func';
+    public $valid_for_crawlers = false;
+    public $called_with_from_handle = true; # links to this pageHandle will include a from-handle
 }
-
 
 /**
 * feedback for user
@@ -99,33 +98,33 @@ class PageHandleFunc extends PageHandle
 * - FeedbackMessages are collected in $PH->messages[]
 * - FeedbackMessages have different types and can be overwritten by styles
 */
-
-define('MESSAGE_NOTE',  __('Note'));
+define('MESSAGE_NOTE', __('Note'));
 define('MESSAGE_WARNING', __('Warning'));
 define('MESSAGE_ERROR', __('Error'));
-define('MESSAGE_HINT',  __('Hint'));
+define('MESSAGE_HINT', __('Hint'));
 
 class FeedbackMessage extends BaseObject
 {
     private $html_text;
-    private $type= MESSAGE_NOTE;  # also used as css-class
+    private $type = MESSAGE_NOTE;  # also used as css-class
 
     /**
     * NOTE:
     * the $html_text must already be cleaned with asHtml()!
     */
-    public function __construct($html_text, $type= MESSAGE_NOTE)
+    public function __construct($html_text, $type = MESSAGE_NOTE)
     {
-        $this->html_text= $html_text;
-        $this->type= $type;
+        $this->html_text = $html_text;
+        $this->type = $type;
 
         ### add to message-list ###
         global $PH;
-        $PH->messages[]= $this;
+        $PH->messages[] = $this;
     }
 
-    public function render() {
-        return "<p class=". strtolower($this->type) ."><span class=type>".__($this->type) .": </span>$this->html_text</p>";
+    public function render()
+    {
+        return '<p class=' . strtolower($this->type) . '><span class=type>' . __($this->type) . ": </span>$this->html_text</p>";
     }
 }
 
@@ -163,52 +162,50 @@ class FeedbackHint extends FeedbackMessage
 */
 class PageHandler extends BaseObject
 {
-    PUBLIC      $hash;
-    PUBLIC      $messages=[];
-    public      $cur_page_md5=NULL;
-    public      $cur_page_id;
-    PUBLIC      $options;
-    public      $go_submit=false;   # this is put into go-hidden-field
-    public      $cur_page=NULL;     # page-handle object
-    public      $page_params=NULL;  # params of the currently rendered page (used for client-view-url)
-    public      $valid_global_params= [
-                        'from'      =>'*.',
-                        'id'        =>'[\w\d_]*]',
-                        'show_client_view'=>'1',
+    public $hash;
+    public $messages = [];
+    public $cur_page_md5 = null;
+    public $cur_page_id;
+    public $options;
+    public $go_submit = false;   # this is put into go-hidden-field
+    public $cur_page = null;     # page-handle object
+    public $page_params = null;  # params of the currently rendered page (used for client-view-url)
+    public $valid_global_params = [
+                        'from' => '*.',
+                        'id' => '[\w\d_]*]',
+                        'show_client_view' => '1',
                         ];
 
-    public      $recursions=[];
+    public $recursions = [];
 
     public function __construct()
     {
         global $PH;
-        if(isset($PH)) {
-            trigger_error("PageHandle can only be created once", E_USER_WARNING);
+        if (isset($PH)) {
+            trigger_error('PageHandle can only be created once', E_USER_WARNING);
+        } else {
+            $this->hash = [];
+            #            $PH=$this;
         }
-        else {
-            $this->hash=[];
-#            $PH=$this;
-        }
-        $this->options=[];
+        $this->options = [];
     }
 
     public function addPage(PageHandle $phandle)
     {
-        if(!$phandle || !is_object($phandle)){
-            trigger_error("PageHandler::addPage requires a pageHandle as argument", E_USER_WARNING);
+        if (!$phandle || !is_object($phandle)) {
+            trigger_error('PageHandler::addPage requires a pageHandle as argument', E_USER_WARNING);
             return;
         }
-        if(!isset($phandle->id) || $phandle->id=='') {
-            trigger_error("PageHandler::addPage. PageHandle needs a valid id", E_USER_WARNING);
+        if (!isset($phandle->id) || $phandle->id == '') {
+            trigger_error('PageHandler::addPage. PageHandle needs a valid id', E_USER_WARNING);
             return;
         }
-        if(isset($this->hash[$phandle->id])) {
+        if (isset($this->hash[$phandle->id])) {
             trigger_error("Pagehandle '$phandle->id' has already been added", E_USER_WARNING);
             return;
         }
-        $this->hash[$phandle->id]=$phandle;
+        $this->hash[$phandle->id] = $phandle;
     }
-
 
     /**
     * returns url of the curret page (with all necessary parameters)
@@ -218,17 +215,17 @@ class PageHandler extends BaseObject
     *
     * if flag_exit is set, returns link to valid original page
     */
-    public function getClientViewUrl($flag_exit=false)
+    public function getClientViewUrl($flag_exit = false)
     {
-        if(get_class($this->cur_page) == 'PageHandle') {
-            if(!isset($this->page_params) || !$params=$this->page_params) {
-                $params=[];
+        if (get_class($this->cur_page) == 'PageHandle') {
+            if (!isset($this->page_params) || !$params = $this->page_params) {
+                $params = [];
             }
-            if(!$flag_exit) {
-                $params['show_client_view']=1;
+            if (!$flag_exit) {
+                $params['show_client_view'] = 1;
             }
 
-            return $this->getUrl($this->cur_page->id,$params);
+            return $this->getUrl($this->cur_page->id, $params);
         }
     }
 
@@ -237,91 +234,84 @@ class PageHandler extends BaseObject
     *
     * for directly referring to a URL overwrite the amp-parameter to "&"
     */
-    public function getUrl($id=NULL, $params=NULL, $amp= "&amp;")
+    public function getUrl($id = null, $params = null, $amp = '&amp;')
     {
         global $auth;
-        
 
-        if(!$id || !isset($this->hash[$id]) ) {
-            trigger_error("id '$id' is not valid ".confGet('LINK_REPORT_BUGS'),E_USER_WARNING);
+        if (!$id || !isset($this->hash[$id])) {
+            trigger_error("id '$id' is not valid " . confGet('LINK_REPORT_BUGS'), E_USER_WARNING);
         }
-        $phandle= $this->hash[$id];
+        $phandle = $this->hash[$id];
 
         ### enough rights? ###
-        if($phandle->rights_required) {
-
+        if ($phandle->rights_required) {
             /**
             * auth could not be defined, if unit-tests running...
             */
-            if( !isset($auth) 
-                || !isset($auth->cur_user) 
+            if (!isset($auth)
+                || !isset($auth->cur_user)
                 || !($phandle->rights_required & $auth->cur_user->user_rights)
-                
-            
             ) {
-                return NULL;
+                return null;
             }
         }
-        
+
         /*
         * Hide modifications links from guest user.
         * Accessing this links directly will be prevented in index.php
-        */        
-        if( isset($auth) && $auth->isAnonymousUser() 
+        */
+        if (isset($auth) && $auth->isAnonymousUser()
             && ($auth->isAnonymousUser() && $phandle->type == 'form' || $phandle->type == 'subm' || $phandle->type == 'func')
         ) {
-            return NULL;
-        }
-        
-        ### valid user? ###
-        if(!$phandle->valid_for_crawlers && Auth::isCrawler()) {
-            return NULL;            
+            return null;
         }
 
-        $str_params='';
-        if($params) {
-            if(!is_array($params)) {
-                trigger_error("params must be array (is '$params')". confGet('LINK_REPORT_BUGS'),E_USER_WARNING);
+        ### valid user? ###
+        if (!$phandle->valid_for_crawlers && Auth::isCrawler()) {
+            return null;
+        }
+
+        $str_params = '';
+        if ($params) {
+            if (!is_array($params)) {
+                trigger_error("params must be array (is '$params')" . confGet('LINK_REPORT_BUGS'), E_USER_WARNING);
                 return;
             }
-            $str_params='';
+            $str_params = '';
 
             ### get valid params ###
-            $valid_params=NULL;
-            if(!is_null($phandle->valid_params)) {
-                $valid_params =& $phandle->valid_params;
+            $valid_params = null;
+            if (!is_null($phandle->valid_params)) {
+                $valid_params = &$phandle->valid_params;
 
                 ### make global params like from handle and id valid ###
-                foreach($this->valid_global_params as $key=>$value) {
-
-                    $valid_params[$key]= $value;
+                foreach ($this->valid_global_params as $key => $value) {
+                    $valid_params[$key] = $value;
                 }
             }
 
-            foreach($params as $key=>$value) {
-                if(is_null($value) || is_object($value)) {
+            foreach ($params as $key => $value) {
+                if (is_null($value) || is_object($value)) {
                     /**
                     * this is common
                     */
                     #trigger_error("getUrl() ignored invalid parameter value for $key",E_USER_WARNING);
-                    $value="";
+                    $value = '';
                 }
 
                 ### check for valid params ###
-                if(!is_null($valid_params) && !isset($valid_params[$key]) && $key!='q') {
+                if (!is_null($valid_params) && !isset($valid_params[$key]) && $key != 'q') {
                     trigger_error("Undefined paramater for page-handle '$id': '$key'='$value' ", E_USER_WARNING);
                 }
 
-                $str_params.= $amp . $key . '=' . $value;
+                $str_params .= $amp . $key . '=' . $value;
             }
         }
 
-
-        if(!$phandle->ignore_from_handles && $phandle->called_with_from_handle) {
-            if($this->cur_page_md5) {
-                $str_params.= $amp . 'from=' . $this->cur_page_md5;
-            }
-            else {
+        if (!$phandle->ignore_from_handles && $phandle->called_with_from_handle) {
+            if ($this->cur_page_md5) {
+                $str_params .= $amp . 'from=' . $this->cur_page_md5;
+            } else {
                 /**
                 * enable this warning only for debugging...
                 * - there are a lot of reasons, why this could happen:
@@ -333,9 +323,9 @@ class PageHandler extends BaseObject
             }
         }
 
-        $buffer= "index.php?go={$id}{$str_params}";
+        $buffer = "index.php?go={$id}{$str_params}";
 
-        if(confGet('USE_MOD_REWRITE')) {
+        if (confGet('USE_MOD_REWRITE')) {
             /*
             $clean_urls= array(
                 'taskView'=>array('tsk'=>'item_id'),
@@ -360,53 +350,48 @@ class PageHandler extends BaseObject
             }
             */
 
-            if($url= $phandle->cleanurl) {
-                if($phandle->cleanurl_mapping) {
-                    foreach($phandle->cleanurl_mapping as $old => $new) {
-                        if(isset($params[$old])) {
-                            $var= $params[$old];
+            if ($url = $phandle->cleanurl) {
+                if ($phandle->cleanurl_mapping) {
+                    foreach ($phandle->cleanurl_mapping as $old => $new) {
+                        if (isset($params[$old])) {
+                            $var = $params[$old];
+                        } else {
+                            $var = '';
                         }
-                        else {
-                            $var= '';
-                        }
-                        $url= str_replace($new, $var, $url);
+                        $url = str_replace($new, $var, $url);
                     }
                 }
-                $buffer= $url;
+                $buffer = $url;
             }
         }
         return $buffer;
     }
 
-
-
     /**
     * getLink (return nothing, if not enough user-rights)
     * - link name will be converted to html
     */
-    public function getLink($id=NULL, $name=NULL, $params=NULL, $style=NULL, $allow_html=false)
+    public function getLink($id = null, $name = null, $params = null, $style = null, $allow_html = false)
     {
         ### try to get url ###
-        if($url=$this->getUrl($id,$params)) {
-            if(!$name && $this->hash[$id]->title) {
-                $name= $this->hash[$id]->title;
+        if ($url = $this->getUrl($id, $params)) {
+            if (!$name && $this->hash[$id]->title) {
+                $name = $this->hash[$id]->title;
+            } elseif (!$allow_html) {
+                $name = asHtml($name);
             }
-            else if(!$allow_html) {
-                $name= asHtml($name);
-            }
-            $class  = $style
+            $class = $style
                     ? "class='$style'"
                     : '';
 
-            $buffer= '<a '.$class.' href="'. $url. '">'. $name .'</a>';
+            $buffer = '<a ' . $class . ' href="' . $url . '">' . $name . '</a>';
             return $buffer;
         }
         ### probably not enough rights ###
         else {
-            return NULL;
+            return null;
         }
     }
-
 
     #--------------------------------------------------------------------
     # getPage / checks the id and returns valid page, DOES NOT CHECK FOR RIGHTS
@@ -415,8 +400,8 @@ class PageHandler extends BaseObject
     {
         global $auth;
 
-        if(!$id || !isset($this->hash[$id]) ) {
-            trigger_error("PageHandle::getPage id '$id' is not valid. Please report this bug.",E_USER_WARNING);
+        if (!$id || !isset($this->hash[$id])) {
+            trigger_error("PageHandle::getPage id '$id' is not valid. Please report this bug.", E_USER_WARNING);
             return;
         }
         return $this->hash[$id];
@@ -429,15 +414,15 @@ class PageHandler extends BaseObject
     {
         global $auth;
 
-        if(!$id || !isset($this->hash[$id]) ) {
+        if (!$id || !isset($this->hash[$id])) {
             trigger_error("PageHandle::getPage id '$id' is not valid", E_USER_WARNING);
             return;
         }
 
         ### check sufficient user-rights ###
-        $handle=$this->hash[$id];
-        if($handle->rights_required && !($handle->rights_required & $auth->cur_user->user_rights)) {
-            return NULL;
+        $handle = $this->hash[$id];
+        if ($handle->rights_required && !($handle->rights_required & $auth->cur_user->user_rights)) {
+            return null;
         }
         return $this->hash[$id];
     }
@@ -449,21 +434,19 @@ class PageHandler extends BaseObject
     {
         global $auth;
 
-        if(!$id || !isset($this->hash[$id]) ) {
+        if (!$id || !isset($this->hash[$id])) {
             trigger_error("PageHandle::getPage id '$id' is not valid", E_USER_WARNING);
         }
 
-
         ### check sufficient user-rights ###
-        $handle=$this->hash[$id];
-        if($handle->rights_required) {
-            if( !($handle->rights_required & $auth->cur_user->user_rights)) {
-                return NULL;
+        $handle = $this->hash[$id];
+        if ($handle->rights_required) {
+            if (!($handle->rights_required & $auth->cur_user->user_rights)) {
+                return null;
             }
         }
         return $id;
     }
-
 
     /**
     * getHandle for the current page
@@ -477,81 +460,76 @@ class PageHandler extends BaseObject
     * creating a page-object.
     *
     */
-    public function defineFromHandle($params=NULL)
+    public function defineFromHandle($params = null)
     {
         global $auth;
-        if(!isset($auth->cur_user)) {
-            return NULL;
+        if (!isset($auth->cur_user)) {
+            return null;
         }
-
 
         #--- create new md5-handle and store page-id and params in local file
-        if(!$params) {
-            $params=[];
+        if (!$params) {
+            $params = [];
         }
-        $params['go']=$this->cur_page_id;
-        $from= http_build_query($params);
-        $from=str_replace("&amp;",'&',$from);
+        $params['go'] = $this->cur_page_id;
+        $from = http_build_query($params);
+        $from = str_replace('&amp;', '&', $from);
 
-        $md5= md5($from);
+        $md5 = md5($from);
 
-        $this->cur_page_md5= $md5;
+        $this->cur_page_md5 = $md5;
 
-        $flag_already_stored=false;
-        $stored_handles=[];
+        $flag_already_stored = false;
+        $stored_handles = [];
 
         ### use modified version of user-cookie as filename ###
-        $filename= confGet('DIR_TEMP').md5($auth->cur_user->identifier);
-
+        $filename = confGet('DIR_TEMP') . md5($auth->cur_user->identifier);
 
         ### read current from-handles ###
-        if(is_readable($filename)) {
-            if (!($FH = fopen ( $filename, 'r'))) {
-                die ('could not open page-history. This might be cause by insufficient directory rights.');
+        if (is_readable($filename)) {
+            if (!($FH = fopen($filename, 'r'))) {
+                die('could not open page-history. This might be cause by insufficient directory rights.');
             }
-            $data = fread ($FH, 64000);
-            fclose ($FH);
+            $data = fread($FH, 64000);
+            fclose($FH);
 
-            $arr= preg_split("/\n/",$data);
+            $arr = preg_split("/\n/", $data);
 
             ### convert to assoc. array and look for md5 ###
-            foreach($arr as $line) {
-                $tmp_arr=preg_split("/\|/",$line);
-                if(count($tmp_arr)==2) {
+            foreach ($arr as $line) {
+                $tmp_arr = preg_split("/\|/", $line);
+                if (count($tmp_arr) == 2) {
                     ### store as assoc. array. ###
-                    $stored_handles[$tmp_arr[0]]=$line;
+                    $stored_handles[$tmp_arr[0]] = $line;
                 }
-                if(count($stored_handles) > MAX_STORED_FROM_HANDLES) {
+                if (count($stored_handles) > MAX_STORED_FROM_HANDLES) {
                     break;
                 }
             }
             ### current from-handle already in there ###
-            if(isset($stored_handles[$md5])) {
-                $flag_already_stored= true;
+            if (isset($stored_handles[$md5])) {
+                $flag_already_stored = true;
             }
-
-        }
-        else {
-            $arr=[];
+        } else {
+            $arr = [];
         }
 
         ### add handle and write to file ###
-        if(!$flag_already_stored) {
-
+        if (!$flag_already_stored) {
             ### if full remove last ###
-            array_unshift($stored_handles, $md5.'|'.$from);
+            array_unshift($stored_handles, $md5 . '|' . $from);
 
-            if(file_exists($filename . '_tmp')) {
+            if (file_exists($filename . '_tmp')) {
                 unlink($filename . '_tmp');
             }
-            if(file_exists($filename)) {
-                $result= rename($filename, $filename . '_tmp');     # surpressing FILE-EXISTs notice
+            if (file_exists($filename)) {
+                $result = rename($filename, $filename . '_tmp');     # surpressing FILE-EXISTs notice
             }
-            $FH=fopen ($filename."_tmp","w");
-            fputs ($FH, join($stored_handles,"\n"));                       # join the array
-            fclose ($FH);
-            if(file_exists($filename."_tmp")) {
-                $result= rename($filename."_tmp", $filename);     # surpressing FILE-EXISTs notice
+            $FH = fopen($filename . '_tmp', 'w');
+            fputs($FH, join($stored_handles, "\n"));                       # join the array
+            fclose($FH);
+            if (file_exists($filename . '_tmp')) {
+                $result = rename($filename . '_tmp', $filename);     # surpressing FILE-EXISTs notice
             }
         }
         #--- write to file --
@@ -559,94 +537,87 @@ class PageHandler extends BaseObject
         #$result=unlink("$tmp_dir/$filename");
         #$result=chmod ("$tmp_dir/$filename", 0664);
 
-        $this->page_params=$params;     # keep for client-view-url
+        $this->page_params = $params;     # keep for client-view-url
         return $md5;
     }
-
-
 
     #--------------------------------------------------------------
     # returns param-array for from-handle
     #--------------------------------------------------------------
-    public function getFromParams($from_handle=NULL)
+    public function getFromParams($from_handle = null)
     {
         global $auth;
-        if(!$from_handle) trigger_error("getFromParams requires a from-string", E_USER_ERROR);
-
-
+        if (!$from_handle) {
+            trigger_error('getFromParams requires a from-string', E_USER_ERROR);
+        }
 
         ### use modified version of user-cookie as filename ###
-        $filename= confGet('DIR_TEMP').md5($auth->cur_user->identifier);
-
+        $filename = confGet('DIR_TEMP') . md5($auth->cur_user->identifier);
 
         ### read current from-handles ###
-        if(is_readable($filename)) {
-            if (!($FH = fopen ( $filename, 'r'))) {
+        if (is_readable($filename)) {
+            if (!($FH = fopen($filename, 'r'))) {
                 trigger_error('could not open page-history. This might be caused by insufficient directory rights.', E_USER_WARNING);
-                return NULL;
+                return null;
             }
-            $data = fread ($FH, 64000);
-            fclose ($FH);
+            $data = fread($FH, 64000);
+            fclose($FH);
 
-            $arr= preg_split("/\n/",$data);
+            $arr = preg_split("/\n/", $data);
 
             ### convert to assoc. array and look for md5 ###
-            $stored_handles=[];
-            foreach($arr as $line) {
-                $tmp_arr= preg_split("/\|/",$line);
-                if(count($tmp_arr)==2) {
-                    $stored_handles[$tmp_arr[0]]=$tmp_arr[1];
+            $stored_handles = [];
+            foreach ($arr as $line) {
+                $tmp_arr = preg_split("/\|/", $line);
+                if (count($tmp_arr) == 2) {
+                    $stored_handles[$tmp_arr[0]] = $tmp_arr[1];
                 }
-                if(count($stored_handles) > MAX_STORED_FROM_HANDLES) {
+                if (count($stored_handles) > MAX_STORED_FROM_HANDLES) {
                     break;
                 }
             }
             ### current from-handle already in there ###
-            if(isset($stored_handles[$from_handle])) {
-
-                $params= [];
+            if (isset($stored_handles[$from_handle])) {
+                $params = [];
                 parse_str($stored_handles[$from_handle], $params);
                 return $params;
             }
         }
-        return NULL;
+        return null;
     }
 
     #--------------------------------------------------------------------
     # showFromPage if available
     #--------------------------------------------------------------------#
     # NOTE returns false if $from is not available
-    public function showFromPage($from_handle=NULL)
+    public function showFromPage($from_handle = null)
     {
-        if(!$from_handle) {
-            $from_handle= get('from');
-            if(!$from_handle) {
+        if (!$from_handle) {
+            $from_handle = get('from');
+            if (!$from_handle) {
                 return false;
             }
         }
         global $PH;
-        if($params= $PH->getFromParams($from_handle)) {
-
-            if(isset($params['go'])) {
-                $go= $PH->getPage($params['go'])->id;       # be sure the page-id is value
+        if ($params = $PH->getFromParams($from_handle)) {
+            if (isset($params['go'])) {
+                $go = $PH->getPage($params['go'])->id;       # be sure the page-id is value
                 unset($params['go']);                       # don't pass the id as param
-                $PH->show($go,$params);
-                
+                $PH->show($go, $params);
+
                 /**
-                * Although the following alternative works very nice in theory, 
+                * Although the following alternative works very nice in theory,
                 * we have to implement a way, to store the flash notices either
                 * in a session variable or somewhere in the database.
-                * 
+                *
                 * FlashNotices
                 *  uid, timestamp, message
                 */
                 #header("Location: ".$this->getUrl($go, $params, '&'));
+            } else {
+                trigger_error('no page-id in params got by from_handle.' . confGet('LINK_REPORT_BUGS'));
             }
-            else {
-                trigger_error("no page-id in params got by from_handle.".confGet('LINK_REPORT_BUGS'));
-            }
-        }
-        else {
+        } else {
             return false;
         }
         return true;
@@ -655,44 +626,39 @@ class PageHandler extends BaseObject
     #--------------------------------------------------------------------
     # show()
     #--------------------------------------------------------------------
-    public function show($id=NULL, $params=NULL,$fn_argument=NULL)
+    public function show($id = null, $params = null, $fn_argument = null)
     {
         global $auth;
 
         ### echo debug output ###
-        if(isset($auth->cur_user)) {
-            $user_name= $auth->cur_user->name;
+        if (isset($auth->cur_user)) {
+            $user_name = $auth->cur_user->name;
+        } else {
+            $user_name = '__not_logged_in__';
         }
-        else {
-            $user_name= '__not_logged_in__';
-        }
-        $crawler= Auth::isCrawler()
+        $crawler = Auth::isCrawler()
                 ? 'crawler'
                 : '';
-                                  
-        log_message($user_name . '@' .  getServerVar('REMOTE_ADDR', true) . " -> $id ". getServerVar('REQUEST_URI') . "  (" . getServerVar('HTTP_USER_AGENT') . ") $crawler"  , LOG_MESSAGE_DEBUG);
 
-        if(!$id) {
+        log_message($user_name . '@' . getServerVar('REMOTE_ADDR', true) . " -> $id " . getServerVar('REQUEST_URI') . '  (' . getServerVar('HTTP_USER_AGENT') . ") $crawler", LOG_MESSAGE_DEBUG);
+
+        if (!$id) {
             $this->show('home');
             exit;
-        }
-        
-        else if( $id != asAlphaNumeric($id)) {
-            new FeedbackWarning("Ignored invalid page '". asCleanString($id) ."'");
+        } elseif ($id != asAlphaNumeric($id)) {
+            new FeedbackWarning("Ignored invalid page '" . asCleanString($id) . "'");
             $this->show('home');
             exit;
-        }            
-        else if(!isset($this->hash[$id]) ) {
-            trigger_error('try to show undefined page-id '.$id, E_USER_WARNING);
+        } elseif (!isset($this->hash[$id])) {
+            trigger_error('try to show undefined page-id ' . $id, E_USER_WARNING);
             $this->show('error');
             return;
         }
-        $handle=$this->hash[$id];
+        $handle = $this->hash[$id];
 
         ### not authenticated ###
-        if(!isset($auth) || !$auth->cur_user) {
-            if(!$handle->valid_for_anonymous)
-            {
+        if (!isset($auth) || !$auth->cur_user) {
+            if (!$handle->valid_for_anonymous) {
                 new FeedbackWarning("As an anonymous user you have not enough rights to view page '$id'");
                 $this->show('loginForm');
                 exit();
@@ -700,199 +666,173 @@ class PageHandler extends BaseObject
         }
 
         ### check sufficient user-rights ###
-        if($handle->rights_required && !($handle->rights_required & $auth->cur_user->user_rights)) {
-            $this->abortWarning("insufficient rights");
+        if ($handle->rights_required && !($handle->rights_required & $auth->cur_user->user_rights)) {
+            $this->abortWarning('insufficient rights');
         }
-        
+
         ### hide modification pages from guests ###
         /**
         * Note: for some reason, this interfers with unit testing. Using the user agent for this
         * check here is extremely dirty, because it can be faked from attackers. This will not lead
         * to a result, because it switches the database for unit testing, though.
-        */    
-        if(getServerVar('HTTP_USER_AGENT') != 'streber_unit_tester') {
-            if( isset($auth) 
+        */
+        if (getServerVar('HTTP_USER_AGENT') != 'streber_unit_tester') {
+            if (isset($auth)
                 && $auth->isAnonymousUser()
                 && !$handle->valid_for_anonymous
                 && ($handle->type == 'form' || $handle->type == 'subm' || $handle->type == 'func')
             ) {
-                $this->abortWarning("insufficient rights");
+                $this->abortWarning('insufficient rights');
             }
         }
 
         require_once($handle->req);
 
-
         #--- set page-handler-curpage ---
-        $keep_cur_page_id= $this->cur_page_id;  # show() might be called again, so we have to keep the page_id
+        $keep_cur_page_id = $this->cur_page_id;  # show() might be called again, so we have to keep the page_id
 
-        $this->cur_page_id= $id;
+        $this->cur_page_id = $id;
 
-        $keep_cur_page= $this->cur_page;
-        $this->cur_page= $handle;
-
+        $keep_cur_page = $this->cur_page;
+        $this->cur_page = $handle;
 
         ### submit ###
-        if($handle->type='subm') {
-            $tmp= get('from');
-            if($tmp) {
-                $this->cur_page_md5=$tmp;
+        if ($handle->type = 'subm') {
+            $tmp = get('from');
+            if ($tmp) {
+                $this->cur_page_md5 = $tmp;
             }
         }
 
-        #--- set params ---        
-        if($params) {
-#            global $vars;
-#            foreach($params as $key=>$value) {
-#                $vars[$key]=$value;
-#            }
-#            $vars['go']=$id;
+        #--- set params ---
+        if ($params) {
+            #            global $vars;
+            #            foreach($params as $key=>$value) {
+            #                $vars[$key]=$value;
+            #            }
+            #            $vars['go']=$id;
             $params['go'] = $id;
             addRequestVars($params);
-
         }
 
         #--- avoid endless traps ---
-        if(count($this->recursions) > MAX_PAGE_RECURSIONS) {
-
-            trigger_error("maximum page recursions reached! (". implode(",", $this->recursions) .")", E_USER_ERROR);
+        if (count($this->recursions) > MAX_PAGE_RECURSIONS) {
+            trigger_error('maximum page recursions reached! (' . implode(',', $this->recursions) . ')', E_USER_ERROR);
             return;
         }
-        $this->recursions[]= $id;
+        $this->recursions[] = $id;
 
         #--- use id as function-name ----
-        if(function_exists($id)) {
-            if($fn_argument) {
+        if (function_exists($id)) {
+            if ($fn_argument) {
                 $id($fn_argument);  # pass additional paramenter (eg. non-db-objects to xxxNew()-functions)
-            }
-            else {
+            } else {
                 $id();
             }
-        }
-        else {
-
-            $this->abortWarning("page-call to undefined functions '$id'",ERROR_FATAL);
+        } else {
+            $this->abortWarning("page-call to undefined functions '$id'", ERROR_FATAL);
         }
 
-
-        $this->cur_page_id= $keep_cur_page_id;
-        $this->cur_page= $keep_cur_page;
+        $this->cur_page_id = $keep_cur_page_id;
+        $this->cur_page = $keep_cur_page;
     }
-
 
     #--------------------------------------------------------------------
     # abort and show error
     # - tries to display from page first
     # - otherwise shows 'home'
     #-------------------------------------------------------------------
-    public function abortWarning($warning=NULL ,$type=ERROR_WARNING) {
-        $link_report_bugs= confGet('LINK_REPORT_BUGS');
+    public function abortWarning($warning = null, $type = ERROR_WARNING)
+    {
+        $link_report_bugs = confGet('LINK_REPORT_BUGS');
 
-        if($type == ERROR_WARNING) {
-            new FeedbackWarning(sprintf(__("Operation aborted (%s)"), $warning));
-        }
-        else if($type == ERROR_FATAL) {
-            new FeedbackError(sprintf(__("Operation aborted with an fatal error (%s)."), $warning). $link_report_bugs);
-        }
-        else if($type == ERROR_BUG) {
-            new FeedbackError(sprintf(__("Operation aborted with an fatal error which was cause by an programming error (%s)."), $warning). $link_report_bugs);
-        }
-        else if($type == ERROR_RIGHTS) {
+        if ($type == ERROR_WARNING) {
+            new FeedbackWarning(sprintf(__('Operation aborted (%s)'), $warning));
+        } elseif ($type == ERROR_FATAL) {
+            new FeedbackError(sprintf(__('Operation aborted with an fatal error (%s).'), $warning) . $link_report_bugs);
+        } elseif ($type == ERROR_BUG) {
+            new FeedbackError(sprintf(__('Operation aborted with an fatal error which was cause by an programming error (%s).'), $warning) . $link_report_bugs);
+        } elseif ($type == ERROR_RIGHTS) {
             #trigger_error("Abort Warning Insufficient rights", E_USER_NOTICE);
-            log_message("Abort Warning Insufficient rights", LOG_MESSAGE_DEBUG);
+            log_message('Abort Warning Insufficient rights', LOG_MESSAGE_DEBUG);
 
-            if($warning) {
-                $str_reason= ' ('. $warning. ')';
+            if ($warning) {
+                $str_reason = ' (' . $warning . ')';
             }
-            new FeedbackWarning(__("insufficient rights"). $str_reason);
-        }
-        else if($type == ERROR_DATASTRUCTURE) {
-            trigger_error("Error data structure", E_USER_WARNING);
-            new FeedbackError(sprintf(__("Operation aborted with an fatal data-base structure error (%s). This may have happened do to an inconsistency in your database. We strongly suggest to rewind to a recent back-up."), $warning). $link_report_bugs);
-        }
-        else if($type == ERROR_NOTE) {
+            new FeedbackWarning(__('insufficient rights') . $str_reason);
+        } elseif ($type == ERROR_DATASTRUCTURE) {
+            trigger_error('Error data structure', E_USER_WARNING);
+            new FeedbackError(sprintf(__('Operation aborted with an fatal data-base structure error (%s). This may have happened do to an inconsistency in your database. We strongly suggest to rewind to a recent back-up.'), $warning) . $link_report_bugs);
+        } elseif ($type == ERROR_NOTE) {
             new FeedbackMessage($warning);
-        }
-        else {
+        } else {
             new FeedbackWarning($warning);
         }
-
 
         /**
         * Warnings might be causes because anonymous user have not enough rights.
         * Best continue with the loginForm to use the go_after settings. This enables
         * links from notification mails and from extern.
         */
-        if(!$this->showFromPage()) {
+        if (!$this->showFromPage()) {
             global $auth;
-            if(confGet('ANONYMOUS_USER') && $auth->cur_user->id == confGet('ANONYMOUS_USER')) {
+            if (confGet('ANONYMOUS_USER') && $auth->cur_user->id == confGet('ANONYMOUS_USER')) {
                 $this->show('loginForm');
-            }
-            else {
+            } else {
                 $this->show('home');
             }
         }
         exit();
     }
 
-    public function getWikiLink($page=NULL, $alt_title=NULL) {
-        if(!$page) {
-            return "<a href='" . confGet('STREBER_WIKI_URL').  "{$this->cur_page_id}' target='_blank'>Wiki+Help</a>";
-        }
-        else {
-            if($page == "WikiSyntax") {
-            $page = confGet('STREBER_WIKISYNTAX');
-            }        
-            if(!$alt_title) {
-                $alt_title= $page;
+    public function getWikiLink($page = null, $alt_title = null)
+    {
+        if (!$page) {
+            return "<a href='" . confGet('STREBER_WIKI_URL') . "{$this->cur_page_id}' target='_blank'>Wiki+Help</a>";
+        } else {
+            if ($page == 'WikiSyntax') {
+                $page = confGet('STREBER_WIKISYNTAX');
             }
-            return "<a href='" . confGet('STREBER_WIKI_URL').  "{$page}' target='_blank'>$alt_title</a>";
+            if (!$alt_title) {
+                $alt_title = $page;
+            }
+            return "<a href='" . confGet('STREBER_WIKI_URL') . "{$page}' target='_blank'>$alt_title</a>";
         }
     }
-    
 
-    public function getCSVLink($page=NULL, $format= FORMAT_CSV) {
-        if(is_null($page)) {
-            $page= $this->cur_page_id;
+    public function getCSVLink($page = null, $format = FORMAT_CSV)
+    {
+        if (is_null($page)) {
+            $page = $this->cur_page_id;
         }
-        if(!$page) {
-            trigger_error("Can not render format link without page object", E_USER_WARNING);
-            return NULL;
-        }
-        else {
-            $str_params =  '?format=' . $format;
+        if (!$page) {
+            trigger_error('Can not render format link without page object', E_USER_WARNING);
+            return null;
+        } else {
+            $str_params = '?format=' . $format;
 
-            foreach($this->page_params as $key => $value) {
-                $str_params .= "&" . $key ."=". $value;
+            foreach ($this->page_params as $key => $value) {
+                $str_params .= '&' . $key . '=' . $value;
             }
 
-            return "<a href='index.php{$str_params}'>". __("Export as CSV") ."</a>";
+            return "<a href='index.php{$str_params}'>" . __('Export as CSV') . '</a>';
         }
-
-
     }
-    
+
     /**
     * return requested pagehandle or loginForm if not valid
     *
     * Does not check for user rights
     */
-
-    public function getRequestedPage() 
-    {  
-
-        if(isset($this->hash[get('go')])) {
+    public function getRequestedPage()
+    {
+        if (isset($this->hash[get('go')])) {
             return $this->hash[get('go')];
-        }
-        else {
+        } else {
             return $this->hash['loginForm'];
-        }       
+        }
     }
-
-
 }
 
 global $PH;
-$PH=new PageHandler();
-
-?>
+$PH = new PageHandler();

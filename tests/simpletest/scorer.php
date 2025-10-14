@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  base include file for SimpleTest
  *  @package    SimpleTest
@@ -18,17 +19,19 @@ require_once(dirname(__FILE__) . '/invoker.php');
  *    @subpackage UnitTester
  *    @abstract
  */
-class SimpleScorer {
-    var $_passes;
-    var $_fails;
-    var $_exceptions;
-    var $_is_dry_run;
+class SimpleScorer
+{
+    public $_passes;
+    public $_fails;
+    public $_exceptions;
+    public $_is_dry_run;
 
     /**
      *    Starts the test run with no results.
      *    @access public
      */
-    function SimpleScorer() {
+    public function SimpleScorer()
+    {
         $this->_passes = 0;
         $this->_fails = 0;
         $this->_exceptions = 0;
@@ -42,7 +45,8 @@ class SimpleScorer {
      *    @param boolean $is_dry        Dry run if true.
      *    @access public
      */
-    function makeDry($is_dry = true) {
+    public function makeDry($is_dry = true)
+    {
         $this->_is_dry_run = $is_dry;
     }
 
@@ -52,8 +56,9 @@ class SimpleScorer {
      *    @param string $method          Name of test method.
      *    @access public
      */
-    function shouldInvoke($test_case_name, $method) {
-        return ! $this->_is_dry_run;
+    public function shouldInvoke($test_case_name, $method)
+    {
+        return !$this->_is_dry_run;
     }
 
     /**
@@ -63,7 +68,8 @@ class SimpleScorer {
      *    @return SimpleInvoker           Wrapped test runner.
      *    @access public
      */
-    function createInvoker(&$invoker) {
+    public function createInvoker(&$invoker)
+    {
         return $invoker;
     }
 
@@ -74,7 +80,8 @@ class SimpleScorer {
      *    @return boolean        True if no failures.
      *    @access public
      */
-    function getStatus() {
+    public function getStatus()
+    {
         if ($this->_exceptions + $this->_fails > 0) {
             return false;
         }
@@ -87,7 +94,8 @@ class SimpleScorer {
      *    @param integer $size         Number of test cases starting.
      *    @access public
      */
-    function paintGroupStart($test_name, $size) {
+    public function paintGroupStart($test_name, $size)
+    {
     }
 
     /**
@@ -95,7 +103,8 @@ class SimpleScorer {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintGroupEnd($test_name) {
+    public function paintGroupEnd($test_name)
+    {
     }
 
     /**
@@ -103,7 +112,8 @@ class SimpleScorer {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintCaseStart($test_name) {
+    public function paintCaseStart($test_name)
+    {
     }
 
     /**
@@ -111,7 +121,8 @@ class SimpleScorer {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintCaseEnd($test_name) {
+    public function paintCaseEnd($test_name)
+    {
     }
 
     /**
@@ -119,7 +130,8 @@ class SimpleScorer {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintMethodStart($test_name) {
+    public function paintMethodStart($test_name)
+    {
     }
 
     /**
@@ -127,7 +139,8 @@ class SimpleScorer {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintMethodEnd($test_name) {
+    public function paintMethodEnd($test_name)
+    {
     }
 
     /**
@@ -135,7 +148,8 @@ class SimpleScorer {
      *    @param string $message        Message is ignored.
      *    @access public
      */
-    function paintPass($message) {
+    public function paintPass($message)
+    {
         $this->_passes++;
     }
 
@@ -144,7 +158,8 @@ class SimpleScorer {
      *    @param string $message        Message is ignored.
      *    @access public
      */
-    function paintFail($message) {
+    public function paintFail($message)
+    {
         $this->_fails++;
     }
 
@@ -154,7 +169,8 @@ class SimpleScorer {
      *                              the test case.
      *    @access public
      */
-    function paintError($message) {
+    public function paintError($message)
+    {
         $this->_exceptions++;
     }
 
@@ -163,16 +179,18 @@ class SimpleScorer {
      *    @param Exception $exception    The actual exception thrown.
      *    @access public
      */
-    function paintException($exception) {
+    public function paintException($exception)
+    {
         $this->_exceptions++;
     }
-    
+
     /**
      *    Prints the message for skipping tests.
      *    @param string $message    Text of skip condition.
      *    @access public
      */
-    function paintSkip($message) {
+    public function paintSkip($message)
+    {
     }
 
     /**
@@ -180,7 +198,8 @@ class SimpleScorer {
      *    @return integer       Number of passes.
      *    @access public
      */
-    function getPassCount() {
+    public function getPassCount()
+    {
         return $this->_passes;
     }
 
@@ -189,7 +208,8 @@ class SimpleScorer {
      *    @return integer       Number of fails.
      *    @access public
      */
-    function getFailCount() {
+    public function getFailCount()
+    {
         return $this->_fails;
     }
 
@@ -199,7 +219,8 @@ class SimpleScorer {
      *    @return integer       Number of exceptions.
      *    @access public
      */
-    function getExceptionCount() {
+    public function getExceptionCount()
+    {
         return $this->_exceptions;
     }
 
@@ -208,7 +229,8 @@ class SimpleScorer {
      *    @param string $message        Text to display.
      *    @access public
      */
-    function paintMessage($message) {
+    public function paintMessage($message)
+    {
     }
 
     /**
@@ -217,7 +239,8 @@ class SimpleScorer {
      *    @param string $message        Text to display.
      *    @access public
      */
-    function paintFormattedMessage($message) {
+    public function paintFormattedMessage($message)
+    {
     }
 
     /**
@@ -226,7 +249,8 @@ class SimpleScorer {
      *    @param mixed $payload      Message or object.
      *    @access public
      */
-    function paintSignal($type, $payload) {
+    public function paintSignal($type, $payload)
+    {
     }
 }
 
@@ -238,29 +262,32 @@ class SimpleScorer {
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class SimpleReporter extends SimpleScorer {
-    var $_test_stack;
-    var $_size;
-    var $_progress;
+class SimpleReporter extends SimpleScorer
+{
+    public $_test_stack;
+    public $_size;
+    public $_progress;
 
     /**
      *    Starts the display with no results in.
      *    @access public
      */
-    function SimpleReporter() {
+    public function SimpleReporter()
+    {
         $this->SimpleScorer();
         $this->_test_stack = [];
         $this->_size = null;
         $this->_progress = 0;
     }
-    
+
     /**
      *    Gets the formatter for variables and other small
      *    generic data items.
      *    @return SimpleDumper          Formatter.
      *    @access public
      */
-    function getDumper() {
+    public function getDumper()
+    {
         return new SimpleDumper();
     }
 
@@ -273,8 +300,9 @@ class SimpleReporter extends SimpleScorer {
      *    @param integer $size       Number of test cases starting.
      *    @access public
      */
-    function paintGroupStart($test_name, $size) {
-        if (! isset($this->_size)) {
+    public function paintGroupStart($test_name, $size)
+    {
+        if (!isset($this->_size)) {
             $this->_size = $size;
         }
         if (count($this->_test_stack) == 0) {
@@ -290,7 +318,8 @@ class SimpleReporter extends SimpleScorer {
      *    @param integer $progress   Number of test cases ending.
      *    @access public
      */
-    function paintGroupEnd($test_name) {
+    public function paintGroupEnd($test_name)
+    {
         array_pop($this->_test_stack);
         if (count($this->_test_stack) == 0) {
             $this->paintFooter($test_name);
@@ -305,8 +334,9 @@ class SimpleReporter extends SimpleScorer {
      *    @param string $test_name   Name of test that is starting.
      *    @access public
      */
-    function paintCaseStart($test_name) {
-        if (! isset($this->_size)) {
+    public function paintCaseStart($test_name)
+    {
+        if (!isset($this->_size)) {
             $this->_size = 1;
         }
         if (count($this->_test_stack) == 0) {
@@ -321,7 +351,8 @@ class SimpleReporter extends SimpleScorer {
      *    @param string $test_name   Name of test that is ending.
      *    @access public
      */
-    function paintCaseEnd($test_name) {
+    public function paintCaseEnd($test_name)
+    {
         $this->_progress++;
         array_pop($this->_test_stack);
         if (count($this->_test_stack) == 0) {
@@ -334,7 +365,8 @@ class SimpleReporter extends SimpleScorer {
      *    @param string $test_name   Name of test that is starting.
      *    @access public
      */
-    function paintMethodStart($test_name) {
+    public function paintMethodStart($test_name)
+    {
         $this->_test_stack[] = $test_name;
     }
 
@@ -344,7 +376,8 @@ class SimpleReporter extends SimpleScorer {
      *    @param string $test_name   Name of test that is ending.
      *    @access public
      */
-    function paintMethodEnd($test_name) {
+    public function paintMethodEnd($test_name)
+    {
         array_pop($this->_test_stack);
     }
 
@@ -355,7 +388,8 @@ class SimpleReporter extends SimpleScorer {
      *    @access public
      *    @abstract
      */
-    function paintHeader($test_name) {
+    public function paintHeader($test_name)
+    {
     }
 
     /**
@@ -364,7 +398,8 @@ class SimpleReporter extends SimpleScorer {
      *    @access public
      *    @abstract
      */
-    function paintFooter($test_name) {
+    public function paintFooter($test_name)
+    {
     }
 
     /**
@@ -374,7 +409,8 @@ class SimpleReporter extends SimpleScorer {
      *    @return array     List of methods in nesting order.
      *    @access public
      */
-    function getTestList() {
+    public function getTestList()
+    {
         return $this->_test_stack;
     }
 
@@ -385,7 +421,8 @@ class SimpleReporter extends SimpleScorer {
      *    @return integer   Total number of cases at start.
      *    @access public
      */
-    function getTestCaseCount() {
+    public function getTestCaseCount()
+    {
         return $this->_size;
     }
 
@@ -395,7 +432,8 @@ class SimpleReporter extends SimpleScorer {
      *    @return integer   Number of ended cases.
      *    @access public
      */
-    function getTestCaseProgress() {
+    public function getTestCaseProgress()
+    {
         return $this->_progress;
     }
 
@@ -405,7 +443,8 @@ class SimpleReporter extends SimpleScorer {
      *    @access public
      *    @static
      */
-    function inCli() {
+    public function inCli()
+    {
         return php_sapi_name() == 'cli';
     }
 }
@@ -415,14 +454,16 @@ class SimpleReporter extends SimpleScorer {
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class SimpleReporterDecorator {
-    var $_reporter;
+class SimpleReporterDecorator
+{
+    public $_reporter;
 
     /**
      *    Mediates between the reporter and the test case.
      *    @param SimpleScorer $reporter       Reporter to receive events.
      */
-    function SimpleReporterDecorator(&$reporter) {
+    public function SimpleReporterDecorator(&$reporter)
+    {
         $this->_reporter = &$reporter;
     }
 
@@ -433,7 +474,8 @@ class SimpleReporterDecorator {
      *    @param boolean $is_dry        Dry run if true.
      *    @access public
      */
-    function makeDry($is_dry = true) {
+    public function makeDry($is_dry = true)
+    {
         $this->_reporter->makeDry($is_dry);
     }
 
@@ -444,7 +486,8 @@ class SimpleReporterDecorator {
      *    @return boolean        True if no failures.
      *    @access public
      */
-    function getStatus() {
+    public function getStatus()
+    {
         return $this->_reporter->getStatus();
     }
 
@@ -455,7 +498,8 @@ class SimpleReporterDecorator {
      *    @return boolean                True if test should be run.
      *    @access public
      */
-    function shouldInvoke($test_case_name, $method) {
+    public function shouldInvoke($test_case_name, $method)
+    {
         return $this->_reporter->shouldInvoke($test_case_name, $method);
     }
 
@@ -466,17 +510,19 @@ class SimpleReporterDecorator {
      *    @return SimpleInvoker           Wrapped test runner.
      *    @access public
      */
-    function createInvoker(&$invoker) {
+    public function createInvoker(&$invoker)
+    {
         return $this->_reporter->createInvoker($invoker);
     }
-    
+
     /**
      *    Gets the formatter for variables and other small
      *    generic data items.
      *    @return SimpleDumper          Formatter.
      *    @access public
      */
-    function getDumper() {
+    public function getDumper()
+    {
         return $this->_reporter->getDumper();
     }
 
@@ -486,7 +532,8 @@ class SimpleReporterDecorator {
      *    @param integer $size         Number of test cases starting.
      *    @access public
      */
-    function paintGroupStart($test_name, $size) {
+    public function paintGroupStart($test_name, $size)
+    {
         $this->_reporter->paintGroupStart($test_name, $size);
     }
 
@@ -495,7 +542,8 @@ class SimpleReporterDecorator {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintGroupEnd($test_name) {
+    public function paintGroupEnd($test_name)
+    {
         $this->_reporter->paintGroupEnd($test_name);
     }
 
@@ -504,7 +552,8 @@ class SimpleReporterDecorator {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintCaseStart($test_name) {
+    public function paintCaseStart($test_name)
+    {
         $this->_reporter->paintCaseStart($test_name);
     }
 
@@ -513,7 +562,8 @@ class SimpleReporterDecorator {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintCaseEnd($test_name) {
+    public function paintCaseEnd($test_name)
+    {
         $this->_reporter->paintCaseEnd($test_name);
     }
 
@@ -522,7 +572,8 @@ class SimpleReporterDecorator {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintMethodStart($test_name) {
+    public function paintMethodStart($test_name)
+    {
         $this->_reporter->paintMethodStart($test_name);
     }
 
@@ -531,7 +582,8 @@ class SimpleReporterDecorator {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintMethodEnd($test_name) {
+    public function paintMethodEnd($test_name)
+    {
         $this->_reporter->paintMethodEnd($test_name);
     }
 
@@ -540,7 +592,8 @@ class SimpleReporterDecorator {
      *    @param string $message        Message is ignored.
      *    @access public
      */
-    function paintPass($message) {
+    public function paintPass($message)
+    {
         $this->_reporter->paintPass($message);
     }
 
@@ -549,7 +602,8 @@ class SimpleReporterDecorator {
      *    @param string $message        Message is ignored.
      *    @access public
      */
-    function paintFail($message) {
+    public function paintFail($message)
+    {
         $this->_reporter->paintFail($message);
     }
 
@@ -559,7 +613,8 @@ class SimpleReporterDecorator {
      *                              the test case.
      *    @access public
      */
-    function paintError($message) {
+    public function paintError($message)
+    {
         $this->_reporter->paintError($message);
     }
 
@@ -568,16 +623,18 @@ class SimpleReporterDecorator {
      *    @param Exception $exception        Exception to show.
      *    @access public
      */
-    function paintException($exception) {
+    public function paintException($exception)
+    {
         $this->_reporter->paintException($exception);
     }
-    
+
     /**
      *    Prints the message for skipping tests.
      *    @param string $message    Text of skip condition.
      *    @access public
      */
-    function paintSkip($message) {
+    public function paintSkip($message)
+    {
         $this->_reporter->paintSkip($message);
     }
 
@@ -586,7 +643,8 @@ class SimpleReporterDecorator {
      *    @param string $message        Text to display.
      *    @access public
      */
-    function paintMessage($message) {
+    public function paintMessage($message)
+    {
         $this->_reporter->paintMessage($message);
     }
 
@@ -595,7 +653,8 @@ class SimpleReporterDecorator {
      *    @param string $message        Text to display.
      *    @access public
      */
-    function paintFormattedMessage($message) {
+    public function paintFormattedMessage($message)
+    {
         $this->_reporter->paintFormattedMessage($message);
     }
 
@@ -608,7 +667,8 @@ class SimpleReporterDecorator {
      *                               test suite.
      *    @access public
      */
-    function paintSignal($type, &$payload) {
+    public function paintSignal($type, &$payload)
+    {
         $this->_reporter->paintSignal($type, $payload);
     }
 }
@@ -619,15 +679,17 @@ class SimpleReporterDecorator {
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class MultipleReporter {
-    var $_reporters = [];
+class MultipleReporter
+{
+    public $_reporters = [];
 
     /**
      *    Adds a reporter to the subscriber list.
      *    @param SimpleScorer $reporter     Reporter to receive events.
      *    @access public
      */
-    function attachReporter(&$reporter) {
+    public function attachReporter(&$reporter)
+    {
         $this->_reporters[] = &$reporter;
     }
 
@@ -638,7 +700,8 @@ class MultipleReporter {
      *    @param boolean $is_dry        Dry run if true.
      *    @access public
      */
-    function makeDry($is_dry = true) {
+    public function makeDry($is_dry = true)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->makeDry($is_dry);
         }
@@ -652,9 +715,10 @@ class MultipleReporter {
      *    @return boolean        True if no failures.
      *    @access public
      */
-    function getStatus() {
+    public function getStatus()
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
-            if (! $this->_reporters[$i]->getStatus()) {
+            if (!$this->_reporters[$i]->getStatus()) {
                 return false;
             }
         }
@@ -668,9 +732,10 @@ class MultipleReporter {
      *    @param string $method          Name of test method.
      *    @access public
      */
-    function shouldInvoke($test_case_name, $method) {
+    public function shouldInvoke($test_case_name, $method)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
-            if (! $this->_reporters[$i]->shouldInvoke($test_case_name, $method)) {
+            if (!$this->_reporters[$i]->shouldInvoke($test_case_name, $method)) {
                 return false;
             }
         }
@@ -683,20 +748,22 @@ class MultipleReporter {
      *    @return SimpleInvoker           Wrapped test runner.
      *    @access public
      */
-    function createInvoker(&$invoker) {
+    public function createInvoker(&$invoker)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $invoker = &$this->_reporters[$i]->createInvoker($invoker);
         }
         return $invoker;
     }
-    
+
     /**
      *    Gets the formatter for variables and other small
      *    generic data items.
      *    @return SimpleDumper          Formatter.
      *    @access public
      */
-    function getDumper() {
+    public function getDumper()
+    {
         return new SimpleDumper();
     }
 
@@ -706,7 +773,8 @@ class MultipleReporter {
      *    @param integer $size         Number of test cases starting.
      *    @access public
      */
-    function paintGroupStart($test_name, $size) {
+    public function paintGroupStart($test_name, $size)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintGroupStart($test_name, $size);
         }
@@ -717,7 +785,8 @@ class MultipleReporter {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintGroupEnd($test_name) {
+    public function paintGroupEnd($test_name)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintGroupEnd($test_name);
         }
@@ -728,7 +797,8 @@ class MultipleReporter {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintCaseStart($test_name) {
+    public function paintCaseStart($test_name)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintCaseStart($test_name);
         }
@@ -739,7 +809,8 @@ class MultipleReporter {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintCaseEnd($test_name) {
+    public function paintCaseEnd($test_name)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintCaseEnd($test_name);
         }
@@ -750,7 +821,8 @@ class MultipleReporter {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintMethodStart($test_name) {
+    public function paintMethodStart($test_name)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintMethodStart($test_name);
         }
@@ -761,7 +833,8 @@ class MultipleReporter {
      *    @param string $test_name     Name of test or other label.
      *    @access public
      */
-    function paintMethodEnd($test_name) {
+    public function paintMethodEnd($test_name)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintMethodEnd($test_name);
         }
@@ -772,7 +845,8 @@ class MultipleReporter {
      *    @param string $message        Message is ignored.
      *    @access public
      */
-    function paintPass($message) {
+    public function paintPass($message)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintPass($message);
         }
@@ -783,7 +857,8 @@ class MultipleReporter {
      *    @param string $message        Message is ignored.
      *    @access public
      */
-    function paintFail($message) {
+    public function paintFail($message)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintFail($message);
         }
@@ -795,18 +870,20 @@ class MultipleReporter {
      *                              the test case.
      *    @access public
      */
-    function paintError($message) {
+    public function paintError($message)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintError($message);
         }
     }
-    
+
     /**
      *    Chains to the wrapped reporter.
      *    @param Exception $exception    Exception to display.
      *    @access public
      */
-    function paintException($exception) {
+    public function paintException($exception)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintException($exception);
         }
@@ -817,7 +894,8 @@ class MultipleReporter {
      *    @param string $message    Text of skip condition.
      *    @access public
      */
-    function paintSkip($message) {
+    public function paintSkip($message)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintSkip($message);
         }
@@ -828,7 +906,8 @@ class MultipleReporter {
      *    @param string $message        Text to display.
      *    @access public
      */
-    function paintMessage($message) {
+    public function paintMessage($message)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintMessage($message);
         }
@@ -839,7 +918,8 @@ class MultipleReporter {
      *    @param string $message        Text to display.
      *    @access public
      */
-    function paintFormattedMessage($message) {
+    public function paintFormattedMessage($message)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintFormattedMessage($message);
         }
@@ -854,10 +934,10 @@ class MultipleReporter {
      *                               test suite.
      *    @access public
      */
-    function paintSignal($type, &$payload) {
+    public function paintSignal($type, &$payload)
+    {
         for ($i = 0; $i < count($this->_reporters); $i++) {
             $this->_reporters[$i]->paintSignal($type, $payload);
         }
     }
 }
-?>

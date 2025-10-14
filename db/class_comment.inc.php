@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -13,64 +18,59 @@
  *
  */
 
-
 /**
 *  setup the database fields for comment-object as global assoc-array
 */
-    global $comment_fields;
-    global $COMMENTTYPE_VALUES;
-    $comment_fields= [];
-    addProjectItemFields($comment_fields);
+global $comment_fields;
+global $COMMENTTYPE_VALUES;
+$comment_fields = [];
+addProjectItemFields($comment_fields);
 
-    foreach([
-        new FieldInternal([    'name'=>'id',
-            'default'=>0,
-            'in_db_object'=>1,
-            'in_db_item'=>1,
+foreach ([
+    new FieldInternal(['name' => 'id',
+        'default' => 0,
+        'in_db_object' => 1,
+        'in_db_item' => 1,
+    ]),
+        new FieldString(['name' => 'name',
+            'title' => __('Summary'),
+            'log_changes' => true,
         ]),
-            new FieldString([      'name'=>'name',
-                'title'=>__('Summary'),
-                'log_changes'=>true,
-            ]),
-            new FieldDatetime([    'name'=>'time',
-                'default'=>FINIT_NOW,
-                'view_in_forms'=>false,
-            ]),
-            new FieldHidden([      'name'=>'person',
-                'view_in_forms'=>true
-            ]),
-            new FieldHidden([      'name'=>'comment',
-                'view_in_forms'=>true
-            ]),
-            new FieldHidden([      'name'=>'task',
-                'view_in_forms'=>true
-            ]),
-            new FieldHidden([      'name'=>'effort'
-            ]),
-            new FieldInternal([      'name'=>'view_collapsed'
-            ]),
+        new FieldDatetime(['name' => 'time',
+            'default' => FINIT_NOW,
+            'view_in_forms' => false,
+        ]),
+        new FieldHidden(['name' => 'person',
+            'view_in_forms' => true,
+        ]),
+        new FieldHidden(['name' => 'comment',
+            'view_in_forms' => true,
+        ]),
+        new FieldHidden(['name' => 'task',
+            'view_in_forms' => true,
+        ]),
+        new FieldHidden(['name' => 'effort',
+        ]),
+        new FieldInternal(['name' => 'view_collapsed',
+        ]),
 
-            new FieldHidden([      'name'=>'file'
-            ]),
-            new FieldBool([        'name'=>'starts_discussion',
-                'title'=>'Starts Project Discussion',
-                'view_in_forms'=>false,         # save discussions as a later feature
-
-            ]),
-            new FieldText([        'name'=>'description',
-                'title'=>__('Details'),
-                'log_changes'=>true,
-
-            ]),
-            new FieldHidden([         'name'=>'occasion',
-                'default'=>$COMMENTTYPE_VALUES['Comment'],
-                'view_in_forms'=>true,         # save discussions as a later feature
-
-            ]),
-    ] as $f) {
-        $comment_fields[$f->name]=$f;
-    }
-
+        new FieldHidden(['name' => 'file',
+        ]),
+        new FieldBool(['name' => 'starts_discussion',
+            'title' => 'Starts Project Discussion',
+            'view_in_forms' => false,         # save discussions as a later feature
+        ]),
+        new FieldText(['name' => 'description',
+            'title' => __('Details'),
+            'log_changes' => true,
+        ]),
+        new FieldHidden(['name' => 'occasion',
+            'default' => $COMMENTTYPE_VALUES['Comment'],
+            'view_in_forms' => true,         # save discussions as a later feature
+        ]),
+] as $f) {
+    $comment_fields[$f->name] = $f;
+}
 
 /**
 * class for handling project - comments
@@ -82,34 +82,32 @@ class Comment extends DbProjectItem
     public $path;               # used for hierarchical sorting of comments
     public $num_children;       # displayed when viewed collapsed (folded)
 
-	//=== constructor ================================================
-	function __construct ($id_or_array=false)
+    //=== constructor ================================================
+    public function __construct($id_or_array = false)
     {
         global $comment_fields;
-        $this->fields= &$comment_fields;
+        $this->fields = &$comment_fields;
 
         parent::__construct($id_or_array);
-        if(!$this->type) {
-            $this->type= ITEM_COMMENT;
+        if (!$this->type) {
+            $this->type = ITEM_COMMENT;
         }
-        $this->num_children=0;
-   	}
-
+        $this->num_children = 0;
+    }
 
     /**
     * query from db
     *
     * - returns NULL if failed
     */
-    static function getById($id)
+    public static function getById($id)
     {
-        $c= new Comment(intval($id));
-        if($c->id) {
+        $c = new Comment(intval($id));
+        if ($c->id) {
             return $c;
         }
-        return NULL;
+        return null;
     }
-
 
     /**
     * query if visible for current user
@@ -118,35 +116,34 @@ class Comment extends DbProjectItem
     * - this function is slow
     * - lists should check visibility with sql-querries
     */
-    static function getVisibleById($id)
+    public static function getVisibleById($id)
     {
-        if($c= Comment::getById(intval($id))) {
-            if($c->id) {
-                if($p= Project::getById($c->project)) {
-                    if($p->validateViewItem($c)) {
+        if ($c = Comment::getById(intval($id))) {
+            if ($c->id) {
+                if ($p = Project::getById($c->project)) {
+                    if ($p->validateViewItem($c)) {
                         return $c;
                     }
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
     /**
     * query if editable for current user
     */
-    static function getEditableById($id)
+    public static function getEditableById($id)
     {
-        if($c= Comment::getById(intval($id))) {
-            if($p= Project::getById($c->project)) {
-                if($p->validateEditItem($c)) {
+        if ($c = Comment::getById(intval($id))) {
+            if ($p = Project::getById($c->project)) {
+                if ($p->validateEditItem($c)) {
                     return $c;
                 }
             }
         }
-        return NULL;
+        return null;
     }
-
 
     /**
     * getSubComments
@@ -155,101 +152,98 @@ class Comment extends DbProjectItem
     */
     public function getSubComments()
     {
-        if(!$project= Project::getById($this->project)) {
+        if (!$project = Project::getById($this->project)) {
             return [];
         }
-        
-        $comments= Comment::getAll([
-            'parent_comment'=> $this->id        
+
+        $comments = Comment::getAll([
+            'parent_comment' => $this->id,
         ]);
-        
+
         return $comments;
     }
-
 
     /**
     * getComments($project=false)
     */
-    static function getAll($args=[])
+    public static function getAll($args = [])
     {
         global $auth;
-		$prefix = confGet('DB_TABLE_PREFIX');
+        $prefix = confGet('DB_TABLE_PREFIX');
         require_once(confGet('DIR_STREBER') . 'db/class_comment.inc.php');
 
         ### default params ###
-        $order_by=      'c.name';
-        $visible_only=  true;   # use project rights settings
-        $alive_only=    true;   # ignore deleted
-        $project=       NULL;
-        $task=          NULL;
-        $person=        NULL;
-        $date_min=      NULL;
-        $date_max=      NULL;
-        $search=        NULL;
-        $parent_comment= NULL;
+        $order_by = 'c.name';
+        $visible_only = true;   # use project rights settings
+        $alive_only = true;   # ignore deleted
+        $project = null;
+        $task = null;
+        $person = null;
+        $date_min = null;
+        $date_max = null;
+        $search = null;
+        $parent_comment = null;
 
         ### filter params ###
-        if($args) {
-            foreach($args as $key=>$value) {
-                if(!isset($$key) && !is_null($$key) && !$$key==="") {
-                    trigger_error("unknown parameter",E_USER_NOTICE);
-                }
-                else {
-                    $$key= $value;
+        if ($args) {
+            foreach ($args as $key => $value) {
+                if (!isset($$key) && !is_null($$key) && !$$key === '') {
+                    trigger_error('unknown parameter', E_USER_NOTICE);
+                } else {
+                    $$key = $value;
                 }
             }
         }
 
-        $dbh = new DB_Mysql;
+        $dbh = new DB_Mysql();
 
-        $str_is_alive= $alive_only
+        $str_is_alive = $alive_only
         ? 'AND i.state=1'
         : '';
 
-        $AND_person= $person
-        ? 'AND i.created_by='. intval($person)
+        $AND_person = $person
+        ? 'AND i.created_by=' . intval($person)
         : '';
 
-        $AND_task= $task
-        ? 'AND c.task='. intval($task)
+        $AND_task = $task
+        ? 'AND c.task=' . intval($task)
         : '';
 
-        $AND_match= $search
-        ? "AND (MATCH (c.name,c.description) AGAINST ('". asMatchString($search)."*'  IN BOOLEAN MODE))"
+        $AND_match = $search
+        ? "AND (MATCH (c.name,c.description) AGAINST ('" . asMatchString($search) . "*'  IN BOOLEAN MODE))"
         : '';
 
-        $AND_project1= $project
+        $AND_project1 = $project
         ? "AND upp.project= $project"
-        : "";
+        : '';
 
-        $AND_project2= $project
+        $AND_project2 = $project
         ? "AND i.project= $project"
-        : "";
+        : '';
 
-        $AND_date_min= $date_min
-            ? "AND i.modified >= '". asCleanString($date_min)."'"
+        $AND_date_min = $date_min
+            ? "AND i.modified >= '" . asCleanString($date_min) . "'"
             : '';
 
-        $AND_date_max= $date_max
-            ? "AND i.modified <= '". asCleanString($date_max)."'"
+        $AND_date_max = $date_max
+            ? "AND i.modified <= '" . asCleanString($date_max) . "'"
             : '';
 
-        if(!is_null($parent_comment)) {
-            $AND_comment= 'AND c.comment = ' . intval($parent_comment);
-        }
-        else {
-            $AND_comment= '';
+        if (!is_null($parent_comment)) {
+            $AND_comment = 'AND c.comment = ' . intval($parent_comment);
+        } else {
+            $AND_comment = '';
         }
 
-        if($visible_only) {
-            $str_query=
+        if ($visible_only) {
+            $str_query =
             "SELECT i.*, c.* from {$prefix}item i, {$prefix}comment c, {$prefix}projectperson upp
             WHERE
                     upp.person = {$auth->cur_user->id}
                 $AND_project1
                 AND upp.state = 1
 
-                AND i.type = '".ITEM_COMMENT."'
+                AND i.type = '" . ITEM_COMMENT . "'
                 AND i.project = upp.project
                 $AND_project2
                 $str_is_alive
@@ -266,13 +260,12 @@ class Comment extends DbProjectItem
                 $AND_match
                 $AND_comment
 
-            ". getOrderByString($order_by);
-        }
-        else {
-            $str_query=
+            " . getOrderByString($order_by);
+        } else {
+            $str_query =
             "SELECT i.*, c.* from {$prefix}item i, {$prefix}comment c
             WHERE
-                    i.type = '".ITEM_COMMENT."'
+                    i.type = '" . ITEM_COMMENT . "'
                 $AND_project2
                 $str_is_alive
                 $AND_person
@@ -284,30 +277,23 @@ class Comment extends DbProjectItem
                 $AND_comment
                 $AND_match
 
-            ". getOrderByString($order_by);
-
+            " . getOrderByString($order_by);
         }
 
-        $sth= $dbh->prepare($str_query);
-    	$sth->execute("",1);
-    	$tmp=$sth->fetchall_assoc();
-    	$comments=[];
-        foreach($tmp as $n) {
-            $comment=new Comment($n);
-            $comments[]= $comment;
+        $sth = $dbh->prepare($str_query);
+        $sth->execute('', 1);
+        $tmp = $sth->fetchall_assoc();
+        $comments = [];
+        foreach ($tmp as $n) {
+            $comment = new Comment($n);
+            $comments[] = $comment;
         }
         return $comments;
-
     }
 
     public function getLink()
     {
         global $PH;
-        return $PH->getLink('commentView', $this->name, ['comment'=>$this->id]);
+        return $PH->getLink('commentView', $this->name, ['comment' => $this->id]);
     }
 }
-
-
-
-
-?>

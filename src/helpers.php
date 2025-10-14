@@ -7,8 +7,8 @@
  * for both new and legacy code.
  */
 
-use Streber\Container;
 use Streber\Config;
+use Streber\Container;
 
 if (!function_exists('container')) {
     /**
@@ -52,7 +52,7 @@ if (!function_exists('config')) {
 
         // Register config service if not already registered
         if (!$container->has('config')) {
-            $container->setFactory('config', function() {
+            $container->setFactory('config', function () {
                 return new Config();
             });
         }

@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -8,7 +13,6 @@
  * included by: @render_page
  * @author     Thomas Mann
  */
-
 
 /**
 * provide front-end for rendering and manimpulating lists
@@ -25,12 +29,11 @@ class FilesAttachedToItemBlock extends PageBlock
 {
     public $item_with_attachments;
 
-    function __construct($item)
+    public function __construct($item)
     {
-        parent::__construct(NULL);
+        parent::__construct(null);
         $this->item_with_attachments = $item;
     }
-
 
     public function __toString()
     {
@@ -38,12 +41,12 @@ class FilesAttachedToItemBlock extends PageBlock
         global $auth;
 
         require_once(confGet('DIR_STREBER') . 'lists/list_files.inc.php');
-        $files= File::getall(['parent_item'=> $this->item_with_attachments->id]);
+        $files = File::getall(['parent_item' => $this->item_with_attachments->id]);
 
-        $list= new ListBlock_files();
-        $list->reduced_header= true;
-        $list->query_options['parent_item']= $this->item_with_attachments->id;
-        $list->show_functions=false;
+        $list = new ListBlock_files();
+        $list->reduced_header = true;
+        $list->query_options['parent_item'] = $this->item_with_attachments->id;
+        $list->show_functions = false;
 
         unset($list->columns['status']);
         unset($list->columns['mimetype']);
@@ -60,16 +63,15 @@ class FilesAttachedToItemBlock extends PageBlock
         unset($list->functions['fileEdit']);
         unset($list->functions['filesDelete']);
 
-        $list->title=__('Attached files');
+        $list->title = __('Attached files');
 
-        if($this->item_with_attachments->isEditable()) {
-            $list->summary= buildFileUploadForm( $this->item_with_attachments );
+        if ($this->item_with_attachments->isEditable()) {
+            $list->summary = buildFileUploadForm($this->item_with_attachments);
         }
-        
-        $list->print_automatic($project);
-        $PH->go_submit= $PH->getValidPage('filesUpload')->id;
-        
-        return "";
-    }
 
+        $list->print_automatic($project);
+        $PH->go_submit = $PH->getValidPage('filesUpload')->id;
+
+        return '';
+    }
 }

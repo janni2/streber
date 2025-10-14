@@ -1,287 +1,311 @@
 <?php
+
 // $Id: parser_test.php 1608 2007-12-27 09:03:07Z pp11 $
 require_once(dirname(__FILE__) . '/../autorun.php');
 require_once(dirname(__FILE__) . '/../parser.php');
 Mock::generate('SimpleHtmlSaxParser');
 Mock::generate('SimpleSaxListener');
 
-class TestOfParallelRegex extends UnitTestCase {
-    
-    function testNoPatterns() {
+class TestOfParallelRegex extends UnitTestCase
+{
+    public function testNoPatterns()
+    {
         $regex = new ParallelRegex(false);
-        $this->assertFalse($regex->match("Hello", $match));
-        $this->assertEqual($match, "");
+        $this->assertFalse($regex->match('Hello', $match));
+        $this->assertEqual($match, '');
     }
-    
-    function testNoSubject() {
+
+    public function testNoSubject()
+    {
         $regex = new ParallelRegex(false);
-        $regex->addPattern(".*");
-        $this->assertTrue($regex->match("", $match));
-        $this->assertEqual($match, "");
+        $regex->addPattern('.*');
+        $this->assertTrue($regex->match('', $match));
+        $this->assertEqual($match, '');
     }
-    
-    function testMatchAll() {
+
+    public function testMatchAll()
+    {
         $regex = new ParallelRegex(false);
-        $regex->addPattern(".*");
-        $this->assertTrue($regex->match("Hello", $match));
-        $this->assertEqual($match, "Hello");
+        $regex->addPattern('.*');
+        $this->assertTrue($regex->match('Hello', $match));
+        $this->assertEqual($match, 'Hello');
     }
-    
-    function testCaseSensitive() {
+
+    public function testCaseSensitive()
+    {
         $regex = new ParallelRegex(true);
-        $regex->addPattern("abc");
-        $this->assertTrue($regex->match("abcdef", $match));
-        $this->assertEqual($match, "abc");
-        $this->assertTrue($regex->match("AAABCabcdef", $match));
-        $this->assertEqual($match, "abc");
+        $regex->addPattern('abc');
+        $this->assertTrue($regex->match('abcdef', $match));
+        $this->assertEqual($match, 'abc');
+        $this->assertTrue($regex->match('AAABCabcdef', $match));
+        $this->assertEqual($match, 'abc');
     }
-    
-    function testCaseInsensitive() {
+
+    public function testCaseInsensitive()
+    {
         $regex = new ParallelRegex(false);
-        $regex->addPattern("abc");
-        $this->assertTrue($regex->match("abcdef", $match));
-        $this->assertEqual($match, "abc");
-        $this->assertTrue($regex->match("AAABCabcdef", $match));
-        $this->assertEqual($match, "ABC");
+        $regex->addPattern('abc');
+        $this->assertTrue($regex->match('abcdef', $match));
+        $this->assertEqual($match, 'abc');
+        $this->assertTrue($regex->match('AAABCabcdef', $match));
+        $this->assertEqual($match, 'ABC');
     }
-    
-    function testMatchMultiple() {
+
+    public function testMatchMultiple()
+    {
         $regex = new ParallelRegex(true);
-        $regex->addPattern("abc");
-        $regex->addPattern("ABC");
-        $this->assertTrue($regex->match("abcdef", $match));
-        $this->assertEqual($match, "abc");
-        $this->assertTrue($regex->match("AAABCabcdef", $match));
-        $this->assertEqual($match, "ABC");
-        $this->assertFalse($regex->match("Hello", $match));
+        $regex->addPattern('abc');
+        $regex->addPattern('ABC');
+        $this->assertTrue($regex->match('abcdef', $match));
+        $this->assertEqual($match, 'abc');
+        $this->assertTrue($regex->match('AAABCabcdef', $match));
+        $this->assertEqual($match, 'ABC');
+        $this->assertFalse($regex->match('Hello', $match));
     }
-    
-    function testPatternLabels() {
+
+    public function testPatternLabels()
+    {
         $regex = new ParallelRegex(false);
-        $regex->addPattern("abc", "letter");
-        $regex->addPattern("123", "number");
-        $this->assertIdentical($regex->match("abcdef", $match), "letter");
-        $this->assertEqual($match, "abc");
-        $this->assertIdentical($regex->match("0123456789", $match), "number");
-        $this->assertEqual($match, "123");
+        $regex->addPattern('abc', 'letter');
+        $regex->addPattern('123', 'number');
+        $this->assertIdentical($regex->match('abcdef', $match), 'letter');
+        $this->assertEqual($match, 'abc');
+        $this->assertIdentical($regex->match('0123456789', $match), 'number');
+        $this->assertEqual($match, '123');
     }
 }
 
-class TestOfStateStack extends UnitTestCase {
-    
-    function testStartState() {
-        $stack = new SimpleStateStack("one");
-        $this->assertEqual($stack->getCurrent(), "one");
+class TestOfStateStack extends UnitTestCase
+{
+    public function testStartState()
+    {
+        $stack = new SimpleStateStack('one');
+        $this->assertEqual($stack->getCurrent(), 'one');
     }
-    
-    function testExhaustion() {
-        $stack = new SimpleStateStack("one");
+
+    public function testExhaustion()
+    {
+        $stack = new SimpleStateStack('one');
         $this->assertFalse($stack->leave());
     }
-    
-    function testStateMoves() {
-        $stack = new SimpleStateStack("one");
-        $stack->enter("two");
-        $this->assertEqual($stack->getCurrent(), "two");
-        $stack->enter("three");
-        $this->assertEqual($stack->getCurrent(), "three");
+
+    public function testStateMoves()
+    {
+        $stack = new SimpleStateStack('one');
+        $stack->enter('two');
+        $this->assertEqual($stack->getCurrent(), 'two');
+        $stack->enter('three');
+        $this->assertEqual($stack->getCurrent(), 'three');
         $this->assertTrue($stack->leave());
-        $this->assertEqual($stack->getCurrent(), "two");
-        $stack->enter("third");
-        $this->assertEqual($stack->getCurrent(), "third");
+        $this->assertEqual($stack->getCurrent(), 'two');
+        $stack->enter('third');
+        $this->assertEqual($stack->getCurrent(), 'third');
         $this->assertTrue($stack->leave());
         $this->assertTrue($stack->leave());
-        $this->assertEqual($stack->getCurrent(), "one");
+        $this->assertEqual($stack->getCurrent(), 'one');
     }
 }
 
-class TestParser {
-    
-    function accept() {
+class TestParser
+{
+    public function accept()
+    {
     }
-    
-    function a() {
+
+    public function a()
+    {
     }
-    
-    function b() {
+
+    public function b()
+    {
     }
 }
 Mock::generate('TestParser');
 
-class TestOfLexer extends UnitTestCase {
-    
-    function testEmptyPage() {
+class TestOfLexer extends UnitTestCase
+{
+    public function testEmptyPage()
+    {
         $handler = new MockTestParser();
-        $handler->expectNever("accept");
-        $handler->setReturnValue("accept", true);
-        $handler->expectNever("accept");
-        $handler->setReturnValue("accept", true);
+        $handler->expectNever('accept');
+        $handler->setReturnValue('accept', true);
+        $handler->expectNever('accept');
+        $handler->setReturnValue('accept', true);
         $lexer = new SimpleLexer($handler);
-        $lexer->addPattern("a+");
-        $this->assertTrue($lexer->parse(""));
+        $lexer->addPattern('a+');
+        $this->assertTrue($lexer->parse(''));
     }
-    
-    function testSinglePattern() {
+
+    public function testSinglePattern()
+    {
         $handler = new MockTestParser();
-        $handler->expectArgumentsAt(0, "accept", ["aaa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(1, "accept", ["x", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(2, "accept", ["a", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(3, "accept", ["yyy", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(4, "accept", ["a", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(5, "accept", ["x", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(6, "accept", ["aaa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(7, "accept", ["z", LEXER_UNMATCHED]);
-        $handler->expectCallCount("accept", 8);
-        $handler->setReturnValue("accept", true);
+        $handler->expectArgumentsAt(0, 'accept', ['aaa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(1, 'accept', ['x', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(2, 'accept', ['a', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(3, 'accept', ['yyy', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(4, 'accept', ['a', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(5, 'accept', ['x', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(6, 'accept', ['aaa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(7, 'accept', ['z', LEXER_UNMATCHED]);
+        $handler->expectCallCount('accept', 8);
+        $handler->setReturnValue('accept', true);
         $lexer = new SimpleLexer($handler);
-        $lexer->addPattern("a+");
-        $this->assertTrue($lexer->parse("aaaxayyyaxaaaz"));
+        $lexer->addPattern('a+');
+        $this->assertTrue($lexer->parse('aaaxayyyaxaaaz'));
     }
-    
-    function testMultiplePattern() {
+
+    public function testMultiplePattern()
+    {
         $handler = new MockTestParser();
-        $target = ["a", "b", "a", "bb", "x", "b", "a", "xxxxxx", "a", "x"];
+        $target = ['a', 'b', 'a', 'bb', 'x', 'b', 'a', 'xxxxxx', 'a', 'x'];
         for ($i = 0; $i < count($target); $i++) {
-            $handler->expectArgumentsAt($i, "accept", [$target[$i], '*']);
+            $handler->expectArgumentsAt($i, 'accept', [$target[$i], '*']);
         }
-        $handler->expectCallCount("accept", count($target));
-        $handler->setReturnValue("accept", true);
+        $handler->expectCallCount('accept', count($target));
+        $handler->setReturnValue('accept', true);
         $lexer = new SimpleLexer($handler);
-        $lexer->addPattern("a+");
-        $lexer->addPattern("b+");
-        $this->assertTrue($lexer->parse("ababbxbaxxxxxxax"));
+        $lexer->addPattern('a+');
+        $lexer->addPattern('b+');
+        $this->assertTrue($lexer->parse('ababbxbaxxxxxxax'));
     }
 }
 
-class TestOfLexerModes extends UnitTestCase {
-    
-    function testIsolatedPattern() {
+class TestOfLexerModes extends UnitTestCase
+{
+    public function testIsolatedPattern()
+    {
         $handler = new MockTestParser();
-        $handler->expectArgumentsAt(0, "a", ["a", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(1, "a", ["b", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(2, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(3, "a", ["bxb", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(4, "a", ["aaa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(5, "a", ["x", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(6, "a", ["aaaa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(7, "a", ["x", LEXER_UNMATCHED]);
-        $handler->expectCallCount("a", 8);
-        $handler->setReturnValue("a", true);
-        $lexer = new SimpleLexer($handler, "a");
-        $lexer->addPattern("a+", "a");
-        $lexer->addPattern("b+", "b");
-        $this->assertTrue($lexer->parse("abaabxbaaaxaaaax"));
+        $handler->expectArgumentsAt(0, 'a', ['a', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(1, 'a', ['b', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(2, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(3, 'a', ['bxb', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(4, 'a', ['aaa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(5, 'a', ['x', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(6, 'a', ['aaaa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(7, 'a', ['x', LEXER_UNMATCHED]);
+        $handler->expectCallCount('a', 8);
+        $handler->setReturnValue('a', true);
+        $lexer = new SimpleLexer($handler, 'a');
+        $lexer->addPattern('a+', 'a');
+        $lexer->addPattern('b+', 'b');
+        $this->assertTrue($lexer->parse('abaabxbaaaxaaaax'));
     }
-    
-    function testModeChange() {
+
+    public function testModeChange()
+    {
         $handler = new MockTestParser();
-        $handler->expectArgumentsAt(0, "a", ["a", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(1, "a", ["b", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(2, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(3, "a", ["b", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(4, "a", ["aaa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(0, "b", [":", LEXER_ENTER]);
-        $handler->expectArgumentsAt(1, "b", ["a", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(2, "b", ["b", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(3, "b", ["a", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(4, "b", ["bb", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(5, "b", ["a", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(6, "b", ["bbb", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(7, "b", ["a", LEXER_UNMATCHED]);
-        $handler->expectCallCount("a", 5);
-        $handler->expectCallCount("b", 8);
-        $handler->setReturnValue("a", true);
-        $handler->setReturnValue("b", true);
-        $lexer = new SimpleLexer($handler, "a");
-        $lexer->addPattern("a+", "a");
-        $lexer->addEntryPattern(":", "a", "b");
-        $lexer->addPattern("b+", "b");
-        $this->assertTrue($lexer->parse("abaabaaa:ababbabbba"));
+        $handler->expectArgumentsAt(0, 'a', ['a', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(1, 'a', ['b', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(2, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(3, 'a', ['b', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(4, 'a', ['aaa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(0, 'b', [':', LEXER_ENTER]);
+        $handler->expectArgumentsAt(1, 'b', ['a', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(2, 'b', ['b', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(3, 'b', ['a', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(4, 'b', ['bb', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(5, 'b', ['a', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(6, 'b', ['bbb', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(7, 'b', ['a', LEXER_UNMATCHED]);
+        $handler->expectCallCount('a', 5);
+        $handler->expectCallCount('b', 8);
+        $handler->setReturnValue('a', true);
+        $handler->setReturnValue('b', true);
+        $lexer = new SimpleLexer($handler, 'a');
+        $lexer->addPattern('a+', 'a');
+        $lexer->addEntryPattern(':', 'a', 'b');
+        $lexer->addPattern('b+', 'b');
+        $this->assertTrue($lexer->parse('abaabaaa:ababbabbba'));
     }
-    
-    function testNesting() {
+
+    public function testNesting()
+    {
         $handler = new MockTestParser();
-        $handler->setReturnValue("a", true);
-        $handler->setReturnValue("b", true);
-        $handler->expectArgumentsAt(0, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(1, "a", ["b", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(2, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(3, "a", ["b", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(0, "b", ["(", LEXER_ENTER]);
-        $handler->expectArgumentsAt(1, "b", ["bb", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(2, "b", ["a", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(3, "b", ["bb", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(4, "b", [")", LEXER_EXIT]);
-        $handler->expectArgumentsAt(4, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(5, "a", ["b", LEXER_UNMATCHED]);
-        $handler->expectCallCount("a", 6);
-        $handler->expectCallCount("b", 5);
-        $lexer = new SimpleLexer($handler, "a");
-        $lexer->addPattern("a+", "a");
-        $lexer->addEntryPattern("(", "a", "b");
-        $lexer->addPattern("b+", "b");
-        $lexer->addExitPattern(")", "b");
-        $this->assertTrue($lexer->parse("aabaab(bbabb)aab"));
+        $handler->setReturnValue('a', true);
+        $handler->setReturnValue('b', true);
+        $handler->expectArgumentsAt(0, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(1, 'a', ['b', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(2, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(3, 'a', ['b', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(0, 'b', ['(', LEXER_ENTER]);
+        $handler->expectArgumentsAt(1, 'b', ['bb', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(2, 'b', ['a', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(3, 'b', ['bb', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(4, 'b', [')', LEXER_EXIT]);
+        $handler->expectArgumentsAt(4, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(5, 'a', ['b', LEXER_UNMATCHED]);
+        $handler->expectCallCount('a', 6);
+        $handler->expectCallCount('b', 5);
+        $lexer = new SimpleLexer($handler, 'a');
+        $lexer->addPattern('a+', 'a');
+        $lexer->addEntryPattern('(', 'a', 'b');
+        $lexer->addPattern('b+', 'b');
+        $lexer->addExitPattern(')', 'b');
+        $this->assertTrue($lexer->parse('aabaab(bbabb)aab'));
     }
-    
-    function testSingular() {
+
+    public function testSingular()
+    {
         $handler = new MockTestParser();
-        $handler->setReturnValue("a", true);
-        $handler->setReturnValue("b", true);
-        $handler->expectArgumentsAt(0, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(1, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(2, "a", ["xx", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(3, "a", ["xx", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(0, "b", ["b", LEXER_SPECIAL]);
-        $handler->expectArgumentsAt(1, "b", ["bbb", LEXER_SPECIAL]);
-        $handler->expectCallCount("a", 4);
-        $handler->expectCallCount("b", 2);
-        $lexer = new SimpleLexer($handler, "a");
-        $lexer->addPattern("a+", "a");
-        $lexer->addSpecialPattern("b+", "a", "b");
-        $this->assertTrue($lexer->parse("aabaaxxbbbxx"));
+        $handler->setReturnValue('a', true);
+        $handler->setReturnValue('b', true);
+        $handler->expectArgumentsAt(0, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(1, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(2, 'a', ['xx', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(3, 'a', ['xx', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(0, 'b', ['b', LEXER_SPECIAL]);
+        $handler->expectArgumentsAt(1, 'b', ['bbb', LEXER_SPECIAL]);
+        $handler->expectCallCount('a', 4);
+        $handler->expectCallCount('b', 2);
+        $lexer = new SimpleLexer($handler, 'a');
+        $lexer->addPattern('a+', 'a');
+        $lexer->addSpecialPattern('b+', 'a', 'b');
+        $this->assertTrue($lexer->parse('aabaaxxbbbxx'));
     }
-    
-    function testUnwindTooFar() {
+
+    public function testUnwindTooFar()
+    {
         $handler = new MockTestParser();
-        $handler->setReturnValue("a", true);
-        $handler->expectArgumentsAt(0, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(1, "a", [")", LEXER_EXIT]);
-        $handler->expectCallCount("a", 2);
-        $lexer = new SimpleLexer($handler, "a");
-        $lexer->addPattern("a+", "a");
-        $lexer->addExitPattern(")", "a");
-        $this->assertFalse($lexer->parse("aa)aa"));
+        $handler->setReturnValue('a', true);
+        $handler->expectArgumentsAt(0, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(1, 'a', [')', LEXER_EXIT]);
+        $handler->expectCallCount('a', 2);
+        $lexer = new SimpleLexer($handler, 'a');
+        $lexer->addPattern('a+', 'a');
+        $lexer->addExitPattern(')', 'a');
+        $this->assertFalse($lexer->parse('aa)aa'));
     }
 }
 
-class TestOfLexerHandlers extends UnitTestCase {
-    
-    function testModeMapping() {
+class TestOfLexerHandlers extends UnitTestCase
+{
+    public function testModeMapping()
+    {
         $handler = new MockTestParser();
-        $handler->setReturnValue("a", true);
-        $handler->expectArgumentsAt(0, "a", ["aa", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(1, "a", ["(", LEXER_ENTER]);
-        $handler->expectArgumentsAt(2, "a", ["bb", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(3, "a", ["a", LEXER_UNMATCHED]);
-        $handler->expectArgumentsAt(4, "a", ["bb", LEXER_MATCHED]);
-        $handler->expectArgumentsAt(5, "a", [")", LEXER_EXIT]);
-        $handler->expectArgumentsAt(6, "a", ["b", LEXER_UNMATCHED]);
-        $handler->expectCallCount("a", 7);
-        $lexer = new SimpleLexer($handler, "mode_a");
-        $lexer->addPattern("a+", "mode_a");
-        $lexer->addEntryPattern("(", "mode_a", "mode_b");
-        $lexer->addPattern("b+", "mode_b");
-        $lexer->addExitPattern(")", "mode_b");
-        $lexer->mapHandler("mode_a", "a");
-        $lexer->mapHandler("mode_b", "a");
-        $this->assertTrue($lexer->parse("aa(bbabb)b"));
+        $handler->setReturnValue('a', true);
+        $handler->expectArgumentsAt(0, 'a', ['aa', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(1, 'a', ['(', LEXER_ENTER]);
+        $handler->expectArgumentsAt(2, 'a', ['bb', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(3, 'a', ['a', LEXER_UNMATCHED]);
+        $handler->expectArgumentsAt(4, 'a', ['bb', LEXER_MATCHED]);
+        $handler->expectArgumentsAt(5, 'a', [')', LEXER_EXIT]);
+        $handler->expectArgumentsAt(6, 'a', ['b', LEXER_UNMATCHED]);
+        $handler->expectCallCount('a', 7);
+        $lexer = new SimpleLexer($handler, 'mode_a');
+        $lexer->addPattern('a+', 'mode_a');
+        $lexer->addEntryPattern('(', 'mode_a', 'mode_b');
+        $lexer->addPattern('b+', 'mode_b');
+        $lexer->addExitPattern(')', 'mode_b');
+        $lexer->mapHandler('mode_a', 'a');
+        $lexer->mapHandler('mode_b', 'a');
+        $this->assertTrue($lexer->parse('aa(bbabb)b'));
     }
 }
 
-class TestOfSimpleHtmlLexer extends UnitTestCase {
-    
-    function createParser() {
+class TestOfSimpleHtmlLexer extends UnitTestCase
+{
+    public function createParser()
+    {
         $parser = new MockSimpleHtmlSaxParser();
         $parser->setReturnValue('acceptStartToken', true);
         $parser->setReturnValue('acceptEndToken', true);
@@ -291,8 +315,9 @@ class TestOfSimpleHtmlLexer extends UnitTestCase {
         $parser->setReturnValue('ignore', true);
         return $parser;
     }
-    
-    function testNoContent() {
+
+    public function testNoContent()
+    {
         $parser = &$this->createParser();
         $parser->expectNever('acceptStartToken');
         $parser->expectNever('acceptEndToken');
@@ -302,39 +327,44 @@ class TestOfSimpleHtmlLexer extends UnitTestCase {
         $lexer = new SimpleHtmlLexer($parser);
         $this->assertTrue($lexer->parse(''));
     }
-    
-    function testUninteresting() {
+
+    public function testUninteresting()
+    {
         $parser = &$this->createParser();
         $parser->expectOnce('acceptTextToken', ['<html></html>', '*']);
         $lexer = new SimpleHtmlLexer($parser);
         $this->assertTrue($lexer->parse('<html></html>'));
     }
-    
-    function testSkipCss() {
+
+    public function testSkipCss()
+    {
         $parser = &$this->createParser();
         $parser->expectNever('acceptTextToken');
         $parser->expectAtLeastOnce('ignore');
         $lexer = new SimpleHtmlLexer($parser);
         $this->assertTrue($lexer->parse("<style>Lot's of styles</style>"));
     }
-    
-    function testSkipJavaScript() {
+
+    public function testSkipJavaScript()
+    {
         $parser = &$this->createParser();
         $parser->expectNever('acceptTextToken');
         $parser->expectAtLeastOnce('ignore');
         $lexer = new SimpleHtmlLexer($parser);
         $this->assertTrue($lexer->parse("<SCRIPT>Javascript code {';:^%^%£$'@\"*(}</SCRIPT>"));
     }
-    
-    function testSkipHtmlComments() {
+
+    public function testSkipHtmlComments()
+    {
         $parser = &$this->createParser();
         $parser->expectNever('acceptTextToken');
         $parser->expectAtLeastOnce('ignore');
         $lexer = new SimpleHtmlLexer($parser);
-        $this->assertTrue($lexer->parse("<!-- <title>title</title><style>styles</style> -->"));
+        $this->assertTrue($lexer->parse('<!-- <title>title</title><style>styles</style> -->'));
     }
-    
-    function testTagWithNoAttributes() {
+
+    public function testTagWithNoAttributes()
+    {
         $parser = &$this->createParser();
         $parser->expectAt(0, 'acceptStartToken', ['<title', '*']);
         $parser->expectAt(1, 'acceptStartToken', ['>', '*']);
@@ -344,8 +374,9 @@ class TestOfSimpleHtmlLexer extends UnitTestCase {
         $lexer = new SimpleHtmlLexer($parser);
         $this->assertTrue($lexer->parse('<title>Hello</title>'));
     }
-    
-    function testTagWithAttributes() {
+
+    public function testTagWithAttributes()
+    {
         $parser = &$this->createParser();
         $parser->expectOnce('acceptTextToken', ['label', '*']);
         $parser->expectAt(0, 'acceptStartToken', ['<a', '*']);
@@ -362,17 +393,19 @@ class TestOfSimpleHtmlLexer extends UnitTestCase {
     }
 }
 
-class TestOfHtmlSaxParser extends UnitTestCase {
-    
-    function createListener() {
+class TestOfHtmlSaxParser extends UnitTestCase
+{
+    public function createListener()
+    {
         $listener = new MockSimpleSaxListener();
         $listener->setReturnValue('startElement', true);
         $listener->setReturnValue('addContent', true);
         $listener->setReturnValue('endElement', true);
         return $listener;
     }
-    
-    function testFramesetTag() {
+
+    public function testFramesetTag()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce('startElement', ['frameset', []]);
         $listener->expectOnce('addContent', ['Frames']);
@@ -380,17 +413,20 @@ class TestOfHtmlSaxParser extends UnitTestCase {
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<frameset>Frames</frameset>'));
     }
-    
-    function testTagWithUnquotedAttributes() {
+
+    public function testTagWithUnquotedAttributes()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce(
-                'startElement',
-                ['input', ['name' => 'a.b.c', 'value' => 'd']]);
+            'startElement',
+            ['input', ['name' => 'a.b.c', 'value' => 'd']]
+        );
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<input name=a.b.c value = d>'));
     }
-    
-    function testTagInsideContent() {
+
+    public function testTagInsideContent()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce('startElement', ['a', []]);
         $listener->expectAt(0, 'addContent', ['<html>']);
@@ -398,8 +434,9 @@ class TestOfHtmlSaxParser extends UnitTestCase {
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<html><a></a></html>'));
     }
-    
-    function testTagWithInternalContent() {
+
+    public function testTagWithInternalContent()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce('startElement', ['a', []]);
         $listener->expectOnce('addContent', ['label']);
@@ -407,8 +444,9 @@ class TestOfHtmlSaxParser extends UnitTestCase {
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<a>label</a>'));
     }
-    
-    function testLinkAddress() {
+
+    public function testLinkAddress()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce('startElement', ['a', ['href' => 'here.html']]);
         $listener->expectOnce('addContent', ['label']);
@@ -416,8 +454,9 @@ class TestOfHtmlSaxParser extends UnitTestCase {
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse("<a href = 'here.html'>label</a>"));
     }
-    
-    function testEncodedAttribute() {
+
+    public function testEncodedAttribute()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce('startElement', ['a', ['href' => 'here&there.html']]);
         $listener->expectOnce('addContent', ['label']);
@@ -425,8 +464,9 @@ class TestOfHtmlSaxParser extends UnitTestCase {
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse("<a href = 'here&amp;there.html'>label</a>"));
     }
-    
-    function testTagWithId() {
+
+    public function testTagWithId()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce('startElement', ['a', ['id' => '0']]);
         $listener->expectOnce('addContent', ['label']);
@@ -434,39 +474,46 @@ class TestOfHtmlSaxParser extends UnitTestCase {
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<a id="0">label</a>'));
     }
-     
-    function testTagWithEmptyAttributes() {
+
+    public function testTagWithEmptyAttributes()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce(
-                'startElement',
-                ['option', ['value' => '', 'selected' => '']]);
+            'startElement',
+            ['option', ['value' => '', 'selected' => '']]
+        );
         $listener->expectOnce('addContent', ['label']);
         $listener->expectOnce('endElement', ['option']);
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<option value="" selected>label</option>'));
     }
-   
-    function testComplexTagWithLotsOfCaseVariations() {
+
+    public function testComplexTagWithLotsOfCaseVariations()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce(
-                'startElement',
-                ['a', ['href' => 'here.html', 'style' => "'cool'"]]);
+            'startElement',
+            ['a', ['href' => 'here.html', 'style' => "'cool'"]]
+        );
         $listener->expectOnce('addContent', ['label']);
         $listener->expectOnce('endElement', ['a']);
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<A HREF = \'here.html\' Style="\'cool\'">label</A>'));
     }
-    
-    function testXhtmlSelfClosingTag() {
+
+    public function testXhtmlSelfClosingTag()
+    {
         $listener = &$this->createListener();
         $listener->expectOnce(
-                'startElement',
-                ['input', ['type' => 'submit', 'name' => 'N', 'value' => 'V']]);
+            'startElement',
+            ['input', ['type' => 'submit', 'name' => 'N', 'value' => 'V']]
+        );
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse('<input type="submit" name="N" value="V" />'));
     }
-    
-    function testNestedFrameInFrameset() {
+
+    public function testNestedFrameInFrameset()
+    {
         $listener = &$this->createListener();
         $listener->expectAt(0, 'startElement', ['frameset', []]);
         $listener->expectAt(1, 'startElement', ['frame', ['src' => 'frame.html']]);
@@ -475,77 +522,98 @@ class TestOfHtmlSaxParser extends UnitTestCase {
         $listener->expectOnce('endElement', ['frameset']);
         $parser = new SimpleHtmlSaxParser($listener);
         $this->assertTrue($parser->parse(
-                '<frameset><frame src="frame.html"><noframes>Hello</noframes></frameset>'));
+            '<frameset><frame src="frame.html"><noframes>Hello</noframes></frameset>'
+        ));
     }
 }
 
-class TestOfTextExtraction extends UnitTestCase {
-    
-	function testImageSuppressionWhileKeepingParagraphsAndAltText() {
+class TestOfTextExtraction extends UnitTestCase
+{
+    public function testImageSuppressionWhileKeepingParagraphsAndAltText()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<img src="foo.png" /><p>some text</p><img src="bar.png" alt="bar" />'),
-                'some text bar');
-		
-	}
+            SimpleHtmlSaxParser::normalise('<img src="foo.png" /><p>some text</p><img src="bar.png" alt="bar" />'),
+            'some text bar'
+        );
+    }
 
-    function testSpaceNormalisation() {
+    public function testSpaceNormalisation()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise("\nOne\tTwo   \nThree\t"),
-                'One Two Three');
+            SimpleHtmlSaxParser::normalise("\nOne\tTwo   \nThree\t"),
+            'One Two Three'
+        );
     }
-    
-    function testMultilinesCommentSuppression() {
+
+    public function testMultilinesCommentSuppression()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<!--\n Hello \n-->'),
-                '');
+            SimpleHtmlSaxParser::normalise('<!--\n Hello \n-->'),
+            ''
+        );
     }
-    
-    function testCommentSuppression() {
+
+    public function testCommentSuppression()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<!--Hello-->'),
-                '');
+            SimpleHtmlSaxParser::normalise('<!--Hello-->'),
+            ''
+        );
     }
-    
-    function testJavascriptSuppression() {
+
+    public function testJavascriptSuppression()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<script attribute="test">\nHello\n</script>'),
-                '');
+            SimpleHtmlSaxParser::normalise('<script attribute="test">\nHello\n</script>'),
+            ''
+        );
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<script attribute="test">Hello</script>'),
-                '');
+            SimpleHtmlSaxParser::normalise('<script attribute="test">Hello</script>'),
+            ''
+        );
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<script>Hello</script>'),
-                '');
+            SimpleHtmlSaxParser::normalise('<script>Hello</script>'),
+            ''
+        );
     }
-    
-    function testTagSuppression() {
+
+    public function testTagSuppression()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<b>Hello</b>'),
-                'Hello');
+            SimpleHtmlSaxParser::normalise('<b>Hello</b>'),
+            'Hello'
+        );
     }
-    
-    function testAdjoiningTagSuppression() {
+
+    public function testAdjoiningTagSuppression()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<b>Hello</b><em>Goodbye</em>'),
-                'HelloGoodbye');
+            SimpleHtmlSaxParser::normalise('<b>Hello</b><em>Goodbye</em>'),
+            'HelloGoodbye'
+        );
     }
-    
-    function testExtractImageAltTextWithDifferentQuotes() {
+
+    public function testExtractImageAltTextWithDifferentQuotes()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<img alt="One"><img alt=\'Two\'><img alt=Three>'),
-                'One Two Three');
+            SimpleHtmlSaxParser::normalise('<img alt="One"><img alt=\'Two\'><img alt=Three>'),
+            'One Two Three'
+        );
     }
-    
-    function testExtractImageAltTextMultipleTimes() {
+
+    public function testExtractImageAltTextMultipleTimes()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('<img alt="One"><img alt="Two"><img alt="Three">'),
-                'One Two Three');
+            SimpleHtmlSaxParser::normalise('<img alt="One"><img alt="Two"><img alt="Three">'),
+            'One Two Three'
+        );
     }
-    
-    function testHtmlEntityTranslation() {
+
+    public function testHtmlEntityTranslation()
+    {
         $this->assertEqual(
-                SimpleHtmlSaxParser::normalise('&lt;&gt;&quot;&amp;&#039;'),
-                '<>"&\'');
+            SimpleHtmlSaxParser::normalise('&lt;&gt;&quot;&amp;&#039;'),
+            '<>"&\''
+        );
     }
 }
-?>

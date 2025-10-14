@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 
 # streber - a php based project management system
 # Copyright (c) 2005 Thomas Mann - thomas@pixtur.de
@@ -26,130 +31,123 @@ function itemsRemoveManyPreview()
 {
     global $PH;
     global $auth;
-    
 
     ### cancel ? ###
-    if(get('form_do_cancel')) {
-        if(!$PH->showFromPage()) {
-            $PH->show('home',[]);
+    if (get('form_do_cancel')) {
+        if (!$PH->showFromPage()) {
+            $PH->show('home', []);
         }
         exit();
     }
-    
+
     ### set up page and write header ####
     {
-        $PH->go_submit='itemsRemoveManySubmit';
+        $PH->go_submit = 'itemsRemoveManySubmit';
         $page = new Page();
         $page->cur_tab = 'home';
 
         $page->title = __('Following items will be removed');
         $page->title_minor = '';
-       
-        echo(new PageHeader);
+
+        echo new PageHeader();
     }
-    
-    echo (new PageContentOpen);
+
+    echo new PageContentOpen();
 
     ### write form #####
     {
-        require_once(confGet('DIR_STREBER') . "render/render_form.inc.php");
+        require_once(confGet('DIR_STREBER') . 'render/render_form.inc.php');
 
-        $form=new PageForm();
-        $form->button_cancel=true;
-                
+        $form = new PageForm();
+        $form->button_cancel = true;
+
         renderPreviewList();
 
-        echo ($form);
-
+        echo $form;
     }
-    echo (new PageContentClose);
-    echo (new PageHtmlEnd);
-
+    echo new PageContentClose();
+    echo new PageHtmlEnd();
 }
 
-function renderPreviewList() 
+function renderPreviewList()
 {
-
     $options = [
-        'date_min'=> getDateTimeFieldValue('time_start'),
-        'date_max'=> getDateTimeFieldValue('time_end')
+        'date_min' => getDateTimeFieldValue('time_start'),
+        'date_max' => getDateTimeFieldValue('time_end'),
     ];
-    
+
     ### author
-    if (intval( get('person')) ) {
-        $options['modified_by']= get('person');
+    if (intval(get('person'))) {
+        $options['modified_by'] = get('person');
     }
-    
+
     ### Object types
-    $types= [];
-    if(get('type_task') || get('type_topic')) {
-        $types[]= ITEM_TASK;
+    $types = [];
+    if (get('type_task') || get('type_topic')) {
+        $types[] = ITEM_TASK;
     }
-    if(get('type_comment')) {
-        $types[]= ITEM_COMMENT;
+    if (get('type_comment')) {
+        $types[] = ITEM_COMMENT;
     }
-    $options['type']= $types;
-    
-    $items= DbProjectItem::getAll($options);
-    
-    echo "<ol>";
-    foreach($items as $item) {
-        
-        if($item->type == ITEM_COMMENT) {
-            $comment= Comment::getById($item->id);
-            
-            if(get('only_spam_comments') && !isSpam($comment->name . " " . $comment->description) ) {
+    $options['type'] = $types;
+
+    $items = DbProjectItem::getAll($options);
+
+    echo '<ol>';
+    foreach ($items as $item) {
+        if ($item->type == ITEM_COMMENT) {
+            $comment = Comment::getById($item->id);
+
+            if (get('only_spam_comments') && !isSpam($comment->name . ' ' . $comment->description)) {
                 continue;
             }
-        	renderRemovalPreviewComment($comment);        
+            renderRemovalPreviewComment($comment);
         }
-        if($item->type == ITEM_TASK) {
-            $task= Task::getById($item->id);
-            
-        	renderRemovalPreviewTask($task);        
+        if ($item->type == ITEM_TASK) {
+            $task = Task::getById($item->id);
+
+            renderRemovalPreviewTask($task);
         }
     }
-    echo "</ol>";
-    
+    echo '</ol>';
 }
-
 
 function renderRemovalPreviewComment($comment)
 {
     $name = asHtml($comment->name);
-    if(!$name) { $name = __("Untitled"); }
-    echo "<li>";
+    if (!$name) {
+        $name = __('Untitled');
+    }
+    echo '<li>';
     echo "<input checked type=checkbox value='{$comment->id}' name='item_{$comment->id}'>";
     echo "<label for='item_{$comment->id}'>";
-    echo $comment->getLink(); 
+    echo $comment->getLink();
 
-    if( $creator= Person::getVisibleById($comment->created_by) ) {
-        echo sprintf( __("by %s", "as in created by"), $creator->getLink());        
+    if ($creator = Person::getVisibleById($comment->created_by)) {
+        echo sprintf(__('by %s', 'as in created by'), $creator->getLink());
     }
-    echo "<br>";
-    echo " <small>" . asHtml($comment->description) . "</small>";
-    echo "</label>";
-    echo "</li>";
+    echo '<br>';
+    echo ' <small>' . asHtml($comment->description) . '</small>';
+    echo '</label>';
+    echo '</li>';
 }
 
 function renderRemovalPreviewTask($task)
 {
     $name = asHtml($task->name);
-    if(!$name) { $name = __("Untitled"); }
-    echo "<li>";
+    if (!$name) {
+        $name = __('Untitled');
+    }
+    echo '<li>';
     echo "<input checked type=checkbox value='{$task->id}' name='item_{$task->id}'>";
     echo "<label for='item_{$task->id}'>";
-    echo $task->getLink(); 
+    echo $task->getLink();
 
-    if( $creator= Person::getVisibleById($task->created_by) ) {
-        echo sprintf( __("by %s", "as in created by"), $creator->getLink());        
+    if ($creator = Person::getVisibleById($task->created_by)) {
+        echo sprintf(__('by %s', 'as in created by'), $creator->getLink());
     }
-    echo "<br>";
-    echo " <small>" . asHtml($task->description) . "</small>";
-    echo "</label>";
-    echo "</li>";
+    echo '<br>';
+    echo ' <small>' . asHtml($task->description) . '</small>';
+    echo '</label>';
+    echo '</li>';
 }
-
-
-
-?>

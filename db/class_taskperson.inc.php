@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -16,55 +21,53 @@ define('ASSIGNTYPE_INITIAL', 1);
 define('ASSIGNTYPE_CHANGED', 2);
 define('ASSIGNTYPE_ADDED', 3);
 
-
-
-class TaskPerson extends DbProjectItem {
+class TaskPerson extends DbProjectItem
+{
     public $name;
     public $project;
 
     /**
     * constructor
     */
-    function __construct ($id_or_array=NULL)
+    public function __construct($id_or_array = null)
     {
         global $g_task_person_fields;
-        $this->fields= &$g_task_person_fields;
+        $this->fields = &$g_task_person_fields;
 
         parent::__construct($id_or_array);
-        if(!$this->type) {
-            $this->type= ITEM_TASKPERSON;
+        if (!$this->type) {
+            $this->type = ITEM_TASKPERSON;
         }
     }
 
-    static function initFields()
+    public static function initFields()
     {
         global $g_task_person_fields;
-        $g_task_person_fields=[];
+        $g_task_person_fields = [];
         addProjectItemFields($g_task_person_fields);
-        
-        foreach([
-            new FieldInternal([    'name'=>'id',               # add id to both tables for caching
-                'default'=>0,
-                'in_db_object'=>1,
-                'in_db_item'=>1,
+
+        foreach ([
+            new FieldInternal(['name' => 'id',               # add id to both tables for caching
+                'default' => 0,
+                'in_db_object' => 1,
+                'in_db_item' => 1,
             ]),
-            new FieldInternal([    'name'=>'task',             # id task
+            new FieldInternal(['name' => 'task',             # id task
             ]),
-            new FieldInternal([    'name'=>'person',           # id of assigned person
+            new FieldInternal(['name' => 'person',           # id of assigned person
             ]),
-            new FieldString([      'name'=>'comment',
+            new FieldString(['name' => 'comment',
             ]),
-            new FieldInternal([    'name'=>'assigntype',
-                'default'=>ASSIGNTYPE_INITIAL,
+            new FieldInternal(['name' => 'assigntype',
+                'default' => ASSIGNTYPE_INITIAL,
             ]),
-			new FieldInternal([    'name'=>'forward',
-                'default'=>0,
+            new FieldInternal(['name' => 'forward',
+                'default' => 0,
             ]),
-			new FieldString([      'name'=>'forward_comment',
+            new FieldString(['name' => 'forward_comment',
             ]),
-        
         ] as $f) {
-            $g_task_person_fields[$f->name]=$f;
+            $g_task_person_fields[$f->name] = $f;
         }
     }
 
@@ -73,15 +76,14 @@ class TaskPerson extends DbProjectItem {
     *
     * - returns NULL if failed
     */
-    static function getById($id)
+    public static function getById($id)
     {
-        $tp= new TaskPerson(intval($id));
-        if($tp->id) {
+        $tp = new TaskPerson(intval($id));
+        if ($tp->id) {
             return $tp;
         }
-        return NULL;
+        return null;
     }
-
 
     /**
     * query if visible for current user
@@ -90,100 +92,96 @@ class TaskPerson extends DbProjectItem {
     * - this function is slow
     * - lists should check visibility with sql-querries
     */
-    static function getVisibleById($id)
+    public static function getVisibleById($id)
     {
-        if($tp= TaskPerson::getById(intval($id))) {
-            if($p= Project::getById($tp->project)) {
-                if($p->validateViewItem($tp)) {
+        if ($tp = TaskPerson::getById(intval($id))) {
+            if ($p = Project::getById($tp->project)) {
+                if ($p->validateViewItem($tp)) {
                     return $tp;
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
     /**
     * query if editable for current user
     */
-    static function getEditableById($id)
+    public static function getEditableById($id)
     {
-        if($tp= TaskPerson::getById(intval($id))) {
-            if($p= Project::getById($tp->project)) {
-                if($p->validateEditItem($tp)) {
+        if ($tp = TaskPerson::getById(intval($id))) {
+            if ($p = Project::getById($tp->project)) {
+                if ($p->validateEditItem($tp)) {
                     return $tp;
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
-
-
-    static function getTaskPeople( $args=NULL)
+    public static function getTaskPeople($args = null)
     {
         global $auth;
         $prefix = confGet('DB_TABLE_PREFIX');
 
         ### default params ###
-        $date_min           = NULL;
-        $date_max           = NULL;
-        $created_by         = NULL;       # who created assigment...
-        $person             = NULL;        # who has was assigned...
-        $task               = NULL;
-        $project            = NULL;
-		$forward            = NULL;
-		$state              = NULL;
-						
+        $date_min = null;
+        $date_max = null;
+        $created_by = null;       # who created assigment...
+        $person = null;        # who has was assigned...
+        $task = null;
+        $project = null;
+        $forward = null;
+        $state = null;
+
         ### filter params ###
-        if($args) {
-            foreach($args as $key=>$value) {
-                if(!isset($$key) && !is_null($$key) && !$$key==="") {
-                    trigger_error("unknown parameter",E_USER_NOTICE);
-                }
-                else {
-                    $$key= $value;
+        if ($args) {
+            foreach ($args as $key => $value) {
+                if (!isset($$key) && !is_null($$key) && !$$key === '') {
+                    trigger_error('unknown parameter', E_USER_NOTICE);
+                } else {
+                    $$key = $value;
                 }
             }
         }
 
-
-        $str_project= $project
-            ? 'AND i.project='.intval($project)
+        $str_project = $project
+            ? 'AND i.project=' . intval($project)
             : '';
 
-        $str_created_by= $created_by
-            ? 'AND i.created_by='.intval($created_by)
+        $str_created_by = $created_by
+            ? 'AND i.created_by=' . intval($created_by)
             : '';
 
-        $str_date_min= $date_min
-            ? "AND i.modified >= '".asCleanString($date_min)."'"
+        $str_date_min = $date_min
+            ? "AND i.modified >= '" . asCleanString($date_min) . "'"
             : '';
 
-        $str_date_max= $date_max
-            ? "AND i.modified <= '" . asCleanString($date_max) ."'"
+        $str_date_max = $date_max
+            ? "AND i.modified <= '" . asCleanString($date_max) . "'"
             : '';
 
-        $str_task= $task
-            ? 'AND tp.task ='.intval($task)
+        $str_task = $task
+            ? 'AND tp.task =' . intval($task)
             : '';
 
-        $str_person= $person
-            ? 'AND tp.person ='.intval($person)
+        $str_person = $person
+            ? 'AND tp.person =' . intval($person)
             : '';
-		
-		$str_forward = $forward
-		    ? 'AND tp.forward = 1'
-			: '';
-		
-		$str_state = $state
-		    ? 'AND i.state ='.intval($state)
-			: '';
-			
+
+        $str_forward = $forward
+            ? 'AND tp.forward = 1'
+            : '';
+
+        $str_state = $state
+            ? 'AND i.state =' . intval($state)
+            : '';
+
         ### show all ###
-		$str_query=
-			"SELECT tp.*, i.* from {$prefix}taskperson tp, {$prefix}item i
+        $str_query =
+            "SELECT tp.*, i.* from {$prefix}taskperson tp, {$prefix}item i
 			 WHERE
-			i.type = '".ITEM_TASKPERSON."'
+			i.type = '" . ITEM_TASKPERSON . "'
 			$str_project
 			$str_created_by
 			$str_forward
@@ -195,25 +193,18 @@ class TaskPerson extends DbProjectItem {
 			$str_date_min
 			";
 
-		$dbh = new DB_Mysql;
-		$sth= $dbh->prepare($str_query);
+        $dbh = new DB_Mysql();
+        $sth = $dbh->prepare($str_query);
 
-		$sth->execute("",1);
-		$tmp=$sth->fetchall_assoc();
-		$tps=[];
-		foreach($tmp as $t) {
-			$c=new TaskPerson($t);
-			$tps[]=$c;
-		}
-		return $tps;
-		
+        $sth->execute('', 1);
+        $tmp = $sth->fetchall_assoc();
+        $tps = [];
+        foreach ($tmp as $t) {
+            $c = new TaskPerson($t);
+            $tps[] = $c;
+        }
+        return $tps;
     }
 }
 
-
-
 TaskPerson::initFields();
-
-
-
-?>

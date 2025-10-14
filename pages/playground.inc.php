@@ -1,4 +1,7 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -9,14 +12,10 @@
  * with url http://your.domain.com/playground. Use this to play with rendering etc.
  */
 
-
 require_once(confGet('DIR_STREBER') . 'db/class_task.inc.php');
 require_once(confGet('DIR_STREBER') . 'db/class_project.inc.php');
 require_once(confGet('DIR_STREBER') . 'render/render_list.inc.php');
 require_once(confGet('DIR_STREBER') . 'lists/list_tasks.inc.php');
-
-
-
 
 #header('WWW-Authenticate: Basic realm="blabl"');
 
@@ -33,12 +32,6 @@ require_once(confGet('DIR_STREBER') . 'lists/list_tasks.inc.php');
    echo "<p>You entered {$_SERVER['PHP_AUTH_PW']} as your password.</p>";
 }
 */
-
-
-
-
-
-
 
 /*
 
@@ -116,83 +109,72 @@ This does not cover all possible situations:
    - Approve / Close / Confirm / Delete items
 */
 
-
 /**
 * playground @ingroup pages
 */
-function playground() {
+function playground()
+{
     global $PH;
     global $auth;
-    if(
-        !isset($_SERVER['REMOTE_USER']) 
-        && 
-        !isset($_SERVER['REDIRECT_REDIRECT_REMOTE_USER']) 
-        && 
-        !isset($_SERVER['PHP_AUTH_USER']) 
+    if (
+        !isset($_SERVER['REMOTE_USER'])
+        &&
+        !isset($_SERVER['REDIRECT_REDIRECT_REMOTE_USER'])
+        &&
+        !isset($_SERVER['PHP_AUTH_USER'])
         &&
         !get('HTTP_AUTHORIZATION')
-    ){
-       header('WWW-Authenticate: Basic realm="blabl"');
-       header('HTTP/1.0 401 Unauthorized');
-       echo 'Sorry. You need to authenticate';
-    print("<pre>");
-    print_r($_SERVER);
-    print("</pre>");
-       exit();
-
-    }
-    else {
-        $username='';
-        $password= '';
-        if(isset($_SERVER['PHP_AUTH_USER'])) {
-            $username=asCleanString($_SERVER['PHP_AUTH_USER']);        
-            if(isset($_SERVER['PHP_AUTH_PW'])) {
-                $password=asCleanString($_SERVER['PHP_AUTH_PW']);        
+    ) {
+        header('WWW-Authenticate: Basic realm="blabl"');
+        header('HTTP/1.0 401 Unauthorized');
+        echo 'Sorry. You need to authenticate';
+        echo '<pre>';
+        print_r($_SERVER);
+        echo '</pre>';
+        exit();
+    } else {
+        $username = '';
+        $password = '';
+        if (isset($_SERVER['PHP_AUTH_USER'])) {
+            $username = asCleanString($_SERVER['PHP_AUTH_USER']);
+            if (isset($_SERVER['PHP_AUTH_PW'])) {
+                $password = asCleanString($_SERVER['PHP_AUTH_PW']);
             }
         }
-    
+
         /**
         * if php runs in CGI-mode we need mod_rewrite to enable HTTP-auth:
         * read more at http://www.php.net/manual/en/features.http-auth.php#70864
-        */
-        else  {
-            $ha='';
-            if(isset($_SERVER['REDIRECT_REDIRECT_REMOTE_USER'])) {
-                $ha= $_SERVER['REDIRECT_REDIRECT_REMOTE_USER'];                
+        */ else {
+            $ha = '';
+            if (isset($_SERVER['REDIRECT_REDIRECT_REMOTE_USER'])) {
+                $ha = $_SERVER['REDIRECT_REDIRECT_REMOTE_USER'];
+            } elseif (isset($_SERVER['REMOTE_USER'])) {
+                $ha = $_SERVER['REMOTE_USER'];
             }
-            else if(isset($_SERVER['REMOTE_USER'])) {
-                $ha= $_SERVER['REMOTE_USER'];                
-            }
-            
-            $tmp= base64_decode( substr($ha,6));
+
+            $tmp = base64_decode(substr($ha, 6));
             list($username, $password) = explode(':', $tmp);
         }
-        print("<br>username='" . $username . "'");       
-        print("<br>password='" . $password . "'");
+        echo "<br>username='" . $username . "'";
+        echo "<br>password='" . $password . "'";
 
-    print("<pre>");
-    print_r($_SERVER);
-    print("</pre>");
-
-
+        echo '<pre>';
+        print_r($_SERVER);
+        echo '</pre>';
     }
-    
-
-
-
-
 
     ### create from handle ###
     $PH->defineFromHandle([]);
 
     ### set up page ####
     {
-        $page= new Page();
-    	$page->cur_tab='home';
-    	$page->options=[
+        $page = new Page();
+        $page->cur_tab = 'home';
+        $page->options = [
             new NaviOption([
-                'target_id'=>'home',
-                'name'=>__('Today')
+                'target_id' => 'home',
+                'name' => __('Today'),
             ]),
             #new NaviOption(array(
             #    'target_id'     =>'personViewEfforts',
@@ -200,20 +182,19 @@ function playground() {
             #    'name'=>__('Personal Efforts'),
             #
             #)),
+        ];
 
-    	];
-
-        $page->title=__("Today"); # $auth->cur_user->name;
-        $page->type=__("At Home");
-        $page->title_minor=renderTitleDate(time());
-        echo(new PageHeader);
+        $page->title = __('Today'); # $auth->cur_user->name;
+        $page->type = __('At Home');
+        $page->title_minor = renderTitleDate(time());
+        echo new PageHeader();
     }
-    echo (new PageContentOpen_Columns);
+    echo new PageContentOpen_Columns();
     measure_stop('init2');
 
-    echo "Column-Right";
+    echo 'Column-Right';
 
-    echo(new PageContentNextCol);
+    echo new PageContentNextCol();
 
     ### some tabs ###
     {
@@ -280,9 +261,8 @@ function playground() {
     <?php
     }
 
-    echo (new PageContentClose);
-	echo (new PageHtmlEnd);
-
+    echo new PageContentClose();
+    echo new PageHtmlEnd();
 }
 
 ?>

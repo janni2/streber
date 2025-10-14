@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php based project management system
 # Copyright (c) 2005 Thomas Mann - thomas@pixtur.de
 # Distributed under the terms and conditions of the GPL as stated in docs/license.txt
@@ -18,113 +23,109 @@
  * @usedby:
  *
  */
-
-class ListBlock_taskfolders extends ListBlock {
-
+class ListBlock_taskfolders extends ListBlock
+{
     ### overwrite ###
-    public $id=    'folders';
+    public $id = 'folders';
 
-    private $cur_task_id=-1;
-    private $hidden=false;
-    private $task_folders=NULL;
-
+    private $cur_task_id = -1;
+    private $hidden = false;
+    private $task_folders = null;
 
     /**
     *  constructor
     */
     public function __construct(Project $project)    #@@@ pixtur: this should use pass by $args
     {
-		parent::__construct();
+        parent::__construct();
 
-        $this->title= __('Folders');
+        $this->title = __('Folders');
 
-        if(!$project) trigger_error("ListBlock_taskfolders() needs project-object as argument",E_USER_WARNING);
-        $this->task_folders= $project->getFolders();
+        if (!$project) {
+            trigger_error('ListBlock_taskfolders() needs project-object as argument', E_USER_WARNING);
+        }
+        $this->task_folders = $project->getFolders();
 
         #--- render nothing if no folders ---
-        if(!count($this->task_folders)) {
-            $this->hidden= true;
+        if (!count($this->task_folders)) {
+            $this->hidden = true;
         }
-
 
         #--- in taskView highlight current task ---
         global $PH;
 
-        if($PH->cur_page_id == 'taskView') {
-            $task_id= get('tsk');
-            $cur_task= Task::getById($task_id);
-            if(!$cur_task) {
-                $PH->abortWarning("invalid task-id");   #@@@ not good inside lists / render Exception might be more appropriate
+        if ($PH->cur_page_id == 'taskView') {
+            $task_id = get('tsk');
+            $cur_task = Task::getById($task_id);
+            if (!$cur_task) {
+                $PH->abortWarning('invalid task-id');   #@@@ not good inside lists / render Exception might be more appropriate
                 return;
             }
 
             #--- use parent, if not a folder for itself ------
-            if(!$cur_task->category == TCATEGORY_FOLDER) {
-                $cur_task= Task::getById($cur_task->parent_task);
+            if (!$cur_task->category == TCATEGORY_FOLDER) {
+                $cur_task = Task::getById($cur_task->parent_task);
             }
-            if($cur_task && is_object($cur_task)) {
-                $this->cur_task_id= $cur_task->id;
+            if ($cur_task && is_object($cur_task)) {
+                $this->cur_task_id = $cur_task->id;
             }
         }
 
         #--- create task for project-root---
-        $task_none=new Task(['name'=>"..none::"]);
-        $task_none->id=0;
-        $task_none->project= $project->id;
-        array_unshift($this->task_folders,$task_none);
+        $task_none = new Task(['name' => '..none::']);
+        $task_none->id = 0;
+        $task_none->project = $project->id;
+        array_unshift($this->task_folders, $task_none);
 
-    	#--- add columns --------------------------------------------------------
-        $this->add_col( new ListBlockColSelect());
-    	$this->add_col( new ListBlockCol_TaskName([
-    	    'use_short_names'=>true,
-    		'indention'=>true,
-    		'use_collapsed'=>true,
-    		'show_toggles'=>false
-    	]));
-    	$this->add_col( new ListBlockColMethod([
-    		'name'=>__("Tasks"),
-    		'tooltip'=>__("Number of subtasks"),
-    		'sort'=>0,
-    		'func'=>'getNumSubtasks',
-            'style'=>'right'
-    	]));
-    	#$this->add_col( new ListBlockCol_TaskSumEfforts());
+        #--- add columns --------------------------------------------------------
+        $this->add_col(new ListBlockColSelect());
+        $this->add_col(new ListBlockCol_TaskName([
+            'use_short_names' => true,
+            'indention' => true,
+            'use_collapsed' => true,
+            'show_toggles' => false,
+        ]));
+        $this->add_col(new ListBlockColMethod([
+            'name' => __('Tasks'),
+            'tooltip' => __('Number of subtasks'),
+            'sort' => 0,
+            'func' => 'getNumSubtasks',
+            'style' => 'right',
+        ]));
+        #$this->add_col( new ListBlockCol_TaskSumEfforts());
 
-    	#--- functions ----------------------------------------
+        #--- functions ----------------------------------------
         ### functions ###
         $this->add_function(new ListFunction([
-            'target'=>$PH->getPage('taskEdit')->id,
-            'name'  =>__('Edit'),
-            'id'    =>'taskEdit',
-            'icon'  =>'edit',
-            'context_menu'=>'submit',
+            'target' => $PH->getPage('taskEdit')->id,
+            'name' => __('Edit'),
+            'id' => 'taskEdit',
+            'icon' => 'edit',
+            'context_menu' => 'submit',
         ]));
         $this->add_function(new ListFunction([
-            'target'=>$PH->getPage('taskNewFolder')->id,
-            'name'  =>__('New'),
-            'id'    =>'taskNewFolder',
-            'icon'  =>'new',
-            'tooltip'=>__('Create new folder under selected task'),
-        ]));
-
-        $this->add_function(new ListFunction([
-            'target'=>$PH->getPage('tasksMoveToFolder')->id,
-            'name'  =>__('Move selected to folder'),
-            'id'    =>'tasksMoveToFolder',
-            'context_menu'=>'submit',
-            'dropdown_menu'=>0,
-
+            'target' => $PH->getPage('taskNewFolder')->id,
+            'name' => __('New'),
+            'id' => 'taskNewFolder',
+            'icon' => 'new',
+            'tooltip' => __('Create new folder under selected task'),
         ]));
 
         $this->add_function(new ListFunction([
-            'target'=>$PH->getPage('effortNew')->id,
-            'name'  =>__('Log hours for select tasks'),
-            'id'    =>'effortNew',
-            'icon'    =>'loghours',
-            'context_menu'=>'submit'
+            'target' => $PH->getPage('tasksMoveToFolder')->id,
+            'name' => __('Move selected to folder'),
+            'id' => 'tasksMoveToFolder',
+            'context_menu' => 'submit',
+            'dropdown_menu' => 0,
         ]));
 
-
+        $this->add_function(new ListFunction([
+            'target' => $PH->getPage('effortNew')->id,
+            'name' => __('Log hours for select tasks'),
+            'id' => 'effortNew',
+            'icon' => 'loghours',
+            'context_menu' => 'submit',
+        ]));
     }
 
     /**
@@ -132,28 +133,22 @@ class ListBlock_taskfolders extends ListBlock {
     *
     * this function does NOT want an array (list is created in constructor)
     */
-    public function __toString() {
-        if($this->hidden) {
+    public function __toString()
+    {
+        if ($this->hidden) {
             return;
         }
 
         $this->render_header();
-    	#$this->render_thead();
-    	foreach($this->task_folders as $f) {
+        #$this->render_thead();
+        foreach ($this->task_folders as $f) {
             ### hilight the current task-folder ###
-            if($f->id == $this->cur_task_id) {
-    		    $this->render_trow($f,'current');
+            if ($f->id == $this->cur_task_id) {
+                $this->render_trow($f, 'current');
+            } else {
+                $this->render_trow($f);
             }
-            else {
-    		    $this->render_trow($f);
-            }
-    	}
-    	$this->render_tfoot();
+        }
+        $this->render_tfoot();
     }
 }
-
-
-
-
-
-?>

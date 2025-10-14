@@ -14,25 +14,23 @@
 *
 *
 */
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_STRICT | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR);
 
-error_reporting (E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_STRICT|E_PARSE|E_CORE_ERROR|E_CORE_WARNING|E_COMPILE_ERROR);
+ini_set('max_execution_time', 300);
 
-ini_set("max_execution_time",300);
-
-$dumper= new MySQLDumper();
+$dumper = new MySQLDumper();
 $dumper->use_gzip = false;
 
-if($dumper->connect(
-        'localhost',	    # hostname
-        'root',	            # DB-username
-        '',	                # DB-password
-        'streber'	    # DB-name
+if ($dumper->connect(
+    'localhost',	    # hostname
+    'root',	            # DB-username
+    '',	                # DB-password
+    'streber'	    # DB-name
 )) {
-   $dumper->use_gzip= false;
-   $dumper->dump();
-   #$dumper->executeFromFile("streber-pm.sql");
+    $dumper->use_gzip = false;
+    $dumper->dump();
+    #$dumper->executeFromFile("streber-pm.sql");
 }
-
 
 /*if($dumper->connect(
         'localhost',	    # hostname
@@ -45,81 +43,77 @@ if($dumper->connect(
 }
 */
 
-
-
 /**
 * MySQLDumper - class
 *
 */
-class MySQLDumper {
+class MySQLDumper
+{
+    public $dbh = null;
+    public $add_drop_statement = true;
+    public $crlf = "\n";
+    public $use_backquotes = true;
+    public $use_gzip = true;
+    public $line_buffer = [];
 
-    var $dbh                = NULL;
-    var $add_drop_statement = true;
-    var $crlf               ="\n";
-    var $use_backquotes     = true;
-    var $use_gzip           = true;
-    var $line_buffer        = [];
+    public function connect($hostname, $db_username, $db_password, $db_name)
+    {
+        $this->hostname = $hostname;
+        $this->db_username = $db_username;
+        $this->db_password = $db_password;
+        $this->db_name = $db_name;
 
-    function connect($hostname,$db_username,$db_password,$db_name) {
-
-        $this->hostname     = $hostname;
-        $this->db_username  = $db_username;
-        $this->db_password  = $db_password;
-        $this->db_name      = $db_name;
-
-    	$this->dbh = mysql_pconnect(
+        $this->dbh = mysql_pconnect(
             $this->hostname,        # hostname
             $this->db_username,     # db_username
             $this->db_password      # db_password
         );
 
-        if(!$this->dbh || !is_resource($this->dbh)) {
-            echo "mysql-error:<pre>".mysql_error()."</pre>";
-            return NULL;
+        if (!$this->dbh || !is_resource($this->dbh)) {
+            echo 'mysql-error:<pre>' . mysql_error() . '</pre>';
+            return null;
         }
 
         ### select db ###
-        if(!mysql_select_db($this->db_name, $this->dbh)) {
-            echo "mysql-error:<pre>".mysql_error()."</pre>";
-            return NULL;
+        if (!mysql_select_db($this->db_name, $this->dbh)) {
+            echo 'mysql-error:<pre>' . mysql_error() . '</pre>';
+            return null;
         }
         return true;
     }
 
-    function write($string)
+    public function write($string)
     {
-        if($this->use_gzip) {
-            $this->line_buffer[]= $string;
-        }
-        else {
+        if ($this->use_gzip) {
+            $this->line_buffer[] = $string;
+        } else {
             echo $string;
         }
     }
 
-    function dump( ) 
+    public function dump()
     {
         /**
          * Increase time limit for script execution and initializes some variables
          */
         set_time_limit(0);
 
-        $hostname="";
-        if(isset($_SERVER["HTTP_HOST"])) {
-    	    $hostname= $_SERVER["HTTP_HOST"];
+        $hostname = '';
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $hostname = $_SERVER['HTTP_HOST'];
         }
 
-        if($this->use_gzip) {
-            $filename   = $hostname . "_". $this->db_name.'_'. gmdate("Y-m-d_H:i"). '.gzip';
-            $mime_type  ='application/x-gzip';
-        } 
-        else {
-            $filename   = $hostname . "_". $this->db_name.'_'. gmdate("Y-m-d_H:i"). '.sql';
-            $mime_type  ='';            
+        if ($this->use_gzip) {
+            $filename = $hostname . '_' . $this->db_name . '_' . gmdate('Y-m-d_H:i') . '.gzip';
+            $mime_type = 'application/x-gzip';
+        } else {
+            $filename = $hostname . '_' . $this->db_name . '_' . gmdate('Y-m-d_H:i') . '.sql';
+            $mime_type = '';
         }
 
         ### Send headers
         header('Content-Type: ' . $mime_type);
-        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Expires: 0');
         header('Pragma: no-cache');
 
@@ -131,107 +125,96 @@ class MySQLDumper {
         #    header('Pragma: public');
         #}
 
-
         ### Builds the dump
-        $tables     = mysql_list_tables($this->db_name);
+        $tables = mysql_list_tables($this->db_name);
 
-        if(!$num_tables = mysql_numrows($tables)) {
-            echo "mysql-error:<pre>".mysql_error()."</pre>";
-            trigger_error("no tables found", E_USER_ERROR);
+        if (!$num_tables = mysql_numrows($tables)) {
+            echo 'mysql-error:<pre>' . mysql_error() . '</pre>';
+            trigger_error('no tables found', E_USER_ERROR);
             exit(0);
         }
 
         $this->write("# slim phpMyAdmin MySQL-Dump\n");
 
-        for($i=0; $i < $num_tables; $i++) {
-
+        for ($i = 0; $i < $num_tables; $i++) {
             $table_name = mysql_tablename($tables, $i);
-            $this->write( $this->crlf
-                        .  '#' . $this->crlf
-                        .  '#' . $this->backquote($table_name) . $this->crlf
-                        .  '#' . $this->crlf . $this->crlf
-                        .  $this->getTableDef($table_name) . ';' . $this->crlf
-                        .  $this->getTableContentFast($table_name)
+            $this->write(
+                $this->crlf
+                        . '#' . $this->crlf
+                        . '#' . $this->backquote($table_name) . $this->crlf
+                        . '#' . $this->crlf . $this->crlf
+                        . $this->getTableDef($table_name) . ';' . $this->crlf
+                        . $this->getTableContentFast($table_name)
             );
         }
 
         $this->write($this->crlf);
 
         ### Displays the dump as gzip-file
-        if($this->use_gzip) {            
+        if ($this->use_gzip) {
             if (function_exists('gzencode')) {
-                echo gzencode(implode("",$this->line_buffer));                    # without the optional parameter level because it bugs
-            }
-            else {
-                trigger_error("gzencode() not defined. Saving backup failed", E_USER_ERROR);
+                echo gzencode(implode('', $this->line_buffer));                    # without the optional parameter level because it bugs
+            } else {
+                trigger_error('gzencode() not defined. Saving backup failed', E_USER_ERROR);
             }
         }
     }
 
-
-
-    function executeFromFile($filename) 
+    public function executeFromFile($filename)
     {
         /**
          * Increase time limit for script execution and initializes some variables
          */
         set_time_limit(0);
-        $handle = @fopen("$filename", "r");
+        $handle = @fopen("$filename", 'r');
         if ($handle) {
-            $exec_buffer= '';
+            $exec_buffer = '';
             while (!feof($handle)) {
-            
                 $line_buffer = fgets($handle, 4096);
-                $exec_buffer.= $line_buffer;
+                $exec_buffer .= $line_buffer;
 
-                if(preg_match("/;\s*\n$/s", $line_buffer))     {
-                    $result= mysql_query($exec_buffer);
-                    if($result == FALSE) {
-                        echo "<pre>" . mysql_error() . "</pre>";                        
+                if (preg_match("/;\s*\n$/s", $line_buffer)) {
+                    $result = mysql_query($exec_buffer);
+                    if ($result == false) {
+                        echo '<pre>' . mysql_error() . '</pre>';
                         echo "<pre>$exec_buffer</pre>";
                     }
-                    $exec_buffer="";
+                    $exec_buffer = '';
                 }
-           }
-           fclose($handle);
+            }
+            fclose($handle);
         }
     }
 
-
-
-    function getTableDef($table)
+    public function getTableDef($table)
     {
         $schema_create = '';
 
-        if($this->add_drop_statement) {
+        if ($this->add_drop_statement) {
             $schema_create .= 'DROP TABLE IF EXISTS ' . $this->backquote($table) . ';' . $this->crlf;
         }
 
         // Whether to quote table and fields names or not
         if ($this->use_backquotes) {
             mysql_query('SET SQL_QUOTE_SHOW_CREATE = 1');
-        }
-        else {
+        } else {
             mysql_query('SET SQL_QUOTE_SHOW_CREATE = 0');
         }
 
         $result = mysql_query('SHOW CREATE TABLE ' . $this->backquote($this->db_name) . '.' . $this->backquote($table));
 
-        if ($result != FALSE &&  mysql_num_rows($result) > 0) {
-            $tmpres        = mysql_fetch_array($result);
+        if ($result != false && mysql_num_rows($result) > 0) {
+            $tmpres = mysql_fetch_array($result);
             $schema_create .= $tmpres[1];
 
             mysql_free_result($result);
             return $schema_create;
+        } else {
+            echo '<pre>' . mysql_error() . '</pre>';
 
-        }
-        else {
-            echo "<pre>".mysql_error()."</pre>";
-
-            trigger_error("SHOW CREATE TABLE failed", E_USER_ERROR);
+            trigger_error('SHOW CREATE TABLE failed', E_USER_ERROR);
         }
     }
-
 
     /**
      * php >= 4.0.5 only : get the content of $table as a series of INSERT
@@ -239,49 +222,43 @@ class MySQLDumper {
      *
      * @author  staybyte
      */
-    function getTableContentFast($table)
+    public function getTableContentFast($table)
     {
-        $buffer='';
-
+        $buffer = '';
 
         $local_query = 'SELECT * FROM ' . '.' . $this->backquote($table);
-        $result      = mysql_query($local_query);
+        $result = mysql_query($local_query);
         if ($result) {
             $fields_cnt = mysql_num_fields($result);
-            $rows_cnt   = mysql_num_rows($result);
+            $rows_cnt = mysql_num_rows($result);
 
             ### Checks whether the field is an integer or not
             for ($j = 0; $j < $fields_cnt; $j++) {
                 $field_set[$j] = $this->backquote(mysql_field_name($result, $j));
-                $type          = mysql_field_type($result, $j);
+                $type = mysql_field_type($result, $j);
                 if ($type == 'tinyint' || $type == 'smallint' || $type == 'mediumint' || $type == 'int' ||
-                    $type == 'bigint'  ||$type == 'timestamp') {
-                    $field_num[$j] = TRUE;
-                }
-                else {
-                    $field_num[$j] = FALSE;
+                    $type == 'bigint' || $type == 'timestamp') {
+                    $field_num[$j] = true;
+                } else {
+                    $field_num[$j] = false;
                 }
             }
 
             ### Sets the scheme
-            $fields        = implode(', ', $field_set);
+            $fields = implode(', ', $field_set);
             $schema_insert = 'INSERT INTO ' . $this->backquote($table) . ' (' . $fields . ') VALUES (';
 
-
-            $search       = ["\x00", "\x0a", "\x0d", "\x1a"]; //\x08\\x09, not required
-            $replace      = ['\0', '\n', '\r', '\Z'];
-            $current_row  = 0;
+            $search = ["\x00", "\x0a", "\x0d", "\x1a"]; //\x08\\x09, not required
+            $replace = ['\0', '\n', '\r', '\Z'];
+            $current_row = 0;
 
             while ($row = mysql_fetch_row($result)) {
-
-                $values= [];
-            	$current_row++;
+                $values = [];
+                $current_row++;
                 for ($j = 0; $j < $fields_cnt; $j++) {
                     if (!isset($row[$j])) {
-                        $values[]     = 'NULL';
-                    }
-                    else if ($row[$j] == '0' || $row[$j] != '') {
-
+                        $values[] = 'NULL';
+                    } elseif ($row[$j] == '0' || $row[$j] != '') {
                         ### a number
                         if ($field_num[$j]) {
                             $values[] = $row[$j];
@@ -290,16 +267,14 @@ class MySQLDumper {
                         else {
                             $values[] = "'" . str_replace($search, $replace, $this->sqlAddslashes($row[$j])) . "'";
                         }
-                    }
-                    else {
-                        $values[]     = "''";
+                    } else {
+                        $values[] = "''";
                     }
                 }
 
-                $insert_line      = $schema_insert . implode(', ', $values) . ');'."\n";
+                $insert_line = $schema_insert . implode(', ', $values) . ');' . "\n";
 
-                $buffer.= $insert_line;
-
+                $buffer .= $insert_line;
 
                 ### loic1: send a fake header to bypass browser timeout if data are bufferized
                 if (!empty($GLOBALS['ob_mode'])) {
@@ -311,23 +286,21 @@ class MySQLDumper {
         return $buffer;
     }
 
-
     /**
     * Adds backquotes on both sides of a database, table or field name.
     * Since MySQL 3.23.6 this allows to use non-alphanumeric characters in
     * these names.
     */
-    function backquote($a_name)
+    public function backquote($a_name)
     {
         if (!$a_name && $a_name != '*') {
             return '`' . $a_name . '`';
-        }
-        else {
+        } else {
             return $a_name;
         }
     }
 
-    function sqlAddslashes($a_string = '')
+    public function sqlAddslashes($a_string = '')
     {
         if ($this->use_backquotes) {
             $a_string = str_replace('\\', '\\\\\\\\', $a_string);
@@ -338,10 +311,4 @@ class MySQLDumper {
 
         return $a_string;
     }
-
 }
-
-
-
-
-?>
