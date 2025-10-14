@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -25,47 +30,44 @@ function TopicExportAsHtml()
     require_once(confGet('DIR_STREBER') . 'db/db_itemperson.inc.php');
 
     ### get task ####
-    $tsk=get('tsk');
+    $tsk = get('tsk');
 
-
-    if(!$task=Task::getVisibleById($tsk)) {
-        $PH->abortWarning("invalid task-id",ERROR_FATAL);
+    if (!$task = Task::getVisibleById($tsk)) {
+        $PH->abortWarning('invalid task-id', ERROR_FATAL);
     }
 
-    if(!$project= Project::getVisibleById($task->project)) {
-        $PH->abortWarning("this task has an invalid project id", ERROR_DATASTRUCTURE);
+    if (!$project = Project::getVisibleById($task->project)) {
+        $PH->abortWarning('this task has an invalid project id', ERROR_DATASTRUCTURE);
     }
 
     global $g_wiki_task;
-    $g_wiki_task= $task;
+    $g_wiki_task = $task;
 
-    $complete_buffer = "<html><head>";
+    $complete_buffer = '<html><head>';
     $complete_buffer .= '<meta http-equiv="Content-type" content="text/html; charset=utf-8">';
     $complete_buffer .= '<link rel="stylesheet" type="text/css" href="themes/clean/documentation.css" media="all">';
-    $complete_buffer .= "</head>";
-    $complete_buffer .= "<body>";
-    
+    $complete_buffer .= '</head>';
+    $complete_buffer .= '<body>';
+
     //$url= confGet('SELF_PROTOCOL').'://'.confGet('SELF_URL');   # url part of the link to the task
 
-    $subtasks= $task->getSubtasksRecursive();
+    $subtasks = $task->getSubtasksRecursive();
     //array_unshift($subtasks, $task);
 
-    $complete_buffer .= ("<div class='document-title'>" . $task->name . "</div>");
+    $complete_buffer .= ("<div class='document-title'>" . $task->name . '</div>');
     $complete_buffer .= "<ol class='toc'></ol>";
     $complete_buffer .= wikifieldAsHtml($task, 'description');
 
-
-    foreach($subtasks as $t) {
-        $complete_buffer .= ("<h1>" . $t->name . "</h1>");
+    foreach ($subtasks as $t) {
+        $complete_buffer .= ('<h1>' . $t->name . '</h1>');
         $wiki_as_html = wikifieldAsHtml($t, 'description');
         $complete_buffer .= $wiki_as_html;
     }
-    $complete_buffer.= "</body></html>";
+    $complete_buffer .= '</body></html>';
 
     echo extractToc2($complete_buffer);
     //echo $complete_buffer;
 }
-
 
 function extractToc2($code)
 {
@@ -78,9 +80,9 @@ function extractToc2($code)
     // create initial list
     $xpath = new DOMXPath($doc);
 
-    $url= confGet('SELF_PROTOCOL').'://'.confGet('SELF_URL');   # url part of the link to the task
-    foreach($doc->getElementsByTagName('a') as $linkElement ) {
-        $orgHref= $linkElement->getAttribute("href");
+    $url = confGet('SELF_PROTOCOL') . '://' . confGet('SELF_URL');   # url part of the link to the task
+    foreach ($doc->getElementsByTagName('a') as $linkElement) {
+        $orgHref = $linkElement->getAttribute('href');
         $parameterString = preg_replace('/(.*index\.php)(.*)/', "$url/index.php$2", $orgHref);
     }
 
@@ -90,58 +92,57 @@ function extractToc2($code)
 
     # get all H1, H2, …, H6 elements
     foreach ($xpath->query('//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5 or self::h6]') as $h_tag) {
-        
         list($current_h_level) = sscanf($h_tag->tagName, 'h%u');
-        
-        if ($current_h_level  < $last_h_level) {
+
+        if ($current_h_level < $last_h_level) {
             # move upwards
-            for ($i=$current_h_level ; $i<$last_h_level; $i++) {
-                if($head->tagName == "li")
+            for ($i = $current_h_level; $i < $last_h_level; $i++) {
+                if ($head->tagName == 'li') {
                     $head = &$head->parentNode;
-                if($head->tagName == "ol")
-                    $head = &$head->parentNode;
-            }
-        } 
-        else if ($current_h_level  > $last_h_level && $head->lastChild) {
-            # move downwards and create new lists
-            for ($i=$last_h_level; $i<$current_h_level ; $i++) {
-                if(!$head->hasChildren) {
-                    $head->appendChild($doc->createElement('ol'));    
-                    $head = &$head->lastChild;
                 }
-                else {
+                if ($head->tagName == 'ol') {
+                    $head = &$head->parentNode;
+                }
+            }
+        } elseif ($current_h_level > $last_h_level && $head->lastChild) {
+            # move downwards and create new lists
+            for ($i = $last_h_level; $i < $current_h_level; $i++) {
+                if (!$head->hasChildren) {
+                    $head->appendChild($doc->createElement('ol'));
+                    $head = &$head->lastChild;
+                } else {
                     $head->lastChild->appendChild($doc->createElement('ol'));
                     $head = &$head->lastChild->lastChild;
                 }
             }
         }
-        $last_h_level = $current_h_level ;
+        $last_h_level = $current_h_level;
 
         # add list item
         $li = $doc->createElement('li');
         $head->appendChild($li);
 
-        $link_node = $doc->createElement('a',  $h_tag->firstChild->textContent);
+        $link_node = $doc->createElement('a', $h_tag->firstChild->textContent);
         $head->lastChild->appendChild($link_node);
 
         # build ID
-        $levels = array();
+        $levels = [];
         $tmp = &$head;
 
         # walk subtree up to fragment root node of this subtree
         while (!is_null($tmp) && $tmp != $frag) {
             $levels[] = $tmp->childNodes->length;
-            
-            if($tmp->tagName =='li') {
+
+            if ($tmp->tagName == 'li') {
                 $tmp = &$tmp->parentNode;
             }
 
             $tmp = &$tmp->parentNode;
         }
 
-        $id = 'sect'.implode('.', array_reverse($levels));
+        $id = 'sect' . implode('.', array_reverse($levels));
         # set destination
-        $link_node->setAttribute('href', '#'.$id);
+        $link_node->setAttribute('href', '#' . $id);
 
         # add anchor to headline
         $anchor = $doc->createElement('a');
@@ -149,12 +150,11 @@ function extractToc2($code)
         $anchor->setAttribute('id', $id);
 
         # Fix edit links
-        if($current_h_level  > 0) {
+        if ($current_h_level > 0) {
             $h_tag->insertBefore($anchor, $h_tag->firstChild);
-            if($h_tag->lastChild->tagName =='a') {
-                $h_tag->lastChild->nodeValue= " ⇗";                
+            if ($h_tag->lastChild->tagName == 'a') {
+                $h_tag->lastChild->nodeValue = ' ⇗';
             }
-            
         }
     }
 
@@ -167,11 +167,5 @@ function extractToc2($code)
         $toc_tag->appendChild($frag);
     }
 
-
     return   $doc->saveHTML();
 }
-
-
-
-
-?>

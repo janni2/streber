@@ -2,7 +2,7 @@
 
 function saveOriginalConfiguration()
 {
-	$result= rename('../_settings', '../_settings3');     # surpressing FILE-EXISTs notice
+    $result = rename('../_settings', '../_settings3');     # surpressing FILE-EXISTs notice
 }
 
 /**
@@ -13,12 +13,12 @@ function saveOriginalConfiguration()
 * tested.
 *
 */
-class TestInstall extends WebTestCase {
-    
-    function testInstallation() {
-
+class TestInstall extends WebTestCase
+{
+    public function testInstallation()
+    {
         #saveOriginalConfiguration();
-        
+
         TestEnvironment::prepare('fixtures/project_setup.sql');
         $this->addHeader('USER_AGENT: streber_unit_tester');
         #
@@ -36,7 +36,5 @@ class TestInstall extends WebTestCase {
         #
         #### submit -> login to home ###
         #$this->assertNoUnwantedPattern('/<b>Warning<\/b>:|<b>Error<\/b>:|<b>Notice<\/b>:/i',    'php-error found (%s)' );
-
     }
 }
-?>

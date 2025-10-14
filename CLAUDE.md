@@ -11,10 +11,37 @@ Streber is a PHP5-based wiki-driven project management tool for freelancers and 
 This is a **PHP-based web application** with no build system. Changes to PHP files take effect immediately.
 
 **Key commands:**
-- There is NO build, test, or lint command needed - PHP files are executed directly by the web server
+- There is NO build system - PHP files are executed directly by the web server
 - The application is accessed through `index.php`
 - Testing: Unit tests exist in `/tests/` directory using SimpleTest framework
 - Installation: Run `/install/install.php` (should be deleted in production)
+
+**Modern development tools (added during modernization):**
+- Composer is used via `composer.phar` (local installation)
+- Run commands: `php composer.phar <command>`
+
+**Code quality commands:**
+- `php composer.phar cs-check` - Check code style compliance (dry-run)
+- `php composer.phar cs-fix` - Automatically fix code style issues
+- `php composer.phar analyse` - Run PHPStan static analysis
+- `php composer.phar test` - Run PHPUnit tests (if configured)
+
+**Important notes about code quality tools:**
+- PHP-CS-Fixer configuration: `.php-cs-fixer.php`
+  - Uses PSR-12 standard with modern PHP conventions
+  - Excludes: `vendor/`, `lib/`, `_tmp/`, `_files/`, etc.
+  - Excludes `test_with_parse_error.php` (intentional syntax errors for testing)
+  - Uses short array syntax `[]` instead of `array()`
+  - Prefers single quotes for strings
+
+- PHPStan configuration: `phpstan.neon`
+  - Level 0 analysis (gradually increase as code improves)
+  - Uses baseline file `phpstan-baseline.neon` to track existing issues
+  - Regenerate baseline: `php composer.phar analyse -- --generate-baseline`
+  - Analyzes files in: blocks/, db/, pages/, render/, std/, src/
+
+- The codebase is gradually being modernized while maintaining backward compatibility
+- All modernization changes maintain PHP 8.3+ compatibility
 
 ## Architecture
 
@@ -109,12 +136,33 @@ The `id` parameter maps to the `?go=` query parameter, and `req` points to the f
 /lists/           - List rendering definitions
 /pages/           - Page implementations (functions)
 /render/          - Rendering helper functions
+/src/             - Modern PHP classes (PSR-4 autoloaded, added during modernization)
 /std/             - Standard utilities, authentication, common functions
 /tests/           - Unit tests
 /themes/          - CSS themes
+/vendor/          - Composer dependencies (git-ignored)
 /_files/          - Uploaded files
 /_tmp/            - Temporary files
 /_settings/       - Generated settings (db credentials)
+```
+
+**Modern classes in `/src/` directory:**
+- `Container.php` - Dependency injection container for gradual modernization
+- `Config.php` - Service wrapper for configuration management
+- `helpers.php` - Modern helper functions (container(), config())
+
+**Using modern services:**
+```php
+// Get the DI container
+$container = container();
+
+// Get config service (wraps confGet/confChange)
+$config = config();
+$value = $config->get('KEY');
+$config->set('KEY', 'value');
+
+// Or use helper functions directly
+$value = config()->get('KEY');
 ```
 
 ### Authentication & Rights
@@ -215,3 +263,37 @@ The `id` parameter maps to the `?go=` query parameter, and `req` points to the f
 - Enable via `confChange('USE_MOD_REWRITE', true)`
 - PageHandles define clean URL patterns via `cleanurl` parameter
 - Example: `/123` instead of `/index.php?go=taskView&tsk=123`
+
+## Modernization & Code Quality
+
+### Common Issues and Troubleshooting
+
+**PHP-CS-Fixer issues:**
+- If cs-check fails with exit code 4, check for files with syntax errors
+- Use `->notName('filename.php')` in `.php-cs-fixer.php` to exclude problematic files
+- Clear cache if changes aren't reflected: `rm -f .php-cs-fixer.cache`
+- The cache file `.php-cs-fixer.cache` should be git-ignored
+
+**PHPStan issues:**
+- If baseline errors don't match current code, regenerate: `php composer.phar analyse -- --generate-baseline`
+- Common causes: Code style changes (quote style), fixing actual bugs
+- Baseline tracks 583 existing issues (as of current modernization)
+- When fixing errors, regenerate baseline to keep it in sync
+
+**Array syntax modernization:**
+- Old style: `array('key' => 'value')`
+- New style: `['key' => 'value']`
+- PHP-CS-Fixer automatically converts these
+- Watch for duplicate array keys after conversion
+
+**Autoloading:**
+- PSR-4 autoloading configured in `composer.json` for `Streber\` namespace
+- Maps to `/src/` directory
+- Legacy code still uses manual `require_once()` - this is okay during transition
+- New code should use namespaced classes
+
+**Backward compatibility:**
+- All modernization maintains backward compatibility
+- Old `confGet()` / `confChange()` still work alongside new `config()` service
+- Gradual migration strategy - no breaking changes
+- Functions and classes coexist during transition period

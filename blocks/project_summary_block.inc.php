@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -9,61 +14,59 @@
  * @author     Thomas Mann
  */
 
-require_once(confGet('DIR_STREBER') . "render/render_page.inc.php");
+require_once(confGet('DIR_STREBER') . 'render/render_page.inc.php');
 
 class ProjectSummaryBlock extends PageBlock
 {
     public $project;
     public $current_milestone;
-    public $title= ""; 
+    public $title = '';
 
     public function __construct($project)
     {
-        parent::__construct(NULL);
+        parent::__construct(null);
         $this->project = $project;
         $this->current_milestone = $project->getNextMilestone();
-        $this->title= __('');
+        $this->title = __('');
     }
 
     public function __toString()
     {
-        return "";
+        return '';
     }
 
-
-    public function render($args=NULL)
+    public function render($args = null)
     {
         global $PH;
-        
+
         $this->render_blockStart();
         //echo "<div class='post_list_entry'>";
 
         {
             ### client ###
-            if($this->project->company) {
-                echo "<div class=labeled><label>".__("For","Label in Task summary")."</label>"
+            if ($this->project->company) {
+                echo '<div class=labeled><label>' . __('For', 'Label in Task summary') . '</label>'
                     . $this->project->getCompanyLink()
-                    . "</div>";
-            }
-            
-            global $g_status_names;
-            if($status=$g_status_names[$this->project->status]) {
-                echo "<div class=labeled><label>".__("Status","Label in Task summary")."</label>$status</div>";
+                    . '</div>';
             }
 
-            echo "<div class=labeled><label>".__("Opened","Label in Task summary")."</label>".renderDateHtml($this->project->date_start)."</div>";
-            if($this->project->date_closed !="0000-00-00") {
-                echo "<div class=labeled><label>".__("Closed","Label in Task summary")."</label>". renderDateHtml($this->project->date_closed) . "</div>";
+            global $g_status_names;
+            if ($status = $g_status_names[$this->project->status]) {
+                echo '<div class=labeled><label>' . __('Status', 'Label in Task summary') . "</label>$status</div>";
+            }
+
+            echo '<div class=labeled><label>' . __('Opened', 'Label in Task summary') . '</label>' . renderDateHtml($this->project->date_start) . '</div>';
+            if ($this->project->date_closed != '0000-00-00') {
+                echo '<div class=labeled><label>' . __('Closed', 'Label in Task summary') . '</label>' . renderDateHtml($this->project->date_closed) . '</div>';
             }
 
             ### efforts ###
-            if($openEfforts = $this->project->getOpenEffortsSum() > 0) {
-                echo "<div class=labeled><label>".__("Open efforts","Label in Task summary")."</label>"
-                    . $PH->getLink('projViewEfforts', round($this->project->getOpenEffortsSum()/60/60,1) . "h", array('prj'=> $this->project->id, 'preset' => 'open_efforts' ))
-                    . "</div>";            
+            if ($openEfforts = $this->project->getOpenEffortsSum() > 0) {
+                echo '<div class=labeled><label>' . __('Open efforts', 'Label in Task summary') . '</label>'
+                    . $PH->getLink('projViewEfforts', round($this->project->getOpenEffortsSum() / 60 / 60, 1) . 'h', ['prj' => $this->project->id, 'preset' => 'open_efforts'])
+                    . '</div>';
             }
-            
-            
+
             /*
             ### normal tasks ###
             else {
@@ -165,18 +168,11 @@ class ProjectSummaryBlock extends PageBlock
                 echo "</div>";
             }
             */
-
-
         }
-
 
         //echo "</div>";
 
         $this->render_blockEnd();
         return '';
     }
-    
 }
-
-
-?>

@@ -2036,11 +2036,6 @@ parameters:
 			path: pages/project_view_tasks_in_groups.inc.php
 
 		-
-			message: "#^Array has 2 duplicate keys with value 'would' \\(\"would\", \"would\"\\)\\.$#"
-			count: 1
-			path: pages/search.inc.php
-
-		-
 			message: "#^Class DbProjectItem referenced with incorrect case\\: DBProjectItem\\.$#"
 			count: 1
 			path: pages/search.inc.php
@@ -2216,11 +2211,6 @@ parameters:
 			path: std/common.inc.php
 
 		-
-			message: "#^Function get_magic_quotes_gpc not found\\.$#"
-			count: 1
-			path: std/common.inc.php
-
-		-
 			message: "#^Undefined variable\\: \\$r$#"
 			count: 1
 			path: std/common.inc.php
@@ -2312,11 +2302,6 @@ parameters:
 
 		-
 			message: "#^Class _DiffOp_Delete does not have a constructor and must be instantiated without any parameters\\.$#"
-			count: 2
-			path: std/difference_engine.inc.php
-
-		-
-			message: "#^Function each not found\\.$#"
 			count: 2
 			path: std/difference_engine.inc.php
 

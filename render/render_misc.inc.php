@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -14,20 +19,19 @@
  *
  */
 
-
 /**
 * Handy function to set a message that welcomes a user after login.
 * This message can be adjusted conf
 */
-function setWelcomeToProjectMessage($project) 
+function setWelcomeToProjectMessage($project)
 {
     global $auth;
-    $PH->messages[]= sprintf( __("Hello %s. Welcome to project %s"), 
-                            "<b>". asHtml($auth->cur_user->name) . "</b>",
-                            "<b>". asHtml($project->name) . "</b>"
-                    );
+    $PH->messages[] = sprintf(
+        __('Hello %s. Welcome to project %s'),
+        '<b>' . asHtml($auth->cur_user->name) . '</b>',
+        '<b>' . asHtml($project->name) . '</b>'
+    );
 }
-
 
 /**
 * get theme-directory (without slashes) from current user-definition
@@ -41,24 +45,22 @@ function getCurTheme()
     global $g_theme_names;
 
     ### make sure theme is define ###
-    if(!is_null(confGet('THEME_OVERWRITE'))) {
-        $t= confGet('THEME_OVERWRITE');
-        if(isset($g_theme_names[$t]) && ($theme= $g_theme_names[$t])) {
+    if (!is_null(confGet('THEME_OVERWRITE'))) {
+        $t = confGet('THEME_OVERWRITE');
+        if (isset($g_theme_names[$t]) && ($theme = $g_theme_names[$t])) {
             return $theme;
         }
     }
-    
-    if(isset($auth)
+
+    if (isset($auth)
      && isset($auth->cur_user)
      && isset($g_theme_names[$auth->cur_user->theme])
-     && ($theme= $g_theme_names[$auth->cur_user->theme])) {
+     && ($theme = $g_theme_names[$auth->cur_user->theme])) {
         return $theme;
     }
 
     return $g_theme_names[confGet('THEME_DEFAULT')];
 }
-
-
 
 /**
 * get url to file from the current theme
@@ -73,24 +75,21 @@ function getCurTheme()
 */
 function getThemeFile($filepath)
 {
-    $theme= getCurTheme();
-    $path= "/themes/".getCurTheme()."/".$filepath;
-    if(file_exists($path)) {
+    $theme = getCurTheme();
+    $path = '/themes/' . getCurTheme() . '/' . $filepath;
+    if (file_exists($path)) {
         return $path;
     }
 
     ### @@@pixtur:2006-10-11 using clean is not very good. Better would be default theme.
-    $path= "themes/clean/". $filepath;
-    if(file_exists($path)) {
+    $path = 'themes/clean/' . $filepath;
+    if (file_exists($path)) {
         return $path;
-    }
-    else {
-        trigger_error("unknown theme file '". $filepath. "'", E_USER_WARNING);
-        return "";
+    } else {
+        trigger_error("unknown theme file '" . $filepath . "'", E_USER_WARNING);
+        return '';
     }
 }
-
-
 
 /**
  * Exception thrown related to rendering
@@ -99,16 +98,16 @@ function getThemeFile($filepath)
 */
 class RenderException extends Exception
 {
-  public $backtrace=NULL;
+    public $backtrace = null;
 
-  function __construct($message=false, $code=false)
-  {
-	$this->message="";
-    if($message) {
-        $this->message="<pre>$message";
+    public function __construct($message = false, $code = false)
+    {
+        $this->message = '';
+        if ($message) {
+            $this->message = "<pre>$message";
+        }
+        $this->backtrace = debug_backtrace();
     }
-    $this->backtrace = debug_backtrace();
-  }
 }
 
 /**
@@ -117,61 +116,52 @@ class RenderException extends Exception
  * add http:/ if missing
  * escapes html entities and returns save string
  */
-function url2linkExtern($url, $show=NULL, $maxlen=20) {
-    if(!preg_match("/^http:\/\//",$url)) {
-        if(!$show) {
-            $show= $url;
+function url2linkExtern($url, $show = null, $maxlen = 20)
+{
+    if (!preg_match("/^http:\/\//", $url)) {
+        if (!$show) {
+            $show = $url;
         }
-        $url="http://$url";
-    }
-    else {
-        if(!$show) {
-            $show= preg_replace("/^https?:\/\//","",$url);
+        $url = "http://$url";
+    } else {
+        if (!$show) {
+            $show = preg_replace("/^https?:\/\//", '', $url);
         }
     }
-    if(strlen($show) > $maxlen) {
-        $show=substr($show,0,$maxlen)."...";
+    if (strlen($show) > $maxlen) {
+        $show = substr($show, 0, $maxlen) . '...';
     }
-    return "<a target='_blank' class='extern' href='". asHtml($url) ."'>" . asHtml($show) ."</a>";
+    return "<a target='_blank' class='extern' href='" . asHtml($url) . "'>" . asHtml($show) . '</a>';
 }
 
 /**
  * convert url to mail link-tag (remove mail:// and reduced to reasonable length)
 */
-function url2linkMail($url,$show=false, $maxlen=32) {
-    $url= asHtml($url);
+function url2linkMail($url, $show = false, $maxlen = 32)
+{
+    $url = asHtml($url);
 
-    if(!preg_match("/^mailto:/",$url)) {
-        if(!$show) {
-            $show= $url;
+    if (!preg_match('/^mailto:/', $url)) {
+        if (!$show) {
+            $show = $url;
         }
-        $url="mailto:$url";
-    }
-    else {
-        if(!$show) {
-            $show= preg_replace("/^mailto?:/","",$url);
+        $url = "mailto:$url";
+    } else {
+        if (!$show) {
+            $show = preg_replace('/^mailto?:/', '', $url);
         }
     }
 
-    if(strlen($show) > $maxlen) {
-        $show=substr($show,0,$maxlen)."...";
+    if (strlen($show) > $maxlen) {
+        $show = substr($show, 0, $maxlen) . '...';
     }
-    return "<a class='mail' href='".$url. "'>". $show."</a>";
+    return "<a class='mail' href='" . $url . "'>" . $show . '</a>';
 }
-
-
-
-
-
-
-
-
-
 
 /**
 * Initialize a page for displaying task related content
 *
-* - inits: 
+* - inits:
 *   - breadcrumps
 *   - options
 *   - current section
@@ -179,47 +169,40 @@ function url2linkMail($url,$show=false, $maxlen=32) {
 *   - pageType (including task folders)
 *   - pageTitle (as Task title)
 */
-function initPageForTask($page, $task, $project=NULL) 
+function initPageForTask($page, $task, $project = null)
 {
     global $PH;
-    $crumbs=array();
+    $crumbs = [];
 
-    if(!$project) {
-        $project= Project::getVisibleById($task->project);
+    if (!$project) {
+        $project = Project::getVisibleById($task->project);
     }
-    
-    if($task->category == TCATEGORY_MILESTONE) {
-        $page->cur_crumb= 'projViewMilestones';
-    }
-    else if($task->category == TCATEGORY_VERSION) {
-        $page->cur_crumb= 'projViewVersions';
-    }
-    else if($task->category == TCATEGORY_DOCU || ($task->category == TCATEGORY_FOLDER && $task->show_folder_as_documentation)) {
-        $page->cur_crumb= 'projViewDocu';
 
+    if ($task->category == TCATEGORY_MILESTONE) {
+        $page->cur_crumb = 'projViewMilestones';
+    } elseif ($task->category == TCATEGORY_VERSION) {
+        $page->cur_crumb = 'projViewVersions';
+    } elseif ($task->category == TCATEGORY_DOCU || ($task->category == TCATEGORY_FOLDER && $task->show_folder_as_documentation)) {
+        $page->cur_crumb = 'projViewDocu';
+    } else {
+        $page->cur_crumb = 'projViewTasks';
     }
-    else {
-        $page->cur_crumb= 'projViewTasks';
+
+    $page->crumbs = build_project_crumbs($project);
+    $page->options = build_projView_options($project);
+    $page->cur_tab = 'projects';
+    $page->title = $task->name;
+    if ($task->id) {
+        $page->title_minor_html = $PH->getLink('taskView', sprintf('#%d', $task->id), ['tsk' => $task->id]);
     }
-    
-    $page->crumbs= build_project_crumbs($project);
-    $page->options= build_projView_options($project);
-	$page->cur_tab='projects';
-	$page->title = $task->name;
-	if($task->id) {
-        $page->title_minor_html= $PH->getLink('taskView', sprintf('#%d', $task->id), array('tsk'=>$task->id));
-	}
-            
-    $page->type = $task->buildTypeText();;    
+
+    $page->type = $task->buildTypeText();
 }
-
-
-
 
 /**
 * Initialize a page for displaying comment related content
 *
-* - inits: 
+* - inits:
 *   - breadcrumps
 *   - options
 *   - current section
@@ -227,42 +210,37 @@ function initPageForTask($page, $task, $project=NULL)
 *   - pageType (including task folders)
 *   - pageTitle (as Task title)
 */
-function initPageForComment($page, $comment, $project=NULL) 
+function initPageForComment($page, $comment, $project = null)
 {
     global $PH;
-    $crumbs=array();
+    $crumbs = [];
 
-    if(!$project) {
-        $project= Project::getVisibleById($comment->project);
+    if (!$project) {
+        $project = Project::getVisibleById($comment->project);
     }
-    
-    $page->cur_crumb= 'projViewTasks';
-    if($comment->task) {
-        if($task = Task::getVisibleById($comment->task)) {
-            if($task->category == TCATEGORY_MILESTONE) {
-                $page->cur_crumb= 'projViewMilestones';
-            }
-            else if($task->category == TCATEGORY_VERSION) {
-                $page->cur_crumb= 'projViewVersions';
-            }
-            else if($task->category == TCATEGORY_DOCU) {
-                $page->cur_crumb= 'projViewDocu';
-        
+
+    $page->cur_crumb = 'projViewTasks';
+    if ($comment->task) {
+        if ($task = Task::getVisibleById($comment->task)) {
+            if ($task->category == TCATEGORY_MILESTONE) {
+                $page->cur_crumb = 'projViewMilestones';
+            } elseif ($task->category == TCATEGORY_VERSION) {
+                $page->cur_crumb = 'projViewVersions';
+            } elseif ($task->category == TCATEGORY_DOCU) {
+                $page->cur_crumb = 'projViewDocu';
             }
         }
-    }    
-    
-    $page->crumbs= build_project_crumbs($project);
-    $page->options= build_projView_options($project);
-	$page->cur_tab='projects';
-	if($comment->name) {
-	    $page->title = $comment->name;
-	}
-	else {
-	    $page->title = __('Comment');
-	}
-    $page->title_minor_html= $PH->getLink('commentView', sprintf('#%d', $comment->id), array('comment'=>$comment->id));
+    }
 
+    $page->crumbs = build_project_crumbs($project);
+    $page->options = build_projView_options($project);
+    $page->cur_tab = 'projects';
+    if ($comment->name) {
+        $page->title = $comment->name;
+    } else {
+        $page->title = __('Comment');
+    }
+    $page->title_minor_html = $PH->getLink('commentView', sprintf('#%d', $comment->id), ['comment' => $comment->id]);
 
     /**
     * render html buffer with page type of this task, including parent folders
@@ -272,26 +250,24 @@ function initPageForComment($page, $comment, $project=NULL)
     */
     {
         global $g_status_names;
-        $type ="";
+        $type = '';
 
-        if($task) {
-            if($folder= $task->getFolderLinks()) {
-                $type = $folder ." &gt; " ;
+        if ($task) {
+            if ($folder = $task->getFolderLinks()) {
+                $type = $folder . ' &gt; ';
             }
-            $type.= $task->getLink() . ' &gt; ' ;
+            $type .= $task->getLink() . ' &gt; ';
         }
         $type .= __('Comment');
-                
+
         $page->type = $type;
     }
 }
-
-
 
 /**
 * Initialize a page for displaying file related content
 *
-* - inits: 
+* - inits:
 *   - breadcrumps
 *   - options
 *   - current section
@@ -299,30 +275,27 @@ function initPageForComment($page, $comment, $project=NULL)
 *   - pageType (including task folders)
 *   - pageTitle (as Task title)
 */
-function initPageForFile($page, $file, $project=NULL) 
+function initPageForFile($page, $file, $project = null)
 {
     global $PH;
-    $crumbs=array();
+    $crumbs = [];
 
-    if(!$project) {
-        $project= Project::getVisibleById($file->project);
+    if (!$project) {
+        $project = Project::getVisibleById($file->project);
     }
     $task = Task::getVisibleById($file->parent_item);
-    
-    $page->cur_crumb= 'projViewFiles';
-    
-    
-    $page->crumbs= build_project_crumbs($project);
-    $page->options= build_projView_options($project);
-	$page->cur_tab='projects';
-	if($file->name) {
-	    $page->title = $file->name;
-	}
-	else {
-	    $page->title = __('File');
-	}
-    $page->title_minor_html= $PH->getLink('fileView', sprintf('#%d', $file->id), array('file'=>$file->id));
 
+    $page->cur_crumb = 'projViewFiles';
+
+    $page->crumbs = build_project_crumbs($project);
+    $page->options = build_projView_options($project);
+    $page->cur_tab = 'projects';
+    if ($file->name) {
+        $page->title = $file->name;
+    } else {
+        $page->title = __('File');
+    }
+    $page->title_minor_html = $PH->getLink('fileView', sprintf('#%d', $file->id), ['file' => $file->id]);
 
     /**
     * render html buffer with page type of this task, including parent folders
@@ -332,25 +305,23 @@ function initPageForFile($page, $file, $project=NULL)
     */
     {
         global $g_status_names;
-        $type ="";
+        $type = '';
 
-        if($task) {
-            if($folder= $task->getFolderLinks()) {
-                $type = $folder ." &gt; " ;
+        if ($task) {
+            if ($folder = $task->getFolderLinks()) {
+                $type = $folder . ' &gt; ';
             }
-            $type.= $task->getLink() . ' &gt; ' ;
+            $type .= $task->getLink() . ' &gt; ';
         }
-        $type .= __('File'); 
+        $type .= __('File');
         $page->type = $type;
     }
 }
-
-
 
 /**
 * Initialize a page for displaying effort related content
 *
-* - inits: 
+* - inits:
 *   - breadcrumps
 *   - options
 *   - current section
@@ -358,29 +329,27 @@ function initPageForFile($page, $file, $project=NULL)
 *   - pageType (including task folders)
 *   - pageTitle (as Task title)
 */
-function initPageForEffort($page, $effort, $project=NULL) 
+function initPageForEffort($page, $effort, $project = null)
 {
     global $PH;
-    $crumbs=array();
+    $crumbs = [];
 
-    if(!$project) {
-        $project= Project::getVisibleById($effort->project);
+    if (!$project) {
+        $project = Project::getVisibleById($effort->project);
     }
     $task = Task::getVisibleById($effort->task);
-    
-    $page->cur_crumb= 'projViewEfforts';
-        
-    $page->crumbs= build_project_crumbs($project);
-    $page->options= build_projView_options($project);
-	$page->cur_tab='projects';
-	if($effort->name) {
-	    $page->title = $effort->name;
-	}
-	else {
-	    $page->title = __('Effort');
-	}
-    $page->title_minor_html= $PH->getLink('effortView', sprintf('#%d', $effort->id), array('effort'=>$effort->id));
 
+    $page->cur_crumb = 'projViewEfforts';
+
+    $page->crumbs = build_project_crumbs($project);
+    $page->options = build_projView_options($project);
+    $page->cur_tab = 'projects';
+    if ($effort->name) {
+        $page->title = $effort->name;
+    } else {
+        $page->title = __('Effort');
+    }
+    $page->title_minor_html = $PH->getLink('effortView', sprintf('#%d', $effort->id), ['effort' => $effort->id]);
 
     /**
     * render html buffer with page type of this task, including parent folders
@@ -390,89 +359,86 @@ function initPageForEffort($page, $effort, $project=NULL)
     */
     {
         global $g_status_names;
-        $type ="";
+        $type = '';
 
-        if($task) {
-            if($folder= $task->getFolderLinks()) {
-                $type = $folder ." &gt; " ;
+        if ($task) {
+            if ($folder = $task->getFolderLinks()) {
+                $type = $folder . ' &gt; ';
             }
-            $type.= $task->getLink() . ' &gt; ' ;
+            $type .= $task->getLink() . ' &gt; ';
         }
-        $type .= __('Effort'); 
+        $type .= __('Effort');
         $page->type = $type;
     }
 }
 
+function build_person_crumbs(&$person)
+{
+    $crumbs = [];
 
+    $crumbs[] = new NaviCrumb([
+        'target_id' => 'personList',
+        'name' => __('Other People', 'page option'),
+    ]);
 
-
-
-function build_person_crumbs(&$person) {
-    $crumbs=array();
-
-	$crumbs[]= new NaviCrumb(array(
-		'target_id'     =>'personList',
-		'name'          =>__('Other People','page option'),
-	));
-    
-    $crumbs[]= new NaviCrumb(array(
-        'target_id'     => 'personView',
-        'target_params' => array('person'=> $person->id),
-        'name'          => $person->name,
-        'type'=>'person',
-  	));
-  	return $crumbs;
+    $crumbs[] = new NaviCrumb([
+        'target_id' => 'personView',
+        'target_params' => ['person' => $person->id],
+        'name' => $person->name,
+        'type' => 'person',
+    ]);
+    return $crumbs;
 }
 
-function build_company_crumbs(&$company) {
-    $crumbs=array();
+function build_company_crumbs(&$company)
+{
+    $crumbs = [];
 
-	$crumbs[]= new NaviCrumb(array(
-		'target_id'     => 'companyList',
-	));
+    $crumbs[] = new NaviCrumb([
+        'target_id' => 'companyList',
+    ]);
 
-    $crumbs[]= new NaviCrumb(array(
-            'target_id'     => 'companyView',
-            'name'          => $company->name,
-            'target_params' => array('company'=>$company->id),
-    ));
+    $crumbs[] = new NaviCrumb([
+            'target_id' => 'companyView',
+            'name' => $company->name,
+            'target_params' => ['company' => $company->id],
+    ]);
 
-  	return $crumbs;
+    return $crumbs;
 }
 
-
-function build_project_crumbs($project) {
-    $a=array();
+function build_project_crumbs($project)
+{
+    $a = [];
 
     ### breadcrumbs (distinguish active/closed projects ###
-	/*if($project->status > 3) {
+    /*if($project->status > 3) {
         $a[]=
-    	    new NaviCrumb(array(
-	            'target_id'=>'projListClosed',
-    	    ));
+            new NaviCrumb(array(
+                'target_id'=>'projListClosed',
+            ));
     }
     else if($project->status == -1) {
         $a[]=
-    	    new NaviCrumb(array(
-	            'target_id'=>'projListTemplates',
-    	    ));
+            new NaviCrumb(array(
+                'target_id'=>'projListTemplates',
+            ));
     }
     else {
         $a[]=
-    	    new NaviCrumb(array(
-	            'target_id'=>'projList',
-    	    ));
+            new NaviCrumb(array(
+                'target_id'=>'projList',
+            ));
     }
     */
 
-
-    $a[]= new NaviCrumb(array(
-            'target_id'=>'projView',
-            'name'=>    $project->getShort(),
-            'tooltip'=> $project->name,
-            'target_params'=>array('prj'=>$project->id ),
-            'type'=>'project',
-        ));
+    $a[] = new NaviCrumb([
+            'target_id' => 'projView',
+            'name' => $project->getShort(),
+            'tooltip' => $project->name,
+            'target_params' => ['prj' => $project->id],
+            'type' => 'project',
+        ]);
 
     return $a;
 }
@@ -484,59 +450,56 @@ function build_project_crumbs($project) {
 * is done by css only. This is a little bit tricky, because the Tab-list is already an
 * span which allows only further Spans to be included...
 *
-* The selectorlist is triggered by 
+* The selectorlist is triggered by
 *
 * read more at #3867
 */
 function buildProjectSelector()
 {
-
     global $auth;
-    if(!$auth->cur_user || !$auth->cur_user->id) {
-        return "";
+    if (!$auth->cur_user || !$auth->cur_user->id) {
+        return '';
     }
-    $buffer= "";
+    $buffer = '';
 
     global $PH;
 
-	require_once(confGet('DIR_STREBER') . 'db/class_company.inc.php');
-    require_once(confGet('DIR_STREBER') . "db/class_project.inc.php");
+    require_once(confGet('DIR_STREBER') . 'db/class_company.inc.php');
+    require_once(confGet('DIR_STREBER') . 'db/class_project.inc.php');
 
-    $buffer.="<span id=projectselector class=selector>&nbsp;</span>";
-    $buffer.= "<span style='display:none;' id='projectselectorlist' class=selectorlist><span class=selectorlist_content>";
+    $buffer .= '<span id=projectselector class=selector>&nbsp;</span>';
+    $buffer .= "<span style='display:none;' id='projectselectorlist' class=selectorlist><span class=selectorlist_content>";
 
-    foreach(Company::getAll() as $c) {
-	    if($projects= Project::getAll(array(
-	    	'order_by'   => 'c.name',
-	        'company'    => $c->id,
-	    ))) {
-	        $buffer .= "<div class='companies'><span style='float:left;margin-right:3px;'>" . __("for","short for client") . "</span>" . $c->getLink() . "</div>";
-	        $buffer .= "<div class='projects'><ul>";
-	        foreach($projects as $p) {
-	            $buffer.= "<li>" . $PH->getLink('projView',$p->name, array('prj' => $p->id)) . "</li>";
-	        }
-	        $buffer .= "</ul></div>";
-	    }
+    foreach (Company::getAll() as $c) {
+        if ($projects = Project::getAll([
+            'order_by' => 'c.name',
+            'company' => $c->id,
+        ])) {
+            $buffer .= "<div class='companies'><span style='float:left;margin-right:3px;'>" . __('for', 'short for client') . '</span>' . $c->getLink() . '</div>';
+            $buffer .= "<div class='projects'><ul>";
+            foreach ($projects as $p) {
+                $buffer .= '<li>' . $PH->getLink('projView', $p->name, ['prj' => $p->id]) . '</li>';
+            }
+            $buffer .= '</ul></div>';
+        }
     }
-	/* projects without client */
-	if($projects= Project::getAll(array(
-       'order_by'   => 'c.name',
-       'company'    => 0,
-    ))) {
-        $buffer .= "<div class='companies'><span style='float:left;margin-right:3px;'>" . __("without client","short for client") . "</span>&nbsp;</div>";
-		$buffer .= "<div class='projects'><ul>";
-        foreach($projects as $p){
-			$buffer.= "<li>" . $PH->getLink('projView',$p->name, array('prj' => $p->id)) . "</li>";
-        } 
-        $buffer .= "</ul></div>";
+    /* projects without client */
+    if ($projects = Project::getAll([
+       'order_by' => 'c.name',
+       'company' => 0,
+    ])) {
+        $buffer .= "<div class='companies'><span style='float:left;margin-right:3px;'>" . __('without client', 'short for client') . '</span>&nbsp;</div>';
+        $buffer .= "<div class='projects'><ul>";
+        foreach ($projects as $p) {
+            $buffer .= '<li>' . $PH->getLink('projView', $p->name, ['prj' => $p->id]) . '</li>';
+        }
+        $buffer .= '</ul></div>';
     }
 
-    $buffer.="</span></span>";
-               
+    $buffer .= '</span></span>';
+
     return $buffer;
 }
-
-
 
 /**
 * Renders list of pages shown when clicking the HOME-Tab drop down
@@ -551,34 +514,34 @@ function buildHomeSelector()
 {
     global $auth;
     global $PH;
-    if(!$auth->cur_user || !$auth->cur_user->id) {
-        return "";
+    if (!$auth->cur_user || !$auth->cur_user->id) {
+        return '';
     }
-    $buffer= "";
+    $buffer = '';
 
-    $buffer.="<span id=homeselector class=selector>&nbsp;</span>";
-    $buffer.= "<span style='display:none;' id='homeselectorlist' class=selectorlist><span class=selectorlist_content>";
+    $buffer .= '<span id=homeselector class=selector>&nbsp;</span>';
+    $buffer .= "<span style='display:none;' id='homeselectorlist' class=selectorlist><span class=selectorlist_content>";
 
-    $buffer.= $PH->getLink('home',NULL, array());
+    $buffer .= $PH->getLink('home', null, []);
 
-    $buffer.= $PH->getLink('homeTasks',NULL, array());
+    $buffer .= $PH->getLink('homeTasks', null, []);
 
-    if($auth->cur_user->settings & USER_SETTING_ENABLE_EFFORTS) {
-        $buffer.= $PH->getLink('homeListEfforts',NULL, array());
-        $buffer.= $PH->getLink('homeTimetracking',NULL, array());
-    }
-    
-    if($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
-        $buffer.= $PH->getLink('homeBookmarks',NULL, array());
+    if ($auth->cur_user->settings & USER_SETTING_ENABLE_EFFORTS) {
+        $buffer .= $PH->getLink('homeListEfforts', null, []);
+        $buffer .= $PH->getLink('homeTimetracking', null, []);
     }
 
-    if($auth->cur_user->user_rights & RIGHT_VIEWALL) {
-        $buffer.= $PH->getLink('homeMonthlyReport',NULL, array());
+    if ($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
+        $buffer .= $PH->getLink('homeBookmarks', null, []);
     }
 
-    $buffer.= $PH->getLink('homeAllChanges',NULL, array());
+    if ($auth->cur_user->user_rights & RIGHT_VIEWALL) {
+        $buffer .= $PH->getLink('homeMonthlyReport', null, []);
+    }
 
-    $buffer.="</span></span>";
+    $buffer .= $PH->getLink('homeAllChanges', null, []);
+
+    $buffer .= '</span></span>';
     return $buffer;
 }
 
@@ -591,39 +554,37 @@ function buildHomeSelector()
 function build_home_options()
 {
     global $auth;
-    $options= array();
+    $options = [];
 
-    $options[]= new NaviOption(array(
-                'target_id'=>'home',
-        ));
+    $options[] = new NaviOption([
+                'target_id' => 'home',
+        ]);
 
-    $options[]= new NaviOption(array(
-            'target_id'     =>'homeTasks',
-        ));
+    $options[] = new NaviOption([
+            'target_id' => 'homeTasks',
+        ]);
 
-    if($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
-        
-        $options[]= new NaviOption(array(
-            'target_id'     =>'homeBookmarks',
-        ));
+    if ($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
+        $options[] = new NaviOption([
+            'target_id' => 'homeBookmarks',
+        ]);
     }
 
-    if($auth->cur_user->settings & USER_SETTING_ENABLE_EFFORTS) {
-        $options[]= new NaviOption(array(
-            'target_id'     =>'homeListEfforts',
-        ));
-        $options[]= new NaviOption(array(
-            'target_id'     =>'homeTimetracking',
-        ));
+    if ($auth->cur_user->settings & USER_SETTING_ENABLE_EFFORTS) {
+        $options[] = new NaviOption([
+            'target_id' => 'homeListEfforts',
+        ]);
+        $options[] = new NaviOption([
+            'target_id' => 'homeTimetracking',
+        ]);
     }
 
-    $options[]= new NaviOption(array(
-        'target_id'     =>'homeAllChanges',
-    ));
+    $options[] = new NaviOption([
+        'target_id' => 'homeAllChanges',
+    ]);
 
     return $options;
 }
-
 
 /**
 * build the navigation-options for project view
@@ -632,143 +593,134 @@ function build_home_options()
 function build_projView_options($project)
 {
     global $auth;
-	
-    $options=array();
-    if($project->settings & PROJECT_SETTING_ENABLE_TASKS) {
-        $options[]=  new NaviOption(array(
-                'target_id'=>'projViewTasks',
-                'name'=>__('Tasks','Project option'),
-                'target_params'=>array('prj'=>$project->id )
-        ));
+
+    $options = [];
+    if ($project->settings & PROJECT_SETTING_ENABLE_TASKS) {
+        $options[] = new NaviOption([
+                'target_id' => 'projViewTasks',
+                'name' => __('Tasks', 'Project option'),
+                'target_params' => ['prj' => $project->id],
+        ]);
     }
 
-    $options[]=  new NaviOption(array(
-            'target_id'=>'projViewDocu',
-            'name'=>__('Topics','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-    ));
+    $options[] = new NaviOption([
+            'target_id' => 'projViewDocu',
+            'name' => __('Topics', 'Project option'),
+            'target_params' => ['prj' => $project->id],
+    ]);
 
-    if($project->settings & PROJECT_SETTING_ENABLE_MILESTONES) {
-        $options[]=  new NaviOption(array(
-            'target_id'=>'projViewMilestones',
-            'name'=>__('Milestones','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-        ));
+    if ($project->settings & PROJECT_SETTING_ENABLE_MILESTONES) {
+        $options[] = new NaviOption([
+            'target_id' => 'projViewMilestones',
+            'name' => __('Milestones', 'Project option'),
+            'target_params' => ['prj' => $project->id],
+        ]);
     }
 
-    if($project->settings & PROJECT_SETTING_ENABLE_VERSIONS) {
-        $options[]=  new NaviOption(array(
-                'target_id'=>'projViewVersions',
-                'name'=>__('Versions','Project option'),
-                'target_params'=>array('prj'=>$project->id )
-        ));
+    if ($project->settings & PROJECT_SETTING_ENABLE_VERSIONS) {
+        $options[] = new NaviOption([
+                'target_id' => 'projViewVersions',
+                'name' => __('Versions', 'Project option'),
+                'target_params' => ['prj' => $project->id],
+        ]);
     }
 
-    if($project->settings & PROJECT_SETTING_ENABLE_FILES) {
-        $options[]=new NaviOption(array(
-            'target_id'=>'projViewFiles',
-            'name'=>__('Files','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-        ));
+    if ($project->settings & PROJECT_SETTING_ENABLE_FILES) {
+        $options[] = new NaviOption([
+            'target_id' => 'projViewFiles',
+            'name' => __('Files', 'Project option'),
+            'target_params' => ['prj' => $project->id],
+        ]);
     }
 
-    if($project->settings & PROJECT_SETTING_ENABLE_EFFORTS) {
-        $options[]=  new NaviOption(array(
-                'target_id'=>'projViewEfforts',
-                'name'=>__('Efforts','Project option'),
-                'target_params'=>array('prj'=>$project->id )
-        ));
+    if ($project->settings & PROJECT_SETTING_ENABLE_EFFORTS) {
+        $options[] = new NaviOption([
+                'target_id' => 'projViewEfforts',
+                'name' => __('Efforts', 'Project option'),
+                'target_params' => ['prj' => $project->id],
+        ]);
     }
-	
-	
-	
-	#if(($auth->cur_user->user_rights & RIGHT_VIEWALL) && ($auth->cur_user->user_rights & RIGHT_EDITALL)){
-	#	$options[]=  new NaviOption(array(
+
+    #if(($auth->cur_user->user_rights & RIGHT_VIEWALL) && ($auth->cur_user->user_rights & RIGHT_EDITALL)){
+    #	$options[]=  new NaviOption(array(
     #        'target_id'=>'projViewEffortCalculations',
     #        'name'=>__('Calculation','Project option'),
     #        'target_params'=>array('prj'=>$project->id )
     #    ));
-	#}
-	
-	
-    $options[]=  new NaviOption(array(
-            'target_id'=>'projViewChanges',
-            'name'=>__('Changes','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-    ));
+    #}
+
+    $options[] = new NaviOption([
+            'target_id' => 'projViewChanges',
+            'name' => __('Changes', 'Project option'),
+            'target_params' => ['prj' => $project->id],
+    ]);
     return $options;
 }
 
-
 function build_personList_options()
 {
-    return array(
-        new NaviOption(array(
-            'target_id'=>'personList',
-            'name'=>__('People', 'page option')
-        ))
-    );
+    return [
+        new NaviOption([
+            'target_id' => 'personList',
+            'name' => __('People', 'page option'),
+        ]),
+    ];
 }
 
 function build_companyList_options()
 {
-    return array(
-        new NaviOption(array(
-            'target_id'=>'companyList',
-            'name'=>__('Companies', 'page option')
-        )),
-    );
+    return [
+        new NaviOption([
+            'target_id' => 'companyList',
+            'name' => __('Companies', 'page option'),
+        ]),
+    ];
 }
-
 
 function build_projList_options()
 {
-    return array(
-        new NaviOption(array(
-            'target_id'=>'projList',
-            'name'=>__('Active')
-        )),
-        new NaviOption(array(
-            'target_id'=>'projListClosed',
-            'name'=>__('Closed')
-        )),
-        new NaviOption(array(
-            'target_id'=>'projListTemplates',
-            'name'=>__('Templates'),
-            'separated'=> true,
-        )),
-    );
+    return [
+        new NaviOption([
+            'target_id' => 'projList',
+            'name' => __('Active'),
+        ]),
+        new NaviOption([
+            'target_id' => 'projListClosed',
+            'name' => __('Closed'),
+        ]),
+        new NaviOption([
+            'target_id' => 'projListTemplates',
+            'name' => __('Templates'),
+            'separated' => true,
+        ]),
+    ];
 }
 
-
-function build_person_options(&$person) {
-
-    return array(
-        new NaviOption(array(
-            'target_id'=>'personViewProjects',
-            'name'=>__('Projects'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-        new NaviOption(array(
-            'target_id'=>'personViewTasks',
-            'name'=>__('Tasks'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-        new NaviOption(array(
-            'target_id'=>'personViewEfforts',
-            'name'=>__('Efforts'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-        new NaviOption(array(
-            'target_id'=>'personViewChanges',
-            'name'=>__('Changes'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-    );
+function build_person_options(&$person)
+{
+    return [
+        new NaviOption([
+            'target_id' => 'personViewProjects',
+            'name' => __('Projects'),
+            'target_params' => ['person' => $person->id],
+        ]),
+        new NaviOption([
+            'target_id' => 'personViewTasks',
+            'name' => __('Tasks'),
+            'target_params' => ['person' => $person->id],
+        ]),
+        new NaviOption([
+            'target_id' => 'personViewEfforts',
+            'name' => __('Efforts'),
+            'target_params' => ['person' => $person->id],
+        ]),
+        new NaviOption([
+            'target_id' => 'personViewChanges',
+            'name' => __('Changes'),
+            'target_params' => ['person' => $person->id],
+        ]),
+    ];
 }
-
-
-
 
 /**
 * actually this function is obsolete since all error-related debug-output should
@@ -776,61 +728,52 @@ function build_person_options(&$person) {
 */
 function renderBacktrace($arr)
 {
-    $buffer='';
+    $buffer = '';
 
     ### ignore empty array ###
-    if(!count($arr)) {
+    if (!count($arr)) {
         return false;
     }
 
-    $buffer.= "<table class=backtrace>";
+    $buffer .= '<table class=backtrace>';
 
     ### write header ###
-    $buffer.="<tr>";
-    foreach($arr[0] as $key=>$value) {
-        $buffer.="<th>$key</th>";
+    $buffer .= '<tr>';
+    foreach ($arr[0] as $key => $value) {
+        $buffer .= "<th>$key</th>";
     }
 
-    $buffer.="</tr>";
+    $buffer .= '</tr>';
 
     ### write lines ###
-    foreach($arr as $n) {
-        $buffer.="<tr>";
-        foreach($n as $key=>$value) {
-            if(is_array($value)) {
-                $buffer.='<td>';
-                foreach($value as $no) {
-                    if(is_object($no)) {
-                        $buffer.=get_class($no);
+    foreach ($arr as $n) {
+        $buffer .= '<tr>';
+        foreach ($n as $key => $value) {
+            if (is_array($value)) {
+                $buffer .= '<td>';
+                foreach ($value as $no) {
+                    if (is_object($no)) {
+                        $buffer .= get_class($no);
+                    } else {
+                        $buffer .= $no;
                     }
-                    else {
-                        $buffer.=$no;
-                    }
-                    $buffer.=".<br>";
+                    $buffer .= '.<br>';
                 }
-                $buffer.="</td>";
-            }
-            else if(is_object($value)) {
-                $buffer.='<td>';
+                $buffer .= '</td>';
+            } elseif (is_object($value)) {
+                $buffer .= '<td>';
                 #$buffer.=join("##<br>",$value);
-                $buffer.="</td>";
-            }
-            else {
-                $value= str_replace("c:\\programme\\Apache13\\Apache\\htdocs\\nod\\","",$value);
-                $buffer.="<td>$value</td>";
+                $buffer .= '</td>';
+            } else {
+                $value = str_replace('c:\\programme\\Apache13\\Apache\\htdocs\\nod\\', '', $value);
+                $buffer .= "<td>$value</td>";
             }
         }
-        $buffer.="</tr>";
+        $buffer .= '</tr>';
     }
-    $buffer.= "</table>";
+    $buffer .= '</table>';
     return $buffer;
 }
-
-
-
-
-
-
 
 /**
 * wrapper functions for formatted time output
@@ -840,13 +783,12 @@ function renderBacktrace($arr)
 function getUserFormatDate()
 {
     global $g_userFormatDate;
-    if(!$g_userFormatDate)
-    {
+    if (!$g_userFormatDate) {
         $g_userFormatDate = __('%b %e, %Y', 'strftime format string');
 
         // fix %e formatter if not supported (e.g. on Windows)
-        if(strftime("%e", mktime(12, 0, 0, 1, 1)) != '1') {
-            $g_userFormatDate = str_replace("%e", "%d", $g_userFormatDate);
+        if (strftime('%e', mktime(12, 0, 0, 1, 1)) != '1') {
+            $g_userFormatDate = str_replace('%e', '%d', $g_userFormatDate);
         }
     }
     return $g_userFormatDate;
@@ -859,7 +801,7 @@ function getUserFormatDate()
 function getUserFormatTime()
 {
     global $g_userFormatTime;
-    if(!$g_userFormatTime) {
+    if (!$g_userFormatTime) {
         $g_userFormatTime = __('%I:%M%P', 'strftime format string');
     }
     return $g_userFormatTime;
@@ -868,19 +810,17 @@ function getUserFormatTime()
 function getUserFormatTimestamp()
 {
     global $g_userFormatTimestamp;
-    if(!$g_userFormatTimestamp)
-    {
+    if (!$g_userFormatTimestamp) {
         //$g_userFormatTimestamp = __('%a %b %e, %Y %I:%M%P', 'strftime format string');
         $g_userFormatTimestamp = __('%a %b %e, %Y %H:%M', 'strftime format string');
 
         # Fix %e formatter if not supported (e.g. on Windows)
-        if(strftime("%e", mktime(12, 0, 0, 1, 1)) != '1') {
-            $g_userFormatTimestamp = str_replace("%e", "%d", $g_userFormatTimestamp);
+        if (strftime('%e', mktime(12, 0, 0, 1, 1)) != '1') {
+            $g_userFormatTimestamp = str_replace('%e', '%d', $g_userFormatTimestamp);
         }
     }
     return $g_userFormatTimestamp;
 }
-
 
 /**
 * NOTE:
@@ -890,201 +830,177 @@ function getUserFormatTimestamp()
 */
 function renderTimestamp($t)
 {
-
-    if(!$t || $t=="0000-00-00 00:00:00") {
-        return "";
+    if (!$t || $t == '0000-00-00 00:00:00') {
+        return '';
     }
-    if(is_string($t)) {
-        $t= strToClientTime($t);
+    if (is_string($t)) {
+        $t = strToClientTime($t);
     }
 
     ### omit time with exactly midnight
-    if(gmdate("H:i:s",$t)=="00:00:00") {
-        $str= gmstrftime(getUserFormatDate(), $t);
-    }
-    else {
-        $str= gmstrftime(getUserFormatTimestamp(), $t);
+    if (gmdate('H:i:s', $t) == '00:00:00') {
+        $str = gmstrftime(getUserFormatDate(), $t);
+    } else {
+        $str = gmstrftime(getUserFormatTimestamp(), $t);
     }
     return $str;
 }
 
-
-
 function renderTimestampHtml($t)
 {
-    if(!$str= renderTimestamp($t)) {
-        return "-";
+    if (!$str = renderTimestamp($t)) {
+        return '-';
     }
 
-    if(is_string($t)) {
-        $t= strToClientTime($t);
+    if (is_string($t)) {
+        $t = strToClientTime($t);
     }
 
-
-
-/*    ### hilight new dates ###
-    if(isset($auth) && isset($auth->cur_user) && gmdate("Y-m-d H:i:s",$t) > $auth->cur_user->last_logout) {
-        $str_tooltip= __("new since last logout");
-        return "<span class=new title='$str_tooltip'>$str</span>";
-    }
-    else {
-    */
-        return $str;
+    /*    ### hilight new dates ###
+        if(isset($auth) && isset($auth->cur_user) && gmdate("Y-m-d H:i:s",$t) > $auth->cur_user->last_logout) {
+            $str_tooltip= __("new since last logout");
+            return "<span class=new title='$str_tooltip'>$str</span>";
+        }
+        else {
+        */
+    return $str;
 }
-
-
 
 function renderTime($t)
 {
-    if(!$t  || $t=="0000-00-00 00:00:00") {
-        return "";
+    if (!$t || $t == '0000-00-00 00:00:00') {
+        return '';
     }
-    if(is_string($t)) {
-        $t= strToClientTime($t);
+    if (is_string($t)) {
+        $t = strToClientTime($t);
     }
     return gmstrftime(getUserFormatTime(), $t);
 }
 
-
-
 function renderDuration($t)
 {
-    if(!$t  || $t=="0000-00-00 00:00:00") {
-        return "";
+    if (!$t || $t == '0000-00-00 00:00:00') {
+        return '';
     }
 
-    if($t > confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60) {
+    if ($t > confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60) {
         return sprintf(__('%s weeks'), floor($t / (confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60)));
-    }
-    else if($t > confGet('WORKHOURS_PER_DAY') * 60 * 60) {
+    } elseif ($t > confGet('WORKHOURS_PER_DAY') * 60 * 60) {
         return sprintf(__('%s days'), floor($t / (confGet('WORKHOURS_PER_DAY') * 60 * 60)));
-    }
-    else if($t > 60 * 60) {
+    } elseif ($t > 60 * 60) {
         return sprintf(__('%s hours'), floor($t / (60 * 60)));
-    }
-    else {
+    } else {
         return sprintf(__('%s min'), floor($t / 60));
     }
 }
 
-
 /**
 * expects GMT times!
 */
-function renderDate($t, $smartnames= true) {
-    if(!$t || $t=="0000-00-00 00:00:00" || $t=="0000-00-00") {
-        return "";
+function renderDate($t, $smartnames = true)
+{
+    if (!$t || $t == '0000-00-00 00:00:00' || $t == '0000-00-00') {
+        return '';
     }
 
-    if(is_string($t)) {
-
+    if (is_string($t)) {
         ### do not offset simple dates ###
-        if(preg_match("/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/", $t)) {
-            $t= strToClientTime($t);
+        if (preg_match("/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/", $t)) {
+            $t = strToClientTime($t);
+        } else {
+            $t = strToGMTime($t);
         }
-        else {
-            $t= strToGMTime($t);
-        }
-    }
-    else {
+    } else {
         global $auth;
-        $time_offset= 0;
-        if(isset($auth->cur_user)) {
+        $time_offset = 0;
+        if (isset($auth->cur_user)) {
             $time_offset = $auth->cur_user->time_offset;
         }
-        $t+= $time_offset;
+        $t += $time_offset;
     }
 
-
-    if($smartnames && gmdate('Y-m-d', time()) == gmdate('Y-m-d', $t)) {
-        $str= __('Today');
+    if ($smartnames && gmdate('Y-m-d', time()) == gmdate('Y-m-d', $t)) {
+        $str = __('Today');
         //if(gmdate('H:i:s',$t) !== '00:00:00') {
         //    $str.= ' ' . gmstrftime(getUserFormatTime(), $t);
         //}
-    }
-    else if($smartnames && gmdate('Y-m-d',time()) == gmdate('Y-m-d', $t + 60*60*24)) {
-        $str= __('Yesterday');
+    } elseif ($smartnames && gmdate('Y-m-d', time()) == gmdate('Y-m-d', $t + 60 * 60 * 24)) {
+        $str = __('Yesterday');
         #if(gmdate('H:i:s',$t) !== '00:00:00') {
         #    $str.= ' ' . gmstrftime(getUserFormatTime(), $t);
         #}
-    }
-    else {        
-        $str= gmstrftime(getUserFormatDate(), $t);
+    } else {
+        $str = gmstrftime(getUserFormatDate(), $t);
     }
     return $str;
-
 }
 
 function renderDateHtml($t)
 {
     global $auth;
 
-
     ### this is the visible string ###
-    if(!$str= renderDate($t)) {
-        return "-";
+    if (!$str = renderDate($t)) {
+        return '-';
     }
 
     ### this is for the tooltip ###
-    if(is_string($t)) {
-        $t= strToClientTime($t);
-    }
-    else {
+    if (is_string($t)) {
+        $t = strToClientTime($t);
+    } else {
         global $auth;
-        $time_offset= 0;
-        if(isset($auth->cur_user)) {
+        $time_offset = 0;
+        if (isset($auth->cur_user)) {
             $time_offset = $auth->cur_user->time_offset;
         }
-        $t+= $time_offset;
+        $t += $time_offset;
     }
 
     ### tooltip ? ###
-    $str_tooltip='';
-    if(gmdate('H:i:s',$t) != '00:00:00') {
-        $str_tooltip= gmstrftime(getUserFormatTimestamp(), $t);
+    $str_tooltip = '';
+    if (gmdate('H:i:s', $t) != '00:00:00') {
+        $str_tooltip = gmstrftime(getUserFormatTimestamp(), $t);
     }
 
-    if($str_tooltip){
+    if ($str_tooltip) {
         return "<span class='date' title='$str_tooltip'>$str</span>";
-    }
-    else {
+    } else {
         return $str;
     }
 }
-
 
 /**
 * renders a time as distance ago... (expects GMT times)
 */
 function renderTimeAgo($t)
 {
-    $duration= time() - strToGMTime($t);
+    $duration = time() - strToGMTime($t);
 
-    if(strToGMTime($t) == 0) {
-        return __("never");
+    if (strToGMTime($t) == 0) {
+        return __('never');
     }
 
-    if($duration < 60 * 5) {
+    if ($duration < 60 * 5) {
         return __('just now');
     }
-    if($duration < 60 * 60) {
+    if ($duration < 60 * 60) {
         return sprintf(__('%smin ago'), ceil($duration / 60));
     }
-    if($duration < 60 * 60 * 2) {
+    if ($duration < 60 * 60 * 2) {
         return __('1 hour ago');
     }
-    if($duration < 60 * 60 * 24) {
+    if ($duration < 60 * 60 * 24) {
         return sprintf(__('%sh ago'), ceil($duration / 60 / 60));
     }
 
-    if($duration < 60 * 60 * 24 * 62) {
+    if ($duration < 60 * 60 * 24 * 62) {
         return sprintf(__('%s days ago'), ceil($duration / 60 / 60 / 24));
     }
-    if($duration < 60 * 60 * 24 * 365 * 2) { 
+    if ($duration < 60 * 60 * 24 * 365 * 2) {
         return sprintf(__('%s months ago'), ceil($duration / 60 / 60 / 24 / 30));
     }
-    
-    if($duration < 60 * 60 * 24 * 365 * 20) { 
+
+    if ($duration < 60 * 60 * 24 * 365 * 20) {
         return sprintf(__('%s years ago'), ceil($duration / 60 / 60 / 24 / 365));
     }
 }
@@ -1092,40 +1008,36 @@ function renderTimeAgo($t)
 function renderPubLevelName($pub_level)
 {
     global $g_pub_level_names;
-    if(isset($g_pub_level_names[$pub_level])) {
+    if (isset($g_pub_level_names[$pub_level])) {
         return $g_pub_level_names[$pub_level];
-    }
-    else {
+    } else {
         return '';
     }
 }
-
 
 /**
 * want duration in seconds
 */
 function renderEstimatedDuration($duration)
 {
-    $duration /=  (60 * 60);
+    $duration /= (60 * 60);
 
-    $hours_per_day= confGet('WORKHOURS_PER_DAY');
-    $days_per_week= confGet('WORKDAYS_PER_WEEK');
+    $hours_per_day = confGet('WORKHOURS_PER_DAY');
+    $days_per_week = confGet('WORKDAYS_PER_WEEK');
 
-    if(!$duration) {
+    if (!$duration) {
         return '';
     }
 
-    if($duration <= $hours_per_day) {
-        $type= 'hours';
-        $str= sprintf(__('%s hours'), $duration);
-    }
-    else if($duration < $hours_per_day * $days_per_week) {
-        $type= 'days';
-        $str= sprintf(__('%s days'), $duration / $hours_per_day);
-    }
-    else {
-        $type= 'weeks';
-        $str= sprintf(__('%s weeks'), $duration / $hours_per_day / $days_per_week);
+    if ($duration <= $hours_per_day) {
+        $type = 'hours';
+        $str = sprintf(__('%s hours'), $duration);
+    } elseif ($duration < $hours_per_day * $days_per_week) {
+        $type = 'days';
+        $str = sprintf(__('%s days'), $duration / $hours_per_day);
+    } else {
+        $type = 'weeks';
+        $str = sprintf(__('%s weeks'), $duration / $hours_per_day / $days_per_week);
     }
     return $str;
 }
@@ -1137,74 +1049,66 @@ function renderEstimatedDuration($duration)
 */
 function renderEstimationGraph($estimated, $estimated_max, $completion)
 {
-    $str= '';
+    $str = '';
     #if(preg_match("/(\d\d):(\d\d):(\d\d)/", $obj->estimated, $matches)) {
     #    $estimated= ($matches[1]*60*60 + $matches[2]*60 + $matches[3]) / 60;
-    if($estimated) {
-        $estimated= $estimated/60/60;
-        $estimated_max= $estimated_max/60/60;
+    if ($estimated) {
+        $estimated = $estimated / 60 / 60;
+        $estimated_max = $estimated_max / 60 / 60;
 
+        $hours_per_day = confGet('WORKHOURS_PER_DAY');
+        $days_per_week = confGet('WORKDAYS_PER_WEEK');
 
-        $hours_per_day= confGet('WORKHOURS_PER_DAY');
-        $days_per_week= confGet('WORKDAYS_PER_WEEK');
-
-
-        if($estimated_max <= $hours_per_day*2) {
-            $type= 'hours';
-            $width_estimated= $estimated * 4;
-            $width_estimated_max= $estimated_max * 4;
-            $str_estimated= sprintf(__('estimated %s hours'), $estimated);
-            $str_estimated_max= $estimated_max
-                              ? '('. sprintf(__('%s hours max'), $estimated_max) .')'
+        if ($estimated_max <= $hours_per_day * 2) {
+            $type = 'hours';
+            $width_estimated = $estimated * 4;
+            $width_estimated_max = $estimated_max * 4;
+            $str_estimated = sprintf(__('estimated %s hours'), $estimated);
+            $str_estimated_max = $estimated_max
+                              ? '(' . sprintf(__('%s hours max'), $estimated_max) . ')'
                               : '';
-        }
-        else if($estimated_max < $hours_per_day * $days_per_week*2) {
-            $type= 'days';
-            $width_estimated= $estimated / $hours_per_day * 6;
-            $width_estimated_max= $estimated_max / $hours_per_day * 6;
-            $str_estimated= sprintf(__('estimated %s days'), $estimated / $hours_per_day);
+        } elseif ($estimated_max < $hours_per_day * $days_per_week * 2) {
+            $type = 'days';
+            $width_estimated = $estimated / $hours_per_day * 6;
+            $width_estimated_max = $estimated_max / $hours_per_day * 6;
+            $str_estimated = sprintf(__('estimated %s days'), $estimated / $hours_per_day);
 
-            $str_estimated_max= $estimated_max
-                              ? '('. sprintf(__('%s days max'), $estimated_max / $hours_per_day) .')'
+            $str_estimated_max = $estimated_max
+                              ? '(' . sprintf(__('%s days max'), $estimated_max / $hours_per_day) . ')'
                               : '';
+        } else {
+            $type = 'weeks';
+            $width_estimated = $estimated / $hours_per_day / $days_per_week * 12;
+            $width_estimated_max = $estimated_max / $hours_per_day / $days_per_week * 12;
 
-        }
-        else {
-            $type= 'weeks';
-            $width_estimated= $estimated / $hours_per_day / $days_per_week * 12;
-            $width_estimated_max= $estimated_max / $hours_per_day / $days_per_week * 12;
-
-            $str_estimated= sprintf(__('estimated %s weeks'), $estimated / $hours_per_day / $days_per_week);
-            $str_estimated_max  = $estimated_max
-                                ? '('. sprintf(__('%s weeks max'), $estimated_max / $hours_per_day / $days_per_week) .')'
+            $str_estimated = sprintf(__('estimated %s weeks'), $estimated / $hours_per_day / $days_per_week);
+            $str_estimated_max = $estimated_max
+                                ? '(' . sprintf(__('%s weeks max'), $estimated_max / $hours_per_day / $days_per_week) . ')'
                                 : '';
         }
 
-        $str_completion= sprintf(__("%2.0f%% completed"), $completion);
-        $html_tooltip= "title='". $str_estimated . " ". $str_estimated_max." / " . $str_completion. "'";
+        $str_completion = sprintf(__('%2.0f%% completed'), $completion);
+        $html_tooltip = "title='" . $str_estimated . ' ' . $str_estimated_max . ' / ' . $str_completion . "'";
 
-        if($completion) {
-            $width_completion= $completion / 100 * $width_estimated;
+        if ($completion) {
+            $width_completion = $completion / 100 * $width_estimated;
 
-            $html_completion= "<div  class='estimated {$type}_completed' style='width:{$width_completion}px;'></div>";
-        }
-        else {
-            $html_completion='';
-        }
-
-        if($width_estimated_max > $width_estimated) {
-            $width_risk= floor($width_estimated_max - $width_estimated)-1;
-            $html_risk= "<div class='{$type}_risk'  style='width:{$width_risk}px;'></div>";
-        }
-        else {
-            $html_risk='';
+            $html_completion = "<div  class='estimated {$type}_completed' style='width:{$width_completion}px;'></div>";
+        } else {
+            $html_completion = '';
         }
 
+        if ($width_estimated_max > $width_estimated) {
+            $width_risk = floor($width_estimated_max - $width_estimated) - 1;
+            $html_risk = "<div class='{$type}_risk'  style='width:{$width_risk}px;'></div>";
+        } else {
+            $html_risk = '';
+        }
 
-        $str= "<div $html_tooltip class='estimated {$type}' style='width:{$width_estimated_max}px;'>"
+        $str = "<div $html_tooltip class='estimated {$type}' style='width:{$width_estimated_max}px;'>"
             . $html_completion
             . $html_risk
-            . "</div>";
+            . '</div>';
     }
     return $str;
 }
@@ -1220,127 +1124,114 @@ function renderTitleDate($t)
             For English we use the S format of function date() to get ordinals, which has no strftime equivalent.
         */
     global $g_lang;
-    if($g_lang == 'en')
+    if ($g_lang == 'en') {
         $str = date('l, F jS', $t);
-    else
+    } else {
         $str = strftime(__('%A, %B %e', 'strftime format string'), $t);
+    }
     return $str;
 }
 
 function renderFilesize($bytes)
 {
-    $bytes= intval($bytes);
-    if( $bytes < 1024 ) {
+    $bytes = intval($bytes);
+    if ($bytes < 1024) {
         return $bytes;
-    }
-    else if( $bytes < 1024 * 1024) {
-        return intval($bytes / 1024) . "k";
-    }
-    else {
-        return (intval(($bytes / 1024/1024) * 10) / 10.0) . "mb";
+    } elseif ($bytes < 1024 * 1024) {
+        return intval($bytes / 1024) . 'k';
+    } else {
+        return (intval(($bytes / 1024 / 1024) * 10) / 10.0) . 'mb';
     }
 }
-
 
 /**
 * @@@ move this somewhere else...
 * use difference_engine to render differences between two versions of a texts
 */
-function render_changes($text_org,$text_new)
+function render_changes($text_org, $text_new)
 {
-    require_once(confGet('DIR_STREBER') . "std/difference_engine.inc.php");
+    require_once(confGet('DIR_STREBER') . 'std/difference_engine.inc.php');
 
-    $buffer= '';
+    $buffer = '';
 
-	$ota = explode( "\n", str_replace( "\r\n", "\n", $text_org ) );
-	$nta = explode( "\n", str_replace( "\r\n", "\n", $text_new ) );
-	$diffs = new Diff( $ota, $nta );
+    $ota = explode("\n", str_replace("\r\n", "\n", $text_org));
+    $nta = explode("\n", str_replace("\r\n", "\n", $text_new));
+    $diffs = new Diff($ota, $nta);
 
-    $debug='';
+    $debug = '';
 
-    $buffer.="<table class=diff>";
+    $buffer .= '<table class=diff>';
 
-	foreach($diffs as $d) {
-	    $buffer.="<tr>";
-	    $buffer.="<td class=changeblock colspan=2></td></tr><tr>";
-	    foreach($d as $do) {
+    foreach ($diffs as $d) {
+        $buffer .= '<tr>';
+        $buffer .= '<td class=changeblock colspan=2></td></tr><tr>';
+        foreach ($d as $do) {
+            if ($do->type == 'add') {
+                $buffer .= '<tr>';
+                $buffer .= '<td class=neutral></td>';
+                $buffer .= '<td class=add>' . arrayAsHtml($do->closing) . '</td>';
+                $buffer .= '</tr>';
+            } elseif ($do->type == 'delete') {
+                $buffer .= '<tr>';
+                $buffer .= '<td class=deleted>' . arrayAsHtml($do->orig) . '</td>';
+                $buffer .= '<td class=neutral></td>';
+                $buffer .= '</tr>';
+            } elseif ($do->type == 'change') {
+                $wld = new WordLevelDiff($do->orig, $do->closing);
+                $buffer_org = '';
+                $buffer_new = '';
+                foreach ($wld->edits as $e) {
+                    switch ($e->type) {
+                        case 'copy':
+                            $orig = implode('', $e->orig);
+                            $buffer_org .= asHtml($orig);
+                            $buffer_new .= asHtml($orig);
+                            break;
 
-		    if($do->type == 'add') {
-		        $buffer.="<tr>";
-		        $buffer.="<td class=neutral></td>";
-		        $buffer.="<td class=add>". arrayAsHtml($do->closing). "</td>";
-		        $buffer.="</tr>";
+                        case 'add':
+                            $buffer_org .= '<span class=add_place> </span>';
+                            $closing = implode('', $e->closing);
+                            $buffer_new .= '<span class=add>' . asHtml($closing) . '</span>';
+                            break;
 
-		    }
-		    else if($do->type =='delete') {
-		        $buffer.="<tr>";
-		        $buffer.="<td class=deleted>". arrayAsHtml($do->orig). "</td>";
-		        $buffer.="<td class=neutral></td>";
-		        $buffer.="</tr>";
+                        case 'change':
+                            $orig = implode('', $e->orig);
+                            $closing = implode('', $e->closing);
+                            $buffer_org .= '<span class=changed>' . asHtml($orig) . '</span>';
+                            $buffer_new .= '<span class=changed>' . asHtml($closing) . '</span>';
+                            break;
 
-		    }
-		    else if($do->type =='change') {
-		        $wld= new WordLevelDiff($do->orig, $do->closing);
-		        $buffer_org ='';
-		        $buffer_new ='';
-		        foreach($wld->edits as $e) {
-		            switch($e->type) {
-		                case 'copy':
-		                    $orig= implode('',$e->orig);
-		                    $buffer_org.= asHtml($orig);
-		                    $buffer_new.= asHtml($orig);
-		                    break;
+                        case 'delete':
+                            $orig = implode('', $e->orig);
 
-		                case 'add':
-		                    $buffer_org.= '<span class=add_place> </span>';
-		                    $closing=implode('',$e->closing);
-		                    $buffer_new.= '<span class=add>'.asHtml($closing).'</span>';
-		                    break;
+                            $buffer_org .= '<span class=deleted>' . asHtml($orig) . '</span>';
+                            $buffer_new .= '<span class=delete_place> </span>';
+                            break;
 
-		                case 'change':
-		                    $orig= implode('',$e->orig);
-		                    $closing= implode('',$e->closing);
-		                    $buffer_org.= '<span class=changed>'.asHtml($orig).'</span>';
-		                    $buffer_new.= '<span class=changed>'.asHtml($closing).'</span>';
-		                    break;
+                        default:
+                            trigger_error('undefined edit work edit', E_USER_WARNING);
+                            break;
+                    }
+                }
+                $buffer_org = str_replace("\n", '<br>', $buffer_org);
+                $buffer_new = str_replace("\n", '<br>', $buffer_new);
 
-		                case 'delete':
-		                    $orig= implode('',$e->orig);
-
-		                    $buffer_org.= '<span class=deleted>'.asHtml($orig).'</span>';
-		                    $buffer_new.= '<span class=delete_place> </span>';
-		                    break;
-
-		                default:
-		                    trigger_error("undefined edit work edit", E_USER_WARNING);
-		                    break;
-
-		            }
-		        }
-	            $buffer_org= str_replace("\n", '<br>', $buffer_org);
-	            $buffer_new= str_replace("\n", '<br>', $buffer_new);
-
-		        $buffer.="<tr>";
-		        $buffer.="<td class='changed'>". $buffer_org. "</td>";
-		        $buffer.="<td class='changed'>". $buffer_new. "</td>";
-		        $buffer.="</tr>";
-
-		    }
-		    else if($do->type == 'copy') {
-		        $buffer.="<tr>";
-		        $buffer.="<td class='copy'>". arrayAsHtml($do->orig). "</td>";
-		        $buffer.="<td class='copy'>". arrayAsHtml($do->closing). "</td>";
-		        $buffer.="</tr>";
-
-		    }
-		    else {
-		        trigger_error("unknown diff type");
-		    }
-		}
-	   $buffer.="</tr>";
-
-	}
-	$buffer.="</table>";
+                $buffer .= '<tr>';
+                $buffer .= "<td class='changed'>" . $buffer_org . '</td>';
+                $buffer .= "<td class='changed'>" . $buffer_new . '</td>';
+                $buffer .= '</tr>';
+            } elseif ($do->type == 'copy') {
+                $buffer .= '<tr>';
+                $buffer .= "<td class='copy'>" . arrayAsHtml($do->orig) . '</td>';
+                $buffer .= "<td class='copy'>" . arrayAsHtml($do->closing) . '</td>';
+                $buffer .= '</tr>';
+            } else {
+                trigger_error('unknown diff type');
+            }
+        }
+        $buffer .= '</tr>';
+    }
+    $buffer .= '</table>';
 
     return $buffer;
 }
@@ -1353,12 +1244,11 @@ function render_changes($text_org,$text_new)
 function arrayAsHtml($strings)
 {
     $buffer = '';
-    $sep    = '';
-    foreach($strings as $s) {
-        $buffer.= $sep.asHtml($s);
+    $sep = '';
+    foreach ($strings as $s) {
+        $buffer .= $sep . asHtml($s);
         $sep = '<br>';
     }
-    $buffer= str_replace("  ", "  ", $buffer);
+    $buffer = str_replace('  ', '  ', $buffer);
     return $buffer;
 }
-?>

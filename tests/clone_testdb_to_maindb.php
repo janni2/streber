@@ -1,4 +1,5 @@
 <?php
+
 /**
 * This clones the content of the fixture database to the primary database.
 *
@@ -8,7 +9,7 @@
 * This is required for updating the fixture database in case heavy db-changes
 * are done to the database scheme.
 */
-error_reporting (E_ALL);
+error_reporting(E_ALL);
 require_once('simpletest/web_tester.php');
 require_once('simpletest/reporter.php');
 
@@ -16,7 +17,10 @@ require_once('simpletest/reporter.php');
 * test installation
 */
 ### create a function to make sure we are starting at index.php ###
-function startedIndexPhp() {return true; }
+function startedIndexPhp()
+{
+    return true;
+}
 
 ### include some core libraries ###
 require_once('../std/common.inc.php');
@@ -27,6 +31,4 @@ confChange('DB_TABLE_PREFIX_UNITTEST', '');   # overwrite development database!!
 
 TestEnvironment::prepare('fixtures/project_setup.sql');
 
-header( 'Location: install/install.php' ) ;
-
-?>
+header('Location: install/install.php');

@@ -1,5 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
 
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 
 /**
 *
@@ -9,38 +13,39 @@
 * by Lolo Irie
 *
 */
-
 define('DEBUG_SQL_DISPLAY', 0);
 
-interface sql_interface{
+interface sql_interface
+{
     // Define SQL values (server, user, pwd, database...)
-    function __construct($tmpserver='', $tmpuser='', $tmppwd='', $tmpdb='');
+    public function __construct($tmpserver = '', $tmpuser = '', $tmppwd = '', $tmpdb = '');
     // Set error msg
     # function error($msg=false);
     // Connection Database
-    function connect();
+    public function connect();
     // Select Database
-    function selectdb();
+    public function selectdb();
     // Execute query
-    function execute($tmp_query);
+    public function execute($tmp_query);
     // Fetch Array
-    function fetchArray($type = "MYSQL_ASSOC");
+    public function fetchArray($type = 'MYSQL_ASSOC');
     // Fetch row
-    function fetchRow();
+    public function fetchRow();
     // Secure variable
-    function secure($var);
+    public function secure($var);
     // Get last ID
-    function lastId();
+    public function lastId();
 }
 
 # Class to connect the database
-class sql_class implements sql_interface{
+class sql_class implements sql_interface
+{
     # Attributes to connect DB
     private $server; # string: DB Server
     private $user; # string: DB User
     private $pwd; # string: DB Password
     private $database; # string: DB database
-    private $connect=false; # resource: DB connection
+    private $connect = false; # resource: DB connection
     private $result; # resource: result SQL Query
     private $lastId; # integer/string: last Id
 
@@ -61,8 +66,8 @@ class sql_class implements sql_interface{
     /**
     * Constructor: Check database and PHP versions
     */
-    function __construct($tmpserver='', $tmpuser='', $tmppwd='', $tmpdb='') {
-
+    public function __construct($tmpserver = '', $tmpuser = '', $tmppwd = '', $tmpdb = '')
+    {
         $this->lastId = 0;
         $this->error = false;
         $this->errno = false;
@@ -70,12 +75,11 @@ class sql_class implements sql_interface{
         $this->user = $tmpuser;
         $this->pwd = $tmppwd;
         $this->database = $tmpdb;
-        if(!function_exists('mysql_connect')){
-
-            if(function_exists('mysql_error')) {
+        if (!function_exists('mysql_connect')) {
+            if (function_exists('mysql_error')) {
                 $this->error = mysql_error();
             }
-            if(function_exists('mysql_errno')) {
+            if (function_exists('mysql_errno')) {
                 $this->errorno = mysql_errno();
             }
             trigger_error('Function mysql_connect() does not exists. mysql extension is not enabled?', E_USER_ERROR);
@@ -87,19 +91,21 @@ class sql_class implements sql_interface{
     /**
     * method error: Set error msg
     */
-    private function error($msg=false){
+    private function error($msg = false)
+    {
         $this->error = $msg;
     }
 
     /**
     * method connect: Connect DB
     */
-    public function connect(){
-        if($this->connect = @mysql_connect(
+    public function connect()
+    {
+        if ($this->connect = @mysql_connect(
             $this->server,
             $this->user,
             $this->pwd
-        )){
+        )) {
             $this->error('Connection using mysql_connect SUCCESSFUL');
             return true;
         }
@@ -107,87 +113,97 @@ class sql_class implements sql_interface{
         return false;
     }
 
-    public function selectdb(){
-        if(@mysql_select_db($this->database)){
-            $this->error('Base '.$this->database.' exists');
+    public function selectdb()
+    {
+        if (@mysql_select_db($this->database)) {
+            $this->error('Base ' . $this->database . ' exists');
             return true;
         }
-        $this->error('Base '.$this->database.' does NOT exist');
+        $this->error('Base ' . $this->database . ' does NOT exist');
         return false;
     }
 
     /**
     * method execute: execute query
     */
-    public function execute($tmp_query){
+    public function execute($tmp_query)
+    {
         global $g_count_db_statements;
         $g_count_db_statements++;
 
-        if($this->result = @mysql_query($tmp_query)){
-            $this->error('Query successful: '.$tmp_query);
-            if(DEBUG_SQL_DISPLAY == 1){echo $tmp_query.'<br /><br />';}
+        if ($this->result = @mysql_query($tmp_query)) {
+            $this->error('Query successful: ' . $tmp_query);
+            if (DEBUG_SQL_DISPLAY == 1) {
+                echo $tmp_query . '<br /><br />';
+            }
             return true;
         }
-        $this->error('Query error: '.$tmp_query);
+        $this->error('Query error: ' . $tmp_query);
         return false;
     }
 
     /**
     * method fetchArray: fetch array
     */
-    public function fetchArray($type = "MYSQL_ASSOC"){
-
-        if(isset($this->result)){
+    public function fetchArray($type = 'MYSQL_ASSOC')
+    {
+        if (isset($this->result)) {
             $tmp = @mysql_fetch_array($this->result, constant($type));
-        }else{
+        } else {
             return false;
         }
-        if(DEBUG_SQL_DISPLAY == 1){echo '<pre>'.print_r($tmp, 1).'</pre><br /><hr />';}
+        if (DEBUG_SQL_DISPLAY == 1) {
+            echo '<pre>' . print_r($tmp, 1) . '</pre><br /><hr />';
+        }
         return $tmp;
     }
 
     /**
     * method fetchRow: fetch array
     */
-    public function fetchRow(){
-
-        if(isset($this->result)){
+    public function fetchRow()
+    {
+        if (isset($this->result)) {
             $tmp = @mysql_fetch_array($this->result);
-        } 
-        else{
+        } else {
             return false;
         }
-        if(DEBUG_SQL_DISPLAY == 1){echo '<pre>'.print_r($tmp, 1).'</pre><br /><hr />';}
+        if (DEBUG_SQL_DISPLAY == 1) {
+            echo '<pre>' . print_r($tmp, 1) . '</pre><br /><hr />';
+        }
         return $tmp;
     }
-
 
     /**
     * method secure: secure variable
     */
-    public function secure($var){
-        return mysql_real_escape_string(addSlashes($var));
+    public function secure($var)
+    {
+        return mysql_real_escape_string(addslashes($var));
     }
 
     /**
     * method lastId: get last ID
     */
-    function lastId(){
+    public function lastId()
+    {
         $this->lastId = mysql_insert_id();
 
-        if(DEBUG_SQL_DISPLAY == 1){echo 'LAST ID: '.$this->lastId.'<br />';}
+        if (DEBUG_SQL_DISPLAY == 1) {
+            echo 'LAST ID: ' . $this->lastId . '<br />';
+        }
         return $this->lastId;
     }
 }
 
 # Function to secure values if $sql_obj not available
-if(!function_exists('mysql_real_escape_string')){
-    function mysql_real_escape_string($var){
-        if(get_magic_quotes_gpc()){
+if (!function_exists('mysql_real_escape_string')) {
+    function mysql_real_escape_string($var)
+    {
+        if (get_magic_quotes_gpc()) {
             return $var;
-        }else{
+        } else {
             return addslashes($var);
         }
     }
 }
-?>

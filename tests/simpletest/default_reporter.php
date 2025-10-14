@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Optional include file for SimpleTest
  *  @package    SimpleTest
@@ -22,22 +23,24 @@ require_once(dirname(__FILE__) . '/xml.php');
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class SimpleCommandLineParser {
-    var $_to_property = array(
+class SimpleCommandLineParser
+{
+    public $_to_property = [
             'case' => '_case', 'c' => '_case',
             'test' => '_test', 't' => '_test',
-            'xml' => '_xml', 'x' => '_xml');
-    var $_case = '';
-    var $_test = '';
-    var $_xml = false;
-    var $_no_skips = false;
-    
+            'xml' => '_xml', 'x' => '_xml'];
+    public $_case = '';
+    public $_test = '';
+    public $_xml = false;
+    public $_no_skips = false;
+
     /**
      *    Parses raw command line arguments into object properties.
      *    @param string $arguments        Raw commend line arguments.
      */
-    function SimpleCommandLineParser($arguments) {
-        if (! is_array($arguments)) {
+    public function SimpleCommandLineParser($arguments)
+    {
+        if (!is_array($arguments)) {
             return;
         }
         foreach ($arguments as $i => $argument) {
@@ -56,40 +59,44 @@ class SimpleCommandLineParser {
             }
         }
     }
-    
+
     /**
      *    Run only this test.
      *    @return string        Test name to run.
      *    @access public
      */
-    function getTest() {
+    public function getTest()
+    {
         return $this->_test;
     }
-    
+
     /**
      *    Run only this test suite.
      *    @return string        Test class name to run.
      *    @access public
      */
-    function getTestCase() {
+    public function getTestCase()
+    {
         return $this->_case;
     }
-    
+
     /**
      *    Output should be XML or not.
      *    @return boolean        True if XML desired.
      *    @access public
      */
-    function isXml() {
+    public function isXml()
+    {
         return $this->_xml;
     }
-    
+
     /**
      *    Output should suppress skip messages.
      *    @return boolean        True for no skips.
      *    @access public
      */
-    function noSkips() {
+    public function noSkips()
+    {
         return $this->_no_skips;
     }
 }
@@ -101,28 +108,31 @@ class SimpleCommandLineParser {
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class DefaultReporter extends SimpleReporterDecorator {
-    
+class DefaultReporter extends SimpleReporterDecorator
+{
     /**
      *  Assembles the appopriate reporter for the environment.
      */
-    function DefaultReporter() {
+    public function DefaultReporter()
+    {
         if (SimpleReporter::inCli()) {
             global $argv;
             $parser = new SimpleCommandLineParser($argv);
-            $interfaces = $parser->isXml() ? array('XmlReporter') : array('TextReporter');
+            $interfaces = $parser->isXml() ? ['XmlReporter'] : ['TextReporter'];
             $reporter = new SelectiveReporter(
-                    SimpleTest::preferred($interfaces),
-                    $parser->getTestCase(),
-                    $parser->getTest());
+                SimpleTest::preferred($interfaces),
+                $parser->getTestCase(),
+                $parser->getTest()
+            );
             if ($parser->noSkips()) {
                 $reporter = new NoSkipsReporter($reporter);
             }
         } else {
             $reporter = new SelectiveReporter(
-                    SimpleTest::preferred('HtmlReporter'),
-                    @$_GET['c'],
-                    @$_GET['t']);
+                SimpleTest::preferred('HtmlReporter'),
+                @$_GET['c'],
+                @$_GET['t']
+            );
             if (@$_GET['skips'] == 'no' || @$_GET['show-skips'] == 'no') {
                 $reporter = new NoSkipsReporter($reporter);
             }
@@ -130,4 +140,3 @@ class DefaultReporter extends SimpleReporterDecorator {
         $this->SimpleReporterDecorator($reporter);
     }
 }
-?>

@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -8,13 +13,11 @@
  * @author   Thomas Mann
  */
 
-
 require_once(confGet('DIR_STREBER') . 'db/class_task.inc.php');
 require_once(confGet('DIR_STREBER') . 'db/class_project.inc.php');
 require_once(confGet('DIR_STREBER') . 'db/class_effort.inc.php');
 require_once(confGet('DIR_STREBER') . 'render/render_list.inc.php');
 require_once(confGet('DIR_STREBER') . 'render/render_form.inc.php');
-
 
 /**
 * show details of an Effort @ingroup pages
@@ -27,162 +30,153 @@ function effortView()
     require_once(confGet('DIR_STREBER') . 'render/render_wiki.inc.php');
 
     ### get effort ####
-    $ids= getPassedIds('effort','efforts_*');
+    $ids = getPassedIds('effort', 'efforts_*');
 
-    if(!$ids) {
-        $PH->abortWarning(__("Select one or more efforts"));
+    if (!$ids) {
+        $PH->abortWarning(__('Select one or more efforts'));
         return;
-    }
-    else if(count($ids) > 1) {
+    } elseif (count($ids) > 1) {
         $PH->show('effortViewMultiple');
         exit();
-    }
-    else if(!$effort= Effort::getEditableById($ids[0])) {
-        $PH->abortWarning(__("You do not have enough rights"), ERROR_RIGHTS);
+    } elseif (!$effort = Effort::getEditableById($ids[0])) {
+        $PH->abortWarning(__('You do not have enough rights'), ERROR_RIGHTS);
     }
 
     ## get project ##
-    if(!$project= Project::getVisibleById($effort->project)) {
-        $PH->abortWarning("invalid project-id",ERROR_FATAL);
+    if (!$project = Project::getVisibleById($effort->project)) {
+        $PH->abortWarning('invalid project-id', ERROR_FATAL);
     }
 
     ## get task #
     $task = $effort->task
           ? Task::getVisibleById($effort->task)
-          : NULL;
+          : null;
 
     ### create from handle ###
-    $from_handle= $PH->defineFromHandle(array('effort'=>$effort->id));
+    $from_handle = $PH->defineFromHandle(['effort' => $effort->id]);
 
     ## is viewed by user ##
     $effort->nowViewedByUser();
 
     ### set up page and write header ####
     {
-        $page= new Page();
+        $page = new Page();
         initPageForEffort($page, $effort, $project);
 
         ### page functions ###
-        $page->add_function(new PageFunction(array(
-            'target' =>'effortEdit',
-            'params' =>array('effort'=>$effort->id),
-            'icon'  =>'edit',
-            'tooltip' =>__('Edit this effort'),
-            'name'  =>__('Edit')
-        )));
-        
-        $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$effort->id));
-        if((!$item) || ($item[0]->is_bookmark == 0)){
-            $page->add_function(new PageFunction(array(
-                'target' =>'itemsAsBookmark',
-                'params' =>array('effort'=>$effort->id),
-                'tooltip' =>__('Mark this effort as bookmark'),
-                'name'  =>__('Bookmark'),
-            )));
+        $page->add_function(new PageFunction([
+            'target' => 'effortEdit',
+            'params' => ['effort' => $effort->id],
+            'icon' => 'edit',
+            'tooltip' => __('Edit this effort'),
+            'name' => __('Edit'),
+        ]));
+
+        $item = ItemPerson::getAll(['person' => $auth->cur_user->id, 'item' => $effort->id]);
+        if ((!$item) || ($item[0]->is_bookmark == 0)) {
+            $page->add_function(new PageFunction([
+                'target' => 'itemsAsBookmark',
+                'params' => ['effort' => $effort->id],
+                'tooltip' => __('Mark this effort as bookmark'),
+                'name' => __('Bookmark'),
+            ]));
+        } else {
+            $page->add_function(new PageFunction([
+                'target' => 'itemsRemoveBookmark',
+                'params' => ['effort' => $effort->id],
+                'tooltip' => __('Remove this bookmark'),
+                'name' => __('Remove Bookmark'),
+            ]));
         }
-        else{
-            $page->add_function(new PageFunction(array(
-                'target' =>'itemsRemoveBookmark',
-                'params' =>array('effort'=>$effort->id),
-                'tooltip' =>__('Remove this bookmark'),
-                'name'  =>__('Remove Bookmark'),
-            )));
-        } 
 
         ### render title ###
-        echo(new PageHeader);
+        echo new PageHeader();
     }
 
-    echo (new PageContentOpen);
+    echo new PageContentOpen();
 
     ### details ###
     {
-        $block = new PageBlock(array(
-            'title'=>__('Description'),
+        $block = new PageBlock([
+            'title' => __('Description'),
             //'id'=>'details',
-        ));
+        ]);
 
         $block->render_blockStart();
 
         echo '<div class="text">';
 
-        if($project) {
-            echo "<div class=labeled><label>" . __('Project','label') . "</label>". $project->getLink(false) ."</div>";
+        if ($project) {
+            echo '<div class=labeled><label>' . __('Project', 'label') . '</label>' . $project->getLink(false) . '</div>';
         }
 
-        if($task){
-            if($task->parent_task != 0) {
-                $folder= $task->getFolderLinks(false) ."<em> &gt; </em>". $task->getLink(false);
-                echo "<div class=labeled><label>" . __('Task','label') . "</label>" . $folder . "</div>";
+        if ($task) {
+            if ($task->parent_task != 0) {
+                $folder = $task->getFolderLinks(false) . '<em> &gt; </em>' . $task->getLink(false);
+                echo '<div class=labeled><label>' . __('Task', 'label') . '</label>' . $folder . '</div>';
+            } else {
+                echo '<div class=labeled><label>' . __('Task', 'label') . '</label>' . $task->getLink(false) . '</div>';
             }
-            else {
-                echo "<div class=labeled><label>" . __('Task','label') . "</label>" . $task->getLink(false) . "</div>";
-            }
-        }
-        else {
-            echo "<div class=labeled><label>" . __('Task','label') . "</label>" . __('No task related') . "</div>";
+        } else {
+            echo '<div class=labeled><label>' . __('Task', 'label') . '</label>' . __('No task related') . '</div>';
         }
 
-        if(!$person = Person::getById($effort->person)){
-            echo "<div class=labeled><label>" . __('Created by','label') . "</label>" . __('not available') . "</div>";
-        }
-        else {
-            echo "<div class=labeled><label>" . __('Created by','label') . "</label>" . $person->getLink() . "</div>";
-        }
-
-        if($effort){
-            $duration = round((strToGMTime($effort->time_end) - strToGMTime($effort->time_start))/60/60,1)." h";
-            if($effort->as_duration){
-                echo "<div class=labeled><label>" . __('Created at','label') . "</label>" . renderDateHtml($effort->time_start) . "</div>";
-                echo "<div class=labeled><label>" . __('Duration','label') . "</label>" . asHtml($duration) . "</div>";
-            }
-            else {
-                echo "<div class=labeled><label>" . __('Time start','label') . "</label>" . renderTimestampHtml($effort->time_start) . "</div>";
-                echo "<div class=labeled><label>" . __('Time end','label') . "</label>" . renderTimestampHtml($effort->time_end) . "</div>";
-                echo "<div class=labeled><label>" . __('Duration','label') . "</label>" . asHtml($duration) . "</div>";
-            }
-            
-            echo "<div class=labeled><label>" . __('Productivity','label') . "</label>" . asHtml($effort->productivity) . "</div>";
-            echo "<div class=labeled><label>" . __('Billing','label') . "</label>" .  $g_effort_billing_names[intval($effort->billing)] . "</div>";
+        if (!$person = Person::getById($effort->person)) {
+            echo '<div class=labeled><label>' . __('Created by', 'label') . '</label>' . __('not available') . '</div>';
+        } else {
+            echo '<div class=labeled><label>' . __('Created by', 'label') . '</label>' . $person->getLink() . '</div>';
         }
 
-        echo "</div>";
+        if ($effort) {
+            $duration = round((strToGMTime($effort->time_end) - strToGMTime($effort->time_start)) / 60 / 60, 1) . ' h';
+            if ($effort->as_duration) {
+                echo '<div class=labeled><label>' . __('Created at', 'label') . '</label>' . renderDateHtml($effort->time_start) . '</div>';
+                echo '<div class=labeled><label>' . __('Duration', 'label') . '</label>' . asHtml($duration) . '</div>';
+            } else {
+                echo '<div class=labeled><label>' . __('Time start', 'label') . '</label>' . renderTimestampHtml($effort->time_start) . '</div>';
+                echo '<div class=labeled><label>' . __('Time end', 'label') . '</label>' . renderTimestampHtml($effort->time_end) . '</div>';
+                echo '<div class=labeled><label>' . __('Duration', 'label') . '</label>' . asHtml($duration) . '</div>';
+            }
+
+            echo '<div class=labeled><label>' . __('Productivity', 'label') . '</label>' . asHtml($effort->productivity) . '</div>';
+            echo '<div class=labeled><label>' . __('Billing', 'label') . '</label>' . $g_effort_billing_names[intval($effort->billing)] . '</div>';
+        }
+
+        echo '</div>';
 
         $block->render_blockEnd();
     }
 
     ### description ###
     {
-        $block = new PageBlock(array(
-            'title'=>__('Description'),
-            'id'=>'description',
-        ));
+        $block = new PageBlock([
+            'title' => __('Description'),
+            'id' => 'description',
+        ]);
 
         $block->render_blockStart();
 
-        if($effort->description != "") {
+        if ($effort->description != '') {
             echo '<div class="text">';
             echo wikifieldAsHtml($effort, 'description');
 
             ### update task if relative links have been converted to ids ###
-            if( checkAutoWikiAdjustments() ) {
-                $effort->description= applyAutoWikiAdjustments( $effort->description );
-                $effort->update(array('description'),false);
+            if (checkAutoWikiAdjustments()) {
+                $effort->description = applyAutoWikiAdjustments($effort->description);
+                $effort->update(['description'], false);
             }
-            echo "</div>";
-        }
-        else {
-            if($auth->cur_user->user_rights & RIGHT_PROJECT_ASSIGN) {
-                echo '<div class="empty">' . $PH->getLink('effortEdit','',array('effort'=>$effort->id)) . "</div>";
-            }
-            else {
-                echo '<div class="text">' . __('No description available') . "</div>";
+            echo '</div>';
+        } else {
+            if ($auth->cur_user->user_rights & RIGHT_PROJECT_ASSIGN) {
+                echo '<div class="empty">' . $PH->getLink('effortEdit', '', ['effort' => $effort->id]) . '</div>';
+            } else {
+                echo '<div class="text">' . __('No description available') . '</div>';
             }
         }
         $block->render_blockEnd();
     }
-    echo (new PageContentClose);
-    echo (new PageHtmlEnd);
+    echo new PageContentClose();
+    echo new PageHtmlEnd();
 }
 
 /**
@@ -195,10 +189,10 @@ function effortViewMultiple()
     require_once(confGet('DIR_STREBER') . 'render/render_wiki.inc.php');
 
     ### get effort ####
-    $ids= getPassedIds('effort','efforts_*');
+    $ids = getPassedIds('effort', 'efforts_*');
 
-    if(!$ids) {
-        $PH->abortWarning(__("Select one or more efforts"));
+    if (!$ids) {
+        $PH->abortWarning(__('Select one or more efforts'));
         return;
     }
 
@@ -206,9 +200,8 @@ function effortViewMultiple()
     $sum = 0;
     $count = 0;
 
-
-    foreach($ids as $id) {
-        if($e= Effort::getEditableById($id)) {
+    foreach ($ids as $id) {
+        if ($e = Effort::getEditableById($id)) {
             ## array with all efforts ##
             $e_array[] = $e;
             ## array with all effort ids (for Effort::getMinMaxTime())##
@@ -220,206 +213,193 @@ function effortViewMultiple()
             ## number of efforts ##
             $number++;
             ## sum of all efforts ##
-            $sum += round((strToGMTime($e->time_end) - strToGMTime($e->time_start))/60/60,1);
+            $sum += round((strToGMTime($e->time_end) - strToGMTime($e->time_start)) / 60 / 60, 1);
 
             ### check project of first effort
-            if(count($e_array) == 1) {
-                if(!$project = Project::getVisibleById($e->project)) {
+            if (count($e_array) == 1) {
+                if (!$project = Project::getVisibleById($e->project)) {
                     $PH->abortWarning('could not get project');
                 }
-            }
-            else {
+            } else {
                 $count = 0;
                 ### check if the efforts are related to the same task ###
-                if($e->task != $e_array[0]->task) {
-                   $count++;
+                if ($e->task != $e_array[0]->task) {
+                    $count++;
                 }
             }
-        }
-        else {
-            $PH->abortWarning(__("You do not have enough rights"), ERROR_RIGHTS);
+        } else {
+            $PH->abortWarning(__('You do not have enough rights'), ERROR_RIGHTS);
         }
     }
 
     ### set up page and write header ####
     {
-        $page= new Page();
-        $page->cur_tab='projects';
+        $page = new Page();
+        $page->cur_tab = 'projects';
 
-        $page->cur_crumb= 'effortViewMultiple';
-        $page->crumbs= build_project_crumbs($project);
-        $page->options= build_projView_options($project);
+        $page->cur_crumb = 'effortViewMultiple';
+        $page->crumbs = build_project_crumbs($project);
+        $page->options = build_projView_options($project);
 
-        $type= __('Multiple Efforts','page type');
+        $type = __('Multiple Efforts', 'page type');
 
         ## same tasks ##
-        if($count == 0) {
-             $task = $e_array[0]->task
-             ? Task::getVisibleById($e_array[0]->task)
-             : NULL;
+        if ($count == 0) {
+            $task = $e_array[0]->task
+            ? Task::getVisibleById($e_array[0]->task)
+            : null;
 
-            if($task) {
-                 $folder= $task->getFolderLinks() ."<em>&gt;</em>". $task->getLink();
-                 $page->type= $folder."<em>&gt;</em>". $type;
-            }
-            else {
-                 $page->type= $type;
+            if ($task) {
+                $folder = $task->getFolderLinks() . '<em>&gt;</em>' . $task->getLink();
+                $page->type = $folder . '<em>&gt;</em>' . $type;
+            } else {
+                $page->type = $type;
             }
         }
         ## different tasks ##
         else {
-             $page->type= $project->getLink() . "<em>&gt;</em>" . $type;
+            $page->type = $project->getLink() . '<em>&gt;</em>' . $type;
         }
 
-        $page->title=__('Multiple Efforts');
-        $page->title_minor=__('Overview');
+        $page->title = __('Multiple Efforts');
+        $page->title_minor = __('Overview');
 
         ### render title ###
-        echo(new PageHeader);
+        echo new PageHeader();
     }
 
-    echo (new PageContentOpen);
+    echo new PageContentOpen();
 
     ### summary ###
 
     ### title ###
-    echo '<div class="text"><h3>' . __('summary') . "</h3></div>";
+    echo '<div class="text"><h3>' . __('summary') . '</h3></div>';
     {
         ### content ###
-        $block = new PageBlock(array(
-                'title'=>__('Information'),
-                'id'=>'info',
-                ));
+        $block = new PageBlock([
+                'title' => __('Information'),
+                'id' => 'info',
+                ]);
 
         $block->render_blockStart();
 
         echo '<div class="text">';
 
-        if($number){
-            echo "<div class=labeled><label>" . __('Number of efforts','label') . "</label>". asHtml($number) ."</div>";
+        if ($number) {
+            echo '<div class=labeled><label>' . __('Number of efforts', 'label') . '</label>' . asHtml($number) . '</div>';
         }
 
-        if($sum) {
-            echo "<div class=labeled><label>" . __('Sum of efforts','label') . "</label>". asHtml($sum) ." h</div>";
+        if ($sum) {
+            echo '<div class=labeled><label>' . __('Sum of efforts', 'label') . '</label>' . asHtml($sum) . ' h</div>';
         }
 
         $content['e_ids'] = $e_ids;
 
         $time = Effort::getMinMaxTime($content);
-        if($time) {
-            $line = "<div class=labeled><label>" . __('from','time label') . "</label>" . renderDateHtml($time[0]) . "</div>";
-            $line .= "<div class=labeled><label>" . __('to','time label') . "</label>" . renderDateHtml($time[1]) . "</div>";
+        if ($time) {
+            $line = '<div class=labeled><label>' . __('from', 'time label') . '</label>' . renderDateHtml($time[0]) . '</div>';
+            $line .= '<div class=labeled><label>' . __('to', 'time label') . '</label>' . renderDateHtml($time[1]) . '</div>';
             echo $line;
-        }
-        else {
-            echo "<div class=labeled><label>" . __('Time','label') . "</label>" . __('not available') . "</div>";
+        } else {
+            echo '<div class=labeled><label>' . __('Time', 'label') . '</label>' . __('not available') . '</div>';
         }
 
-        echo "</div>";
+        echo '</div>';
 
         $block->render_blockEnd();
     }
 
     ### start to list efforts ###
-    foreach($e_array as $effort)
-    {
+    foreach ($e_array as $effort) {
         ### title ###
-        echo '<div class="text"><h3>' . asHtml($effort->name) . "</h3></div>";
+        echo '<div class="text"><h3>' . asHtml($effort->name) . '</h3></div>';
 
         ### details ###
         {
-            $block = new PageBlock(array(
-                'title'=>__('Details'),
-                'id'=>'details' . $effort->id,
-            ));
+            $block = new PageBlock([
+                'title' => __('Details'),
+                'id' => 'details' . $effort->id,
+            ]);
 
             $block->render_blockStart();
 
             echo '<div class="text">';
 
-            if($project) {
-                echo "<div class=labeled><label>" . __('Project','label') . "</label>" . $project->getLink(false) ."</div>";
+            if ($project) {
+                echo '<div class=labeled><label>' . __('Project', 'label') . '</label>' . $project->getLink(false) . '</div>';
             }
 
             $task = $effort->task
              ? Task::getVisibleById($effort->task)
-             : NULL;
+             : null;
 
-            if($task){
-                if($task->parent_task != 0) {
-                    $folder= $task->getFolderLinks(false) ."<em> &gt; </em>". $task->getLink(false);
-                    echo "<div class=labeled><label>" . __('Task','label') . "</label>" . $folder . "</div>";
+            if ($task) {
+                if ($task->parent_task != 0) {
+                    $folder = $task->getFolderLinks(false) . '<em> &gt; </em>' . $task->getLink(false);
+                    echo '<div class=labeled><label>' . __('Task', 'label') . '</label>' . $folder . '</div>';
+                } else {
+                    echo '<div class=labeled><label>' . __('Task', 'label') . '</label>' . $task->getLink(false) . '</div>';
                 }
-                else {
-                    echo "<div class=labeled><label>" . __('Task','label') . "</label>" . $task->getLink(false) . "</div>";
-                }
-            }
-            else {
-                echo "<div class=labeled><label>" . __('Task','label') . "</label>" . __('No task related') . "</div>";
+            } else {
+                echo '<div class=labeled><label>' . __('Task', 'label') . '</label>' . __('No task related') . '</div>';
             }
 
-            if(!$person = Person::getById($effort->person)){
-                echo "<div class=labeled><label>" . __('Created by','label') . "</label>" . __('not available') . "</div>";
-            }
-            else {
-                echo "<div class=labeled><label>" . __('Created by','label') . "</label>" . $person->getLink() . "</div>";
+            if (!$person = Person::getById($effort->person)) {
+                echo '<div class=labeled><label>' . __('Created by', 'label') . '</label>' . __('not available') . '</div>';
+            } else {
+                echo '<div class=labeled><label>' . __('Created by', 'label') . '</label>' . $person->getLink() . '</div>';
             }
 
-            if($effort){
-                $duration = round((strToGMTime($effort->time_end) - strToGMTime($effort->time_start))/60/60,1)." h";
-                if($effort->as_duration){
-                    echo "<div class=labeled><label>" . __('Created at','label') . "</label>" . renderDateHtml($effort->time_start) . "</div>";
-                    echo "<div class=labeled><label>" . __('Duration','label') . "</label>" . asHtml($duration) . "</div>";
-                }
-                else {
-                    echo "<div class=labeled><label>" . __('Time start','label') . "</label>" . renderTimestampHtml($effort->time_start) . "</div>";
-                    echo "<div class=labeled><label>" . __('Time end','label') . "</label>" . renderTimestampHtml($effort->time_end) . "</div>";
-                    echo "<div class=labeled><label>" . __('Duration','label') . "</label>" . asHtml($duration) . "</div>";
+            if ($effort) {
+                $duration = round((strToGMTime($effort->time_end) - strToGMTime($effort->time_start)) / 60 / 60, 1) . ' h';
+                if ($effort->as_duration) {
+                    echo '<div class=labeled><label>' . __('Created at', 'label') . '</label>' . renderDateHtml($effort->time_start) . '</div>';
+                    echo '<div class=labeled><label>' . __('Duration', 'label') . '</label>' . asHtml($duration) . '</div>';
+                } else {
+                    echo '<div class=labeled><label>' . __('Time start', 'label') . '</label>' . renderTimestampHtml($effort->time_start) . '</div>';
+                    echo '<div class=labeled><label>' . __('Time end', 'label') . '</label>' . renderTimestampHtml($effort->time_end) . '</div>';
+                    echo '<div class=labeled><label>' . __('Duration', 'label') . '</label>' . asHtml($duration) . '</div>';
                 }
             }
 
-            echo "</div>";
+            echo '</div>';
 
             $block->render_blockEnd();
         }
 
         ### description ###
         {
-            $block = new PageBlock(array(
-                'title'=>__('Description'),
-                'id'=>'description' . $effort->id,
-            ));
+            $block = new PageBlock([
+                'title' => __('Description'),
+                'id' => 'description' . $effort->id,
+            ]);
 
             $block->render_blockStart();
 
-            if($effort->description != "") {
+            if ($effort->description != '') {
                 echo '<div class="text">';
                 echo wikifieldAsHtml($effort, 'description');
 
-
                 ### update task if relative links have been converted to ids ###
-                if( checkAutoWikiAdjustments() ) {
-                    $effort->description= applyAutoWikiAdjustments( $effort->description );
-                    $effort->update(array('description'),false);
+                if (checkAutoWikiAdjustments()) {
+                    $effort->description = applyAutoWikiAdjustments($effort->description);
+                    $effort->update(['description'], false);
                 }
-                echo "</div>";
-            }
-            else {
-                if($auth->cur_user->user_rights & RIGHT_PROJECT_ASSIGN) {
-                    echo '<div class="empty">' . $PH->getLink('effortEdit','',array('effort'=>$effort->id)) . "</div>";
-                }
-                else {
-                    echo '<div class="text">' . __('No description available') . "</div>";
+                echo '</div>';
+            } else {
+                if ($auth->cur_user->user_rights & RIGHT_PROJECT_ASSIGN) {
+                    echo '<div class="empty">' . $PH->getLink('effortEdit', '', ['effort' => $effort->id]) . '</div>';
+                } else {
+                    echo '<div class="text">' . __('No description available') . '</div>';
                 }
             }
             $block->render_blockEnd();
         }
     }
 
-    echo (new PageContentClose);
-    echo (new PageHtmlEnd);
+    echo new PageContentClose();
+    echo new PageHtmlEnd();
 }
-
 
 /**
 * create a new effort @ingroup pages
@@ -429,207 +409,196 @@ function effortNew()
     global $PH;
     global $auth;
 
-    $name=get('new_name')
+    $name = get('new_name')
         ? get('new_name')
-        :__("New Effort");
+        : __('New Effort');
 
     ### first try single project-id ###
-    $project=NULL;
-    if($ids=getPassedIds('prj','projects_*')) {
-        if(!$project= Project::getVisibleById($ids[0])) {
-            $PH->abortWarning("ERROR: could not get Project");
+    $project = null;
+    if ($ids = getPassedIds('prj', 'projects_*')) {
+        if (!$project = Project::getVisibleById($ids[0])) {
+            $PH->abortWarning('ERROR: could not get Project');
             return;
         }
     }
 
-    
     ### try to get task ###
-    $task_id=0;
-    if($task_ids= getPassedIds('parent_task','tasks_*')) {
-        if(count($task_ids) > 1) {
-            new FeedbackWarning(__("only expected one task. Used the first one."));
+    $task_id = 0;
+    if ($task_ids = getPassedIds('parent_task', 'tasks_*')) {
+        if (count($task_ids) > 1) {
+            new FeedbackWarning(__('only expected one task. Used the first one.'));
         }
-        $task_id= $task_ids[0];
+        $task_id = $task_ids[0];
     }
-
 
     ### try to get folder ###
-    else if($task_ids= getPassedIds('','folders_*')) {
-        if(count($task_ids) > 1) {
-            new FeedbackWarning( __("only expected one task. Used the first one."));
+    elseif ($task_ids = getPassedIds('', 'folders_*')) {
+        if (count($task_ids) > 1) {
+            new FeedbackWarning(__('only expected one task. Used the first one.'));
         }
-        $task_id= $task_ids[0];
+        $task_id = $task_ids[0];
     }
 
-
-    if(!$project) {
-        if( !$task_id) {
-            $PH->abortWarning("Could not get project",ERROR_NOTE);
+    if (!$project) {
+        if (!$task_id) {
+            $PH->abortWarning('Could not get project', ERROR_NOTE);
         }
-        if(!$task= Task::getVisibleById($task_id)) {
-            $PH->abortWarning("Invalid task id?", ERROR_BUG);
+        if (!$task = Task::getVisibleById($task_id)) {
+            $PH->abortWarning('Invalid task id?', ERROR_BUG);
         }
-        if(!$project= Project::getVisibleById($task->project)) {
-            $PH->abortWarning("Invalid project for task?", ERROR_BUG);
+        if (!$project = Project::getVisibleById($task->project)) {
+            $PH->abortWarning('Invalid project for task?', ERROR_BUG);
         }
     }
 
-    if(!$project->isPersonVisibleTeamMember($auth->cur_user)) {
-        $PH->abortWarning("ERROR: Insufficient rights");        
+    if (!$project->isPersonVisibleTeamMember($auth->cur_user)) {
+        $PH->abortWarning('ERROR: Insufficient rights');
     }
 
-    $now= getGMTString();
+    $now = getGMTString();
 
     ### last effort selected? ###
-    if($effort_ids= getPassedIds('','efforts_*')) {
-        $last_effort= Effort::getVisibleById($effort_ids[0]);
+    if ($effort_ids = getPassedIds('', 'efforts_*')) {
+        $last_effort = Effort::getVisibleById($effort_ids[0]);
 
-        $last=$last_effort->time_end;
-        $now=$last_effort->time_end;
+        $last = $last_effort->time_end;
+        $now = $last_effort->time_end;
     }
     ### guess start-time from last effort / start at 10:00 if new day ###
     else {
-        if($last=Effort::getDateCreatedLast()) {
-            $last_day=getdate(strToGMTime($last));
-        }
-        else {
-            $last_day=getdate();
+        if ($last = Effort::getDateCreatedLast()) {
+            $last_day = getdate(strToGMTime($last));
+        } else {
+            $last_day = getdate();
         }
 
-        $today=getdate(time());
-        if($last_day['yday'] != $today['yday']) {
-            $last= getGMTString();
+        $today = getdate(time());
+        if ($last_day['yday'] != $today['yday']) {
+            $last = getGMTString();
         }
     }
 
     ### log efforts as durations? ###
-    $as_duration= 0;
-    if($pp= $project->getCurrentProjectPerson()) {
-        if($pp->adjust_effort_style == 2) {
-
-            if($last=Effort::getDateCreatedLast()) {
-                $last_day=$last;
+    $as_duration = 0;
+    if ($pp = $project->getCurrentProjectPerson()) {
+        if ($pp->adjust_effort_style == 2) {
+            if ($last = Effort::getDateCreatedLast()) {
+                $last_day = $last;
+            } else {
+                $last_day = '1980-01-01';
             }
-            else {
-                $last_day="1980-01-01";
-            }
-            $str_time=sprintf("%02d:%02d:%02d",
-                floor( (time()-strToGMTime($last_day))/60/60%24),
-                floor( (time()-strToGMTime($last_day))/60%60),
-                floor( (time()-strToGMTime($last_day))%60)
+            $str_time = sprintf(
+                '%02d:%02d:%02d',
+                floor((time() - strToGMTime($last_day)) / 60 / 60 % 24),
+                floor((time() - strToGMTime($last_day)) / 60 % 60),
+                floor((time() - strToGMTime($last_day)) % 60)
             );
 
-            $now= gmdate("Y-m-d", time()) ." ". $str_time;
-            $last= gmdate("Y-m-d") ." ". "00:00:00";
+            $now = gmdate('Y-m-d', time()) . ' ' . $str_time;
+            $last = gmdate('Y-m-d') . ' ' . '00:00:00';
 
-            $as_duration=1;
+            $as_duration = 1;
         }
     }
 
-
     ### build new object ###
-    $newEffort= new Effort(array(
-        'id'  =>0,
-        'name'  =>$name,
-        'project' =>$project->id,
-        'time_start'=>$last,
-        'time_end' =>$now,
-        'task'  =>$task_id,
-        'as_duration'=>$as_duration,
-        'person' =>$auth->cur_user->id,
-        )
+    $newEffort = new Effort(
+        [
+        'id' => 0,
+        'name' => $name,
+        'project' => $project->id,
+        'time_start' => $last,
+        'time_end' => $now,
+        'task' => $task_id,
+        'as_duration' => $as_duration,
+        'person' => $auth->cur_user->id,
+        ]
     );
-    $PH->show('effortEdit',array('effort'=>$newEffort->id),$newEffort);
+    $PH->show('effortEdit', ['effort' => $newEffort->id], $newEffort);
 }
-
 
 /**
 * Edit an effort @ingroup pages
 */
-function effortEdit($effort=NULL) 
+function effortEdit($effort = null)
 {
     global $PH;
     global $g_effort_status_names;
     global $g_effort_billing_names;
 
-    if(!$effort) {
-        $ids = getPassedIds('effort','efforts_*');  
-        
-        if(!$ids) {
-            $PH->abortWarning(__("Select some efforts(s) to edit"), ERROR_NOTE);
+    if (!$effort) {
+        $ids = getPassedIds('effort', 'efforts_*');
+
+        if (!$ids) {
+            $PH->abortWarning(__('Select some efforts(s) to edit'), ERROR_NOTE);
             return;
-        }
-        else if(count($ids) > 1) {
+        } elseif (count($ids) > 1) {
             $PH->show('effortEditMultiple');
             exit();
-        }
-        else if(!$effort = Effort::getEditableById($ids[0])) {
-            $PH->abortWarning("ERROR: could not get Effort");
+        } elseif (!$effort = Effort::getEditableById($ids[0])) {
+            $PH->abortWarning('ERROR: could not get Effort');
             return;
         }
     }
 
-    if(!$project=Project::getVisibleById($effort->project)) {
-            $PH->abortWarning("ERROR: could not get Project",ERROR_BUG);
+    if (!$project = Project::getVisibleById($effort->project)) {
+        $PH->abortWarning('ERROR: could not get Project', ERROR_BUG);
     }
 
-    $task= Task::getVisibleById($effort->task);
+    $task = Task::getVisibleById($effort->task);
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'effort_name'));
-        $page->cur_tab='projects';
-        $page->type=__('Edit Effort','page type');
-        $page->title=$effort->name;
+        $page = new Page(['use_jscalendar' => true, 'autofocus_field' => 'effort_name']);
+        $page->cur_tab = 'projects';
+        $page->type = __('Edit Effort', 'page type');
+        $page->title = $effort->name;
 
         /**
         * @@@ refactor with initPageForEffort()
         */
-#        if($task) {
-#            $page->crumbs= build_task_crumbs($task);
-#        }
-#        else {
-            $page->crumbs= build_project_crumbs($project);
-#        }
-        $page->crumbs[]= new NaviCrumb(array(
+        #        if($task) {
+        #            $page->crumbs= build_task_crumbs($task);
+        #        }
+        #        else {
+        $page->crumbs = build_project_crumbs($project);
+        #        }
+        $page->crumbs[] = new NaviCrumb([
             'target_id' => 'effortEdit',
-        ));
+        ]);
 
-        if($effort->id) {
-            $page->title=__('Edit Effort','page title');
+        if ($effort->id) {
+            $page->title = __('Edit Effort', 'page title');
+        } else {
+            $page->title = __('New Effort', 'page title');
         }
-        else {
-            $page->title=__('New Effort','page title');
-        }
 
-        $page->title_minor= sprintf(__('On project %s','page title add on'),$project->name);
+        $page->title_minor = sprintf(__('On project %s', 'page title add on'), $project->name);
 
-
-        echo(new PageHeader);
+        echo new PageHeader();
     }
-    echo (new PageContentOpen);
+    echo new PageContentOpen();
 
     ### write form #####
     {
-        $block=new PageBlock(array(
-            'id' =>'edit',
-        ));
+        $block = new PageBlock([
+            'id' => 'edit',
+        ]);
         $block->render_blockStart();
-
 
         require_once(confGet('DIR_STREBER') . 'render/render_form.inc.php');
 
-        $form=new PageForm();
-        $form->button_cancel=true;
+        $form = new PageForm();
+        $form->button_cancel = true;
 
         ### automatically write fields ###
-#   foreach($effort->fields as $field) {
-#    $form->add($field->getFormElement($effort));
-#   }
+        #   foreach($effort->fields as $field) {
+        #    $form->add($field->getFormElement($effort));
+        #   }
 
         $form->add($effort->fields['name']->getFormElement($effort));
 
-        if($effort->as_duration) {
+        if ($effort->as_duration) {
             /**
             * NOTE:
             * - Durations are stored with two datetimes in GMT. The first is
@@ -637,77 +606,72 @@ function effortEdit($effort=NULL)
             * Since the edit form would try to convert the time_end into client time
             * we overwrite it here. This might be called a hack.
             */
-            $effort->time_end=clientTimeStrToGMTString($effort->time_end);
+            $effort->time_end = clientTimeStrToGMTString($effort->time_end);
 
-            $tmp_edit= $effort->fields['time_end']->getFormElement($effort);
-            $tmp_edit->title=__("Date / Duration","Field label when booking time-effort as duration");
+            $tmp_edit = $effort->fields['time_end']->getFormElement($effort);
+            $tmp_edit->title = __('Date / Duration', 'Field label when booking time-effort as duration');
             $form->add($tmp_edit);
-        }
-        else {
+        } else {
             $form->add($effort->fields['time_start']->getFormElement($effort));
             $form->add($effort->fields['time_end']->getFormElement($effort));
         }
         $form->add($effort->fields['description']->getFormElement($effort));
-        $form->add(new Form_Dropdown("effort_status", __('Status'), array_flip($g_effort_status_names), $effort->status));
-        $form->add(new Form_Dropdown("effort_billing", __('Billing'), array_flip($g_effort_billing_names), $effort->billing));
-        $form->add(new Form_Dropdown("effort_productivity", __('Productivity'), array( "*****"=>5, "****"=>4, "***"=>3, "**"=>2, "*"=>1  ), $effort->productivity));
+        $form->add(new Form_Dropdown('effort_status', __('Status'), array_flip($g_effort_status_names), $effort->status));
+        $form->add(new Form_Dropdown('effort_billing', __('Billing'), array_flip($g_effort_billing_names), $effort->billing));
+        $form->add(new Form_Dropdown('effort_productivity', __('Productivity'), ['*****' => 5, '****' => 4, '***' => 3, '**' => 2, '*' => 1], $effort->productivity));
 
         ### get meta-tasks / folders ###
         #$folders= $project->getFolders();
-        $folders= Task::getAll(array(
-            'sort_hierarchical'=>true,
-            'parent_task'=> 0,
-            'show_folders'=>true,
-            'folders_only'=>false,
-            'status_min'=> STATUS_UPCOMING,
-            'status_max'=> STATUS_CLOSED,
-            'project'=> $project->id,
+        $folders = Task::getAll([
+            'sort_hierarchical' => true,
+            'parent_task' => 0,
+            'show_folders' => true,
+            'folders_only' => false,
+            'status_min' => STATUS_UPCOMING,
+            'status_max' => STATUS_CLOSED,
+            'project' => $project->id,
+        ]);
+        if ($folders) {
+            $folder_list = ['undefined' => '0'];
 
-        ));
-        if($folders) {
-            $folder_list= array("undefined"=>"0");
-
-            if($effort->task) {
-                if($task= Task::getVisibleById($effort->task)) {
+            if ($effort->task) {
+                if ($task = Task::getVisibleById($effort->task)) {
                     ### add, if normal task (folders will added below) ###
-                    if(! $task->category == TCATEGORY_FOLDER) {
-                        $folder_list[$task->name]= $task->id;
+                    if (!$task->category == TCATEGORY_FOLDER) {
+                        $folder_list[$task->name] = $task->id;
                     }
                 }
             }
 
-            foreach($folders as $f) {
-                $str= '';
-                foreach($f->getFolder() as $pf) {
-                    $str.=$pf->getShort(). " > ";
+            foreach ($folders as $f) {
+                $str = '';
+                foreach ($f->getFolder() as $pf) {
+                    $str .= $pf->getShort() . ' > ';
                 }
-                $str.=$f->name;
+                $str .= $f->name;
 
-                $folder_list[$str]= $f->id;
-
+                $folder_list[$str] = $f->id;
             }
-            $form->add(new Form_Dropdown('effort_task',  __("For task"),$folder_list, $effort->task));
-
+            $form->add(new Form_Dropdown('effort_task', __('For task'), $folder_list, $effort->task));
         }
 
         ### public-level ###
-        if(($pub_levels= $effort->getValidUserSetPublicLevels())
-            && count($pub_levels)>1) {
-            $form->add(new Form_Dropdown('effort_pub_level',  __("Publish to"),$pub_levels,$effort->pub_level));
+        if (($pub_levels = $effort->getValidUserSetPublicLevels())
+            && count($pub_levels) > 1) {
+            $form->add(new Form_Dropdown('effort_pub_level', __('Publish to'), $pub_levels, $effort->pub_level));
         }
 
-
-        echo ($form);
+        echo $form;
         $block->render_blockEnd();
 
-        $PH->go_submit='effortEditSubmit';
+        $PH->go_submit = 'effortEditSubmit';
         echo "<input type=hidden name='effort_as_duration' value='$effort->as_duration'>";
         echo "<input type=hidden name='effort' value='$effort->id'>";
         echo "<input type=hidden name='effort_project' value='$effort->project'>";
         echo "<input type=hidden name='effort_person' value='$effort->person'>";
     }
-    echo (new PageContentClose);
-    echo (new PageHtmlEnd);
+    echo new PageContentClose();
+    echo new PageHtmlEnd();
 }
 
 /**
@@ -718,51 +682,47 @@ function effortEditSubmit()
     global $PH;
     global $auth;
 
-    ### Validate form crc        
-    if(!validateFormCrc()) {
+    ### Validate form crc
+    if (!validateFormCrc()) {
         $PH->abortWarning(__('Invalid checksum for hidden form elements'));
     }
 
     ### get effort ####
-    $id= getOnePassedId('effort');
+    $id = getOnePassedId('effort');
 
-    if($id == 0) {
-        $effort= new Effort(array('id'=>0));
-    }
-    else {
-        $effort= Effort::getEditableById($id);
-        if(!$effort) {
-            $PH->abortWarning(__("Could not get effort"));
+    if ($id == 0) {
+        $effort = new Effort(['id' => 0]);
+    } else {
+        $effort = Effort::getEditableById($id);
+        if (!$effort) {
+            $PH->abortWarning(__('Could not get effort'));
             return;
         }
         $effort->validateEditRequestTime();
     }
 
-
     ### cancel ###
-    if(get('form_do_cancel')) {
-        if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$effort->project));
+    if (get('form_do_cancel')) {
+        if (!$PH->showFromPage()) {
+            $PH->show('projView', ['prj' => $effort->project]);
         }
         exit();
     }
 
-
-
     ### get project ###
-    $effort->project=get('effort_project');
-    if(!$project = Project::getVisibleById($effort->project)) {
-        $PH->abortWarning(__("Could not get project of effort"));
+    $effort->project = get('effort_project');
+    if (!$project = Project::getVisibleById($effort->project)) {
+        $PH->abortWarning(__('Could not get project of effort'));
     }
 
-    if(!$project->isPersonVisibleTeamMember($auth->cur_user)) {
-        $PH->abortWarning("ERROR: Insufficient rights");        
+    if (!$project->isPersonVisibleTeamMember($auth->cur_user)) {
+        $PH->abortWarning('ERROR: Insufficient rights');
     }
 
     ### get person ###
-    if($effort->person=get('effort_person')) {
-        if(!$person = Person::getVisibleById($effort->person)) {
-            $PH->abortWarning(__("Could not get person of effort"));
+    if ($effort->person = get('effort_person')) {
+        if (!$person = Person::getVisibleById($effort->person)) {
+            $PH->abortWarning(__('Could not get person of effort'));
         }
     }
 
@@ -770,136 +730,125 @@ function effortEditSubmit()
     # NOTE:
     # - this could be an security-issue.
     # - TODO: as some kind of form-edit-behaviour to field-definition
-    foreach($effort->fields as $f) {
-        $name=$f->name;
+    foreach ($effort->fields as $f) {
+        $name = $f->name;
         $f->parseForm($effort);
     }
 
     ### times as duration ###
-    if($as_duration= get('effort_as_duration')) {
-        $effort->as_duration= $as_duration;
+    if ($as_duration = get('effort_as_duration')) {
+        $effort->as_duration = $as_duration;
 
         ### make sure day of time_end stays the same if date changes... ###
-        if(($time_start= $effort->time_start) && ($time_end= $effort->time_end)) {
+        if (($time_start = $effort->time_start) && ($time_end = $effort->time_end)) {
+            $effort->time_end =
+                gmdate('Y-m-d', strToClientTime($time_end))
+                . ' ' .
+                gmdate('H:i:s', strToClientTime($time_end));
 
-            $effort->time_end=
-                gmdate("Y-m-d", strToClientTime($time_end) )
-                ." ".
-                gmdate("H:i:s", strToClientTime($time_end) );
-
-            $effort->time_start=
-                gmdate("Y-m-d", strToClientTime($time_end) )
-                ." ".
-                gmdate("00:00:00", strToClientTime($time_end) );
-
-        }
-        else {
-            trigger_error("Getting time_start and time_end failed",E_USER_WARNING);
+            $effort->time_start =
+                gmdate('Y-m-d', strToClientTime($time_end))
+                . ' ' .
+                gmdate('00:00:00', strToClientTime($time_end));
+        } else {
+            trigger_error('Getting time_start and time_end failed', E_USER_WARNING);
         }
     }
 
-
     ### pub level ###
-    if($pub_level=get('effort_pub_level')) {
-
+    if ($pub_level = get('effort_pub_level')) {
         ### not a new effort ###
-        if($effort->id) {
-             if($pub_level > $effort->getValidUserSetPublicLevels() ) {
-                 $PH->abortWarning('invalid data',ERROR_RIGHTS);
-             }
+        if ($effort->id) {
+            if ($pub_level > $effort->getValidUserSetPublicLevels()) {
+                $PH->abortWarning('invalid data', ERROR_RIGHTS);
+            }
         }
         #else {
         #  #@@@ check for person create rights
         #}
         $effort->pub_level = $pub_level;
     }
-    
+
     ## effort status ##
-    if($effort_status = get('effort_status')){
+    if ($effort_status = get('effort_status')) {
         $effort->status = $effort_status;
     }
 
-    if($effort_billing = get('effort_billing')){
+    if ($effort_billing = get('effort_billing')) {
         $effort->billing = intval($effort_billing);
     }
 
-    if($effort_productivity = get('effort_productivity')){
+    if ($effort_productivity = get('effort_productivity')) {
         $effort->productivity = intval($effort_productivity);
     }
 
     ### link to task ###
     $task_id = get('effort_task');
-    if(!is_null($task_id)){
-        if($task_id == 0) {
+    if (!is_null($task_id)) {
+        if ($task_id == 0) {
             $effort->task = 0;
-        }
-        else{
-            if($task= Task::getVisibleById($task_id)) {
+        } else {
+            if ($task = Task::getVisibleById($task_id)) {
                 $effort->task = $task->id;
             }
         }
     }
 
-
     ### go back to from if validation fails ###
-    $failure= false;
-    if(!$effort->name) {
-        $failure= true;
-        new FeedbackWarning(__("Name required"));
+    $failure = false;
+    if (!$effort->name) {
+        $failure = true;
+        new FeedbackWarning(__('Name required'));
     }
-    if(strToGMTime($effort->time_end) - strToGMTime($effort->time_start) < 0) {
-        $failure= true;
-        new FeedbackWarning(__("Cannot start before end."));
+    if (strToGMTime($effort->time_end) - strToGMTime($effort->time_start) < 0) {
+        $failure = true;
+        new FeedbackWarning(__('Cannot start before end.'));
     }
 
     ### validation of the Datetime fields###
-    if(!$as_duration){
-        if(strToGMTime($effort->time_start) == 0){
-            $failure= true;
-            $name= $effort->fields['time_start']->name;
-            $field_id= $effort->_type.'_'.$name;
-            $value_time=get($field_id.'_time');
-            new FeedbackWarning(sprintf(__("<b>%s</b> is not a valid value for start time."),$value_time));
+    if (!$as_duration) {
+        if (strToGMTime($effort->time_start) == 0) {
+            $failure = true;
+            $name = $effort->fields['time_start']->name;
+            $field_id = $effort->_type . '_' . $name;
+            $value_time = get($field_id . '_time');
+            new FeedbackWarning(sprintf(__('<b>%s</b> is not a valid value for start time.'), $value_time));
             $effort->time_start = getGMTString();
         }
-        if(strToGMTime($effort->time_end) == 0){
-            $failure= true;
-            $name= $effort->fields['time_end']->name;
-            $field_id= $effort->_type.'_'.$name;
-            $value_time=get($field_id.'_time');
-            new FeedbackWarning(sprintf(__("<b>%s</b> is not a valid value for end time."),$value_time));
-            $effort->time_end= getGMTString();
+        if (strToGMTime($effort->time_end) == 0) {
+            $failure = true;
+            $name = $effort->fields['time_end']->name;
+            $field_id = $effort->_type . '_' . $name;
+            $value_time = get($field_id . '_time');
+            new FeedbackWarning(sprintf(__('<b>%s</b> is not a valid value for end time.'), $value_time));
+            $effort->time_end = getGMTString();
         }
-    }   
-    else{ ##As duration
-        if(strToGMTime($effort->time_end) == 0){
-            $failure= true;
-            $name= $effort->fields['time_end']->name;
-            $field_id= $effort->_type.'_'.$name;
-            $value_time=get($field_id.'_time');
-            new FeedbackWarning(sprintf(__("<b>%s</b> is not a valid value for hours."),$value_time));
-            $effort->time_end = gmdate("Y-m-d", time()) ." 00:00:00";
+    } else { ##As duration
+        if (strToGMTime($effort->time_end) == 0) {
+            $failure = true;
+            $name = $effort->fields['time_end']->name;
+            $field_id = $effort->_type . '_' . $name;
+            $value_time = get($field_id . '_time');
+            new FeedbackWarning(sprintf(__('<b>%s</b> is not a valid value for hours.'), $value_time));
+            $effort->time_end = gmdate('Y-m-d', time()) . ' 00:00:00';
         }
     }
-    
 
-    if($failure) {
-        $PH->show('effortEdit',NULL,$effort);
+    if ($failure) {
+        $PH->show('effortEdit', null, $effort);
         exit();
     }
 
-
     ### write to db ###
-    if($effort->id == 0) {
+    if ($effort->id == 0) {
         $effort->insert();
-    }
-    else {
+    } else {
         $effort->update();
     }
 
     ### display taskView ####
-    if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$effort->project));
+    if (!$PH->showFromPage()) {
+        $PH->show('projView', ['prj' => $effort->project]);
     }
 }
 
@@ -911,174 +860,163 @@ function effortEditMultiple()
     global $PH;
     global $g_effort_status_names;
 
-    $effort_ids = getPassedIds('effort','efforts_*');
+    $effort_ids = getPassedIds('effort', 'efforts_*');
 
-    if(!$effort_ids) {
-        $PH->abortWarning(__("Select some efforts(s) to edit"));
+    if (!$effort_ids) {
+        $PH->abortWarning(__('Select some efforts(s) to edit'));
         exit();
     }
-    
-    $efforts = array();
-    $different_fields=array();
-    
-    $edit_fields = array(
+
+    $efforts = [];
+    $different_fields = [];
+
+    $edit_fields = [
         'status',
         'pub_level',
-        'task'
-    );
-    
-    foreach($effort_ids as $id){
-        if($effort = Effort::getEditableById($id)) {
-        
-            $efforts[] = $effort;
-            
-            ### check project for first task
-            if(count($efforts) == 1) {
+        'task',
+    ];
 
+    foreach ($effort_ids as $id) {
+        if ($effort = Effort::getEditableById($id)) {
+            $efforts[] = $effort;
+
+            ### check project for first task
+            if (count($efforts) == 1) {
                 ### make sure all are of same project ###
-                if(!$project = Project::getVisibleById($effort->project)) {
+                if (!$project = Project::getVisibleById($effort->project)) {
                     $PH->abortWarning('could not get project');
                 }
-            }
-            else {
-                if($effort->project != $efforts[0]->project) {
-                    $PH->abortWarning(__("For editing all efforts must be of same project."));
+            } else {
+                if ($effort->project != $efforts[0]->project) {
+                    $PH->abortWarning(__('For editing all efforts must be of same project.'));
                 }
-                
-                foreach($edit_fields as $field_name) {
-                    if($effort->$field_name != $efforts[0]->$field_name) {
+
+                foreach ($edit_fields as $field_name) {
+                    if ($effort->$field_name != $efforts[0]->$field_name) {
                         $different_fields[$field_name] = true;
                     }
                 }
             }
         }
     }
-    
+
     ### set up page and write header ####
     {
-        $page = new Page(array('use_jscalendar'=>true,'autofocus_field'=>'effort_name'));
+        $page = new Page(['use_jscalendar' => true, 'autofocus_field' => 'effort_name']);
         $page->cur_tab = 'projects';
 
+        $page->options[] = new naviOption([
+            'target_id' => 'effortEdit',
+        ]);
 
-        $page->options[] = new naviOption(array(
-            'target_id'  =>'effortEdit',
-        ));
+        $page->type = __('Edit multiple efforts', 'Page title');
+        $page->title = sprintf(__('Edit %s efforts', 'Page title'), count($efforts));
 
-        $page->type = __("Edit multiple efforts","Page title");
-        $page->title = sprintf(__("Edit %s efforts","Page title"), count($efforts));
-
-        echo(new PageHeader);
+        echo new PageHeader();
     }
-    echo (new PageContentOpen);
-    
+    echo new PageContentOpen();
+
     {
-        echo "<ol>";
-            foreach($efforts as $e) {
-                echo "<li>" . $e->getLink(false). "</li>";
-            }
-        echo "</ol>";
-        
-        $block = new PageBlock(array('id'=>'functions','reduced_header' => true,));
+        echo '<ol>';
+        foreach ($efforts as $e) {
+            echo '<li>' . $e->getLink(false) . '</li>';
+        }
+        echo '</ol>';
+
+        $block = new PageBlock(['id' => 'functions', 'reduced_header' => true]);
         $block->render_blockStart();
-            
+
         $form = new PageForm();
         $form->button_cancel = true;
-        
+
         ### status ###
         {
-            $st = array();
-            foreach($g_effort_status_names as $key=>$value) {
-                    $st[$key] = $value;
+            $st = [];
+            foreach ($g_effort_status_names as $key => $value) {
+                $st[$key] = $value;
             }
-            if(isset($different_fields['status'])) {
-                $st[-1]= ('-- ' . __('keep different'). ' --');
-                $form->add(new Form_Dropdown('effort_status',__("Status"),array_flip($st), -1));
-            }
-            else {
-                $form->add(new Form_Dropdown('effort_status',__("Status"),array_flip($st), $efforts[0]->status));
+            if (isset($different_fields['status'])) {
+                $st[-1] = ('-- ' . __('keep different') . ' --');
+                $form->add(new Form_Dropdown('effort_status', __('Status'), array_flip($st), -1));
+            } else {
+                $form->add(new Form_Dropdown('effort_status', __('Status'), array_flip($st), $efforts[0]->status));
             }
         }
-        
+
         ### get meta-tasks / folders ###
-        $folders= Task::getAll(array(
-            'sort_hierarchical'=>true,
-            'parent_task'=> 0,
-            'show_folders'=>true,
-            'folders_only'=>false,
-            'status_min'=> STATUS_UPCOMING,
-            'status_max'=> STATUS_CLOSED,
-            'project'=> $project->id,
+        $folders = Task::getAll([
+            'sort_hierarchical' => true,
+            'parent_task' => 0,
+            'show_folders' => true,
+            'folders_only' => false,
+            'status_min' => STATUS_UPCOMING,
+            'status_max' => STATUS_CLOSED,
+            'project' => $project->id,
+        ]);
+        if ($folders) {
+            $folder_list = ['undefined' => '0'];
 
-        ));
-        if($folders) {
-            $folder_list = array("undefined"=>"0");
-
-            if($effort->task) {
-                if($task = Task::getVisibleById($effort->task)) {
+            if ($effort->task) {
+                if ($task = Task::getVisibleById($effort->task)) {
                     ### add, if normal task (folders will added below) ###
-                    if(! $task->category == TCATEGORY_FOLDER) {
+                    if (!$task->category == TCATEGORY_FOLDER) {
                         $folder_list[$task->name] = $task->id;
                     }
                 }
             }
 
-            foreach($folders as $f) {
+            foreach ($folders as $f) {
                 $str = '';
-                foreach($f->getFolder() as $pf) {
-                    $str.=$pf->getShort(). " > ";
+                foreach ($f->getFolder() as $pf) {
+                    $str .= $pf->getShort() . ' > ';
                 }
                 $str .= $f->name;
 
                 $folder_list[$str] = $f->id;
-
-            }
-            
-            if(isset($different_fields['task'])) {
-                $folder_list[('-- ' . __('keep different'). ' --')] = -1;
-                $form->add(new Form_Dropdown('effort_task',__("For task"),$folder_list,  -1));
-            }
-            else {
-                $form->add(new Form_Dropdown('effort_task',__("For task"),$folder_list, $efforts[0]->task));
             }
 
+            if (isset($different_fields['task'])) {
+                $folder_list[('-- ' . __('keep different') . ' --')] = -1;
+                $form->add(new Form_Dropdown('effort_task', __('For task'), $folder_list, -1));
+            } else {
+                $form->add(new Form_Dropdown('effort_task', __('For task'), $folder_list, $efforts[0]->task));
+            }
         }
-        
+
         ### public level ###
         {
-            if(($pub_levels = $effort->getValidUserSetPublicLevels()) && count($pub_levels)>1) {
-                if(isset($different_fields['pub_level'])) {
-                    $pub_levels[('-- ' . __('keep different'). ' --')] = -1;
-                    $form->add(new Form_Dropdown('effort_pub_level',__("Publish to"),$pub_levels,  -1));
-                }
-                else {
-                    $form->add(new Form_Dropdown('effort_pub_level',__("Publish to"),$pub_levels,$efforts[0]->pub_level));
+            if (($pub_levels = $effort->getValidUserSetPublicLevels()) && count($pub_levels) > 1) {
+                if (isset($different_fields['pub_level'])) {
+                    $pub_levels[('-- ' . __('keep different') . ' --')] = -1;
+                    $form->add(new Form_Dropdown('effort_pub_level', __('Publish to'), $pub_levels, -1));
+                } else {
+                    $form->add(new Form_Dropdown('effort_pub_level', __('Publish to'), $pub_levels, $efforts[0]->pub_level));
                 }
             }
         }
-        
+
         $number = 0;
-        foreach($efforts as $e){
-            $form->add(new Form_HiddenField("effort_id_{$number}",'',$e->id));
+        foreach ($efforts as $e) {
+            $form->add(new Form_HiddenField("effort_id_{$number}", '', $e->id));
             $number++;
         }
-        
-        $form->add(new Form_HiddenField("number",'',$number));
-        
-        echo($form);
-        
+
+        $form->add(new Form_HiddenField('number', '', $number));
+
+        echo $form;
+
         $block->render_blockEnd();
-        
+
         $PH->go_submit = 'effortEditMultipleSubmit';
-        if($return = get('return')) {
+        if ($return = get('return')) {
             echo "<input type=hidden name='return' value='$return'>";
         }
     }
-    
-    echo (new PageContentClose);
-    echo (new PageHtmlEnd);
+
+    echo new PageContentClose();
+    echo new PageHtmlEnd();
 
     exit();
-
 }
 
 /**
@@ -1088,79 +1026,77 @@ function effortEditMultipleSubmit()
 {
     global $PH;
     global $auth;
-    
-    $ids = array();
+
+    $ids = [];
     $count = 0;
     $error = 0;
     $changes = false;
-    
+
     ### cancel ? ###
-    if(get('form_do_cancel')) {
-        if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+    if (get('form_do_cancel')) {
+        if (!$PH->showFromPage()) {
+            $PH->show('home', []);
         }
         exit();
     }
-    
+
     $number = get('number');
-    
-    for($i = 0; $i < $number; $i++){
-        $effort_id = get('effort_id_'.$i);
+
+    for ($i = 0; $i < $number; $i++) {
+        $effort_id = get('effort_id_' . $i);
         $ids[] = $effort_id;
     }
 
-    if(!$ids) {
-        $PH->abortWarning(__("Select some efforts(s) to edit"), ERROR_NOTE);
+    if (!$ids) {
+        $PH->abortWarning(__('Select some efforts(s) to edit'), ERROR_NOTE);
         return;
     }
-    
-    foreach($ids as $id){
-        if($effort =  Effort::getEditableById($id)){
-        
+
+    foreach ($ids as $id) {
+        if ($effort = Effort::getEditableById($id)) {
             $status = get('effort_status');
-            if(!is_null($status) && $status != -1 && $status != $effort->status){
+            if (!is_null($status) && $status != -1 && $status != $effort->status) {
                 $effort->status = $status;
                 $changes = true;
             }
-            
+
             $task_id = get('effort_task');
-            if(!is_null($task_id) && $task_id != -1 && $task_id != $effort->task) {
-                if($task = Task::getVisibleById($task_id)) {
+            if (!is_null($task_id) && $task_id != -1 && $task_id != $effort->task) {
+                if ($task = Task::getVisibleById($task_id)) {
                     $effort->task = $task->id;
                     $changes = true;
                 }
             }
-            
+
             $pub_level = get('effort_pub_level');
-            if(!is_null($pub_level) && $pub_level != -1 && $pub_level != $effort->pub_level){
-                if($pub_level > $effort->getValidUserSetPublicLevels() ) {
-                     $PH->abortWarning('invalid data',ERROR_RIGHTS);
+            if (!is_null($pub_level) && $pub_level != -1 && $pub_level != $effort->pub_level) {
+                if ($pub_level > $effort->getValidUserSetPublicLevels()) {
+                    $PH->abortWarning('invalid data', ERROR_RIGHTS);
                 }
                 $effort->pub_level = $pub_level;
                 $changes = true;
             }
-        }
-        else{
+        } else {
             $error++;
         }
-        
-        if($changes){
+
+        if ($changes) {
             $effort->update();
             $effort->nowChangedByUser();
             $count++;
         }
     }
-    
-    if($count){
-        new FeedbackMessage(sprintf(__("Edited %s effort(s)."),$count));
+
+    if ($count) {
+        new FeedbackMessage(sprintf(__('Edited %s effort(s).'), $count));
     }
-    
-    if($error){
+
+    if ($error) {
         new FeedbackWarning(sprintf(__('Error while editing %s effort(s).'), $error));
     }
-    
+
     ### return to from-page? ###
-    if(!$PH->showFromPage()) {
+    if (!$PH->showFromPage()) {
         $PH->show('home');
     }
 }
@@ -1173,38 +1109,33 @@ function effortsDelete()
     global $PH;
 
     ### get effort ####
-    $ids= getPassedIds('effort','efforts_*');
+    $ids = getPassedIds('effort', 'efforts_*');
 
-    if(!$ids) {
-        $PH->abortWarning(__("Select some efforts to delete"));
+    if (!$ids) {
+        $PH->abortWarning(__('Select some efforts to delete'));
         return;
     }
 
-    $counter=0;
-    $errors=0;
-    foreach($ids as $id) {
-        $e= Effort::getEditableById($id);
-        if(!$e) {
-            $PH->abortWarning("Invalid effort-id!");
+    $counter = 0;
+    $errors = 0;
+    foreach ($ids as $id) {
+        $e = Effort::getEditableById($id);
+        if (!$e) {
+            $PH->abortWarning('Invalid effort-id!');
         }
-        if($e->delete()) {
+        if ($e->delete()) {
             $counter++;
-        }
-        else {
+        } else {
             $errors++;
         }
     }
-    if($errors) {
-        new FeedbackWarning(sprintf(__("Failed to delete %s efforts"), $errors));
-    }
-    else {
-        new FeedbackMessage(sprintf(__("Moved %s efforts to trash"),$counter));
+    if ($errors) {
+        new FeedbackWarning(sprintf(__('Failed to delete %s efforts'), $errors));
+    } else {
+        new FeedbackMessage(sprintf(__('Moved %s efforts to trash'), $counter));
     }
 
-    if(!$PH->showFromPage()) {
+    if (!$PH->showFromPage()) {
         $PH->show('home');
     }
 }
-
-
-?>

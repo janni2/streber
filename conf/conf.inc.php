@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 
 /**
 * misc settingss and configuration-variables
@@ -8,51 +13,48 @@
 * - use "customize.inc.php" in streber's root to overwrite any of this settings
 */
 
-require_once("defines.inc.php");
+require_once('defines.inc.php');
 
 /**
 * assoc. array holding initial configuration variables
 */
 global $g_config;
-$g_config= array(
+$g_config = [
+    'STREBER_VERSION' => '0.0971',
+    'STREBER_VERSION_DATE' => '2014-05-05',
 
-    'STREBER_VERSION'       => '0.0971',
-    'STREBER_VERSION_DATE'  => '2014-05-05',
-
-    'APP_NAME'              => 'streber',
-    'APP_PAGE_URL'          => 'http://www.streber-pm.org',
-    'PHP_VERSION_REQUIRED'  =>  '5.0.0',
-    'INCLUDE_PATH'          => ".",
-    'DIR_STREBER'           => "./",
-    'DIR_TEMP'              => "./_tmp/",
-    'DIR_IMAGE_CACHE'       => "./_image_cache",
-    'DIR_RSS'               => "./_rss/",
-    'DIR_FILES'             => "./_files/",
-    'DIR_SETTINGS'          => "./_settings/",
-    'FILE_DB_SETTINGS'      => "db_settings.php",
-    'SITE_SETTINGS'         => "site_settings.php",
-
+    'APP_NAME' => 'streber',
+    'APP_PAGE_URL' => 'http://www.streber-pm.org',
+    'PHP_VERSION_REQUIRED' => '5.0.0',
+    'INCLUDE_PATH' => '.',
+    'DIR_STREBER' => './',
+    'DIR_TEMP' => './_tmp/',
+    'DIR_IMAGE_CACHE' => './_image_cache',
+    'DIR_RSS' => './_rss/',
+    'DIR_FILES' => './_files/',
+    'DIR_SETTINGS' => './_settings/',
+    'FILE_DB_SETTINGS' => 'db_settings.php',
+    'SITE_SETTINGS' => 'site_settings.php',
 
     /**
     * default-language
     * - this is directy mapped to "/lang/??.inc.php"
     * - be sure it's lowercase
     */
-    'DEFAULT_LANGUAGE'      => 'en',
-
+    'DEFAULT_LANGUAGE' => 'en',
 
     /**
     * if you plan to use notification mails, set this to url of your streber installation
     * - they are automatically initialized further down below in this file
     */
-    'SELF_URL'              => '',
-    'SELF_DOMAIN'           => '',
-    'SELF_PROTOCOL'         => '',
+    'SELF_URL' => '',
+    'SELF_DOMAIN' => '',
+    'SELF_PROTOCOL' => '',
 
     /**
     * title diplay in header
     */
-    'APP_TITLE_HEADER'      => "streber<span class=extend>PM</span>",
+    'APP_TITLE_HEADER' => 'streber<span class=extend>PM</span>',
 
     /**
     * - the database version is stored in the db-table inside the row with updated=NULL
@@ -60,14 +62,14 @@ $g_config= array(
     *
     * - additionally the current db-version is set by DB_VERSION in _settings/db_settings.inc
     */
-    'DB_CREATE_DUMP_VERSION'     => '0.095',     # sql-dump loaded from /_install/-directory at installation
+    'DB_CREATE_DUMP_VERSION' => '0.095',     # sql-dump loaded from /_install/-directory at installation
 
     /**
     * url to online-help
-    */                                
+    */
     'STREBER_WIKI_URL' => 'http://www.streber-pm.org/index.php?go=search&search_query=',
     'STREBER_WIKISYNTAX' => 'WikiSyntax!',
-    
+
     /**
     * version of databases created by installation
     *
@@ -75,15 +77,15 @@ $g_config= array(
     * been created by "install/install.php"
     *
     */
-    'DB_TYPE'               => 'mysql',     # mysql is default
-    'DB_TYPES'              => array(),     # init defined database-types in db_types.inc
-    'HOSTNAME'              => 'localhost',
+    'DB_TYPE' => 'mysql',     # mysql is default
+    'DB_TYPES' => [],     # init defined database-types in db_types.inc
+    'HOSTNAME' => 'localhost',
 
-    'DB_USERNAME'           =>'',
-    'DB_PASSWORD'           =>'',
-    'DB_NAME'               =>'',
-    'DB_TABLE_PREFIX'       =>'',
-    'DB_VERSION'            =>'',           # current version (set to DB_CREATE_DUMP_VERSION at install) / validated at startup to complain for upgrade
+    'DB_USERNAME' => '',
+    'DB_PASSWORD' => '',
+    'DB_NAME' => '',
+    'DB_TABLE_PREFIX' => '',
+    'DB_VERSION' => '',           # current version (set to DB_CREATE_DUMP_VERSION at install) / validated at startup to complain for upgrade
 
     'DB_TABLE_PREFIX_UNITTEST' => 'test_',
     /**
@@ -91,25 +93,24 @@ $g_config= array(
     *
     * "STRICT_ALL_TABLES,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
     */
-    'SQL_MODE'              => NULL,
+    'SQL_MODE' => null,
     /**
     * in some situations (when upgrading with mysql4) you might have to disable this options
     * to avoid invalid display of characters
     */
-    'DB_USE_UTF8_ENCODING'  => true,
+    'DB_USE_UTF8_ENCODING' => true,
 
     /**
     * minium required length/complexity of entered password
     *
     * numbers and special-chars weight more than normal chars, so values above 8 are ok
     */
-    'CHECK_PASSWORD_LEVEL'  => 8,
-    'PERSON_PROFILE_DEFAULT'=> PROFILE_DEVELOPER,
+    'CHECK_PASSWORD_LEVEL' => 8,
+    'PERSON_PROFILE_DEFAULT' => PROFILE_DEVELOPER,
     'PERSON_DEFAULT_SETTINGS' => (USER_SETTING_HTML_MAIL
                              | USER_SETTING_NOTIFY_ASSIGNED_TO_PROJECT
                              | USER_SETTING_ENABLE_EFFORTS
                              | USER_SETTING_ENABLE_BOOKMARKS),
-                             
 
     /**
     * this will measure the microtimes for some rendering and db-processes.
@@ -118,16 +119,14 @@ $g_config= array(
     *
     * see std/profile.inc
     */
-    'USE_PROFILER'          =>false,
-    
-    
+    'USE_PROFILER' => false,
 
     /**
     * Display error-output, which would have been written to error.log as html.
     * This might corrupt the html-structure and reveal internal information to user,
     * should only be used for development.
     */
-    'DISPLAY_ERROR_FULL'    =>false,
+    'DISPLAY_ERROR_FULL' => false,
 
     /**
     * List occured errors in footer to non-admin-users. Details are always written to 'errors.log'
@@ -136,7 +135,7 @@ $g_config= array(
     * - LIST    - list messages only (default)
     * - DETAILS - also show file / line-number
     */
-    'DISPLAY_ERROR_LIST'    =>'LIST',
+    'DISPLAY_ERROR_LIST' => 'LIST',
 
     /**
     * add log-messages to errors.log
@@ -150,7 +149,7 @@ $g_config= array(
     * - LOG_MESSAGE_MISSING_FILES
     * - LOG_MESSAGE_DEBUG       (will lead to *really* big log-files and shoud only be used for bug-hunting)
     */
-    'LOG_LEVEL'     => LOG_MESSAGE_LOGIN_FAILURE|LOG_MESSAGE_LOGIN_SUCCESS|LOG_MESSAGE_LOGOUT|LOG_MESSAGE_HACKING_ALERT|LOG_MESSAGE_MISSING_FILES,
+    'LOG_LEVEL' => LOG_MESSAGE_LOGIN_FAILURE | LOG_MESSAGE_LOGIN_SUCCESS | LOG_MESSAGE_LOGOUT | LOG_MESSAGE_HACKING_ALERT | LOG_MESSAGE_MISSING_FILES,
 
     /**
     * Include firephp library for debug messages. This is an excellent help
@@ -159,24 +158,24 @@ $g_config= array(
     * - If enabled, the global function trace() will be mapped to fb.
     * - To used FirePHP you have to install the Firefox extension.
     */
-    'USE_FIREPHP'           =>false,
+    'USE_FIREPHP' => false,
 
     /**
     * list undefined language-keys in the page-footer
     * - this is just for nagging. Better use lang/scan_language.pl
     */
-    'LIST_UNDEFINED_LANG_KEYS'=>false,
+    'LIST_UNDEFINED_LANG_KEYS' => false,
 
     /**
     * This check should only be disabled for development convenience
     */
     'STOP_IF_INSTALL_DIRECTORY_EXISTS' => true,
-    
+
     /**
     * NUMBER in theme-list
     */
-    'THEME_DEFAULT'         => 0,
-    'THEME_OVERWRITE'       => NULL,
+    'THEME_DEFAULT' => 0,
+    'THEME_OVERWRITE' => null,
 
     /**
     * change this to override the automatic selection of the locale based on the current language
@@ -186,41 +185,40 @@ $g_config= array(
     * - 'de_DE@euro,de_DE,deu_deu,de.utf8,deu,german' - for Germany
     * - 'USE_TRANSLATION' - to get the translation for the american locale from the current user's language
     */
-    'DEFAULT_LOCALE'          =>'USE_TRANSLATION',
+    'DEFAULT_LOCALE' => 'USE_TRANSLATION',
 
     /**
     * additional message displayed at login-page
     * useful for display public accounts
     */
-    'LOGIN_MESSAGE'         =>"",
+    'LOGIN_MESSAGE' => '',
 
     /**
     * size short names are truncated to
     */
-    'STRING_LENGTH_SHORT'  =>14,
+    'STRING_LENGTH_SHORT' => 14,
 
     /**
     * showing efforts in task list slows down rendering...
     */
-    'TASK_LIST_EFFORT_COLUMN'=>false,
-    'TASK_LIST_EFFORT_RELATION_COLUMN'=>false,
-	
+    'TASK_LIST_EFFORT_COLUMN' => false,
+    'TASK_LIST_EFFORT_RELATION_COLUMN' => false,
 
-    'LINK_REPORT_BUGS'=> " Please help us by  <a href='http://www.streber-pm.org/2717'>reporting a bug</a>",
+    'LINK_REPORT_BUGS' => " Please help us by  <a href='http://www.streber-pm.org/2717'>reporting a bug</a>",
 
     /**
     * text displayed if streber can't start-up (db offline, wrong php-version, etc)
     * - it's a good habit to give the e-mail adresse of an administrator.
     */
-    'MESSAGE_OFFLINE'=>"<h1>Congratulations!</h1>
+    'MESSAGE_OFFLINE' => "<h1>Congratulations!</h1>
                     You are one of the few people witnessing this installation<br>
                     of <a href='http://www.streber-pm.org'>streber</a> being offline.
                     Use your chance now and <br>send a mail to <a href='%s'>%s</a> to get your special reward immediately.<br><br>
                     Problem: <b>",
 
     /**
-    * You can override the activation message a new user receives after her 
-    * account has been created. 
+    * You can override the activation message a new user receives after her
+    * account has been created.
     *
     * IMPORTANT: both message must include precisely one %s, which will be replaced
     * with the url of the activation link.
@@ -228,53 +226,50 @@ $g_config= array(
     'ACTIVATION_MAIL_PLAIN_BODY' => '',
     'ACTIVATION_MAIL_HTML_BODY' => '',
 
-    'WELCOME_EMAIL_SUBJECT'=>'',
-    'NOTIFICATION_EMAIL_SUBJECT'=>'',
-    'NOTIFICATION_EMAIL_SENDER'=>'',
+    'WELCOME_EMAIL_SUBJECT' => '',
+    'NOTIFICATION_EMAIL_SUBJECT' => '',
+    'NOTIFICATION_EMAIL_SENDER' => '',
 
-
-    'EMAIL_ADMINISTRATOR'=>'',
+    'EMAIL_ADMINISTRATOR' => '',
 
     /**
     * list-color-settings (depend on javascript) overwritten by themes/XXX/theme_config.inc (included at render_page.inc)
     */
-    'LIST_COLOR_ODD'        =>'#ffffff',
-    'LIST_COLOR_EVEN'       =>'#f8f8f8',
-    'LIST_COLOR_SELECTED'   =>'#d0ffd0',
-    'LIST_COLOR_HOVER'      =>'#ffff80',
-
+    'LIST_COLOR_ODD' => '#ffffff',
+    'LIST_COLOR_EVEN' => '#f8f8f8',
+    'LIST_COLOR_SELECTED' => '#d0ffd0',
+    'LIST_COLOR_HOVER' => '#ffff80',
 
     'PROJECT_DEFAULT_LABELS' => 'Bug,Feature,Enhancement,Refactor,Idea,Research,Organize,Wiki,Docu',
-    'PROJECT_DEFAULT_SETTINGS'=> PROJECT_SETTING_ALL,
+    'PROJECT_DEFAULT_SETTINGS' => PROJECT_SETTING_ALL,
 
     /**
     * linking print-stylesheet sometimes slows down pageload for 10%-15% percent
     * turn off for maximal performance
     */
-    'LINK_STYLE_PRINT'      => true,
+    'LINK_STYLE_PRINT' => true,
 
     /**
     * use syntax highlighting for codeblocks
     */
-    'LINK_STAR_LIGHT'   => false,
+    'LINK_STAR_LIGHT' => false,
 
     /**
     * filter task-list in home
     */
-    'SHOW_TASKS_AT_HOME_DEFAULT'=> SHOW_ASSIGNED_ONLY,
-
+    'SHOW_TASKS_AT_HOME_DEFAULT' => SHOW_ASSIGNED_ONLY,
 
     /**
     * Maxium filesize for uploads (in bytes)
     * NOTE: you also have to adjust your php.ini settings for 'post_max_size' and 'upload_max_filesize'
     *
     */
-    'FILE_UPLOAD_SIZE_MAX'  => 8000000,
+    'FILE_UPLOAD_SIZE_MAX' => 8000000,
 
     /**
     * Maxium size of referred variables (Text-fields like description, etc.) measured in bytes.
     */
-    'STRING_SIZE_MAX'  => 256000,
+    'STRING_SIZE_MAX' => 256000,
 
     /**
     * filter html-tags
@@ -285,13 +280,13 @@ $g_config= array(
     * 'STRIP_TAGS' - remove all html-tags (can modify code examples!)
     * 'HTML_ENTITIES' - (default) leaves texts unchanged but renders htmlSpecials chars are html-code (converts '>' into '&gt;' '>')
     */
-    'CLEAN_REFERRED_VARS'=> 'HTML_ENTITIES',
+    'CLEAN_REFERRED_VARS' => 'HTML_ENTITIES',
 
     /**
     * If server is not running in GMT your need to adjust this option
     *  e.g for GMT+1 set it to 3600   (1h * 60min * 60s)
     */
-    'SERVER_TIME_OFFSET'=> 0,   # in seconds!
+    'SERVER_TIME_OFFSET' => 0,   # in seconds!
 
     /**
     * If user has autodetection of time zone enabled (is default)
@@ -300,12 +295,12 @@ $g_config= array(
     *
     *  This helps with booking round times on efforts.
     */
-    'ROUND_AUTO_DETECTED_TIME_OFFSET'=> true,
+    'ROUND_AUTO_DETECTED_TIME_OFFSET' => true,
 
     /**
     * cookie-lifetime (in seconds)
     */
-    'COOKIE_LIFETIME'=> 60*60*24*30,
+    'COOKIE_LIFETIME' => 60 * 60 * 24 * 30,
 
     /**
     * check IP-Address (if checked, cookie is depreciated on new computers)
@@ -319,19 +314,19 @@ $g_config= array(
     *  user is assigned to, can be viewed without logging in.
     *
     */
-    'ANONYMOUS_USER'    => false,
+    'ANONYMOUS_USER' => false,
 
     /**
     * Allow anonymous users to register for new accounts.
     * If you allow this, you should also give the id of a project to which they are assigned
     */
-    'REGISTER_NEW_USERS'=> false,
-    'ENABLE_GUEST_ACCOUNT'=> false,
-    'REGISTER_NEW_USERS_TO_PROJECT'=> 0,
+    'REGISTER_NEW_USERS' => false,
+    'ENABLE_GUEST_ACCOUNT' => false,
+    'REGISTER_NEW_USERS_TO_PROJECT' => 0,
 
-    'SMTP'              =>'',
-    'WORKHOURS_PER_DAY' =>10,
-    'WORKDAYS_PER_WEEK' =>5,
+    'SMTP' => '',
+    'WORKHOURS_PER_DAY' => 10,
+    'WORKDAYS_PER_WEEK' => 5,
 
     /**
     * How daygraph of efforts will be drawn.
@@ -339,26 +334,25 @@ $g_config= array(
     *  DAYGRAPH_END_HOUR - till which hour daygreph will be drawn 0-24
     *  DAYGRAPH_WIDTH - width of daygraph in pixels
     */
-    'DAYGRAPH_START_HOUR' =>8,
-    'DAYGRAPH_END_HOUR'   =>22,
-    'DAYGRAPH_WIDTH'      =>200,
-
+    'DAYGRAPH_START_HOUR' => 8,
+    'DAYGRAPH_END_HOUR' => 22,
+    'DAYGRAPH_WIDTH' => 200,
 
     /**
     * use mod_rewrite clean urls
     */
-    'USE_MOD_REWRITE'=> false,
-	
-	/**
-	* cost overview
-	*/
-	'INTERNAL_COST_FEATURE' => false,
-	
+    'USE_MOD_REWRITE' => false,
+
+    /**
+    * cost overview
+    */
+    'INTERNAL_COST_FEATURE' => false,
+
     /**
     * posts by anonymous users are rejected, if they contain any of these keys.
     * The value is an indicator for spam probability.
     */
-    'SPAM_WORDS'=>array('viagra'=>10, 'cialis'=>10, 'porn'=>10, 'www.' =>3, '.com'=>3, '.de' =>2, 'sex'=>2, 'free'=>1, 'http'=>2, 'href'=>2, 'online'=>1, 'casino'=>3, 'buy'=>1,'order'=>2,'levitra'=>5,'softtabs'=>5, 'spam'=>1, 'site'=>2),
+    'SPAM_WORDS' => ['viagra' => 10, 'cialis' => 10, 'porn' => 10, 'www.' => 3, '.com' => 3, '.de' => 2, 'sex' => 2, 'free' => 1, 'http' => 2, 'href' => 2, 'online' => 1, 'casino' => 3, 'buy' => 1, 'order' => 2, 'levitra' => 5, 'softtabs' => 5, 'spam' => 1, 'site' => 2],
 
     /**
     * if not 0 try to match SPAM_WORDS on comments and descriptions.
@@ -368,12 +362,12 @@ $g_config= array(
     *   0.1    - loose
     */
     'REJECT_SPAM_CONTENT' => 0.002,
-    
+
     /**
     * enables the sideboard, which is been been displayed on the
     * right side of the screen after a row in a task list has been
-    * selected. Currenty only displays description and allows quick wiki 
-    * editing.   
+    * selected. Currenty only displays description and allows quick wiki
+    * editing.
     */
     'TASKDETAILS_IN_SIDEBOARD' => false,
 
@@ -386,41 +380,36 @@ $g_config= array(
     /**
     * details on how the project changes are displayed in the dashboard
     */
-    'MAX_CHANGELINES_PER_PROJECT'=> 5,
-    'MAX_CHANGELINES'=> 20,
-    'MORE_CHANGELINES'=> 20,
-	
-	/**
-	* LDAP Settings
-	*/
-	'LDAP' => false,
-	'LDAP_USERNAME_PREFIX' =>'',
-	'LDAP_SERVER' => '',
+    'MAX_CHANGELINES_PER_PROJECT' => 5,
+    'MAX_CHANGELINES' => 20,
+    'MORE_CHANGELINES' => 20,
 
-	/**
-	* Reply on comment prefix
-	*   0 - no prefix at all (default)
-	*   1 - Re: (international standard)
-	*	2 - default "Reply to" text from language file
-	*/
-	'REPLY_ON_COMMENT_PREFIX' => '0',
+    /**
+    * LDAP Settings
+    */
+    'LDAP' => false,
+    'LDAP_USERNAME_PREFIX' => '',
+    'LDAP_SERVER' => '',
 
-);
-
-
+    /**
+    * Reply on comment prefix
+    *   0 - no prefix at all (default)
+    *   1 - Re: (international standard)
+    *	2 - default "Reply to" text from language file
+    */
+    'REPLY_ON_COMMENT_PREFIX' => '0',
+];
 
 /**
 * try to figure out url installation for links from notification mails
 */
-if(isset($_SERVER['SCRIPT_NAME']) && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] && preg_match("/\/index\.php/",$_SERVER['SCRIPT_NAME'])
+if (isset($_SERVER['SCRIPT_NAME']) && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] && preg_match("/\/index\.php/", $_SERVER['SCRIPT_NAME'])
 ) {
-    $url= asCleanString($_SERVER['HTTP_HOST'] .$_SERVER['SCRIPT_NAME']);
+    $url = asCleanString($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']);
     confChange('SELF_URL', $url);
-}
-elseif( $_SERVER['HTTP_HOST'] )
-{
-	$url = asCleanString($_SERVER['HTTP_HOST']);
-	confChange('SELF_URL', $url);
+} elseif ($_SERVER['HTTP_HOST']) {
+    $url = asCleanString($_SERVER['HTTP_HOST']);
+    confChange('SELF_URL', $url);
 }
 
 /**
@@ -429,48 +418,42 @@ elseif( $_SERVER['HTTP_HOST'] )
 * - for installations at https, the urls in notifications-mails has to start with
 *   https://www.somedome.com/
 */
-if(!confGet('SELF_PROTOCOL')) {
-    if(getServerVar('HTTPS') == 'on') {
-        confChange('SELF_PROTOCOL','https');
-    }
-    else {
-        confChange('SELF_PROTOCOL','http');
+if (!confGet('SELF_PROTOCOL')) {
+    if (getServerVar('HTTPS') == 'on') {
+        confChange('SELF_PROTOCOL', 'https');
+    } else {
+        confChange('SELF_PROTOCOL', 'http');
     }
 }
-
 
 /**
 * get domain for email-address
 */
-if(!confGet('SELF_DOMAIN') && isset($_SERVER["HTTP_HOST"])) {
-    confChange('SELF_DOMAIN', $_SERVER["HTTP_HOST"]);
+if (!confGet('SELF_DOMAIN') && isset($_SERVER['HTTP_HOST'])) {
+    confChange('SELF_DOMAIN', $_SERVER['HTTP_HOST']);
 }
 
 /**
 * set administrator-address (this should be set in customize.inc)
 * - this address is used in errors, etc.
 */
-if(!confGet('EMAIL_ADMINISTRATOR') && isset($_SERVER["HTTP_HOST"])) {
-    confChange('EMAIL_ADMINISTRATOR','admin@'. confGet('SELF_DOMAIN'));
+if (!confGet('EMAIL_ADMINISTRATOR') && isset($_SERVER['HTTP_HOST'])) {
+    confChange('EMAIL_ADMINISTRATOR', 'admin@' . confGet('SELF_DOMAIN'));
 }
-
 
 /**
 * maps directory name => Title in person profile
 */
-$g_themes=array(
-    'clean'         => 'Clean',
+$g_themes = [
+    'clean' => 'Clean',
     #'webbplatsen'   => 'webbplatsen',
-    'custom'        => 'Custom',
+    'custom' => 'Custom',
     #'webbplatsen_dark'=> 'webbplatsen_dark',
 #    'default'=>'Default',
 #    'forclients' =>'Client Theme',
 #    'classic' =>'Classic Theme',
-
-);
-$g_theme_names= array_keys($g_themes);
-
-
+];
+$g_theme_names = array_keys($g_themes);
 
 /**
 * default role when added to projects
@@ -494,136 +477,129 @@ $g_theme_names= array_keys($g_themes);
 * when initializing projectPeople, all defined (and useful) settings of
 * the profile are copied. To avoid reinitiating, comment the lines.
 */
+$g_user_profiles = [
+    PROFILE_USER => [
+        'default_user_rights' => RIGHT_PERSON_EDIT_SELF,
+        'level_create' => PUB_LEVEL_OPEN,
+        'level_edit' => PUB_LEVEL_OPEN,
+        'level_view' => PUB_LEVEL_OPEN,
+        'level_delete' => PUB_LEVEL_PRIVATE,
+        'level_reduce' => PUB_LEVEL_OPEN,
+    ],
+    PROFILE_ADMIN => [
+        'default_user_rights' => RIGHT_ALL,
+        'level_view' => PUB_LEVEL_SUGGESTED,
+        'level_create' => PUB_LEVEL_CLIENTEDIT,
+        'level_edit' => PUB_LEVEL_SUGGESTED,
+        'level_delete' => PUB_LEVEL_SUGGESTED,
+        'level_reduce' => PUB_LEVEL_PRIVATE,
+    ],
+    PROFILE_PM => [
+        'default_user_rights' => RIGHT_ALL & (~(RIGHT_PERSON_EDIT_RIGHTS | RIGHT_VIEWALL | RIGHT_EDITALL)),
+        'level_view' => PUB_LEVEL_SUGGESTED,
+        'level_create' => PUB_LEVEL_CLIENTEDIT,
+        'level_edit' => PUB_LEVEL_SUGGESTED,
+        'level_delete' => PUB_LEVEL_SUGGESTED,
+        'level_reduce' => PUB_LEVEL_PRIVATE,
+    ],
+    PROFILE_DEVELOPER => [
+        'default_user_rights' => RIGHT_PERSON_EDIT_SELF,
+        'level_create' => PUB_LEVEL_OPEN,
+        'level_edit' => PUB_LEVEL_OPEN,
+        'level_view' => PUB_LEVEL_OPEN,
+        'level_delete' => PUB_LEVEL_PRIVATE,
+        'level_reduce' => PUB_LEVEL_OPEN,
+    ],
+    PROFILE_ARTIST => [
+        'default_user_rights' => RIGHT_PERSON_EDIT_SELF,
+        'level_create' => PUB_LEVEL_OPEN,
+        'level_edit' => PUB_LEVEL_OPEN,
+        'level_view' => PUB_LEVEL_OPEN,
+        'level_delete' => PUB_LEVEL_PRIVATE,
+        'level_reduce' => PUB_LEVEL_OPEN,
+    ],
+    PROFILE_TESTER => [
+        'default_user_rights' => RIGHT_PERSON_EDIT_SELF,
+        'level_create' => PUB_LEVEL_OPEN,
+        'level_edit' => PUB_LEVEL_OPEN,
+        'level_view' => PUB_LEVEL_OPEN,
+        'level_delete' => PUB_LEVEL_PRIVATE,
+        'level_reduce' => PUB_LEVEL_OPEN,
+    ],
+    PROFILE_CLIENT => [
+        'default_user_rights' => RIGHT_PERSON_EDIT_SELF,
+        'level_create' => PUB_LEVEL_SUGGESTED,
+        'level_edit' => PUB_LEVEL_CLIENTEDIT,
+        'level_view' => PUB_LEVEL_CLIENT,
+        'level_delete' => PUB_LEVEL_OWNED,
+        'level_reduce' => PUB_LEVEL_NOTHING,
+    ],
+    PROFILE_CLIENT_TRUSTED => [
+        'default_user_rights' => RIGHT_PERSON_EDIT_SELF,
+        'level_create' => PUB_LEVEL_SUGGESTED,
+        'level_edit' => PUB_LEVEL_CLIENTEDIT,
+        'level_view' => PUB_LEVEL_OPEN,
+        'level_delete' => PUB_LEVEL_CLIENTEDIT,
+        'level_reduce' => PUB_LEVEL_NOTHING,
+    ],
+    PROFILE_GUEST => [
+        'default_user_rights' => RIGHT_NONE,
+        'level_create' => PUB_LEVEL_SUGGESTED,
+        'level_edit' => PUB_LEVEL_NOTHING,
+        'level_view' => PUB_LEVEL_CLIENT,
+        'level_delete' => PUB_LEVEL_NOTHING,
+        'level_reduce' => PUB_LEVEL_NOTHING,
+    ],
+];
 
-
-
-
-$g_user_profiles=array(
-    PROFILE_USER=>array(
-        'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
-        'level_create'          => PUB_LEVEL_OPEN,
-        'level_edit'            => PUB_LEVEL_OPEN,
-        'level_view'            => PUB_LEVEL_OPEN,
-        'level_delete'          => PUB_LEVEL_PRIVATE,
-        'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_ADMIN=>array(
-        'default_user_rights'   =>RIGHT_ALL,
-        'level_view'            => PUB_LEVEL_SUGGESTED,
-        'level_create'          => PUB_LEVEL_CLIENTEDIT,
-        'level_edit'            => PUB_LEVEL_SUGGESTED,
-        'level_delete'          => PUB_LEVEL_SUGGESTED,
-        'level_reduce'          => PUB_LEVEL_PRIVATE,
-    ),
-    PROFILE_PM=>array(
-        'default_user_rights'   => RIGHT_ALL & (~ (RIGHT_PERSON_EDIT_RIGHTS|RIGHT_VIEWALL|RIGHT_EDITALL)) ,
-        'level_view'            => PUB_LEVEL_SUGGESTED,
-        'level_create'          => PUB_LEVEL_CLIENTEDIT,
-        'level_edit'            => PUB_LEVEL_SUGGESTED,
-        'level_delete'          => PUB_LEVEL_SUGGESTED,
-        'level_reduce'          => PUB_LEVEL_PRIVATE,
-    ),
-    PROFILE_DEVELOPER=>array(
-        'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
-        'level_create'          => PUB_LEVEL_OPEN,
-        'level_edit'            => PUB_LEVEL_OPEN,
-        'level_view'            => PUB_LEVEL_OPEN,
-        'level_delete'          => PUB_LEVEL_PRIVATE,
-        'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_ARTIST=>array(
-        'default_user_rights'   =>RIGHT_PERSON_EDIT_SELF,
-        'level_create'          => PUB_LEVEL_OPEN,
-        'level_edit'            => PUB_LEVEL_OPEN,
-        'level_view'            => PUB_LEVEL_OPEN,
-        'level_delete'          => PUB_LEVEL_PRIVATE,
-        'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_TESTER=>array(
-        'default_user_rights'   =>RIGHT_PERSON_EDIT_SELF,
-        'level_create'          => PUB_LEVEL_OPEN,
-        'level_edit'            => PUB_LEVEL_OPEN,
-        'level_view'            => PUB_LEVEL_OPEN,
-        'level_delete'          => PUB_LEVEL_PRIVATE,
-        'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_CLIENT=>array(
-        'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
-        'level_create'          => PUB_LEVEL_SUGGESTED,
-        'level_edit'            => PUB_LEVEL_CLIENTEDIT,
-        'level_view'            => PUB_LEVEL_CLIENT,
-        'level_delete'          => PUB_LEVEL_OWNED,
-        'level_reduce'          => PUB_LEVEL_NOTHING,
-    ),
-    PROFILE_CLIENT_TRUSTED=>array(
-        'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
-        'level_create'          => PUB_LEVEL_SUGGESTED,
-        'level_edit'            => PUB_LEVEL_CLIENTEDIT,
-        'level_view'            => PUB_LEVEL_OPEN,
-        'level_delete'          => PUB_LEVEL_CLIENTEDIT,
-        'level_reduce'          => PUB_LEVEL_NOTHING,
-    ),
-    PROFILE_GUEST=>array(
-        'default_user_rights'   => RIGHT_NONE,
-        'level_create'          => PUB_LEVEL_SUGGESTED,
-        'level_edit'            => PUB_LEVEL_NOTHING,
-        'level_view'            => PUB_LEVEL_CLIENT,
-        'level_delete'          => PUB_LEVEL_NOTHING,
-        'level_reduce'          => PUB_LEVEL_NOTHING,
-    ),
-);
-
-$g_languages=array(
-    'en'=>'English',
-    'de'=>'German',
-    'fr'=>'French',
-    'pl'=>'Polish',
-    'pt-br'=>'Portugese',
-    'sk'=>'Slovak',
-    'no'=>'Norwegian',
-    'sv'=>'Swedish',
-    'it'=>'Italian',
-    'es'=>'Spanish',
-    'fi'=>'Finish',
-    'ru'=> 'Russian',
-    'hu'=> 'Hungarian',
-    'zh_CN'=> 'Chinese'
-);
-$g_language_names= array_keys($g_languages);
-
+$g_languages = [
+    'en' => 'English',
+    'de' => 'German',
+    'fr' => 'French',
+    'pl' => 'Polish',
+    'pt-br' => 'Portugese',
+    'sk' => 'Slovak',
+    'no' => 'Norwegian',
+    'sv' => 'Swedish',
+    'it' => 'Italian',
+    'es' => 'Spanish',
+    'fi' => 'Finish',
+    'ru' => 'Russian',
+    'hu' => 'Hungarian',
+    'zh_CN' => 'Chinese',
+];
+$g_language_names = array_keys($g_languages);
 
 /**
 * get an configuration-variable. Complain if not defined.
 *
 * @@@put this function somewhere else
 */
-function confGet($var) {
+function confGet($var)
+{
     global $g_config;
-    if(isset($g_config[$var]) || @$g_config[$var] === NULL) {
+    if (isset($g_config[$var]) || @$g_config[$var] === null) {
         return $g_config[$var];
+    } else {
+        trigger_error("requesting undefined config variable '$var'", E_USER_NOTICE);
     }
-    else {
-        trigger_error("requesting undefined config variable '$var'",E_USER_NOTICE);
-    }
-    return NULL;
+    return null;
 }
-
 
 /**
 * changes a configuration-variable, but complains if not defined
 *
 * @@@put this function somewhere else
 */
-function confChange($var,$value) {
+function confChange($var, $value)
+{
     global $g_config;
-    if(!isset($g_config[$var]) && !is_null($g_config[$var])) {
-        trigger_error("confChange set undefined variable '$var' to '$value'",E_USER_NOTICE);
-
+    if (!isset($g_config[$var]) && !is_null($g_config[$var])) {
+        trigger_error("confChange set undefined variable '$var' to '$value'", E_USER_NOTICE);
     }
-    $g_config[$var]= $value;
+    $g_config[$var] = $value;
     return true;
 }
-
 
 /**
 * appends to a configuration-variable
@@ -631,39 +607,35 @@ function confChange($var,$value) {
 * - variable is not defined
 * - variable is not an array (it will be converted into array with two elements)
 */
-function confAppendToValue($var,$value) {
+function confAppendToValue($var, $value)
+{
     global $g_config;
-    if(!isset($g_config[$var]) && !is_null($g_config[$var])) {
-        trigger_error("confChange set undefined variable '$var' to array('$value')",E_USER_NOTICE);
-        $g_config[$var]= array($value);
+    if (!isset($g_config[$var]) && !is_null($g_config[$var])) {
+        trigger_error("confChange set undefined variable '$var' to array('$value')", E_USER_NOTICE);
+        $g_config[$var] = [$value];
         return true;
-    }
-    else if(!is_array($g_config[$var])) {
-        trigger_error("confChange converting '$var' to array('$value')",E_USER_NOTICE);
-        $g_config[$var]=array($g_config[$var], $value);
+    } elseif (!is_array($g_config[$var])) {
+        trigger_error("confChange converting '$var' to array('$value')", E_USER_NOTICE);
+        $g_config[$var] = [$g_config[$var], $value];
         return true;
-    }
-    else {
-        $g_config[$var][]= $value;
+    } else {
+        $g_config[$var][] = $value;
     }
     return true;
 }
-
 
 /**
 * return a valid link to streber's wiki documentation...
 *
 * @@@put this function somewhere else
 */
-function getStreberWikiLink($pagename=NULL,$displayname=NULL) {
-    if(!$pagename) {
-        trigger_error("getStreberWikiLink() requires pagename",E_USER_NOTICE);
-
+function getStreberWikiLink($pagename = null, $displayname = null)
+{
+    if (!$pagename) {
+        trigger_error('getStreberWikiLink() requires pagename', E_USER_NOTICE);
     }
-    if(!$displayname) {
-        $displayname= $pagename;
+    if (!$displayname) {
+        $displayname = $pagename;
     }
-    return "<a href=\"". confGet('STREBER_WIKI_URL')."$pagename\">$displayname</a>";
+    return '<a href="' . confGet('STREBER_WIKI_URL') . "$pagename\">$displayname</a>";
 }
-
-?>

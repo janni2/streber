@@ -1,5 +1,10 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
-require_once(confGet('DIR_STREBER') . "db/db.inc.php");
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
+require_once(confGet('DIR_STREBER') . 'db/db.inc.php');
 # streber - a php based project management system
 # Copyright (c) 2005 Thomas Mann - thomas@pixtur.de
 # Distributed under the terms and conditions of the GPL as stated in docs/license.txt
@@ -9,9 +14,6 @@ require_once(confGet('DIR_STREBER') . "db/db.inc.php");
  *
  *
  */
-
-
-
 
 /**
 * NOTE:
@@ -27,78 +29,70 @@ class ItemVersion extends BaseObject
     public $date_from;
     public $date_to;
     public $author;
-    public $values=array();                         # hash with changed fields in this version
-    public $values_next=array();                         # hash with changed fields in this version
+    public $values = [];                         # hash with changed fields in this version
+    public $values_next = [];                         # hash with changed fields in this version
 
-
-    static function getFromItem($item)
+    public static function getFromItem($item)
     {
-
         ### get changes ###
-        $all_changes= $all_changes= ItemChange::getItemChanges(array(
-            'item'      => $item->id,
-        ));
+        $all_changes = $all_changes = ItemChange::getItemChanges([
+            'item' => $item->id,
+        ]);
 
-        $versions= array( new ItemVersion(array(
-            'version_number'=>1,
-            'date_from'=> $item->created,
-            'author'=> $item->created_by,
-        )));
+        $versions = [new ItemVersion([
+            'version_number' => 1,
+            'date_from' => $item->created,
+            'author' => $item->created_by,
+        ])];
 
-        $last_version= $versions[0];
+        $last_version = $versions[0];
 
+        $version_number = 2;
+        $modified_last = null;
+        foreach ($all_changes as $cf) {
+            $flag_new = false;
 
-        $version_number=2;
-        $modified_last= NULL;
-        foreach($all_changes as $cf) {
-
-            $flag_new= false;
-
-            if($cf->modified != $modified_last) {
+            if ($cf->modified != $modified_last) {
                 $flag_new = true;
             }
-            if(isset($last_version) && $last_version->author != $cf->modified_by) {
-                $flag_new;
+            if (isset($last_version) && $last_version->author != $cf->modified_by) {
             }
 
-            if($flag_new) {
-                $version= new ItemVersion(array(
-                    'version_number'=> $version_number++,
-                    'date_from'     => $cf->modified,
-                    'author'        => $cf->modified_by,
+            if ($flag_new) {
+                $version = new ItemVersion([
+                    'version_number' => $version_number++,
+                    'date_from' => $cf->modified,
+                    'author' => $cf->modified_by,
                    # 'changed_fields'=> array($cf)
-                ));
-
+                ]);
 
                 $modified_last = $cf->modified;
-                $versions[]= $version;
-                $last_version= $versions[count($versions)-2];
-                $last_version->date_to= $cf->modified;
-
+                $versions[] = $version;
+                $last_version = $versions[count($versions) - 2];
+                $last_version->date_to = $cf->modified;
             }
 
-            $last_version->values[$cf->field]= $cf->value_old;
+            $last_version->values[$cf->field] = $cf->value_old;
             #$versions[count($versions)-1]->values[$cf->field]= 'bla';
         }
 
         ### finally fill out latest values ###
-        if(count($versions) > 1) {
-            foreach($versions[count($versions)-2]->values as $fname => $value) {
-                $versions[count($versions)-1]->values[$fname] = $item->$fname;
+        if (count($versions) > 1) {
+            foreach ($versions[count($versions) - 2]->values as $fname => $value) {
+                $versions[count($versions) - 1]->values[$fname] = $item->$fname;
             }
-            $versions[count($versions)-1]->date_to= getGMTString();
+            $versions[count($versions) - 1]->date_to = getGMTString();
 
             ### fill in next values ###
-            $changed= array();
-            foreach(array_reverse($versions) as $v) {
-                foreach($v->values as $name=>$value) {
-                    if(isset($changed[$name])) {
-                        $v->values_next[$name]= $changed[$name];
+            $changed = [];
+            foreach (array_reverse($versions) as $v) {
+                foreach ($v->values as $name => $value) {
+                    if (isset($changed[$name])) {
+                        $v->values_next[$name] = $changed[$name];
+                    } else {
+                        $v->values_next[$name] = $item->$name;
                     }
-                    else {
-                        $v->values_next[$name]= $item->$name;
-                    }
-                    $changed[$name]= $value;
+                    $changed[$name] = $value;
                 }
             }
         }
@@ -106,63 +100,55 @@ class ItemVersion extends BaseObject
     }
 }
 
-
-
-
-
-
 class ItemChange extends DbItem
 {
-    public static $itemchange_fields_static=array();
+    public static $itemchange_fields_static = [];
 
     /**
     * create empty object-item or querry database
     */
-    public function __construct($id_or_array=NULL)
+    public function __construct($id_or_array = null)
     {
-
         /**
         *  this->_type holds a string for the current type
         *  which is used for accessing db-tables and
         *  form-parameter-passing (therefore it has to be lowercase)
         */
-        $this->_type=strtolower(get_class($this));
+        $this->_type = strtolower(get_class($this));
 
         /**
         * add default fields if not overwritten by derived class
         */
-        if(!$this->fields) {
-            $this->fields= &self::$itemchange_fields_static;
+        if (!$this->fields) {
+            $this->fields = &self::$itemchange_fields_static;
         }
 
         /**
         * if array is passed, create a new empty object with default-values
         */
-        if(is_array($id_or_array)) {
-
+        if (is_array($id_or_array)) {
             ### setup fields
             parent::__construct();
 
             ### initialize with values
-			foreach($id_or_array as $key => $value) {
-				is_null($this->$key); ### cause E_NOTICE on undefined properties
-				$this->$key = $value;
-			}
+            foreach ($id_or_array as $key => $value) {
+                is_null($this->$key); ### cause E_NOTICE on undefined properties
+                $this->$key = $value;
+            }
         }
 
         /**
         * if int is passed, it's assumed to be ITEM-ID
         * - query item-tables
         * - query table with name of object-type
-        */
-        else if(is_int($id_or_array)) {
+        */ elseif (is_int($id_or_array)) {
             parent::__construct($id_or_array);
         }
         #--- just empty ----
         else {
-            trigger_error("can't construct zero-id item",E_USER_WARNING);
+            trigger_error("can't construct zero-id item", E_USER_WARNING);
             parent::__construct();
-            return NULL;
+            return null;
         }
     }
 
@@ -174,106 +160,97 @@ class ItemChange extends DbItem
     */
     public static function initFields()
     {
-
-        foreach(array(
+        foreach ([
                     ### internal fields ###
-                    new FieldInternal  (array('name'=>'id',
-                        'default'=>0,
-                    )),
+                    new FieldInternal(['name' => 'id',
+                        'default' => 0,
+                    ]),
                     /**
                     * id of the item being changed
                     */
-                    
-                    new FieldInternal  (array('name'=>'item',
-                        'default'=>10,
-                    )),
-                    new FieldUser     (array('name'=>'modified_by',
-                        'default'=> FINIT_CUR_USER,
-                        'view_in_forms'=>false,
-                    )),
+                    new FieldInternal(['name' => 'item',
+                        'default' => 10,
+                    ]),
+                    new FieldUser(['name' => 'modified_by',
+                        'default' => FINIT_CUR_USER,
+                        'view_in_forms' => false,
+                    ]),
 
-                    new FieldDatetime( array('name'=>'modified',
-                        'default'=>FINIT_NOW,
-                        'view_in_forms'=>false,
-                    )),
+                    new FieldDatetime(['name' => 'modified',
+                        'default' => FINIT_NOW,
+                        'view_in_forms' => false,
+                    ]),
 
                     /**
                     * name of the changed field
                     */
-                    new FieldInternal(array(    'name'=>'field',
-                        'view_in_forms'=>false,
-                    )),
+                    new FieldInternal(['name' => 'field',
+                        'view_in_forms' => false,
+                    ]),
 
                     /**
                     * old value
                     */
-                    new FieldInternal  (array('name'=>'value_old',
-                        'view_in_forms'=>false,
-                    )),
-
-               ) as $f) {
-                   self::$itemchange_fields_static[$f->name] = $f;
-               }
+                    new FieldInternal(['name' => 'value_old',
+                        'view_in_forms' => false,
+                    ]),
+               ] as $f) {
+            self::$itemchange_fields_static[$f->name] = $f;
+        }
     }
 
-
-    static function getItemChanges( $args=NULL)
+    public static function getItemChanges($args = null)
     {
         global $auth;
-		$prefix = confGet('DB_TABLE_PREFIX');
+        $prefix = confGet('DB_TABLE_PREFIX');
 
         ### default params ###
-        $item               = NULL;
-        $date_min           = NULL;
-        $date_max           = NULL;
-        $person             = NULL;
-        $field              = NULL;
-        $project            = NULL;
-        $order_by            = 'modified';
+        $item = null;
+        $date_min = null;
+        $date_max = null;
+        $person = null;
+        $field = null;
+        $project = null;
+        $order_by = 'modified';
 
         ### filter params ###
-        if($args) {
-            foreach($args as $key=>$value) {
-                if(!isset($$key) && !is_null($$key) && !$$key==="") {
-                    trigger_error("unknown parameter",E_USER_NOTICE);
-                }
-                else {
-                    $$key= $value;
+        if ($args) {
+            foreach ($args as $key => $value) {
+                if (!isset($$key) && !is_null($$key) && !$$key === '') {
+                    trigger_error('unknown parameter', E_USER_NOTICE);
+                } else {
+                    $$key = $value;
                 }
             }
         }
 
-
-        $str_project= $project
-            ? "AND c.project= ". intval($project) 
+        $str_project = $project
+            ? 'AND c.project= ' . intval($project)
             : '';
 
-
-        $str_item= $item
-            ? "AND c.item=" . intval($item)
+        $str_item = $item
+            ? 'AND c.item=' . intval($item)
             : '';
 
-
-        $str_date_min= $date_min
+        $str_date_min = $date_min
             ? "AND c.modified >= '" . asCleanString($date_min) . "'"
             : '';
 
-        $str_date_max= $date_max
+        $str_date_max = $date_max
             ? "AND c.modified <= '" . asCleanString($date_max) . "'"
             : '';
 
-        $str_field= $field
+        $str_field = $field
             ? "AND c.field ='" . asCleanString($field) . "'"
             : '';
 
-        $str_person= $person
-            ? "AND c.modified_by = " . intval($person)
+        $str_person = $person
+            ? 'AND c.modified_by = ' . intval($person)
             : '';
 
-
         ### show all ###
-        $str_query=
-        	"SELECT c.*  from {$prefix}itemchange c
+        $str_query =
+            "SELECT c.*  from {$prefix}itemchange c
             WHERE 1
             $str_project
             $str_item
@@ -281,37 +258,34 @@ class ItemChange extends DbItem
             $str_field
             $str_date_max
             $str_date_min
-            ". getOrderByString($order_by);
+            " . getOrderByString($order_by);
 
-            ;
-        $dbh = new DB_Mysql;
-        $sth= $dbh->prepare($str_query);
+        $dbh = new DB_Mysql();
+        $sth = $dbh->prepare($str_query);
 
-    	$sth->execute("",1);
-    	$tmp=$sth->fetchall_assoc();
-    	$item_changes=array();
-        foreach($tmp as $t) {
-            $c=new ItemChange($t);
-            $item_changes[]=$c;
+        $sth->execute('', 1);
+        $tmp = $sth->fetchall_assoc();
+        $item_changes = [];
+        foreach ($tmp as $t) {
+            $c = new ItemChange($t);
+            $item_changes[] = $c;
         }
         return $item_changes;
     }
-
 
     /**
     * query from db
     *
     * - returns NULL if failed
     */
-    static function getById($id)
+    public static function getById($id)
     {
-        $i= new DbItemChange($id);
-        if($i->id) {
+        $i = new DbItemChange($id);
+        if ($i->id) {
             return $i;
         }
-        return NULL;
+        return null;
     }
 }
 
 ItemChange::initFields();
-?>

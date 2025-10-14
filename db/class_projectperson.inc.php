@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -6,112 +11,110 @@
 * Project Person
 */
 
-
 /**
 * Project Person - jointable between projects and people
 */
-class ProjectPerson extends DbProjectItem {
+class ProjectPerson extends DbProjectItem
+{
     public $name;
     public $project;
 
-	/**
-	* constructor
-	*/
-	function __construct ($id_or_array=NULL)
+    /**
+    * constructor
+    */
+    public function __construct($id_or_array = null)
     {
         global $projectperson_fields;
-        $this->fields= &$projectperson_fields;
+        $this->fields = &$projectperson_fields;
 
         parent::__construct($id_or_array);
-        $this->type=ITEM_PROJECTPERSON;
-   	}
+        $this->type = ITEM_PROJECTPERSON;
+    }
 
     /**
     * Init the objects fields
     */
-    static function initFields()
+    public static function initFields()
     {
         global $projectperson_fields;
-        $projectperson_fields=array();
+        $projectperson_fields = [];
         addProjectItemFields($projectperson_fields);
-    
-        foreach(array(
-            new FieldInternal(array(    'name'=>'id',
-                'default'=>0,
-                'in_db_object'=>1,
-                'in_db_item'=>1,
-            )),
-            new FieldInternal(array(    'name'=>'state',
-                'default'=>1,
-                'in_db_object'=>1,
-                'in_db_item'=>1,
-            )),
-            new FieldInternal(array(    'name'=>'person',
-            )),
-            new FieldInternal(array(    'name'=>'project',
-                'default'=>0,
-                'in_db_object'=>1,
-                'in_db_item'=>1,
-            )),
-            new FieldString(array(      'name'=>'name',
-                'default'=>'member',
-                'title'=>__('job'),
-            )),
-    
-            new FieldInternal(array(    'name'=>'proj_rights',
-            )),
-            new FieldInternal(array(    'name'=>'level_create',
-                'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_view',
-                'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_edit',
-                'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_reduce',
-                'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_delete',
-                'default'=>PUB_LEVEL_OPEN,
-            )),
+
+        foreach ([
+            new FieldInternal(['name' => 'id',
+                'default' => 0,
+                'in_db_object' => 1,
+                'in_db_item' => 1,
+            ]),
+            new FieldInternal(['name' => 'state',
+                'default' => 1,
+                'in_db_object' => 1,
+                'in_db_item' => 1,
+            ]),
+            new FieldInternal(['name' => 'person',
+            ]),
+            new FieldInternal(['name' => 'project',
+                'default' => 0,
+                'in_db_object' => 1,
+                'in_db_item' => 1,
+            ]),
+            new FieldString(['name' => 'name',
+                'default' => 'member',
+                'title' => __('job'),
+            ]),
+
+            new FieldInternal(['name' => 'proj_rights',
+            ]),
+            new FieldInternal(['name' => 'level_create',
+                'default' => PUB_LEVEL_OPEN,
+            ]),
+            new FieldInternal(['name' => 'level_view',
+                'default' => PUB_LEVEL_OPEN,
+            ]),
+            new FieldInternal(['name' => 'level_edit',
+                'default' => PUB_LEVEL_OPEN,
+            ]),
+            new FieldInternal(['name' => 'level_reduce',
+                'default' => PUB_LEVEL_OPEN,
+            ]),
+            new FieldInternal(['name' => 'level_delete',
+                'default' => PUB_LEVEL_OPEN,
+            ]),
             /**
             * 0 - efforts logged as time_start - time_end
             * 1 - efforts looged in duration
             */
-            new FieldInternal(array(    'name'=>'adjust_effort_style',
-                'default'=>EFFORT_STYLE_DURATION,
-            )),
-    
-            new FieldInternal(array(    'name'=>'role',  # this is only a cache for string-output
-                'title'=>__('role'),
-                'default'=>PROFILE_USER,
-            )),
-			new FieldString(array('name'=>'salary_per_hour',
-				'title'     =>__('Salary per hour') . " " . __('in Euro'),
-                'default'   =>0.0,
-                'export'    =>false,
-            )),
-        ) as $f) {
-            $projectperson_fields[$f->name]=$f;
+            new FieldInternal(['name' => 'adjust_effort_style',
+                'default' => EFFORT_STYLE_DURATION,
+            ]),
+
+            new FieldInternal(['name' => 'role',  # this is only a cache for string-output
+                'title' => __('role'),
+                'default' => PROFILE_USER,
+            ]),
+            new FieldString(['name' => 'salary_per_hour',
+                'title' => __('Salary per hour') . ' ' . __('in Euro'),
+                'default' => 0.0,
+                'export' => false,
+            ]),
+        ] as $f) {
+            $projectperson_fields[$f->name] = $f;
         }
     }
-
 
     /**
     * query from db
     *
     * - returns NULL if failed
     */
-    static function getById($id)
+    public static function getById($id)
     {
-        $pp= new ProjectPerson(intval($id));
-        if($pp->id) {
+        $pp = new ProjectPerson(intval($id));
+        if ($pp->id) {
             return $pp;
         }
-        return NULL;
+        return null;
     }
-
 
     /**
     * query if visible for current user
@@ -120,34 +123,32 @@ class ProjectPerson extends DbProjectItem {
     * - this function is slow
     * - lists should check visibility with sql-querries
     */
-    static function getVisibleById($id)
+    public static function getVisibleById($id)
     {
-        if($pp= ProjectPerson::getById($id)) {
-            if($p= Project::getById($pp->project)) {
-                if($p->validateViewItem($pp)) {
+        if ($pp = ProjectPerson::getById($id)) {
+            if ($p = Project::getById($pp->project)) {
+                if ($p->validateViewItem($pp)) {
                     return $pp;
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
     /**
     * query if editable for current user
     */
-    static function getEditableById($id)
+    public static function getEditableById($id)
     {
-        if($pp= ProjectPerson::getById($id)) {
-            if($p= Project::getById($pp->project)) {
-                if($p->validateEditItem($pp)) {
+        if ($pp = ProjectPerson::getById($id)) {
+            if ($p = Project::getById($pp->project)) {
+                if ($p->validateEditItem($pp)) {
                     return $pp;
                 }
             }
         }
-        return NULL;
+        return null;
     }
-
-
 
     /**
     * give person-object to this projectProject
@@ -157,51 +158,45 @@ class ProjectPerson extends DbProjectItem {
         return Person::getById($this->person);
     }
 
-
     /**
     * set attributes to values defined in profile-list
     */
-    public function initWithUserProfile($profile_num= NULL)
+    public function initWithUserProfile($profile_num = null)
     {
         global $g_user_profile_names;
         global $g_user_profiles;
 
-        if(is_null($profile_num)) {
-    	    trigger_error("initWithProfile() needes profile",E_USER_ERROR);
+        if (is_null($profile_num)) {
+            trigger_error('initWithProfile() needes profile', E_USER_ERROR);
         }
 
-        if(!isset($g_user_profiles[$profile_num])) {
-            trigger_error("undefined profile '$profile_num'",E_USER_ERROR);
-            return NULL;
+        if (!isset($g_user_profiles[$profile_num])) {
+            trigger_error("undefined profile '$profile_num'", E_USER_ERROR);
+            return null;
         }
-        $profile= $g_user_profiles[$profile_num];
+        $profile = $g_user_profiles[$profile_num];
 
         ### try to initialize standard values ###
-        if(isset($profile['job_name'])) {
-            $this->name= $profile['job_name'];
+        if (isset($profile['job_name'])) {
+            $this->name = $profile['job_name'];
+        } else {
+            $this->name = $g_user_profile_names[$profile_num];
         }
-        else {
-            $this->name= $g_user_profile_names[$profile_num];
-        }
-        $this->role= $profile_num;
-
+        $this->role = $profile_num;
 
         ### build assoc array of defined class members ###
-        $data=array();
-        foreach(get_object_vars($this) as $key=>$value) {
-            $data[$key]=true;
+        $data = [];
+        foreach (get_object_vars($this) as $key => $value) {
+            $data[$key] = true;
         }
 
         ### try to initialize other values if profile-attribute-name matches with pp-member ###
-        foreach($profile as $key=>$value) {
-            if(isset($data[$key])) {
-                $this->$key= $value;
+        foreach ($profile as $key => $value) {
+            if (isset($data[$key])) {
+                $this->$key = $value;
             }
         }
     }
 }
 
 ProjectPerson::initFields();
-
-
-?>

@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php based project management system
 # Copyright (c) 2005 Thomas Mann - thomas@pixtur.de
 # Distributed under the terms and conditions of the GPL as stated in docs/license.txt
@@ -15,18 +20,17 @@
  */
 class ListBlock_people extends ListBlock
 {
-    public $filters = array();
-    
-    public function __construct($args=NULL)
+    public $filters = [];
+
+    public function __construct($args = null)
     {
         parent::__construct($args);
 
-        $this->id='people';
-        $this->title=__("Your related people");
+        $this->id = 'people';
+        $this->title = __('Your related people');
 
-
-        $this->add_col( new ListBlockColSelect());
-        $this->add_col( new ListBlockCol_PersonNickname());
+        $this->add_col(new ListBlockColSelect());
+        $this->add_col(new ListBlockCol_PersonNickname());
 
         #$this->add_col( new ListBlockColFormat(array(
         #   'key'=>'nickname',
@@ -36,7 +40,7 @@ class ListBlock_people extends ListBlock
         #   'format'=>'<nobr><a href="index.php?go=personView&amp;person={?id}">{?nickname}</a></nobr>'
         #)));
 
-        $this->add_col( new ListBlockCol_PersonName());
+        $this->add_col(new ListBlockCol_PersonName());
 
         #$this->add_col( new ListBlockColFormat(array(
         #   'key'=>'name',
@@ -46,38 +50,38 @@ class ListBlock_people extends ListBlock
         #   'format'=>'<nobr><span class="item person"><a class="item person" href="index.php?go=personView&amp;person={?id}">{?name}</a></span></nobr>'
         #)));
 
-        $this->add_col( new ListBlockCol_PersonProfile());
-        $this->add_col( new ListBlockColFormat(array(
-            'key'=>'personal_phone',
-            'name'=>__("Private"),
-            'format'=>'<nobr>{?personal_phone}</nobr>'
-        )));
-        $this->add_col( new ListBlockColFormat(array(
-            'key'=>'mobile_phone',
-            'name'=>__("Mobil"),
-            'format'=>'<nobr>{?mobile_phone}</nobr>'
-        )));
-        $this->add_col( new ListBlockColFormat(array(
-            'key'=>'office_phone',
-            'name'=>__("Office"),
-            'format'=>'<nobr>{?office_phone}</nobr>'
-        )));
-        $this->add_col( new ListBlockColFormat(array(
-            'key'=>'tagline',
-            'name'=>__("Tagline"),
-            'format'=>'{?tagline}'
-        )));
-        $this->add_col( new ListBlockColMethod(array(
-            'name'=>__("Companies"),
-            'func'=>'getCompanyLinks',
-            'id'=>'companies',
-        )));
-        $this->add_col( new ListBlockCol_PersonProjects());
-        $this->add_col( new ListBlockColTimeAgo(array(
-            'name'=>__("last login"),
-            'key'=>'last_login',
-        )));
-        $this->add_col( new ListBlockCol_PersonChanges());
+        $this->add_col(new ListBlockCol_PersonProfile());
+        $this->add_col(new ListBlockColFormat([
+            'key' => 'personal_phone',
+            'name' => __('Private'),
+            'format' => '<nobr>{?personal_phone}</nobr>',
+        ]));
+        $this->add_col(new ListBlockColFormat([
+            'key' => 'mobile_phone',
+            'name' => __('Mobil'),
+            'format' => '<nobr>{?mobile_phone}</nobr>',
+        ]));
+        $this->add_col(new ListBlockColFormat([
+            'key' => 'office_phone',
+            'name' => __('Office'),
+            'format' => '<nobr>{?office_phone}</nobr>',
+        ]));
+        $this->add_col(new ListBlockColFormat([
+            'key' => 'tagline',
+            'name' => __('Tagline'),
+            'format' => '{?tagline}',
+        ]));
+        $this->add_col(new ListBlockColMethod([
+            'name' => __('Companies'),
+            'func' => 'getCompanyLinks',
+            'id' => 'companies',
+        ]));
+        $this->add_col(new ListBlockCol_PersonProjects());
+        $this->add_col(new ListBlockColTimeAgo([
+            'name' => __('last login'),
+            'key' => 'last_login',
+        ]));
+        $this->add_col(new ListBlockCol_PersonChanges());
 
         /*$this->add_col( new ListBlockCol_ProjectEffortSum);
 
@@ -104,39 +108,38 @@ class ListBlock_people extends ListBlock
 
         #---- functions ----
         global $PH;
-        $this->add_function(new ListFunction(array(
-            'target'=>$PH->getPage('personEdit')->id,
-            'name'  =>__('Edit person'),
-            'id'    =>'personEdit',
-            'icon'  =>'edit',
-            'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
-            'target'=>$PH->getPage('personEditRights')->id,
-            'name'  =>__('Edit user rights'),
-            'id'    =>'personEditRights',
-            'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
-            'target'=>$PH->getPage('personDelete')->id,
-            'name'  =>__('Delete person'),
-            'id'    =>'personDelete',
-            'icon'  =>'delete'
-        )));
-        $this->add_function(new ListFunction(array(
-            'target'=>$PH->getPage('personNew')->id,
-            'name'  =>__('Create new person'),
-            'id'    =>'personNew',
-            'icon'  =>'new',
-            'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
-            'target'=>$PH->getPage('itemsAsBookmark')->id,
-            'name'  =>__('Mark as bookmark'),
-            'id'    =>'itemsAsBookmark',
-            'context_menu'=>'submit',
-        )));
-
+        $this->add_function(new ListFunction([
+            'target' => $PH->getPage('personEdit')->id,
+            'name' => __('Edit person'),
+            'id' => 'personEdit',
+            'icon' => 'edit',
+            'context_menu' => 'submit',
+        ]));
+        $this->add_function(new ListFunction([
+            'target' => $PH->getPage('personEditRights')->id,
+            'name' => __('Edit user rights'),
+            'id' => 'personEditRights',
+            'context_menu' => 'submit',
+        ]));
+        $this->add_function(new ListFunction([
+            'target' => $PH->getPage('personDelete')->id,
+            'name' => __('Delete person'),
+            'id' => 'personDelete',
+            'icon' => 'delete',
+        ]));
+        $this->add_function(new ListFunction([
+            'target' => $PH->getPage('personNew')->id,
+            'name' => __('Create new person'),
+            'id' => 'personNew',
+            'icon' => 'new',
+            'context_menu' => 'submit',
+        ]));
+        $this->add_function(new ListFunction([
+            'target' => $PH->getPage('itemsAsBookmark')->id,
+            'name' => __('Mark as bookmark'),
+            'id' => 'itemsAsBookmark',
+            'context_menu' => 'submit',
+        ]));
     }
 
     /**
@@ -154,102 +157,93 @@ class ListBlock_people extends ListBlock
         global $PH;
 
         #if(!$this->active_block_function=$this->getBlockStyleFromCookie()) {
-            $this->active_block_function = 'list';
+        $this->active_block_function = 'list';
         #}
 
-        $this->group_by= get("blockstyle_{$PH->cur_page->id}_{$this->id}_grouping");
+        $this->group_by = get("blockstyle_{$PH->cur_page->id}_{$this->id}_grouping");
 
-
-        $s_cookie= "sort_{$PH->cur_page->id}_{$this->id}_{$this->active_block_function}";
-        if($sort= get($s_cookie)) {
-            $this->query_options['order_by']= $sort;
+        $s_cookie = "sort_{$PH->cur_page->id}_{$this->id}_{$this->active_block_function}";
+        if ($sort = get($s_cookie)) {
+            $this->query_options['order_by'] = $sort;
         }
 
         ### grouped view ###
-        if($this->active_block_function == 'grouped') {
-
+        if ($this->active_block_function == 'grouped') {
             /**
             * @@@ later use only once...
             *
             *   $this->columns= filterOptions($this->columns,"CURPAGE.BLOCKS[{$this->id}].STYLE[{$this->active_block_function}].COLUMNS");
             */
-            if(isset($this->columns[ $this->group_by ])) {
+            if (isset($this->columns[$this->group_by])) {
                 unset($this->columns[$this->group_by]);
             }
 
             ### prepend key to sorting ###
-            if(isset($this->query_options['order_by'])) {
-                $this->query_options['order_by'] = $this->groupings->getActiveFromCookie() . ",".$this->query_options['order_by'];
-
-            }
-            else {
+            if (isset($this->query_options['order_by'])) {
+                $this->query_options['order_by'] = $this->groupings->getActiveFromCookie() . ',' . $this->query_options['order_by'];
+            } else {
                 $this->query_options['order_by'] = $this->groupings->getActiveFromCookie();
             }
         }
         ### list view ###
         else {
-            $pass= true;
+            $pass = true;
         }
-        
+
         ### add filter options ###
-        foreach($this->filters as $f) {
-            foreach($f->getQuerryAttributes() as $k=>$v) {
-                $this->query_options[$k]= $v;
+        foreach ($this->filters as $f) {
+            foreach ($f->getQuerryAttributes() as $k => $v) {
+                $this->query_options[$k] = $v;
             }
         }
-        
+
         $people = Person::getPeople($this->query_options);
         $this->render_list($people);
     }
 }
 
-
-
 class ListBlockCol_PersonNickname extends ListBlockCol
 {
-    public $id='nickname';
-    public $key='nickname';
+    public $id = 'nickname';
+    public $key = 'nickname';
 
-    function __construct($args= NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
-        if(!$this->name) {
-            $this->name= __('Nickname', 'column header');
+        if (!$this->name) {
+            $this->name = __('Nickname', 'column header');
         }
     }
 
-    function render_tr(&$person, $style="")
+    public function render_tr(&$person, $style = '')
     {
         global $PH;
-        print "<td>". $PH->getLink('personView',asHtml($person->nickname), array('person' => $person->id)) ."</td>";
+        echo '<td>' . $PH->getLink('personView', asHtml($person->nickname), ['person' => $person->id]) . '</td>';
     }
 }
-
-
 
 class ListBlockCol_PersonName extends ListBlockCol
 {
-    public $id='name';
-    public $key='name';
+    public $id = 'name';
+    public $key = 'name';
 
-    function __construct($args= NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
-        if(!$this->name) {
-            $this->name= __('Name', 'column header');
+        if (!$this->name) {
+            $this->name = __('Name', 'column header');
         }
     }
 
-    function render_tr(&$person, $style="")
+    public function render_tr(&$person, $style = '')
     {
         global $PH;
 
-        print "<td><b><nobr>"
-            . $PH->getLink('personView', $person->name, array('person' => $person->id)) 
-            . "</nobr></b></td>";
+        echo '<td><b><nobr>'
+            . $PH->getLink('personView', $person->name, ['person' => $person->id])
+            . '</nobr></b></td>';
     }
 }
-
 
 /**
 * column user-profile
@@ -257,38 +251,35 @@ class ListBlockCol_PersonName extends ListBlockCol
 */
 class ListBlockCol_PersonProfile extends ListBlockCol
 {
-    public $id='profile';
-    public $key='profile';
+    public $id = 'profile';
+    public $key = 'profile';
 
-    function __construct($args= NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
-        if(!$this->name) {
-            $this->name= __('Profile', 'column header');
+        if (!$this->name) {
+            $this->name = __('Profile', 'column header');
         }
-     $this->tooltip=__("Account settings for user (do not confuse with project rights)");
-
+        $this->tooltip = __('Account settings for user (do not confuse with project rights)');
     }
-    function render_tr(&$person, $style="")
+    public function render_tr(&$person, $style = '')
     {
         global $g_user_profile_names;
         global $g_user_profiles;
 
-        $profile_num= $person->profile;
-        $str_profile= $g_user_profile_names[$profile_num];
+        $profile_num = $person->profile;
+        $str_profile = $g_user_profile_names[$profile_num];
 
         #$default_rights= $g_user_profiles[$g_user_profile_names[$profile_num]]['default_user_rights'];
-        $default_rights= $g_user_profiles[$profile_num]['default_user_rights'];
+        $default_rights = $g_user_profiles[$profile_num]['default_user_rights'];
 
-        if($default_rights != $person->user_rights) {
-            $str_profile.=__("(adjusted)");
+        if ($default_rights != $person->user_rights) {
+            $str_profile .= __('(adjusted)');
         }
 
-        print "<td>$str_profile</td>";
-
+        echo "<td>$str_profile</td>";
     }
 }
-
 
 /**
 * column active projects
@@ -296,64 +287,58 @@ class ListBlockCol_PersonProfile extends ListBlockCol
 */
 class ListBlockCol_PersonProjects extends ListBlockCol
 {
-    public $id='projects';
-    public $width="70%";
+    public $id = 'projects';
+    public $width = '70%';
 
-    function __construct($args= NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
-        if(!$this->name) {
-            $this->name= __('Active Projects', 'column header');
+        if (!$this->name) {
+            $this->name = __('Active Projects', 'column header');
         }
     }
 
-    function render_tr(&$person, $style="")
+    public function render_tr(&$person, $style = '')
     {
         global $PH;
         global $g_prio_names;
 
-        $projects= $person->getProjects();
-        print "<td>";
+        $projects = $person->getProjects();
+        echo '<td>';
 
-        if($projects) {
-            $str_delimiter="";
-            foreach($projects as $p){
-
-                $tooltip="";
-                if(isset($g_prio_names[$p->prio])) {
-                    $tooltip= 'title="' . sprintf(__('Priority is %s'), $g_prio_names[$p->prio]) . '"';
+        if ($projects) {
+            $str_delimiter = '';
+            foreach ($projects as $p) {
+                $tooltip = '';
+                if (isset($g_prio_names[$p->prio])) {
+                    $tooltip = 'title="' . sprintf(__('Priority is %s'), $g_prio_names[$p->prio]) . '"';
                 }
-                $img_prio= "<img $tooltip src=\"" . getThemeFile("img/prio_{$p->prio}.png") ."\">";
-                $link= $PH->getLink('projView',$p->getShort(),array('prj'=>$p->id));
+                $img_prio = "<img $tooltip src=\"" . getThemeFile("img/prio_{$p->prio}.png") . '">';
+                $link = $PH->getLink('projView', $p->getShort(), ['prj' => $p->id]);
 
-                print  $str_delimiter .  $img_prio.$link;
+                echo  $str_delimiter . $img_prio . $link;
 
-                $str_delimiter=", ";
-
+                $str_delimiter = ', ';
             }
         }
-        print "</td>";
-
+        echo '</td>';
     }
 }
 
-
-
-
 class ListBlockCol_PersonChanges extends ListBlockCol
 {
-    public $id='changes';
+    public $id = 'changes';
 
-    function __construct($args= NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
-        if(!$this->name) {
-            $this->name= __('recent changes', 'column header');
+        if (!$this->name) {
+            $this->name = __('recent changes', 'column header');
         }
-        $this->tooltip=__('changes since YOUR last logout');
+        $this->tooltip = __('changes since YOUR last logout');
     }
 
-    function render_tr(&$person, $style="", $format="html")
+    public function render_tr(&$person, $style = '', $format = 'html')
     {
         global $PH;
         global $auth;
@@ -361,30 +346,24 @@ class ListBlockCol_PersonChanges extends ListBlockCol
         global $csv_args;
         global $csv_count;
 
-        $changes= DbProjectItem::getAll(array(
-            'modified_by'   => $person->id,
-            'date_min'      => $auth->cur_user->last_logout,
-            'not_modified_by'=> $auth->cur_user->id,
-        ));
+        $changes = DbProjectItem::getAll([
+            'modified_by' => $person->id,
+            'date_min' => $auth->cur_user->last_logout,
+            'not_modified_by' => $auth->cur_user->id,
+        ]);
 
-        if($format == 'csv'){
-            if(count($changes)) {
+        if ($format == 'csv') {
+            if (count($changes)) {
                 $csv_args[$csv_count++] = count($changes);
-            }
-            else{
+            } else {
                 $csv_args[$csv_count++] = '';
             }
-        }
-        else{
-            if(count($changes)) {
-                print "<td>".count($changes)."</td>";
-            }
-            else {
-                print "<td></td>";
+        } else {
+            if (count($changes)) {
+                echo '<td>' . count($changes) . '</td>';
+            } else {
+                echo '<td></td>';
             }
         }
     }
 }
-
-
-?>

@@ -1,4 +1,9 @@
-<?php if(!function_exists('startedIndexPhp')) { header("location:../index.php"); exit();}
+<?php
+
+if (!function_exists('startedIndexPhp')) {
+    header('location:../index.php');
+    exit();
+}
 # streber - a php5 based project management system  (c) 2005-2007  / www.streber-pm.org
 # Distributed under the terms and conditions of the GPL as stated in lang/license.html
 
@@ -16,17 +21,16 @@
 * Because most information in streber is display as lists, this is a major task for rendering.
 */
 
-require_once(confGet('DIR_STREBER') . "render/render_block.inc.php");
-require_once(confGet('DIR_STREBER') . "render/render_list_column.inc.php");
-require_once(confGet('DIR_STREBER') . "render/render_list_column_special.inc.php");
-require_once(confGet('DIR_STREBER') . "std/export.inc.php");
-
+require_once(confGet('DIR_STREBER') . 'render/render_block.inc.php');
+require_once(confGet('DIR_STREBER') . 'render/render_list_column.inc.php');
+require_once(confGet('DIR_STREBER') . 'render/render_list_column_special.inc.php');
+require_once(confGet('DIR_STREBER') . 'std/export.inc.php');
 
 abstract class FilterSetting extends BaseObject
 {
     public $id;
     public $name;
-    public $filters= NULL;
+    public $filters = null;
 
     public function getFilters()
     {
@@ -35,46 +39,37 @@ abstract class FilterSetting extends BaseObject
 
     public function initFilters($filters)
     {
-
     }
 }
-
-
-
 
 /**
 *
 */
 class FilterSetting_tasks extends FilterSetting
 {
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
-        $tmp_filters= array(
+        $tmp_filters = [
             new ListFilter_for_milestone(),
             new ListFilter_project(),
             new ListFilter_status(),
-        );
+        ];
 
-        foreach($tmp_filters as $f) {
+        foreach ($tmp_filters as $f) {
             $this->filters[$f->id] = $f;
         }
     }
 
-
     public function set_preset($preset)
     {
-        if($preset->valid_for_setting != $this->id) {
+        if ($preset->valid_for_setting != $this->id) {
             trigger_warning("can't use setting $preset->name for FilterSetting $id", E_USER_NOTICE);
-            return NULL;
+            return null;
         }
 
-
-
-        foreach($preset->active_filters as $f) {
-
+        foreach ($preset->active_filters as $f) {
         }
-
     }
 }
 
@@ -84,28 +79,20 @@ class FilterPreset_Setting extends BaseObject
     public $valid_for_setting;
     public $id;
 
-    public $active_filters  =array();
-    public $filter_values   = array();
-
-
-
-
+    public $active_filters = [];
+    public $filter_values = [];
 }
-
-
-
 
 abstract class ListFilter extends BaseObject
 {
     public $id;                         # id inside html-structure (for icons and referrer attributes)
-    public $locked=false;               # if true, can't be removed
-    public $hidden=false;               # if true not visible
-    public $default = NULL;
-    public $value=NULL;
-    public $active  = true;
-    public $sql_querry_attribute = NULL;# if NULL, 'id' is used   NOTE: used for functions like Task::getTasks($querry_attributes)
-    public $render_string= NULL;        # e.g. "for milestone %s". Does not have to be set, if render() is overwritten
-
+    public $locked = false;               # if true, can't be removed
+    public $hidden = false;               # if true not visible
+    public $default = null;
+    public $value = null;
+    public $active = true;
+    public $sql_querry_attribute = null; # if NULL, 'id' is used   NOTE: used for functions like Task::getTasks($querry_attributes)
+    public $render_string = null;        # e.g. "for milestone %s". Does not have to be set, if render() is overwritten
 
     public function __construct($args)
     {
@@ -113,38 +100,33 @@ abstract class ListFilter extends BaseObject
         $this->initValue($this->value);
     }
 
-
     /**
     * init value in this order:
     * 1. if GET/POST paramter
     * 2. if passed argument (if not NULL)
     * 3. with default-value
     */
-    public function initValue($value= NULL)
+    public function initValue($value = null)
     {
-        if($v= get($this->id)) {
+        if ($v = get($this->id)) {
             $this->value = $v;
-        }
-        else if(is_null($this->value)) {
+        } elseif (is_null($this->value)) {
             $this->value = $this->default;
         }
         return $this->value;
     }
 
-
     public function getQuerryAttributes()
     {
-        $a=array();
-        if($this->active) {
-            $name= $this->sql_querry_attribute
+        $a = [];
+        if ($this->active) {
+            $name = $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
                  : $this->id;
-            $a[$name]= $this->value;
+            $a[$name] = $this->value;
         }
         return $a;
     }
-
-
 
     /**
     * Note: default rendering only works well for numerical stuff like milestones.
@@ -153,18 +135,16 @@ abstract class ListFilter extends BaseObject
     */
     public function render()
     {
-        if($this->active && !$this->hidden) {
-            if($this->render_string) {
+        if ($this->active && !$this->hidden) {
+            if ($this->render_string) {
                 return sprintf($this->render_string, $this->value);
             }
             return $for_milestone;
-        }
-        else {
+        } else {
             return '';
         }
     }
 }
-
 
 class ListFilter_changes extends ListFilter
 {
@@ -172,7 +152,7 @@ class ListFilter_changes extends ListFilter
     public $sql_querry_attribute = 'visible_only';
     public $default = true;
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
     }
@@ -184,7 +164,7 @@ class ListFilter_efforts extends ListFilter
     public $sql_querry_attribute = 'visible_only';
     public $default = true;
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
     }
@@ -196,7 +176,7 @@ class ListFilter_projects extends ListFilter
     public $sql_querry_attribute = 'visible_only';
     public $default = true;
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
     }
@@ -208,7 +188,7 @@ class ListFilter_tasks extends ListFilter
     public $sql_querry_attribute = 'visible_only';
     public $default = true;
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
     }
@@ -220,7 +200,7 @@ class ListFilter_people extends ListFilter
     public $sql_querry_attribute = 'visible_only';
     public $default = true;
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
     }
@@ -229,10 +209,10 @@ class ListFilter_people extends ListFilter
 class ListFilter_companies extends ListFilter
 {
     public $id = 'company';
-	public $sql_querry_attribute = 'visible_only';
+    public $sql_querry_attribute = 'visible_only';
     public $default = true;
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
     }
@@ -240,57 +220,49 @@ class ListFilter_companies extends ListFilter
 
 class ListFilter_for_milestone extends ListFilter
 {
-    public $id          = 'for_milestone';
-    public $default     = NULL;
-    public $milestone   = NULL;                             # object-ref if visible
+    public $id = 'for_milestone';
+    public $default = null;
+    public $milestone = null;                             # object-ref if visible
 
-
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
-        $this->render_string= __('for milestone %s');       # to be translated strings have to be set inside a function
+        $this->render_string = __('for milestone %s');       # to be translated strings have to be set inside a function
     }
 
-
-    public function initValue($value= NULL)
+    public function initValue($value = null)
     {
         parent::initValue($value);
 
         /**
         * check for visibility
         */
-        if($ms= Task::getVisibleById($this->value)) {
-            if($ms->category == TCATEGORY_MILESTONE) {
-                $this->milestone= $ms;
+        if ($ms = Task::getVisibleById($this->value)) {
+            if ($ms->category == TCATEGORY_MILESTONE) {
+                $this->milestone = $ms;
+            } else {
+                $this->value = null;
             }
-            else {
-                $this->value= NULL;
-            }
-        }
-        else if($this->value === 0 || $this->value === "0")  {
-            $this->value =0;
-        }
-        else {
-            $this->value =NULL;
+        } elseif ($this->value === 0 || $this->value === '0') {
+            $this->value = 0;
+        } else {
+            $this->value = null;
         }
         return $this->value;
     }
-
 }
-
 
 class ListFilter_status_min extends ListFilter
 {
-    public $id          = 'status_min';
-    public $default     = STATUS_NEW;
+    public $id = 'status_min';
+    public $default = STATUS_NEW;
 
     public function render()
     {
         global $g_status_names;
 
-        if($this->active && !$this->hidden) {
-
-            $min=   isset($g_status_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $min = isset($g_status_names[$this->value])
                         ? $g_status_names[$this->value]
                         : '';
 
@@ -300,19 +272,17 @@ class ListFilter_status_min extends ListFilter
     }
 }
 
-
 class ListFilter_status_max extends ListFilter
 {
-    public $id          = 'status_max';
-    public $default     = STATUS_COMPLETED;
+    public $id = 'status_max';
+    public $default = STATUS_COMPLETED;
 
     public function render()
     {
         global $g_status_names;
 
-        if($this->active && !$this->hidden) {
-
-            $max=   isset($g_status_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $max = isset($g_status_names[$this->value])
                         ? $g_status_names[$this->value]
                         : '';
 
@@ -324,16 +294,15 @@ class ListFilter_status_max extends ListFilter
 
 class ListFilter_effort_status_min extends ListFilter
 {
-    public $id          = 'effort_status_min';
-    public $default     = EFFORT_STATUS_NEW;
+    public $id = 'effort_status_min';
+    public $default = EFFORT_STATUS_NEW;
 
     public function render()
     {
         global $g_effort_status_names;
 
-        if($this->active && !$this->hidden) {
-
-            $min=   isset($g_effort_status_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $min = isset($g_effort_status_names[$this->value])
                         ? $g_effort_status_names[$this->value]
                         : '';
 
@@ -343,19 +312,17 @@ class ListFilter_effort_status_min extends ListFilter
     }
 }
 
-
 class ListFilter_effort_status_max extends ListFilter
 {
-    public $id          = 'effort_status_max';
-    public $default     = EFFORT_STATUS_BALANCED;
+    public $id = 'effort_status_max';
+    public $default = EFFORT_STATUS_BALANCED;
 
     public function render()
     {
         global $g_effort_status_names;
 
-        if($this->active && !$this->hidden) {
-
-            $max=   isset($g_effort_status_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $max = isset($g_effort_status_names[$this->value])
                         ? $g_effort_status_names[$this->value]
                         : '';
 
@@ -367,9 +334,9 @@ class ListFilter_effort_status_max extends ListFilter
 
 class ListFilter_assigned_to extends ListFilter
 {
-    public $id          = 'assigned_to_person';
+    public $id = 'assigned_to_person';
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
         global $auth;
@@ -381,37 +348,35 @@ class ListFilter_last_logout extends ListFilter
 {
     public $id = 'last_logout';
     public $sql_querry_attribute = 'date_min';
-    public $logout_date = NULL;
+    public $logout_date = null;
 
-    public function initValue($value= NULL)
+    public function initValue($value = null)
     {
         parent::initValue($value);
 
         /**
         * get logout date and reset the value variable
         */
-        if($person = Person::getVisibleById($this->value)) {
-            if($person->last_logout) {
+        if ($person = Person::getVisibleById($this->value)) {
+            if ($person->last_logout) {
                 $this->logout_date = $person->last_logout;
+            } else {
+                $this->value = null;
             }
-            else {
-                $this->value= NULL;
-            }
-        }
-        else {
-            $this->value =NULL;
+        } else {
+            $this->value = null;
         }
         return $this->value;
     }
 
     public function getQuerryAttributes()
     {
-        $a = array();
-        if($this->active) {
-            $name= $this->sql_querry_attribute
+        $a = [];
+        if ($this->active) {
+            $name = $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
                  : $this->id;
-            $a[$name]= $this->logout_date;
+            $a[$name] = $this->logout_date;
         }
         return $a;
     }
@@ -420,18 +385,18 @@ class ListFilter_last_logout extends ListFilter
 class ListFilter_today extends ListFilter
 {
     public $id = 'today';
-    public $today = NULL;
+    public $today = null;
 
-    public function initValue($value= NULL)
+    public function initValue($value = null)
     {
         parent::initValue($value);
 
         /**
         * get logout date and reset the value variable
         */
-        if(!$this->today) {
+        if (!$this->today) {
             $date = date('Y-m-d', time());
-            $dt = $date . " 00:00:01";
+            $dt = $date . ' 00:00:01';
             $this->today = $dt;
         }
 
@@ -440,36 +405,35 @@ class ListFilter_today extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
-        if($this->active) {
-            $name= $this->sql_querry_attribute
+        $a = [];
+        if ($this->active) {
+            $name = $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
                  : $this->id;
-            $a[$name]= $this->today;
+            $a[$name] = $this->today;
         }
         return $a;
     }
-
 }
 
 class ListFilter_min_week extends ListFilter
 {
     public $id = 'date_min';
-    public $min_date = NULL;
+    public $min_date = null;
     public $factor = 7;
 
-    public function initValue($value= NULL)
+    public function initValue($value = null)
     {
         parent::initValue($value);
 
         /**
         * get logout date and reset the value variable
         */
-        if(!$this->min_date) {
-            $date = date('Y-m-d', (time()-($this->factor*24*60*60)));
+        if (!$this->min_date) {
+            $date = date('Y-m-d', (time() - ($this->factor * 24 * 60 * 60)));
             $time = getGMTString();
             #$dt = $date . " " . renderTime($time);
-            $dt = $date . " 00:00:01";
+            $dt = $date . ' 00:00:01';
             $this->min_date = $dt;
         }
 
@@ -478,35 +442,34 @@ class ListFilter_min_week extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
-        if($this->active) {
-            $name= $this->sql_querry_attribute
+        $a = [];
+        if ($this->active) {
+            $name = $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
                  : $this->id;
-            $a[$name]= $this->min_date;
+            $a[$name] = $this->min_date;
         }
         return $a;
     }
-
 }
 
 class ListFilter_max_week extends ListFilter
 {
     public $id = 'date_max';
-    public $max_date = NULL;
-	public $factor = NULL;
-    public function initValue($value= NULL)
+    public $max_date = null;
+    public $factor = null;
+    public function initValue($value = null)
     {
         parent::initValue($value);
 
         /**
         * get logout date and reset the value variable
         */
-        if(!$this->max_date) {
-            $date = gmdate("Y-m-d", (time()-($this->factor*24*60*60)));
+        if (!$this->max_date) {
+            $date = gmdate('Y-m-d', (time() - ($this->factor * 24 * 60 * 60)));
             $time = getGMTString();
             #$dt = $date . " " . renderTime($time);
-            $dt = $date . " 23:59:59";
+            $dt = $date . ' 23:59:59';
             $this->max_date = $dt;
         }
         return $this->value;
@@ -514,12 +477,12 @@ class ListFilter_max_week extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
-        if($this->active) {
-            $name= $this->sql_querry_attribute
+        $a = [];
+        if ($this->active) {
+            $name = $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
                  : $this->id;
-            $a[$name]= $this->max_date;
+            $a[$name] = $this->max_date;
         }
         return $a;
     }
@@ -527,8 +490,8 @@ class ListFilter_max_week extends ListFilter
 
 class ListFilter_category extends ListFilter
 {
-    public $id          = 'category';
-    public function __construct($args=NULL)
+    public $id = 'category';
+    public function __construct($args = null)
     {
         parent::__construct($args);
         global $auth;
@@ -538,61 +501,53 @@ class ListFilter_category extends ListFilter
 
 class ListFilter_category_in extends ListFilter
 {
-    public $id          = 'category_in';
-    public function __construct($args=NULL)
+    public $id = 'category_in';
+    public function __construct($args = null)
     {
         parent::__construct($args);
         global $auth;
-        $this->default = array(0);
+        $this->default = [0];
     }
 }
 
 class ListFilter_not_older extends ListFilter
 {
-    public $id          = 'not_older';
+    public $id = 'not_older';
     public $sql_querry_attribute = 'date_min';
-
 
     public function getQuerryAttributes()
     {
-        $a=array();
-        if($this->active) {
-            if($this->value) {
-                $a['date_min'] = getGMTString( (time() - $this->value));
+        $a = [];
+        if ($this->active) {
+            if ($this->value) {
+                $a['date_min'] = getGMTString((time() - $this->value));
             }
         }
         return $a;
     }
 
-
     public function render()
     {
-
-        if($this->active && !$this->hidden) {
-            if($this->value / 60/60/24 < 1) {
+        if ($this->active && !$this->hidden) {
+            if ($this->value / 60 / 60 / 24 < 1) {
                 return __('changed today');
-            }
-            else if($this->value / 60/60/24 < 2){
+            } elseif ($this->value / 60 / 60 / 24 < 2) {
                 return __('changed since yesterday');
-            }
-            else if($this->value / 60/60/24 < 14){
-                return sprintf(__('changed since <b>%d days</b>'), $this->value / 60/60/24);
-            }
-            else {
-                return sprintf(__('changed since <b>%d weeks</b>'), $this->value / 60/60/24/7);
+            } elseif ($this->value / 60 / 60 / 24 < 14) {
+                return sprintf(__('changed since <b>%d days</b>'), $this->value / 60 / 60 / 24);
+            } else {
+                return sprintf(__('changed since <b>%d weeks</b>'), $this->value / 60 / 60 / 24 / 7);
             }
         }
         return '';
     }
 }
 
-
-
 class ListFilter_modified_by extends ListFilter
 {
-    public $id          = 'modified_by';
+    public $id = 'modified_by';
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
         global $auth;
@@ -600,13 +555,11 @@ class ListFilter_modified_by extends ListFilter
     }
 }
 
-
-
 class ListFilter_not_modified_by extends ListFilter
 {
-    public $id          = 'not_modified_by';
+    public $id = 'not_modified_by';
 
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
         global $auth;
@@ -616,16 +569,15 @@ class ListFilter_not_modified_by extends ListFilter
 
 class ListFilter_person_category_min extends ListFilter
 {
-    public $id          = 'pcategory_min';
-    public $default     = PCATEGORY_UNDEFINED;
+    public $id = 'pcategory_min';
+    public $default = PCATEGORY_UNDEFINED;
 
     public function render()
     {
         global $g_pcategory_names;
 
-        if($this->active && !$this->hidden) {
-
-            $min=   isset($g_pcategory_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $min = isset($g_pcategory_names[$this->value])
                         ? $g_pcategory_names[$this->value]
                         : '';
 
@@ -635,19 +587,17 @@ class ListFilter_person_category_min extends ListFilter
     }
 }
 
-
 class ListFilter_person_category_max extends ListFilter
 {
-    public $id          = 'pcategory_max';
-    public $default     = PCATEGORY_PARTNER;
+    public $id = 'pcategory_max';
+    public $default = PCATEGORY_PARTNER;
 
     public function render()
     {
         global $g_pcategory_names;
 
-        if($this->active && !$this->hidden) {
-
-            $max=   isset($g_pcategory_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $max = isset($g_pcategory_names[$this->value])
                         ? $g_pcategory_names[$this->value]
                         : '';
 
@@ -663,14 +613,14 @@ class ListFilter_can_login extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
-        if($this->active) {
-            $name= $this->sql_querry_attribute
+        $a = [];
+        if ($this->active) {
+            $name = $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
                  : $this->id;
-			if(!is_null($this->value)){
-            	$a['can_login']= $this->value;
-			}
+            if (!is_null($this->value)) {
+                $a['can_login'] = $this->value;
+            }
         }
         return $a;
     }
@@ -682,14 +632,14 @@ class ListFilter_is_alive extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
-        if($this->active) {
-            $name= $this->sql_querry_attribute
+        $a = [];
+        if ($this->active) {
+            $name = $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
                  : $this->id;
-			if(!is_null($this->value)){
-            	$a['is_alive']= $this->value;
-			}
+            if (!is_null($this->value)) {
+                $a['is_alive'] = $this->value;
+            }
         }
         return $a;
     }
@@ -697,16 +647,15 @@ class ListFilter_is_alive extends ListFilter
 
 class ListFilter_company_category_min extends ListFilter
 {
-    public $id          = 'ccategory_min';
-    public $default     = CCATEGORY_UNDEFINED;
+    public $id = 'ccategory_min';
+    public $default = CCATEGORY_UNDEFINED;
 
     public function render()
     {
         global $g_ccategory_names;
 
-        if($this->active && !$this->hidden) {
-
-            $min=   isset($g_ccategory_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $min = isset($g_ccategory_names[$this->value])
                         ? $g_ccategory_names[$this->value]
                         : '';
 
@@ -716,19 +665,17 @@ class ListFilter_company_category_min extends ListFilter
     }
 }
 
-
 class ListFilter_company_category_max extends ListFilter
 {
-    public $id          = 'ccategory_max';
-    public $default     = CCATEGORY_PARTNER;
+    public $id = 'ccategory_max';
+    public $default = CCATEGORY_PARTNER;
 
     public function render()
     {
         global $g_ccategory_names;
 
-        if($this->active && !$this->hidden) {
-
-            $max=   isset($g_ccategory_names[$this->value])
+        if ($this->active && !$this->hidden) {
+            $max = isset($g_ccategory_names[$this->value])
                         ? $g_ccategory_names[$this->value]
                         : '';
 
@@ -749,26 +696,24 @@ class BlockFunction_grouping extends BlockFunction
     public $active_grouping_key;         # id of the active grouping (don't confuse with BlockFunctions active-flag)
     public $active_grouping_obj;
 
-    public function __construct($args) {
+    public function __construct($args)
+    {
         parent::__construct($args);
         #if(!$this->active) {
         #    $this->active= $this->getActiveFromCookie();
         #}
     }
 
-
     public function render()
     {
-        $buffer="";
-        if($this->active) {
-            $buffer= "<span class=active><a href='$this->url'>" . asHtml($this->name) . "</a></span>";
-            $buffer.= $this->renderGroupingSelection();
-        }
-        else {
-            $buffer= "<span><a href='$this->url'>" . asHtml($this->name) . "</a></span>";
+        $buffer = '';
+        if ($this->active) {
+            $buffer = "<span class=active><a href='$this->url'>" . asHtml($this->name) . '</a></span>';
+            $buffer .= $this->renderGroupingSelection();
+        } else {
+            $buffer = "<span><a href='$this->url'>" . asHtml($this->name) . '</a></span>';
         }
         return $buffer;
-
     }
 
     /**
@@ -781,57 +726,53 @@ class BlockFunction_grouping extends BlockFunction
     public function renderGroupingSelection()
     {
         global $PH;
-        if(!$this->groupings) {
+        if (!$this->groupings) {
             return;
         }
-        $name_select= "style_grouping";
+        $name_select = 'style_grouping';
         $buffer = "\n\n\r<select name='style_grouping' onChange=\"javascript:window.location=(document.my_form.{$name_select}.options[document.my_form.{$name_select}.selectedIndex].value);\">";
 
         $this->getActiveFromCookie();
 
-        foreach($this->groupings as $g) {
-            $url= $PH->getUrl('changeBlockGrouping',array(
-                'block_id'  => $this->parent_block->id,
-                'page_id'   => $PH->cur_page->id,
-                'grouping'  => $g->id,
-            ));
+        foreach ($this->groupings as $g) {
+            $url = $PH->getUrl('changeBlockGrouping', [
+                'block_id' => $this->parent_block->id,
+                'page_id' => $PH->cur_page->id,
+                'grouping' => $g->id,
+            ]);
 
-            if($g->id == $this->active_grouping_key) {
-                $selected= 'selected';
+            if ($g->id == $this->active_grouping_key) {
+                $selected = 'selected';
+            } else {
+                $selected = '';
             }
-            else {
-                $selected= '';
-            }
 
-
-            $buffer.="\n<option $selected value='$url'>$g->name</option>";
+            $buffer .= "\n<option $selected value='$url'>$g->name</option>";
         }
-        $buffer.="\n</select>";
+        $buffer .= "\n</select>";
 
         return $buffer;
     }
 
-
-
     /**
     * get the current block-style from cookie
     */
-    function getActiveFromCookie()
+    public function getActiveFromCookie()
     {
         global $PH;
-        if(!$this->parent_block) {
-            trigger_error("getActiveFromCookie requires parent_block to be set", E_USER_WARNING);
+        if (!$this->parent_block) {
+            trigger_error('getActiveFromCookie requires parent_block to be set', E_USER_WARNING);
         }
 
         /**
         * get from cookie?
         */
-        if($key= get("blockstyle_{$PH->cur_page->id}_{$this->parent_block->id}_grouping")) {
+        if ($key = get("blockstyle_{$PH->cur_page->id}_{$this->parent_block->id}_grouping")) {
             $this->active_grouping_key = $key;
-            $obj=NULL;
-            foreach($this->groupings as $g) {
-                if($g->id == $key) {
-                    $obj= $g;
+            $obj = null;
+            foreach ($this->groupings as $g) {
+                if ($g->id == $key) {
+                    $obj = $g;
                     break;
                 }
             }
@@ -841,22 +782,17 @@ class BlockFunction_grouping extends BlockFunction
 
         /**
         * return first grouping as default-setting...
-        */
-        else {
-            if($this->groupings) {
-                $this->active_grouping_key= $this->groupings[0]->id;
-                $this->active_grouping_obj= $this->groupings[0];
+        */ else {
+            if ($this->groupings) {
+                $this->active_grouping_key = $this->groupings[0]->id;
+                $this->active_grouping_obj = $this->groupings[0];
                 return $this->active_grouping_key;
-            }
-            else {
-                return NULL;
+            } else {
+                return null;
             }
         }
     }
 }
-
-
-
 
 /**
 * grouping for BlockFunction_grouping
@@ -867,14 +803,15 @@ class ListGrouping extends BaseObject
     public $id;                         # id inside html-struction (for icons)
     public $key;
     public $sql_filter;                 # string which ()
-    public $locked=false;               # if true, can't be removed
-    public $hidden=false;               # if true no visible
+    public $locked = false;               # if true, can't be removed
+    public $hidden = false;               # if true no visible
     public $order_key;
 
-    public function __construct($args) {
+    public function __construct($args)
+    {
         parent::__construct($args);
-        if(!$this->id) {
-            trigger_error("ListGroupings requires id", E_USER_WARNING);
+        if (!$this->id) {
+            trigger_error('ListGroupings requires id', E_USER_WARNING);
             return;
         }
 
@@ -882,14 +819,14 @@ class ListGrouping extends BaseObject
         * NOTE: automatical init of name is not good, because
         * it can't be internationalized
         */
-        if(!$this->name) {
+        if (!$this->name) {
             $this->name = $this->id;
         }
-        if(!$this->key) {
-            $this->key= $this->id;
+        if (!$this->key) {
+            $this->key = $this->id;
         }
-        if(!$this->order_key) {
-            $this->order_key= $this->id;
+        if (!$this->order_key) {
+            $this->order_key = $this->id;
         }
     }
 
@@ -898,24 +835,20 @@ class ListGrouping extends BaseObject
     */
     public function render(&$item)
     {
-        $k= $this->key;
-        if(isset($item->$k)) {
+        $k = $this->key;
+        if (isset($item->$k)) {
             return $item->$k;
-        }
-        else {
-            trigger_error("grouping for what?",E_USER_NOTICE);
-            return "---";
+        } else {
+            trigger_error('grouping for what?', E_USER_NOTICE);
+            return '---';
         }
     }
 }
 
-
-
-
 class ListGroupingStatus extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
+    public function __construct($args = null)
+    {
         $this->id = 'status';
         parent::__construct($args);
     }
@@ -925,21 +858,20 @@ class ListGroupingStatus extends ListGrouping
     */
     public function render(&$item)
     {
-        if(isset($item->status)) {
+        if (isset($item->status)) {
             global $g_status_names;
             return $g_status_names[$item->status];
-        }
-        else {
-            trigger_error("can't group for status",E_USER_NOTICE);
-            return "---";
+        } else {
+            trigger_error("can't group for status", E_USER_NOTICE);
+            return '---';
         }
     }
 }
 
 class ListGroupingEffortStatus extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
+    public function __construct($args = null)
+    {
         $this->id = 'status';
         parent::__construct($args);
     }
@@ -949,24 +881,20 @@ class ListGroupingEffortStatus extends ListGrouping
     */
     public function render(&$item)
     {
-        if(isset($item->status)) {
+        if (isset($item->status)) {
             global $g_effort_status_names;
             return $g_effort_status_names[$item->status];
-        }
-        else {
-            trigger_error("can't group for status",E_USER_NOTICE);
-            return "---";
+        } else {
+            trigger_error("can't group for status", E_USER_NOTICE);
+            return '---';
         }
     }
 }
 
-
-
-
 class ListGroupingPrio extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
+    public function __construct($args = null)
+    {
         $this->id = 'prio';
         parent::__construct($args);
     }
@@ -976,23 +904,21 @@ class ListGroupingPrio extends ListGrouping
     */
     public function render(&$item)
     {
-        if(isset($item->prio)) {
+        if (isset($item->prio)) {
             global $g_prio_names;
-            return "<img src=\"". getThemeFile("img/prio_{$item->prio}.png") . "\">&nbsp;"
-                  .$g_prio_names[$item->prio];
-        }
-        else {
-            trigger_error("can't group for prio",E_USER_NOTICE);
-            return "---";
+            return '<img src="' . getThemeFile("img/prio_{$item->prio}.png") . '">&nbsp;'
+                  . $g_prio_names[$item->prio];
+        } else {
+            trigger_error("can't group for prio", E_USER_NOTICE);
+            return '---';
         }
     }
 }
 
-
 class ListGroupingCreatedBy extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
+    public function __construct($args = null)
+    {
         $this->id = 'created_by';
         parent::__construct($args);
     }
@@ -1002,12 +928,11 @@ class ListGroupingCreatedBy extends ListGrouping
     */
     public function render(&$item)
     {
-        require_once(confGet('DIR_STREBER') . "db/class_person.inc.php");
-        if($person= Person::getVisibleById($item->created_by)) {
-            $name= sprintf(__("created by %s"), $person->getLink());
-        }
-        else {
-            $name=__("created by unknown");
+        require_once(confGet('DIR_STREBER') . 'db/class_person.inc.php');
+        if ($person = Person::getVisibleById($item->created_by)) {
+            $name = sprintf(__('created by %s'), $person->getLink());
+        } else {
+            $name = __('created by unknown');
         }
         return $name;
     }
@@ -1015,9 +940,9 @@ class ListGroupingCreatedBy extends ListGrouping
 
 class ListGroupingProject extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
-        $this->id       = 'project';    # used get set cookie and hide columns
+    public function __construct($args = null)
+    {
+        $this->id = 'project';    # used get set cookie and hide columns
         $this->order_key = 'i.project';  # used to construct sql order string
         parent::__construct($args);
     }
@@ -1027,22 +952,20 @@ class ListGroupingProject extends ListGrouping
     */
     public function render(&$item)
     {
-        require_once(confGet('DIR_STREBER') . "db/class_project.inc.php");
-        if($project= Project::getVisibleById($item->project)) {
-            $name= sprintf($project->getLink());
-        }
-        else {
-            $name= "???";
+        require_once(confGet('DIR_STREBER') . 'db/class_project.inc.php');
+        if ($project = Project::getVisibleById($item->project)) {
+            $name = sprintf($project->getLink());
+        } else {
+            $name = '???';
         }
         return $name;
     }
 }
 
-
 class ListGroupingTask extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
+    public function __construct($args = null)
+    {
         $this->id = 'task';
         parent::__construct($args);
     }
@@ -1052,22 +975,20 @@ class ListGroupingTask extends ListGrouping
     */
     public function render(&$item)
     {
-        require_once(confGet('DIR_STREBER') . "db/class_task.inc.php");
-        if($task = Task::getVisibleById($item->task)){
+        require_once(confGet('DIR_STREBER') . 'db/class_task.inc.php');
+        if ($task = Task::getVisibleById($item->task)) {
             $name = $task->name;
-        }
-        else{
-            $name=__("unknown");
+        } else {
+            $name = __('unknown');
         }
         return $name;
     }
 }
 
-
 class ListGroupingModifiedBy extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
+    public function __construct($args = null)
+    {
         $this->id = 'modified_by';
         parent::__construct($args);
     }
@@ -1077,22 +998,20 @@ class ListGroupingModifiedBy extends ListGrouping
     */
     public function render(&$item)
     {
-        require_once(confGet('DIR_STREBER') . "db/class_person.inc.php");
-        if($person= Person::getVisibleById($item->modified_by)) {
-            $name= sprintf(__("modified by %s"), $person->getLink());
-        }
-        else {
-            $name=__("modified by unknown");
+        require_once(confGet('DIR_STREBER') . 'db/class_person.inc.php');
+        if ($person = Person::getVisibleById($item->modified_by)) {
+            $name = sprintf(__('modified by %s'), $person->getLink());
+        } else {
+            $name = __('modified by unknown');
         }
         return $name;
     }
 }
 
-
 class ListGroupingItemType extends ListGrouping
 {
-
-    public function __construct($args=NULL) {
+    public function __construct($args = null)
+    {
         $this->id = 'type';
         parent::__construct($args);
     }
@@ -1104,16 +1023,14 @@ class ListGroupingItemType extends ListGrouping
     {
         global $g_item_type_names;
 
-        if(!$typename= $g_item_type_names[$item->type]) {
-            trigger_error(sprintf(__("item #%s has undefined type"), $item->id),E_USER_NOTICE);
-            $typename="?";
+        if (!$typename = $g_item_type_names[$item->type]) {
+            trigger_error(sprintf(__('item #%s has undefined type'), $item->id), E_USER_NOTICE);
+            $typename = '?';
         }
 
         return $typename;
     }
 }
-
-
 
 /**
 * list-functions provide ways of manipulating entries of a list (like add/edit/delete).
@@ -1137,30 +1054,29 @@ class ListGroupingItemType extends ListGrouping
 *
 * @usedby   ListBlock
 */
-class ListFunction {
+class ListFunction
+{
     public $target;                     # link-target
-    public $active_for_single=true;
-    public $active_for_multiple=true;
-    public $active_always=false;        #
+    public $active_for_single = true;
+    public $active_for_multiple = true;
+    public $active_always = false;        #
     public $name;                       # name/Tootip
     public $id;                         # id inside html-struction (for icons)
     public $icon;                       # name of function icon
     public $label;                      # label instead of icon
     public $parent_block;
     public $tooltip;
-    public $context_menu=false;         # show in context-menus
-    public $dropdown_menu=true;         # show in dropdown
+    public $context_menu = false;         # show in context-menus
+    public $dropdown_menu = true;         # show in dropdown
 
-
-
-    public function __construct($args=NULL)
+    public function __construct($args = null)
     {
-        foreach($args as $key=>$value) {
+        foreach ($args as $key => $value) {
             is_null($this->$key);   # cause E_NOTICE if member not defined
-            $this->$key=$value;
+            $this->$key = $value;
         }
-        if(!$this->target || !$this->id || !$this->name) {
-            trigger_error("ListFunctions require name,id, and target",E_USER_ERROR);
+        if (!$this->target || !$this->id || !$this->name) {
+            trigger_error('ListFunctions require name,id, and target', E_USER_ERROR);
         }
 
         ### add to dropdown-menu ? ###
@@ -1169,14 +1085,13 @@ class ListFunction {
         #}
     }
 
-    public function __set($name,$value)
+    public function __set($name, $value)
     {
-        if($this->$name) {
-            $this->$name= $value;
-        }
-        else {
-            trigger_error("setting undefined attribute '$name' of list function  to '$value'",E_USER_WARNING);
-            $this->$name= $value;
+        if ($this->$name) {
+            $this->$name = $value;
+        } else {
+            trigger_error("setting undefined attribute '$name' of list function  to '$value'", E_USER_WARNING);
+            $this->$name = $value;
         }
     }
 }
@@ -1219,103 +1134,99 @@ class ListFunction {
 */
 class ListBlock extends PageBlock
 {
-    public $columns         = array();
-    public $functions       = array();
-    public $query_options   = array();      # options passed to database-query functions (filtering, sorting, etc)
+    public $columns = [];
+    public $functions = [];
+    public $query_options = [];      # options passed to database-query functions (filtering, sorting, etc)
 
-    public $row_count       = 0;
-    public $show_functions  = false;        # is set true, when adding functions without icon
-    public $show_pages      = false;
-    public $show_items      = false;
-    public $show_icons      = false;
-    public $show_footer     = true;
-    public $show_summary    = true;
+    public $row_count = 0;
+    public $show_functions = false;        # is set true, when adding functions without icon
+    public $show_pages = false;
+    public $show_items = false;
+    public $show_icons = false;
+    public $show_footer = true;
+    public $show_summary = true;
     public $summary;
-    public $footer_links    = array();      # additional http-fragments in footer (e.g. export links)
-    public $no_items_html   = '';           # should be overwritten by 'create first link'
+    public $footer_links = [];      # additional http-fragments in footer (e.g. export links)
+    public $no_items_html = '';           # should be overwritten by 'create first link'
     public $groupings;                      # list of BlockFunction_grouping
     public $active_grouping_key;            #
-    public $group_by        = 'status';
+    public $group_by = 'status';
     public $class;
 
     //=== constructor ================================================
-    function __construct($args=NULL)
+    public function __construct($args = null)
     {
         parent::__construct($args);
     }
-    
+
     public function render_header()
     {
-        $str_selectable= isset($this->columns['_select_col_'])
+        $str_selectable = isset($this->columns['_select_col_'])
                         ? 'selectable'
                         : '';
         parent::render_blockStart();
         #--- start table (needs to be closed later)
         echo "<div class=table_container><table cellpadding=0 cellspacing=0 id=$this->id class='list $this->class $str_selectable'"
-        .">"; # required by Safari  & IE 5.2 MAC)
+        . '>'; # required by Safari  & IE 5.2 MAC)
     }
 
-    function render_thead() {
-        echo "<thead>";
-        echo "<tr>";
-    
-        foreach($this->columns as $c) {
+    public function render_thead()
+    {
+        echo '<thead>';
+        echo '<tr>';
+
+        foreach ($this->columns as $c) {
             $c->render_th();
         }
-        echo "</tr>";
+        echo '</tr>';
         echo "</thead>\n";
     }
 
-
-    function render_trow($obj, $style='')
+    public function render_trow($obj, $style = '')
     {
         global $auth;
 
         $this->row_count++;
-        $oddeven =($this->row_count %2)
-                 ? "odd"
-                 : "even";
+        $oddeven = ($this->row_count % 2)
+                 ? 'odd'
+                 : 'even';
 
-        $style.= " ".$oddeven;
+        $style .= ' ' . $oddeven;
 
-        if(isset($obj->pub_level)) {
-            $level=$obj->pub_level;
+        if (isset($obj->pub_level)) {
+            $level = $obj->pub_level;
             global $g_pub_level_names;
-            $style.=" pub_".$g_pub_level_names[$level];
+            $style .= ' pub_' . $g_pub_level_names[$level];
         }
 
-
-        if(isset($this->id) && isset($obj->id)) {
-            if( $obj->isChangedForUser() ) {
+        if (isset($this->id) && isset($obj->id)) {
+            if ($obj->isChangedForUser()) {
                 echo "<tr class='$style changed'>";
-            }
-            else {
+            } else {
                 echo "<tr class='$style'>";
             }
-        }
-        else {
+        } else {
             echo "<tr class='$style'>";
         }
 
-        foreach($this->columns as $c) {
+        foreach ($this->columns as $c) {
             $c->render_tr($obj);
         }
         echo "</tr>\n";
     }
 
-
-    function render_tfoot()
+    public function render_tfoot()
     {
         global $PH;
         echo '</table>';
         echo '</div>';  #close table container
     }
-    
+
     /**
     * overwrites block function
     * called by render_blockEnd()
     */
-    function render_blockFooter() 
+    public function render_blockFooter()
     {
         global $PH;
         #echo "x6</div>x7";  #close block_content
@@ -1323,76 +1234,73 @@ class ListBlock extends PageBlock
 
         #--- footer extras ----
 
-        $context_menu_def="";
-        $context_menu_rows="";
+        $context_menu_def = '';
+        $context_menu_rows = '';
 
-        if($this->show_footer && ($this->show_pages || $this->show_functions || $this->show_icons)) {
-            echo "<div class=block_footer>";
+        if ($this->show_footer && ($this->show_pages || $this->show_functions || $this->show_icons)) {
+            echo '<div class=block_footer>';
 
             #--- icons --------
-            if($this->show_icons && $this->functions) {
-                echo "<span class=icons>";
-                foreach($this->functions as $f) {
-                    if($f->icon) {
-
-                        $tooltip=$f->tooltip
+            if ($this->show_icons && $this->functions) {
+                echo '<span class=icons>';
+                foreach ($this->functions as $f) {
+                    if ($f->icon) {
+                        $tooltip = $f->tooltip
                             ? "title='" . asHtml($f->tooltip) . "'"
-                            : "title='" . asHtml($f->name)    . "'";
-                        echo "<a $tooltip href=\"javascript:document.my_form.go.value='$f->target';document.my_form.submit();\"><img src='". getThemeFile('icons/' . $f->icon . ".gif") . "'></a>";
-                    }
-                    else{
-                        echo "&nbsp;";
+                            : "title='" . asHtml($f->name) . "'";
+                        echo "<a $tooltip href=\"javascript:document.my_form.go.value='$f->target';document.my_form.submit();\"><img src='" . getThemeFile('icons/' . $f->icon . '.gif') . "'></a>";
+                    } else {
+                        echo '&nbsp;';
                     }
                 }
-                echo "</span>";
+                echo '</span>';
             }
 
             #--- text-labels --------
-            if(!$this->show_icons && $this->functions) {
-                echo "<span class=list_functions>";
-                foreach($this->functions as $f) {
-                    if($f->label) {
-
-                        $tooltip=$f->tooltip
+            if (!$this->show_icons && $this->functions) {
+                echo '<span class=list_functions>';
+                foreach ($this->functions as $f) {
+                    if ($f->label) {
+                        $tooltip = $f->tooltip
                             ? "title='" . asHtml($f->tooltip) . "'"
-                            : "title='" . asHtml($f->name)    . "'";
-                        echo "<a $tooltip href=\"javascript:document.my_form.go.value='$f->target';document.my_form.submit();\">" . asHtml($f->label) . "</a>";
+                            : "title='" . asHtml($f->name) . "'";
+                        echo "<a $tooltip href=\"javascript:document.my_form.go.value='$f->target';document.my_form.submit();\">" . asHtml($f->label) . '</a>';
                     }
                 }
-                echo "</span>";
+                echo '</span>';
             }
 
             #--- menu ------------------
-            if($this->show_functions && $this->functions && $this->show_icons) {
-                $name_select= "select_". $this->id;
-                $flag_visible= false;                       # only show if contains at least one function
+            if ($this->show_functions && $this->functions && $this->show_icons) {
+                $name_select = 'select_' . $this->id;
+                $flag_visible = false;                       # only show if contains at least one function
 
-                $buffer="";
+                $buffer = '';
 
-                $buffer.= "<span class=functions>";
-                $buffer.= "";
-                $buffer.= "<select class=menu name='$name_select' size=1 onChange=\"javascript:document.my_form.go.value=document.my_form.$name_select.options[document.my_form.$name_select.selectedIndex].value;document.my_form.submit();\">";
-                $buffer.= "<option value='home' selected>" . __("do...") . "</option>";
-                foreach($this->functions as $f) {
-                    if(!$f->icon) {
-                        $buffer.= "<option value='$f->target'>$f->name</option>";
-                        $flag_visible= true;
+                $buffer .= '<span class=functions>';
+                $buffer .= '';
+                $buffer .= "<select class=menu name='$name_select' size=1 onChange=\"javascript:document.my_form.go.value=document.my_form.$name_select.options[document.my_form.$name_select.selectedIndex].value;document.my_form.submit();\">";
+                $buffer .= "<option value='home' selected>" . __('do...') . '</option>';
+                foreach ($this->functions as $f) {
+                    if (!$f->icon) {
+                        $buffer .= "<option value='$f->target'>$f->name</option>";
+                        $flag_visible = true;
                     }
                 }
-                $buffer.= "</select>";
-                $buffer.= "</span>";
-                if($flag_visible) {
+                $buffer .= '</select>';
+                $buffer .= '</span>';
+                if ($flag_visible) {
                     echo $buffer;
                 }
             }
 
             #--- footerlinks -----------
-            if($this->footer_links) {
+            if ($this->footer_links) {
                 echo "<span class='links'>";
-                foreach($this->footer_links as $fl) {
+                foreach ($this->footer_links as $fl) {
                     echo $fl;
                 }
-                echo "</span>";
+                echo '</span>';
             }
 
             #--- summary --------------------
@@ -1402,24 +1310,22 @@ class ListBlock extends PageBlock
             #    echo "<span class=items>20 of 234&nbsp;&nbsp;&nbsp;</span>";
             #    echo "<span class=pages>  Page 1 2 3 4</span>";
             #}
-            echo "</div><!-- end list footer-->";
+            echo '</div><!-- end list footer-->';
         }
 
         #--- context menu ------------
         {
-
-            foreach($this->functions as $f) {
-                if($f->context_menu) {
-                    $context_menu_def.="{type:'submit', name:'$f->name',   go:'$f->target'},\n";
-                    $context_menu_rows.="<tr><td class=menuItem>$f->name</td></tr>\n";
+            foreach ($this->functions as $f) {
+                if ($f->context_menu) {
+                    $context_menu_def .= "{type:'submit', name:'$f->name',   go:'$f->target'},\n";
+                    $context_menu_rows .= "<tr><td class=menuItem>$f->name</td></tr>\n";
                 }
             }
         }
         #parent::render_blockEnd();
 
         #--- write context-menu-definition -------------
-        if($context_menu_def) {
-
+        if ($context_menu_def) {
             echo "<script  type='text/javascript'>
                     cMenu.menus['$this->id']=
                     {   menuID:'contextMenu_{$this->id}',
@@ -1428,24 +1334,24 @@ class ListBlock extends PageBlock
                     ] };</script>";
 
             echo "\n<div id='contextMenu_{$this->id}' class='contextMenus' onclick='hideContextMenus( )'"
-                ." onmouseup='execMenu(event)' onmouseover='toggleHighlight(event)'"
-                ." onmouseout='toggleHighlight(event)' style='display:none'>"
-                ."<table><tbody>"
-                .$context_menu_rows
-                ."</tbody></table>"
-                ."</div> <!-- end context-menu-->";
+                . " onmouseup='execMenu(event)' onmouseover='toggleHighlight(event)'"
+                . " onmouseout='toggleHighlight(event)' style='display:none'>"
+                . '<table><tbody>'
+                . $context_menu_rows
+                . '</tbody></table>'
+                . '</div> <!-- end context-menu-->';
         }
     }
-
 
     /**
     * if no items to show, display alternative content
     */
-    public function render_tfoot_empty() {
+    public function render_tfoot_empty()
+    {
         echo "</table></div></div><div class=empty>{$this->no_items_html}"
-            ."</div>"
-            ."</div>"
-            ."</div>";
+            . '</div>'
+            . '</div>'
+            . '</div>';
     }
 
     /**
@@ -1453,9 +1359,9 @@ class ListBlock extends PageBlock
     *
     * @@@this should RETURN as string not PRINT one
     */
-    public function render_list( &$list=NULL )
+    public function render_list(&$list = null)
     {
-        switch($this->page->format){
+        switch ($this->page->format) {
             case FORMAT_CSV:
                 $this->renderListCsv($list);
                 break;
@@ -1468,18 +1374,18 @@ class ListBlock extends PageBlock
     /*
     *format=csv*
     */
-    function renderListCsv( $list=NULL )
+    public function renderListCsv($list = null)
     {
-        if(!count($list)){
+        if (!count($list)) {
             return;
         }
 
         ## header ##
-        $ids = array();
+        $ids = [];
         $count = 0;
-        foreach($list[0]->fields as $field_name => $field){
-            if($field->export) {
-                switch($field->type){
+        foreach ($list[0]->fields as $field_name => $field) {
+            if ($field->export) {
+                switch ($field->type) {
                     case 'FieldString':
                     case 'FieldInt':
                     case 'FieldDatetime':
@@ -1493,16 +1399,13 @@ class ListBlock extends PageBlock
                         if ($field_name == 'task') {
                             $ids[] = 'task_id';
                             $ids[] = 'task_name';
-                        }
-                        else if ($field_name == 'person') {
+                        } elseif ($field_name == 'person') {
                             $ids[] = 'person_id';
                             $ids[] = 'person_name';
-                        }
-                        else if ($field_name == 'project') {
+                        } elseif ($field_name == 'project') {
                             $ids[] = 'project_id';
                             $ids[] = 'project_name';
-                        }
-                        else {
+                        } else {
                             $ids[] = $field_name;
                         }
                         break;
@@ -1514,49 +1417,42 @@ class ListBlock extends PageBlock
         }
 
         ## list ##
-        $values = array();
-        foreach($list as $row){
-            foreach($list[0]->fields as $field_name => $field){
-                if($field->export) {
-                    switch($field->type){
+        $values = [];
+        foreach ($list as $row) {
+            foreach ($list[0]->fields as $field_name => $field) {
+                if ($field->export) {
+                    switch ($field->type) {
                         case 'FieldText':
                         case 'FieldString':
                             $values[] = $this->cleanForCSV($row->$field_name);
                             break;
-                        
+
                         case 'FieldInternal':
                             if ($field_name == 'task') {
                                 $values[] = $row->$field_name;
-                                if($task = Task::getVisibleById($row->$field_name)) {
+                                if ($task = Task::getVisibleById($row->$field_name)) {
                                     $values[] = $this->cleanForCSV($task->name);
-                                }
-                                else {
+                                } else {
                                     $values[] = '';
                                 }
-                            }
-                            else if ($field_name == 'person') {
+                            } elseif ($field_name == 'person') {
                                 $values[] = $row->$field_name;
-                                if($person = Person::getVisibleById($row->$field_name)) {
+                                if ($person = Person::getVisibleById($row->$field_name)) {
                                     $values[] = $this->cleanForCSV($person->name);
-                                }
-                                else {
+                                } else {
                                     $values[] = '-';
                                 }
-                            }
-                            else if ($field_name == 'project') {
+                            } elseif ($field_name == 'project') {
                                 $values[] = $row->$field_name;
-                                if($project = Project::getVisibleById($row->$field_name)) {
+                                if ($project = Project::getVisibleById($row->$field_name)) {
                                     $values[] = $this->cleanForCSV($project->name);
-                                }
-                                else {
+                                } else {
                                     $values[] = '';
                                 }
-                            }
-                            else {
+                            } else {
                                 $values[] = $row->$field_name;
                             }
 
-                        
                             break;
 
                         case 'FieldInt':
@@ -1577,102 +1473,92 @@ class ListBlock extends PageBlock
         exportToCSV($ids, $values);
     }
 
-
-    private function cleanForCSV($value) {
-        if(!is_string($value)) {
+    private function cleanForCSV($value)
+    {
+        if (!is_string($value)) {
             return $value;
         }
-        
-        $value2 = preg_replace(array("/\n/si","/\r/si","/\t/si",'/"/',"/`/"),array("\n","","\t",'',""), $value);
+
+        $value2 = preg_replace(["/\n/si", "/\r/si", "/\t/si", '/"/', '/`/'], ["\n", '', "\t", '', ''], $value);
         $value2 = str_replace(';', ',', $value2);
-    
-        if($value2 != $value) {
-            $value2 = '"'. $value2 .'"';
+
+        if ($value2 != $value) {
+            $value2 = '"' . $value2 . '"';
         }
         return $value2;
     }
-
-
 
     /*
     *format=html*
     *render complete list-block automatically*
     */
-    function renderListHtml(&$list=NULL)
+    public function renderListHtml(&$list = null)
     {
-        if($list || !$this->no_items_html) {
+        if ($list || !$this->no_items_html) {
             $this->render_header();
 
-            if(!$this->reduced_header) {
-                $this->render_thead();                
+            if (!$this->reduced_header) {
+                $this->render_thead();
             }
-            
-            if($list) {
+
+            if ($list) {
                 ### grouping ###
-                if($this->groupings && $this->active_block_function == 'grouped' && $this->groupings->active_grouping_obj) {
-                    $last_group= NULL;
+                if ($this->groupings && $this->active_block_function == 'grouped' && $this->groupings->active_grouping_obj) {
+                    $last_group = null;
                     $gr = $this->groupings->active_grouping_key;
-					
-                    foreach($list as $e) {
-                        if($last_group != $e->$gr) {
-                            echo '<tr class=group><td colspan='. count($this->columns) .'>'. $this->groupings->active_grouping_obj->render($e).'</td></tr>';
+
+                    foreach ($list as $e) {
+                        if ($last_group != $e->$gr) {
+                            echo '<tr class=group><td colspan=' . count($this->columns) . '>' . $this->groupings->active_grouping_obj->render($e) . '</td></tr>';
                             $last_group = $e->$gr;
                         }
                         $this->render_trow($e);
                     }
-                }
-                else {
-                    foreach($list as $e) {
+                } else {
+                    foreach ($list as $e) {
                         $this->render_trow($e);
                     }
                 }
             }
             $this->render_tfoot();
-            parent::render_blockEnd();            
-        }
-        else {
+            parent::render_blockEnd();
+        } else {
             parent::render_blockStart();
             echo '<div class="no_content">';
             echo $this->no_items_html;
             echo '</div>';
             parent::render_blockEnd();
-            
+
             #$this->render_tfoot_empty();
         }
     }
 
-
-
-    function add_col(ListBlockCol $col)
+    public function add_col(ListBlockCol $col)
     {
-        if(!$col || !($col instanceof ListBlockCol)) {
-            trigger_error("add_col requires column-object", E_USER_WARNING);
+        if (!$col || !($col instanceof ListBlockCol)) {
+            trigger_error('add_col requires column-object', E_USER_WARNING);
         }
         $key = count($this->columns);
-        if(isset($col->id)) {
-            $key= $col->id;
+        if (isset($col->id)) {
+            $key = $col->id;
+        } elseif ($col->key) {
+            $key = $col->key;
+        } elseif (isset($col->id)) {
+            $key = strtolower($col->id);
         }
-        else if($col->key) {
-            $key= $col->key;
-        }
-        else if(isset($col->id)){
-            $key= strtolower($col->id);
-        }
-        $this->columns[$key]=$col;
-        $col->parent_block= $this;
+        $this->columns[$key] = $col;
+        $col->parent_block = $this;
     }
-
 
     /**
     * add a function to the list as icon, menu or context-menus
     */
-    function add_function(ListFunction $fn)
+    public function add_function(ListFunction $fn)
     {
         global $PH;
 
         ### cancel, if not enough rights ###
-        if(!$PH->getValidPageId($fn->target)) {
-
+        if (!$PH->getValidPageId($fn->target)) {
             /**
             * it's quiet common that the above statement returns NULL. Do not warn here
             */
@@ -1680,41 +1566,37 @@ class ListBlock extends PageBlock
             return;
         }
 
-
-        $key=count($this->functions);
-        if(isset($fn->target)) {
-            $key= $fn->target;
+        $key = count($this->functions);
+        if (isset($fn->target)) {
+            $key = $fn->target;
         }
-        if(isset($fn->id)){
-            $key= $fn->id;
+        if (isset($fn->id)) {
+            $key = $fn->id;
         }
 
         ### be sure it's hidden in dropdown_menu ###
-        if($fn->dropdown_menu == false && $fn->icon) {
-            $fn->icon=NULL;
+        if ($fn->dropdown_menu == false && $fn->icon) {
+            $fn->icon = null;
         }
-
 
         ### already defined? ###
-        if(isset($this->functions[$key])) {
+        if (isset($this->functions[$key])) {
             echo "overwriting function with id '$key'";
         }
-        $this->functions[$key]=$fn;
-        $fn->parent_block= $this;
-        if(!$fn->icon && $fn->dropdown_menu) {
-            $this->show_functions=true;                     # enable dropdown menu
-        }
-        else {
-            $this->show_icons=true;
+        $this->functions[$key] = $fn;
+        $fn->parent_block = $this;
+        if (!$fn->icon && $fn->dropdown_menu) {
+            $this->show_functions = true;                     # enable dropdown menu
+        } else {
+            $this->show_icons = true;
         }
     }
-
 
     public function getOrderByFromCookie()
     {
         global $PH;
-        $s_cookie= "sort_{$PH->cur_page->id}_{$this->id}_{$this->active_block_function}";
-        if($sort= get($s_cookie)) {
+        $s_cookie = "sort_{$PH->cur_page->id}_{$this->id}_{$this->active_block_function}";
+        if ($sort = get($s_cookie)) {
             return $sort;
         }
         return;
@@ -1723,16 +1605,12 @@ class ListBlock extends PageBlock
     /**
     * set the query_option for order with default value or from cookie
     */
-
-    public function initOrderQueryOption($default=NULL)
+    public function initOrderQueryOption($default = null)
     {
-        if($order= $this->getOrderByFromCookie()) {
-            $this->query_options['order_by']= $order;
-        }
-        else if($default) {
-            $this->query_options['order_by']= $default;
+        if ($order = $this->getOrderByFromCookie()) {
+            $this->query_options['order_by'] = $order;
+        } elseif ($default) {
+            $this->query_options['order_by'] = $default;
         }
     }
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Base include file for SimpleTest
  *  @package    SimpleTest
@@ -27,16 +28,18 @@ if (!defined('DEFAULT_MAX_NESTED_FRAMES')) {
  *    @package SimpleTest
  *    @subpackage WebTester
  */
-class SimpleBrowserHistory {
-    var $_sequence;
-    var $_position;
+class SimpleBrowserHistory
+{
+    public $_sequence;
+    public $_position;
 
     /**
      *    Starts empty.
      *    @access public
      */
-    function SimpleBrowserHistory() {
-        $this->_sequence = array();
+    public function SimpleBrowserHistory()
+    {
+        $this->_sequence = [];
         $this->_position = -1;
     }
 
@@ -45,8 +48,9 @@ class SimpleBrowserHistory {
      *    @return boolean        True if empty.
      *    @access private
      */
-    function _isEmpty() {
-        return ($this->_position == -1);
+    public function _isEmpty()
+    {
+        return $this->_position == -1;
     }
 
     /**
@@ -54,8 +58,9 @@ class SimpleBrowserHistory {
      *    @return boolean        True if first.
      *    @access private
      */
-    function _atBeginning() {
-        return ($this->_position == 0) && ! $this->_isEmpty();
+    public function _atBeginning()
+    {
+        return ($this->_position == 0) && !$this->_isEmpty();
     }
 
     /**
@@ -63,8 +68,9 @@ class SimpleBrowserHistory {
      *    @return boolean        True if last.
      *    @access private
      */
-    function _atEnd() {
-        return ($this->_position + 1 >= count($this->_sequence)) && ! $this->_isEmpty();
+    public function _atEnd()
+    {
+        return ($this->_position + 1 >= count($this->_sequence)) && !$this->_isEmpty();
     }
 
     /**
@@ -73,11 +79,13 @@ class SimpleBrowserHistory {
      *    @param SimpleEncoding $parameters     Any post data with the fetch.
      *    @access public
      */
-    function recordEntry($url, $parameters) {
+    public function recordEntry($url, $parameters)
+    {
         $this->_dropFuture();
         array_push(
-                $this->_sequence,
-                array('url' => $url, 'parameters' => $parameters));
+            $this->_sequence,
+            ['url' => $url, 'parameters' => $parameters]
+        );
         $this->_position++;
     }
 
@@ -87,7 +95,8 @@ class SimpleBrowserHistory {
      *    @return SimpleUrl        URL for this position.
      *    @access public
      */
-    function getUrl() {
+    public function getUrl()
+    {
         if ($this->_isEmpty()) {
             return false;
         }
@@ -100,7 +109,8 @@ class SimpleBrowserHistory {
      *    @return SimpleFormEncoding    Post parameters.
      *    @access public
      */
-    function getParameters() {
+    public function getParameters()
+    {
         if ($this->_isEmpty()) {
             return false;
         }
@@ -113,7 +123,8 @@ class SimpleBrowserHistory {
      *    @return boolean     True if any previous entries.
      *    @access public
      */
-    function back() {
+    public function back()
+    {
         if ($this->_isEmpty() || $this->_atBeginning()) {
             return false;
         }
@@ -127,7 +138,8 @@ class SimpleBrowserHistory {
      *    @return boolean     True if any future entries.
      *    @access public
      */
-    function forward() {
+    public function forward()
+    {
         if ($this->_isEmpty() || $this->_atEnd()) {
             return false;
         }
@@ -140,11 +152,12 @@ class SimpleBrowserHistory {
      *    point.
      *    @access private
      */
-    function _dropFuture() {
+    public function _dropFuture()
+    {
         if ($this->_isEmpty()) {
             return;
         }
-        while (! $this->_atEnd()) {
+        while (!$this->_atEnd()) {
             array_pop($this->_sequence);
         }
     }
@@ -157,12 +170,13 @@ class SimpleBrowserHistory {
  *    @package SimpleTest
  *    @subpackage WebTester
  */
-class SimpleBrowser {
-    var $_user_agent;
-    var $_page;
-    var $_history;
-    var $_ignore_frames;
-    var $_maximum_nested_frames;
+class SimpleBrowser
+{
+    public $_user_agent;
+    public $_page;
+    public $_history;
+    public $_ignore_frames;
+    public $_maximum_nested_frames;
 
     /**
      *    Starts with a fresh browser with no
@@ -171,12 +185,14 @@ class SimpleBrowser {
      *    set up if specified in the options.
      *    @access public
      */
-    function SimpleBrowser() {
+    public function SimpleBrowser()
+    {
         $this->_user_agent = &$this->_createUserAgent();
         $this->_user_agent->useProxy(
-                SimpleTest::getDefaultProxy(),
-                SimpleTest::getDefaultProxyUsername(),
-                SimpleTest::getDefaultProxyPassword());
+            SimpleTest::getDefaultProxy(),
+            SimpleTest::getDefaultProxyUsername(),
+            SimpleTest::getDefaultProxyPassword()
+        );
         $this->_page = new SimplePage();
         $this->_history = &$this->_createHistory();
         $this->_ignore_frames = false;
@@ -188,7 +204,8 @@ class SimpleBrowser {
      *    @return SimpleFetcher    Content fetcher.
      *    @access protected
      */
-    function _createUserAgent() {
+    public function _createUserAgent()
+    {
         $user_agent = new SimpleUserAgent();
         return $user_agent;
     }
@@ -198,7 +215,8 @@ class SimpleBrowser {
      *    @return SimpleBrowserHistory    New list.
      *    @access protected
      */
-    function _createHistory() {
+    public function _createHistory()
+    {
         $history = new SimpleBrowserHistory();
         return $history;
     }
@@ -208,7 +226,8 @@ class SimpleBrowser {
      *    and the frameset page will be used instead.
      *    @access public
      */
-    function ignoreFrames() {
+    public function ignoreFrames()
+    {
         $this->_ignore_frames = true;
     }
 
@@ -217,23 +236,26 @@ class SimpleBrowser {
      *    now on.
      *    @access public
      */
-    function useFrames() {
+    public function useFrames()
+    {
         $this->_ignore_frames = false;
     }
-    
+
     /**
      *    Switches off cookie sending and recieving.
      *    @access public
      */
-    function ignoreCookies() {
+    public function ignoreCookies()
+    {
         $this->_user_agent->ignoreCookies();
     }
-    
+
     /**
      *    Switches back on the cookie sending and recieving.
      *    @access public
      */
-    function useCookies() {
+    public function useCookies()
+    {
         $this->_user_agent->useCookies();
     }
 
@@ -245,9 +267,10 @@ class SimpleBrowser {
      *    @return SimplePage                     Parsed HTML.
      *    @access private
      */
-    function _parse($response, $depth = 0) {
+    public function _parse($response, $depth = 0)
+    {
         $page = &$this->_buildPage($response);
-        if ($this->_ignore_frames || ! $page->hasFrames() || ($depth > $this->_maximum_nested_frames)) {
+        if ($this->_ignore_frames || !$page->hasFrames() || ($depth > $this->_maximum_nested_frames)) {
             return $page;
         }
         $frameset = new SimpleFrameset($page);
@@ -257,7 +280,7 @@ class SimpleBrowser {
         }
         return $frameset;
     }
-    
+
     /**
      *    Assembles the parsing machinery and actually parses
      *    a single page. Frees all of the builder memory and so
@@ -266,7 +289,8 @@ class SimpleBrowser {
      *    @return SimplePage                     Parsed top level page.
      *    @access protected
      */
-    function _buildPage($response) {
+    public function _buildPage($response)
+    {
         $builder = new SimplePageBuilder();
         $page = &$builder->parse($response);
         $builder->free();
@@ -283,7 +307,8 @@ class SimpleBrowser {
      *    @return SimplePage                    Parsed page.
      *    @access private
      */
-    function _fetch($url, $encoding, $depth = 0) {
+    public function _fetch($url, $encoding, $depth = 0)
+    {
         $response = &$this->_user_agent->fetchResponse($url, $encoding);
         if ($response->isError()) {
             $page = new SimplePage($response);
@@ -301,12 +326,13 @@ class SimpleBrowser {
      *    @return string                          Raw content of page.
      *    @access private
      */
-    function _load($url, $parameters) {
+    public function _load($url, $parameters)
+    {
         $frame = $url->getTarget();
-        if (! $frame || ! $this->_page->hasFrames() || (strtolower($frame) == '_top')) {
+        if (!$frame || !$this->_page->hasFrames() || (strtolower($frame) == '_top')) {
             return $this->_loadPage($url, $parameters);
         }
-        return $this->_loadFrame(array($frame), $url, $parameters);
+        return $this->_loadFrame([$frame], $url, $parameters);
     }
 
     /**
@@ -316,11 +342,13 @@ class SimpleBrowser {
      *    @return string                          Raw content of page.
      *    @access private
      */
-    function _loadPage($url, $parameters) {
+    public function _loadPage($url, $parameters)
+    {
         $this->_page = &$this->_fetch($url, $parameters);
         $this->_history->recordEntry(
-                $this->_page->getUrl(),
-                $this->_page->getRequestData());
+            $this->_page->getUrl(),
+            $this->_page->getRequestData()
+        );
         return $this->_page->getRaw();
     }
 
@@ -333,7 +361,8 @@ class SimpleBrowser {
      *    @return string                          Raw content of page.
      *    @access private
      */
-    function _loadFrame($frames, $url, $parameters) {
+    public function _loadFrame($frames, $url, $parameters)
+    {
         $page = &$this->_fetch($url, $parameters);
         $this->_page->setFrame($frames, $page);
         return $page->getRaw();
@@ -347,7 +376,8 @@ class SimpleBrowser {
      *                                  cookies are kept.
      *    @access public
      */
-    function restart($date = false) {
+    public function restart($date = false)
+    {
         $this->_user_agent->restart($date);
     }
 
@@ -357,7 +387,8 @@ class SimpleBrowser {
      *                                request until cleared.
      *    @access public
      */
-    function addHeader($header) {
+    public function addHeader($header)
+    {
         $this->_user_agent->addHeader($header);
     }
 
@@ -366,7 +397,8 @@ class SimpleBrowser {
      *    @param integer $interval    Amount in seconds.
      *    @access public
      */
-    function ageCookies($interval) {
+    public function ageCookies($interval)
+    {
         $this->_user_agent->ageCookies($interval);
     }
 
@@ -380,7 +412,8 @@ class SimpleBrowser {
      *    @param string $expiry     Expiry date.
      *    @access public
      */
-    function setCookie($name, $value, $host = false, $path = '/', $expiry = false) {
+    public function setCookie($name, $value, $host = false, $path = '/', $expiry = false)
+    {
         $this->_user_agent->setCookie($name, $value, $host, $path, $expiry);
     }
 
@@ -394,7 +427,8 @@ class SimpleBrowser {
      *                               value as a string.
      *    @access public
      */
-    function getCookieValue($host, $path, $name) {
+    public function getCookieValue($host, $path, $name)
+    {
         return $this->_user_agent->getCookieValue($host, $path, $name);
     }
 
@@ -405,7 +439,8 @@ class SimpleBrowser {
      *                          if the cookie is not set.
      *    @access public
      */
-    function getCurrentCookieValue($name) {
+    public function getCurrentCookieValue($name)
+    {
         return $this->_user_agent->getBaseCookieValue($name, $this->_page->getUrl());
     }
 
@@ -415,7 +450,8 @@ class SimpleBrowser {
      *    @param integer $max        Most hops allowed.
      *    @access public
      */
-    function setMaximumRedirects($max) {
+    public function setMaximumRedirects($max)
+    {
         $this->_user_agent->setMaximumRedirects($max);
     }
 
@@ -425,7 +461,8 @@ class SimpleBrowser {
      *    @param integer $max        Highest depth allowed.
      *    @access public
      */
-    function setMaximumNestedFrames($max) {
+    public function setMaximumNestedFrames($max)
+    {
         $this->_maximum_nested_frames = $max;
     }
 
@@ -434,7 +471,8 @@ class SimpleBrowser {
      *    @param integer $timeout      Maximum time in seconds.
      *    @access public
      */
-    function setConnectionTimeout($timeout) {
+    public function setConnectionTimeout($timeout)
+    {
         $this->_user_agent->setConnectionTimeout($timeout);
     }
 
@@ -447,7 +485,8 @@ class SimpleBrowser {
      *    @param string $password     Proxy password for authentication.
      *    @access public
      */
-    function useProxy($proxy, $username = false, $password = false) {
+    public function useProxy($proxy, $username = false, $password = false)
+    {
         $this->_user_agent->useProxy($proxy, $username, $password);
     }
 
@@ -460,15 +499,16 @@ class SimpleBrowser {
      *    @return boolean                             True if successful.
      *    @access public
      */
-    function head($url, $parameters = false) {
-        if (! is_object($url)) {
+    public function head($url, $parameters = false)
+    {
+        if (!is_object($url)) {
             $url = new SimpleUrl($url);
         }
         if ($this->getUrl()) {
             $url = $url->makeAbsolute($this->getUrl());
         }
         $response = &$this->_user_agent->fetchResponse($url, new SimpleHeadEncoding($parameters));
-        return ! $response->isError();
+        return !$response->isError();
     }
 
     /**
@@ -479,8 +519,9 @@ class SimpleBrowser {
      *    @return string                              Content of page or false.
      *    @access public
      */
-    function get($url, $parameters = false) {
-        if (! is_object($url)) {
+    public function get($url, $parameters = false)
+    {
+        if (!is_object($url)) {
             $url = new SimpleUrl($url);
         }
         if ($this->getUrl()) {
@@ -496,8 +537,9 @@ class SimpleBrowser {
      *    @return string                              Content of page.
      *    @access public
      */
-    function post($url, $parameters = false) {
-        if (! is_object($url)) {
+    public function post($url, $parameters = false)
+    {
+        if (!is_object($url)) {
             $url = new SimpleUrl($url);
         }
         if ($this->getUrl()) {
@@ -514,13 +556,15 @@ class SimpleBrowser {
      *                             else false.
      *    @access public
      */
-    function retry() {
+    public function retry()
+    {
         $frames = $this->_page->getFrameFocus();
         if (count($frames) > 0) {
             $this->_loadFrame(
-                    $frames,
-                    $this->_page->getUrl(),
-                    $this->_page->getRequestData());
+                $frames,
+                $this->_page->getUrl(),
+                $this->_page->getRequestData()
+            );
             return $this->_page->getRaw();
         }
         if ($url = $this->_history->getUrl()) {
@@ -539,12 +583,13 @@ class SimpleBrowser {
      *                        fetch succeeded
      *    @access public
      */
-    function back() {
-        if (! $this->_history->back()) {
+    public function back()
+    {
+        if (!$this->_history->back()) {
             return false;
         }
         $content = $this->retry();
-        if (! $content) {
+        if (!$content) {
             $this->_history->forward();
         }
         return $content;
@@ -559,12 +604,13 @@ class SimpleBrowser {
      *                        fetch succeeded
      *    @access public
      */
-    function forward() {
-        if (! $this->_history->forward()) {
+    public function forward()
+    {
+        if (!$this->_history->forward()) {
             return false;
         }
         $content = $this->retry();
-        if (! $content) {
+        if (!$content) {
             $this->_history->back();
         }
         return $content;
@@ -580,19 +626,21 @@ class SimpleBrowser {
      *                               failed.
      *    @access public
      */
-    function authenticate($username, $password) {
-        if (! $this->_page->getRealm()) {
+    public function authenticate($username, $password)
+    {
+        if (!$this->_page->getRealm()) {
             return false;
         }
         $url = $this->_page->getUrl();
-        if (! $url) {
+        if (!$url) {
             return false;
         }
         $this->_user_agent->setIdentity(
-                $url->getHost(),
-                $this->_page->getRealm(),
-                $username,
-                $password);
+            $url->getHost(),
+            $this->_page->getRealm(),
+            $username,
+            $password
+        );
         return $this->retry();
     }
 
@@ -602,7 +650,8 @@ class SimpleBrowser {
      *                    or index if no name.
      *    @access public
      */
-    function getFrames() {
+    public function getFrames()
+    {
         return $this->_page->getFrames();
     }
 
@@ -614,7 +663,8 @@ class SimpleBrowser {
      *                                      or false if none.
      *    @access public
      */
-    function getFrameFocus() {
+    public function getFrameFocus()
+    {
         return $this->_page->getFrameFocus();
     }
 
@@ -624,7 +674,8 @@ class SimpleBrowser {
      *    @return boolean           True if frame exists.
      *    @access public
      */
-    function setFrameFocusByIndex($choice) {
+    public function setFrameFocusByIndex($choice)
+    {
         return $this->_page->setFrameFocusByIndex($choice);
     }
 
@@ -634,7 +685,8 @@ class SimpleBrowser {
      *    @return boolean        True if frame exists.
      *    @access public
      */
-    function setFrameFocus($name) {
+    public function setFrameFocus($name)
+    {
         return $this->_page->setFrameFocus($name);
     }
 
@@ -643,7 +695,8 @@ class SimpleBrowser {
      *    for content.
      *    @access public
      */
-    function clearFrameFocus() {
+    public function clearFrameFocus()
+    {
         return $this->_page->clearFrameFocus();
     }
 
@@ -652,7 +705,8 @@ class SimpleBrowser {
      *    @return string        Error from last response.
      *    @access public
      */
-    function getTransportError() {
+    public function getTransportError()
+    {
         return $this->_page->getTransportError();
     }
 
@@ -661,7 +715,8 @@ class SimpleBrowser {
      *    @return string    MIME type as string; e.g. 'text/html'
      *    @access public
      */
-    function getMimeType() {
+    public function getMimeType()
+    {
         return $this->_page->getMimeType();
     }
 
@@ -670,7 +725,8 @@ class SimpleBrowser {
      *    @return integer    Last HTTP response code received.
      *    @access public
      */
-    function getResponseCode() {
+    public function getResponseCode()
+    {
         return $this->_page->getResponseCode();
     }
 
@@ -680,7 +736,8 @@ class SimpleBrowser {
      *    @return string    Description of challenge type.
      *    @access public
      */
-    function getAuthentication() {
+    public function getAuthentication()
+    {
         return $this->_page->getAuthentication();
     }
 
@@ -690,7 +747,8 @@ class SimpleBrowser {
      *    @return string    Name of security realm.
      *    @access public
      */
-    function getRealm() {
+    public function getRealm()
+    {
         return $this->_page->getRealm();
     }
 
@@ -700,7 +758,8 @@ class SimpleBrowser {
      *    @return string    Location of current page or frame as
      *                      a string.
      */
-    function getUrl() {
+    public function getUrl()
+    {
         $url = $this->_page->getUrl();
         return $url ? $url->asString() : false;
     }
@@ -709,7 +768,8 @@ class SimpleBrowser {
      *    Accessor for base URL of page if set via BASE tag
      *    @return string    base URL
      */
-    function getBaseUrl() {
+    public function getBaseUrl()
+    {
         $url = $this->_page->getBaseUrl();
         return $url ? $url->asString() : false;
     }
@@ -719,7 +779,8 @@ class SimpleBrowser {
      *    @return string      Original text sent.
      *    @access public
      */
-    function getRequest() {
+    public function getRequest()
+    {
         return $this->_page->getRequest();
     }
 
@@ -728,7 +789,8 @@ class SimpleBrowser {
      *    @return string      Header block.
      *    @access public
      */
-    function getHeaders() {
+    public function getHeaders()
+    {
         return $this->_page->getHeaders();
     }
 
@@ -737,7 +799,8 @@ class SimpleBrowser {
      *    @return string      Original text content of web page.
      *    @access public
      */
-    function getContent() {
+    public function getContent()
+    {
         return $this->_page->getRaw();
     }
 
@@ -746,7 +809,8 @@ class SimpleBrowser {
      *    @return string      Normalised text representation.
      *    @access public
      */
-    function getContentAsText() {
+    public function getContentAsText()
+    {
         return $this->_page->getText();
     }
 
@@ -755,7 +819,8 @@ class SimpleBrowser {
      *    @return string     Title or false if no title is present.
      *    @access public
      */
-    function getTitle() {
+    public function getTitle()
+    {
         return $this->_page->getTitle();
     }
 
@@ -765,7 +830,8 @@ class SimpleBrowser {
      *                    http or https and hostname.
      *    @access public
      */
-    function getUrls() {
+    public function getUrls()
+    {
         return $this->_page->getUrls();
     }
 
@@ -776,7 +842,8 @@ class SimpleBrowser {
      *    @return boolean        True if field exists, otherwise false.
      *    @access public
      */
-    function setField($label, $value, $position=false) {
+    public function setField($label, $value, $position = false)
+    {
         return $this->_page->setField(new SimpleByLabelOrName($label), $value, $position);
     }
 
@@ -788,7 +855,8 @@ class SimpleBrowser {
      *    @return boolean        True if field exists, otherwise false.
      *    @access public
      */
-    function setFieldByName($name, $value, $position=false) {
+    public function setFieldByName($name, $value, $position = false)
+    {
         return $this->_page->setField(new SimpleByName($name), $value, $position);
     }
 
@@ -799,7 +867,8 @@ class SimpleBrowser {
      *    @return boolean             True if field exists, otherwise false.
      *    @access public
      */
-    function setFieldById($id, $value) {
+    public function setFieldById($id, $value)
+    {
         return $this->_page->setField(new SimpleById($id), $value);
     }
 
@@ -812,7 +881,8 @@ class SimpleBrowser {
      *                               and null if missing.
      *    @access public
      */
-    function getField($label) {
+    public function getField($label)
+    {
         return $this->_page->getField(new SimpleByLabelOrName($label));
     }
 
@@ -825,7 +895,8 @@ class SimpleBrowser {
      *                               and null if missing.
      *    @access public
      */
-    function getFieldByName($name) {
+    public function getFieldByName($name)
+    {
         return $this->_page->getField(new SimpleByName($name));
     }
 
@@ -837,7 +908,8 @@ class SimpleBrowser {
      *                               and null if missing.
      *    @access public
      */
-    function getFieldById($id) {
+    public function getFieldById($id)
+    {
         return $this->_page->getField(new SimpleById($id));
     }
 
@@ -850,14 +922,16 @@ class SimpleBrowser {
      *    @return string/boolean  Page on success.
      *    @access public
      */
-    function clickSubmit($label = 'Submit', $additional = false) {
-        if (! ($form = &$this->_page->getFormBySubmit(new SimpleByLabel($label)))) {
+    public function clickSubmit($label = 'Submit', $additional = false)
+    {
+        if (!($form = &$this->_page->getFormBySubmit(new SimpleByLabel($label)))) {
             return false;
         }
         $success = $this->_load(
-                $form->getAction(),
-                $form->submitButton(new SimpleByLabel($label), $additional));
-        return ($success ? $this->getContent() : $success);
+            $form->getAction(),
+            $form->submitButton(new SimpleByLabel($label), $additional)
+        );
+        return $success ? $this->getContent() : $success;
     }
 
     /**
@@ -868,14 +942,16 @@ class SimpleBrowser {
      *    @return string/boolean  Page on success.
      *    @access public
      */
-    function clickSubmitByName($name, $additional = false) {
-        if (! ($form = &$this->_page->getFormBySubmit(new SimpleByName($name)))) {
+    public function clickSubmitByName($name, $additional = false)
+    {
+        if (!($form = &$this->_page->getFormBySubmit(new SimpleByName($name)))) {
             return false;
         }
         $success = $this->_load(
-                $form->getAction(),
-                $form->submitButton(new SimpleByName($name), $additional));
-        return ($success ? $this->getContent() : $success);
+            $form->getAction(),
+            $form->submitButton(new SimpleByName($name), $additional)
+        );
+        return $success ? $this->getContent() : $success;
     }
 
     /**
@@ -886,16 +962,18 @@ class SimpleBrowser {
      *    @return string/boolean  Page on success.
      *    @access public
      */
-    function clickSubmitById($id, $additional = false) {
-        if (! ($form = &$this->_page->getFormBySubmit(new SimpleById($id)))) {
+    public function clickSubmitById($id, $additional = false)
+    {
+        if (!($form = &$this->_page->getFormBySubmit(new SimpleById($id)))) {
             return false;
         }
         $success = $this->_load(
-                $form->getAction(),
-                $form->submitButton(new SimpleById($id), $additional));
-        return ($success ? $this->getContent() : $success);
+            $form->getAction(),
+            $form->submitButton(new SimpleById($id), $additional)
+        );
+        return $success ? $this->getContent() : $success;
     }
-    
+
     /**
      *    Tests to see if a submit button exists with this
      *    label.
@@ -903,8 +981,9 @@ class SimpleBrowser {
      *    @return boolean         True if present.
      *    @access public
      */
-    function isSubmit($label) {
-        return (boolean)$this->_page->getFormBySubmit(new SimpleByLabel($label));
+    public function isSubmit($label)
+    {
+        return (bool) $this->_page->getFormBySubmit(new SimpleByLabel($label));
     }
 
     /**
@@ -920,14 +999,16 @@ class SimpleBrowser {
      *    @return string/boolean  Page on success.
      *    @access public
      */
-    function clickImage($label, $x = 1, $y = 1, $additional = false) {
-        if (! ($form = &$this->_page->getFormByImage(new SimpleByLabel($label)))) {
+    public function clickImage($label, $x = 1, $y = 1, $additional = false)
+    {
+        if (!($form = &$this->_page->getFormByImage(new SimpleByLabel($label)))) {
             return false;
         }
         $success = $this->_load(
-                $form->getAction(),
-                $form->submitImage(new SimpleByLabel($label), $x, $y, $additional));
-        return ($success ? $this->getContent() : $success);
+            $form->getAction(),
+            $form->submitImage(new SimpleByLabel($label), $x, $y, $additional)
+        );
+        return $success ? $this->getContent() : $success;
     }
 
     /**
@@ -943,14 +1024,16 @@ class SimpleBrowser {
      *    @return string/boolean  Page on success.
      *    @access public
      */
-    function clickImageByName($name, $x = 1, $y = 1, $additional = false) {
-        if (! ($form = &$this->_page->getFormByImage(new SimpleByName($name)))) {
+    public function clickImageByName($name, $x = 1, $y = 1, $additional = false)
+    {
+        if (!($form = &$this->_page->getFormByImage(new SimpleByName($name)))) {
             return false;
         }
         $success = $this->_load(
-                $form->getAction(),
-                $form->submitImage(new SimpleByName($name), $x, $y, $additional));
-        return ($success ? $this->getContent() : $success);
+            $form->getAction(),
+            $form->submitImage(new SimpleByName($name), $x, $y, $additional)
+        );
+        return $success ? $this->getContent() : $success;
     }
 
     /**
@@ -965,16 +1048,18 @@ class SimpleBrowser {
      *    @return string/boolean       Page on success.
      *    @access public
      */
-    function clickImageById($id, $x = 1, $y = 1, $additional = false) {
-        if (! ($form = &$this->_page->getFormByImage(new SimpleById($id)))) {
+    public function clickImageById($id, $x = 1, $y = 1, $additional = false)
+    {
+        if (!($form = &$this->_page->getFormByImage(new SimpleById($id)))) {
             return false;
         }
         $success = $this->_load(
-                $form->getAction(),
-                $form->submitImage(new SimpleById($id), $x, $y, $additional));
-        return ($success ? $this->getContent() : $success);
+            $form->getAction(),
+            $form->submitImage(new SimpleById($id), $x, $y, $additional)
+        );
+        return $success ? $this->getContent() : $success;
     }
-    
+
     /**
      *    Tests to see if an image exists with this
      *    title or alt text.
@@ -982,8 +1067,9 @@ class SimpleBrowser {
      *    @return boolean         True if present.
      *    @access public
      */
-    function isImage($label) {
-        return (boolean)$this->_page->getFormByImage(new SimpleByLabel($label));
+    public function isImage($label)
+    {
+        return (bool) $this->_page->getFormByImage(new SimpleByLabel($label));
     }
 
     /**
@@ -993,14 +1079,16 @@ class SimpleBrowser {
      *    @return string/boolean  Page on success.
      *    @access public
      */
-    function submitFormById($id) {
-        if (! ($form = &$this->_page->getFormById($id))) {
+    public function submitFormById($id)
+    {
+        if (!($form = &$this->_page->getFormById($id))) {
             return false;
         }
         $success = $this->_load(
-                $form->getAction(),
-                $form->submit());
-        return ($success ? $this->getContent() : $success);
+            $form->getAction(),
+            $form->submit()
+        );
+        return $success ? $this->getContent() : $success;
     }
 
     /**
@@ -1013,7 +1101,8 @@ class SimpleBrowser {
      *    @return string/boolean   URL on success.
      *    @access public
      */
-    function getLink($label, $index = 0) {
+    public function getLink($label, $index = 0)
+    {
         $urls = $this->_page->getUrlsByLabel($label);
         if (count($urls) == 0) {
             return false;
@@ -1034,7 +1123,8 @@ class SimpleBrowser {
      *    @return string/boolean   Page on success.
      *    @access public
      */
-    function clickLink($label, $index = 0) {
+    public function clickLink($label, $index = 0)
+    {
         $url = $this->getLink($label, $index);
         if ($url === false) {
             return false;
@@ -1042,14 +1132,15 @@ class SimpleBrowser {
         $this->_load($url, new SimpleGetEncoding());
         return $this->getContent();
     }
-    
+
     /**
      *    Finds a link by id attribute.
      *    @param string $id        ID attribute value.
      *    @return string/boolean   URL on success.
      *    @access public
      */
-    function getLinkById($id) {
+    public function getLinkById($id)
+    {
         return $this->_page->getUrlById($id);
     }
 
@@ -1059,8 +1150,9 @@ class SimpleBrowser {
      *    @return string/boolean   Page on success.
      *    @access public
      */
-    function clickLinkById($id) {
-        if (! ($url = $this->getLinkById($id))) {
+    public function clickLinkById($id)
+    {
+        if (!($url = $this->getLinkById($id))) {
             return false;
         }
         $this->_load($url, new SimpleGetEncoding());
@@ -1074,12 +1166,13 @@ class SimpleBrowser {
      *    @return string/boolean      Raw page or false.
      *    @access public
      */
-    function click($label) {
+    public function click($label)
+    {
         $raw = $this->clickSubmit($label);
-        if (! $raw) {
+        if (!$raw) {
             $raw = $this->clickLink($label);
         }
-        if (! $raw) {
+        if (!$raw) {
             $raw = $this->clickImage($label);
         }
         return $raw;
@@ -1091,8 +1184,8 @@ class SimpleBrowser {
      *    @return boolean         True if target present.
      *    @access public
      */
-    function isClickable($label) {
+    public function isClickable($label)
+    {
         return $this->isSubmit($label) || ($this->getLink($label) !== false) || $this->isImage($label);
     }
 }
-?>
