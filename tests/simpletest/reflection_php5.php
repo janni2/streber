@@ -105,7 +105,7 @@ class SimpleReflection {
     function getInterfaces() {
         $reflection = new ReflectionClass($this->_interface);
         if ($reflection->isInterface()) {
-            return array($this->_interface);
+            return [$this->_interface];
         }
         return $this->_onlyParents($reflection->getInterfaces());
     }
@@ -117,7 +117,7 @@ class SimpleReflection {
      *    @access public
      */
     function getInterfaceMethods() {
-        $methods = array();
+        $methods = [];
         foreach ($this->getInterfaces() as $interface) {
             $methods = array_merge($methods, get_class_methods($interface));
         }
@@ -194,8 +194,8 @@ class SimpleReflection {
      *    @access private
      */
     function _onlyParents($interfaces) {
-        $parents = array();
-        $blacklist = array();
+        $parents = [];
+        $blacklist = [];
         foreach ($interfaces as $interface) {
             foreach($interfaces as $possible_parent) {
                 if ($interface->getName() == $possible_parent->getName()) {
@@ -287,7 +287,7 @@ class SimpleReflection {
             return 'function __call($method, $arguments)';
         }
         if (version_compare(phpversion(), '5.1.0', '>=')) {
-            if (in_array($name, array('__get', '__isset', $name == '__unset'))) {
+            if (in_array($name, ['__get', '__isset', $name == '__unset'])) {
                 return "function {$name}(\$key)";
             }
         }
@@ -330,7 +330,7 @@ class SimpleReflection {
      *    @access private
      */
     function _getParameterSignatures($method) {
-        $signatures = array();
+        $signatures = [];
         foreach ($method->getParameters() as $parameter) {
             $signature = '';
             $type = $parameter->getClass();
@@ -360,7 +360,7 @@ class SimpleReflection {
      *    @access private
      */
     function _suppressSpurious($name) {
-        return str_replace(array('[', ']', ' '), '', $name);
+        return str_replace(['[', ']', ' '], '', $name);
     }
 
     /**

@@ -30,20 +30,20 @@ class TestOfEquality extends UnitTestCase {
     }
 
     function testArray() {
-        $colours = new EqualExpectation(array("r", "g", "b"));
-        $this->assertTrue($colours->test(array("r", "g", "b")));
-        $this->assertFalse($colours->test(array("g", "b", "r")));
+        $colours = new EqualExpectation(["r", "g", "b"]);
+        $this->assertTrue($colours->test(["r", "g", "b"]));
+        $this->assertFalse($colours->test(["g", "b", "r"]));
     }
 
     function testHash() {
-        $is_blue = new EqualExpectation(array("r" => 0, "g" => 0, "b" => 255));
-        $this->assertTrue($is_blue->test(array("r" => 0, "g" => 0, "b" => 255)));
-        $this->assertFalse($is_blue->test(array("r" => 0, "g" => 255, "b" => 0)));
+        $is_blue = new EqualExpectation(["r" => 0, "g" => 0, "b" => 255]);
+        $this->assertTrue($is_blue->test(["r" => 0, "g" => 0, "b" => 255]));
+        $this->assertFalse($is_blue->test(["r" => 0, "g" => 255, "b" => 0]));
     }
 
     function testHashWithOutOfOrderKeysShouldStillMatch() {
-        $any_order = new EqualExpectation(array('a' => 1, 'b' => 2));
-        $this->assertTrue($any_order->test(array('b' => 2, 'a' => 1)));
+        $any_order = new EqualExpectation(['a' => 1, 'b' => 2]);
+        $this->assertTrue($any_order->test(['b' => 2, 'a' => 1]));
     }
 }
 

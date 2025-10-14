@@ -68,61 +68,61 @@ class ListBlock_taskfolders extends ListBlock {
         }
 
         #--- create task for project-root---
-        $task_none=new Task(array('name'=>"..none::"));
+        $task_none=new Task(['name'=>"..none::"]);
         $task_none->id=0;
         $task_none->project= $project->id;
         array_unshift($this->task_folders,$task_none);
 
     	#--- add columns --------------------------------------------------------
         $this->add_col( new ListBlockColSelect());
-    	$this->add_col( new ListBlockCol_TaskName(array(
+    	$this->add_col( new ListBlockCol_TaskName([
     	    'use_short_names'=>true,
     		'indention'=>true,
     		'use_collapsed'=>true,
     		'show_toggles'=>false
-    	)));
-    	$this->add_col( new ListBlockColMethod(array(
+    	]));
+    	$this->add_col( new ListBlockColMethod([
     		'name'=>__("Tasks"),
     		'tooltip'=>__("Number of subtasks"),
     		'sort'=>0,
     		'func'=>'getNumSubtasks',
             'style'=>'right'
-    	)));
+    	]));
     	#$this->add_col( new ListBlockCol_TaskSumEfforts());
 
     	#--- functions ----------------------------------------
         ### functions ###
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('taskEdit')->id,
             'name'  =>__('Edit'),
             'id'    =>'taskEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('taskNewFolder')->id,
             'name'  =>__('New'),
             'id'    =>'taskNewFolder',
             'icon'  =>'new',
             'tooltip'=>__('Create new folder under selected task'),
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('tasksMoveToFolder')->id,
             'name'  =>__('Move selected to folder'),
             'id'    =>'tasksMoveToFolder',
             'context_menu'=>'submit',
             'dropdown_menu'=>0,
 
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortNew')->id,
             'name'  =>__('Log hours for select tasks'),
             'id'    =>'effortNew',
             'icon'    =>'loghours',
             'context_menu'=>'submit'
-        )));
+        ]));
 
 
     }

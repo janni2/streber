@@ -36,7 +36,7 @@ class SimpleBrowserHistory {
      *    @access public
      */
     function SimpleBrowserHistory() {
-        $this->_sequence = array();
+        $this->_sequence = [];
         $this->_position = -1;
     }
 
@@ -77,7 +77,7 @@ class SimpleBrowserHistory {
         $this->_dropFuture();
         array_push(
                 $this->_sequence,
-                array('url' => $url, 'parameters' => $parameters));
+                ['url' => $url, 'parameters' => $parameters]);
         $this->_position++;
     }
 
@@ -306,7 +306,7 @@ class SimpleBrowser {
         if (! $frame || ! $this->_page->hasFrames() || (strtolower($frame) == '_top')) {
             return $this->_loadPage($url, $parameters);
         }
-        return $this->_loadFrame(array($frame), $url, $parameters);
+        return $this->_loadFrame([$frame], $url, $parameters);
     }
 
     /**

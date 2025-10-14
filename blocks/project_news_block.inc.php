@@ -32,10 +32,10 @@ class ProjectNewsBlock extends PageBlock
         global $PH;
 
 
-		$news= $this->project->getTasks(array(  # NOTE: get all items with show news option (not just DOCU)
+		$news= $this->project->getTasks([  # NOTE: get all items with show news option (not just DOCU)
             'is_news'  => 1,
             'order_by'  => 'created DESC',
-        ));
+        ]);
         if(!$news) {
             return '';
         }
@@ -64,10 +64,10 @@ class ProjectNewsBlock extends PageBlock
 
             if($comments= $n->getComments()) {
                 echo " / ";
-                echo  $PH->getLink('taskViewAsDocu', sprintf(__("%s comments"),count($comments)), array('tsk'=> $n->id));
+                echo  $PH->getLink('taskViewAsDocu', sprintf(__("%s comments"),count($comments)), ['tsk'=> $n->id]);
             }
             echo " / ";
-            echo $PH->getLink("commentNew", __("Add comment"), array('parent_task' => $n->id) );
+            echo $PH->getLink("commentNew", __("Add comment"), ['parent_task' => $n->id] );
 
             echo "</p>";
             echo  wikifieldAsHtml($n, 'description');   

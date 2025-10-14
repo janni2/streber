@@ -161,7 +161,7 @@ class TestItemVisibility extends WebTestCase {
         $this->addHeader('USER_AGENT: streber_unit_tester');
 
         
-        $deleted_items = array(25, 23, 19, 18);
+        $deleted_items = [25, 23, 19, 18];
 
         ### login as bob ###
         $this->assertTrue($this->get($g_streber_url),       'getting login page (%s)' );

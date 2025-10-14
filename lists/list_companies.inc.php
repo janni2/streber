@@ -16,7 +16,7 @@
 
 class ListBlock_companies extends ListBlock
 {
-	public $filters = array();
+	public $filters = [];
 	public $format;
 
     public function __construct($args=NULL)
@@ -27,38 +27,38 @@ class ListBlock_companies extends ListBlock
 		$this->title    =__("related companies");
 
         $this->add_col( new ListBlockColSelect());
-   		$this->add_col( new ListBlockColFormat(array(
+   		$this->add_col( new ListBlockColFormat([
 			'key'=>'short',
 			'name'=>__("Name Short"),
 			'tooltip'=>__("Shortnames used in other lists"),
 			'sort'=>0,
 			'format'=>'<nobr><a href="index.php?go=companyView&amp;company={?id}">{?short}</a></nobr>'
-		)));
+		]));
    		$this->add_col( new ListBlockCol_CompanyName());
-   		$this->add_col( new ListBlockColFormat(array(
+   		$this->add_col( new ListBlockColFormat([
 			'key'=>'phone',
 			'name'=>__("Phone"),
 			'tooltip'=>__("Phone-Number"),
 			'format'=>'<nobr>{?phone}</nobr>'
-		)));
-   		$this->add_col( new ListBlockColLinkExtern(array(
+		]));
+   		$this->add_col( new ListBlockColLinkExtern([
 			'key'=>'homepage',
 			'name'=>"Homepage",
-		)));
-    	$this->add_col( new ListBlockColMethod(array(
+		]));
+    	$this->add_col( new ListBlockColMethod([
     		'name'=>__("Proj"),
     		'tooltip'=>__("Number of open Projects"),
     		'func'=>'getNumOpenProjects',
             'style'=>'right'
-    	)));
-    	$this->add_col( new ListBlockColMethod(array(
+    	]));
+    	$this->add_col( new ListBlockColMethod([
     		'name'=>__("People"),
             'id'=>"people",
     		'tooltip'=>__("People working for this person"),
     		'sort'=>0,
             'style'=>'nowrap',
     		'func'=>'getPersonLinks',
-    	)));
+    	]));
 
         /*$this->add_col( new ListBlockCol_ProjectEffortSum);
 
@@ -85,32 +85,32 @@ class ListBlock_companies extends ListBlock
 
         #---- functions ----
         global $PH;
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('companyEdit')->id,
             'name'  =>__('Edit company'),
             'id'    =>'companyEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('companyDelete')->id,
             'name'  =>__('Delete company'),
             'id'    =>'companyDelete',
             'icon'  =>'delete'
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('companyNew')->id,
             'name'  =>__('Create new company'),
             'id'    =>'companyNew',
             'icon'  =>'new',
             'context_menu'=>'submit',
-        )));
-		$this->add_function(new ListFunction(array(
+        ]));
+		$this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
 		
     }
 	
@@ -156,7 +156,7 @@ class ListBlockCol_CompanyName extends ListBlockCol
    			return;
 		}
 				
-		$str= $PH->getLink('companyView',asHtml($obj->name), array('company'=>$obj->id),'item company',true);
+		$str= $PH->getLink('companyView',asHtml($obj->name), ['company'=>$obj->id],'item company',true);
 		print "<td>{$str}</td>";
 	}
 }

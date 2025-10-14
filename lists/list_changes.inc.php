@@ -24,7 +24,7 @@ require_once(confGet('DIR_STREBER') . 'std/class_changeline.inc.php');
 class ListBlock_changes extends ListBlock
 {
     private  $list_changes_newer_than= '';                      # timestamp
-    public   $filters = array();
+    public   $filters = [];
 
     public function __construct($args=NULL)
     {
@@ -227,7 +227,7 @@ class ListBlockCol_ChangesDetails extends ListBlockCol
                          : "";                
             }
             else if($change_line->item->type == ITEM_FILE) {
-                $str_item= $PH->getLink('fileView', $change_line->item->name, array('file' => $change_line->item->id)); 
+                $str_item= $PH->getLink('fileView', $change_line->item->name, ['file' => $change_line->item->id]); 
                 
                 $str_details= $change_line->item->renderLocation();
                 
@@ -309,7 +309,7 @@ class ListBlockCol_ChangesDatePerson extends ListBlockCol
 */
 class ListBlock_AllChanges extends ListBlock
 {
-    public $filters = array();
+    public $filters = [];
 
     public function __construct($args=NULL)
     {
@@ -330,42 +330,42 @@ class ListBlock_AllChanges extends ListBlock
         $this->add_col(new ListBlockCol_ChangesEditType());
         $this->add_col(new ListBlockCol_ChangesItemType());
         $this->add_col(new ListBlockCol_AllChangesItemName());
-        $this->add_col( new listBlockColDate(array(
+        $this->add_col( new listBlockColDate([
             'key'=>'modified',
             'name'=>__('modified')
-        )));
+        ]));
 
 
        ### block style functions ###
-        $this->add_blockFunction(new BlockFunction(array(
+        $this->add_blockFunction(new BlockFunction([
             'target'=>'changeBlockStyle',
             'key'=>'list',
             'name'=>__('List','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'list',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
-             ),
+             ],
              'default'=>true,
-        )));
-        $this->groupings= new BlockFunction_grouping(array(
+        ]));
+        $this->groupings= new BlockFunction_grouping([
             'target'=>'changeBlockStyle',
             'key'=>'grouped',
              'name'=>__('Grouped','List sort mode'),
-             'params'=>array(
+             'params'=>[
                'style'=>'grouped',
                'block_id'=>$this->id,
                'page_id'=>$PH->cur_page->id,
-           ),
-       ));
+           ],
+       ]);
        $this->add_blockFunction($this->groupings);
 
 
        ### list groupings ###
-       $this->groupings->groupings= array(
+       $this->groupings->groupings= [
            new ListGroupingModifiedBy(),
            new ListGroupingItemType(),
-       );
+       ];
    }
 
     public function print_automatic()
@@ -444,14 +444,14 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
             case ITEM_PROJECT:
                 if($project = Project::getVisibleById($obj->id)) {
                     $str_name = asHtml($project->name);
-                    $str_url = $PH->getUrl('projView',array('prj'=>$project->id));
+                    $str_url = $PH->getUrl('projView',['prj'=>$project->id]);
                 }
                 break;
 
             case ITEM_TASK:
                 if($task = Task::getVisibleById($obj->id)) {
                     $str_name = asHtml($task->name);
-                    $str_url = $PH->getUrl('taskView',array('tsk'=>$task->id));
+                    $str_url = $PH->getUrl('taskView',['tsk'=>$task->id]);
                     if($project = Project::GetVisibleById($task->project)){
                         $str_addon = "(".$project->getLink(false).")";
                     }
@@ -466,7 +466,7 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
                     else{
                         $str_name = asHtml($comment->name);
                     }
-                    $str_url = $PH->getUrl('taskView',array('tsk'=>$comment->task));
+                    $str_url = $PH->getUrl('taskView',['tsk'=>$comment->task]);
                     $str_addon .= "(";
                     if($task = Task::getVisibleById($comment->task)){
                         if($project = Project::getVisibleById($task->project)){
@@ -487,14 +487,14 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
             case ITEM_COMPANY:
                 if($c = Company::getVisibleById($obj->id)) {
                     $str_name = asHtml($c->name);
-                    $str_url = $PH->getUrl('companyView',array('company'=>$c->id));
+                    $str_url = $PH->getUrl('companyView',['company'=>$c->id]);
                 }
                 break;
 
             case ITEM_PERSON:
                 if($person = Person::getVisibleById($obj->id)) {
                     $str_name = asHtml($person->name);
-                    $str_url = $PH->getUrl('personView',array('person'=>$person->id));
+                    $str_url = $PH->getUrl('personView',['person'=>$person->id]);
                 }
                 break;
 
@@ -504,7 +504,7 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
                         $PH->abortWarning("ProjectPerson has invalid person-pointer!",ERROR_BUG);
                     }
                     $str_name = asHtml($person->name);
-                    $str_url = $PH->getUrl('personView',array('person'=>$person->id));
+                    $str_url = $PH->getUrl('personView',['person'=>$person->id]);
                     if($project = Project::getVisibleById($pp->project)){
                         $str_addon = "(" . $project->getLink(false) .")";
                     }
@@ -516,7 +516,7 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
                 if($emp= Employment::getById($obj->id)) {
                     if($person= Person::getVisibleById($emp->person)) {
                         $str_name= asHtml($person->name);
-                        $str_url= $PH->getUrl('personView',array('person'=>$person->id));
+                        $str_url= $PH->getUrl('personView',['person'=>$person->id]);
                     }
                     if($company = Company::getVisibleById($emp->company)){
                         $str_addon= "(". $company->getLink(false) .")";
@@ -527,7 +527,7 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
             case ITEM_EFFORT:
                 if($e= Effort::getVisibleById($obj->id)) {
                     $str_name= asHtml($e->name);
-                    $str_url= $PH->getUrl('effortEdit',array('effort'=>$e->id));
+                    $str_url= $PH->getUrl('effortEdit',['effort'=>$e->id]);
                     if($task = Task::getVisibleById($e->task)){
                         if($project = Project::getVisibleById($task->project)){
                             $str_addon .= "(". $project->getLink(false) ;
@@ -541,7 +541,7 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
             case ITEM_FILE:
                 if($f= File::getVisibleById($obj->id)) {
                     $str_name= asHtml($f->org_filename);
-                    $str_url= $PH->getUrl('fileView',array('file'=>$f->id));
+                    $str_url= $PH->getUrl('fileView',['file'=>$f->id]);
                     $str_addon .= "(";
                     if($p = Project::getVisibleById($f->project)){
                         $str_addon .= $p->getLink(false) ;
@@ -557,7 +557,7 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
                 if($i = Issue::getVisibleById($obj->id)) {
                     if($t = Task::getVisibleById($i->task)){
                         $str_name = asHtml($t->name);
-                        $str_url = $PH->getUrl('taskView',array('tsk'=>$t->id));
+                        $str_url = $PH->getUrl('taskView',['tsk'=>$t->id]);
                         if($p = Project::getVisibleById($t->project)){
                             $str_addon .= "(". $p->getLink(false) .")";
                         }
@@ -569,7 +569,7 @@ class ListBlockCol_AllChangesItemName extends ListBlockCol
                 if($tp = TaskPerson::getVisibleById($obj->id)) {
                     if($person = Person::getVisibleById($tp->person)){
                         $str_name = asHtml($person->name);
-                        $str_url = $PH->getUrl('personView',array('person'=>$person->id));
+                        $str_url = $PH->getUrl('personView',['person'=>$person->id]);
                     }
                     if($task = Task::getVisibleById($tp->task)){
                         if($project = Project::getVisibleById($task->project)){

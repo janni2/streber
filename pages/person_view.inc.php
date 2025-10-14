@@ -36,7 +36,7 @@ function personView()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array('person'=>$person->id));
+    $PH->defineFromHandle(['person'=>$person->id]);
 
     ## is viewed by user ##
     $person->nowViewedByUser();
@@ -67,33 +67,33 @@ function personView()
         if($edit= Person::getEditableById($person->id)) {
 
             ### page functions ###
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'=>'personEdit',
-                'params'=>array('person'=>$person->id),
+                'params'=>['person'=>$person->id],
                 'icon'=>'edit',
                 'tooltip'=>__('Edit this person','Tooltip for page function'),
                 'name'=>__('Edit','Page function edit person'),
-            )));
+            ]));
 
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'=>'personEditRights',
-                'params'=>array('person'=>$person->id),
+                'params'=>['person'=>$person->id],
                 'icon'=>'edit',
                 'tooltip'=>__('Edit user rights','Tooltip for page function'),
                 'name'=>__('Edit rights','Page function for edit user rights'),
-            )));
+            ]));
             
             if($person->id != $auth->cur_user->id) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'personDelete',
-                    'params'=>array('person'=>$person->id),
+                    'params'=>['person'=>$person->id],
     #                'icon'=>'delete',
     #                'tooltip'=>__('Remove','Tooltip for page function'),
                     'name'=>__('Delete'),
-                )));            
+                ]));            
             }
 
-            $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$person->id));
+            $item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$person->id]);
             if((!$item) || ($item[0]->is_bookmark == 0)){
                 #$page->add_function(new PageFunction(array(
                 #    'target'    =>'itemsAsBookmark',
@@ -103,23 +103,23 @@ function personView()
                 #)));
             }
             else{
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'itemsRemoveBookmark',
-                    'params'    =>array('person'=>$person->id),
+                    'params'    =>['person'=>$person->id],
                     'tooltip'   =>__('Remove this bookmark'),
                     'name'      =>__('Remove Bookmark'),
-                )));
+                ]));
             }
 
             if($person->state == ITEM_STATE_OK && $person->can_login && ($person->personal_email || $person->office_email)) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'personSendActivation',
-                    'params'=>array('person'=>$person->id),
-                )));
-                $page->add_function(new PageFunction(array(
+                    'params'=>['person'=>$person->id],
+                ]));
+                $page->add_function(new PageFunction([
                     'target'=>'peopleFlushNotifications',
-                    'params'=>array('person'=>$person->id),
-                )));
+                    'params'=>['person'=>$person->id],
+                ]));
             }
         }
 
@@ -135,7 +135,7 @@ function personView()
 
         ### write info block
 
-        $block=new PageBlock(array('title'=>__('Summary','Block title'),'id'=>'summary'));
+        $block=new PageBlock(['title'=>__('Summary','Block title'),'id'=>'summary']);
 
         $block->render_blockStart();
         echo "<div class=text>";
@@ -213,25 +213,25 @@ function personView()
         * people to this company. But therefore we would need to
         * pass the company's id, which is not possible right now...
         */
-        $list->add_function(new ListFunction(array(
+        $list->add_function(new ListFunction([
             'target'=>$PH->getPage('personLinkCompanies')->id,
             'name'  =>__('Link Companies'),
             'id'    =>'personLinkCompanies',
             'icon'  =>'add',
-        )));
-        $list->add_function(new ListFunction(array(
+        ]));
+        $list->add_function(new ListFunction([
             'target'=>$PH->getPage('personCompaniesDelete')->id,
             'name'  =>__('Remove companies from person'),
             'id'    =>'personCompaniesDelete',
             'icon'  =>'sub',
             'context_menu'=>'submit',
-        )));
+        ]));
 
         if($auth->cur_user->user_rights & RIGHT_PERSON_EDIT) {
             $list->no_items_html=
-                $PH->getLink('personLinkCompanies',__('link existing Company'),array('person'=>$person->id))
+                $PH->getLink('personLinkCompanies',__('link existing Company'),['person'=>$person->id])
                 ." ". __("or")." "
-                .$PH->getLink('companyNew',__('create new'),array('person'=>$person->id));
+                .$PH->getLink('companyNew',__('create new'),['person'=>$person->id]);
         }
         else {
             $list->no_items_html=__("no companies related");
@@ -245,11 +245,11 @@ function personView()
 
     #--- description ----------------------------------------------------------------
     if($person->description!="") {
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title'=>__('Person details'),
             'id'=>'persondetails',
 
-        ));
+        ]);
         $block->render_blockStart();
 
 
@@ -292,7 +292,7 @@ function personView()
             unset($list->functions['projDelete']);
             unset($list->functions['projNew']);
             if($auth->cur_user->user_rights & RIGHT_PROJECT_CREATE) {
-                $list->no_items_html=$PH->getLink('projNew','',array());
+                $list->no_items_html=$PH->getLink('projNew','',[]);
             }
             else {
                 $list->no_items_html=__("no active projects");
@@ -305,9 +305,9 @@ function personView()
     ### list assigned tasks ###
     {
         require_once(confGet('DIR_STREBER') . 'lists/list_tasks.inc.php');
-        $list= new ListBlock_tasks(array(
+        $list= new ListBlock_tasks([
             'active_block_function'=>'list'
-        ));
+        ]);
 
         $list->query_options['assigned_to_person']= $person->id;
         unset($list->columns['created_by']);

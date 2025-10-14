@@ -13,7 +13,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 ### ../pages/task_view.inc.php   ###
 'Version'                     =>'Versio',  # line 465
@@ -1721,6 +1721,6 @@ $g_lang_table= array(
 'the management|notication'   =>'hallinta',  # line 320
 'No news for <b>%s</b>'       =>'Ei uutisia <b>%s<b>',  # line 402
 
-);
+];
 
 ?>

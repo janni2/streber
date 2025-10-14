@@ -94,7 +94,7 @@ class FieldExpectation extends SimpleExpectation {
      */
     function _testMultiple($compare) {
         if (is_string($compare)) {
-            $compare = array($compare);
+            $compare = [$compare];
         }
         if (! is_array($compare)) {
             return false;
@@ -1198,7 +1198,7 @@ class WebTestCase extends SimpleTestCase {
      *    @access public
      */
     function assertResponse($responses, $message = '%s') {
-        $responses = (is_array($responses) ? $responses : array($responses));
+        $responses = (is_array($responses) ? $responses : [$responses]);
         $code = $this->_browser->getResponseCode();
         $message = sprintf($message, "Expecting response in [" .
                 implode(", ", $responses) . "] got [$code]");
@@ -1214,7 +1214,7 @@ class WebTestCase extends SimpleTestCase {
      *    @access public
      */
     function assertMime($types, $message = '%s') {
-        $types = (is_array($types) ? $types : array($types));
+        $types = (is_array($types) ? $types : [$types]);
         $type = $this->_browser->getMimeType();
         $message = sprintf($message, "Expecting mime type in [" .
                 implode(", ", $types) . "] got [$type]");
@@ -1534,7 +1534,7 @@ class WebTestCase extends SimpleTestCase {
      *    @access public
      */
     function getAssertionLine() {
-        $trace = new SimpleStackTrace(array('assert', 'click', 'pass', 'fail'));
+        $trace = new SimpleStackTrace(['assert', 'click', 'pass', 'fail']);
         return $trace->traceMethod();
     }
 

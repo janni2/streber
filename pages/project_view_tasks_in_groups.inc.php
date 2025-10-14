@@ -38,7 +38,7 @@ function projViewTasks()
         return;
     }
 
-    $fromHandle = $PH->defineFromHandle(array('prj'=>$project->id));
+    $fromHandle = $PH->defineFromHandle(['prj'=>$project->id]);
 
     $page= new Page();
     $page->extra_header_html  = '<script type="text/javascript" src="js/jquery.event.drop-2.2.js"></script>';
@@ -48,9 +48,9 @@ function projViewTasks()
     
 
     ### init known filters for preset ###
-    $list= new ListBlock_tasks(array(
+    $list= new ListBlock_tasks([
         'active_block_function'=>'tree',
-    ));
+    ]);
 
     ### set up page ####
     {
@@ -85,7 +85,7 @@ function projViewTasks()
         ### page functions ###
         $new_task_options = isset($preset['new_task_options'])
                           ? $preset['new_task_options']
-                          : array();
+                          : [];
 
         if($project->isPersonVisibleTeamMember($auth->cur_user)) {
 
@@ -117,40 +117,40 @@ function projViewTasks()
     echo "<div class='task-list'>";
 
     #--- without milestone ------------------------------------
-    $tasks = Task::getAll(array(
+    $tasks = Task::getAll([
         //'is_milestone'=>true,
         'project' => $project->id,
-        'category_in' => array(TCATEGORY_TASK, TCATEGORY_BUG),
+        'category_in' => [TCATEGORY_TASK, TCATEGORY_BUG],
         'status_min'=> 0,
         'status_max'=> 5,
         'for_milestone' => 0,
         'order_by'=>'order_id',
-    ));
+    ]);
 
     renderTaskGroup($tasks, "Without Group", 0, $project->id, false);
 
 
     #--- for milestones -------------------------------------
-    $milestones = Task::getAll(array(
+    $milestones = Task::getAll([
         //'is_milestone'=>true,
         'project' => $project->id,
         'category' => TCATEGORY_MILESTONE,
         'status_min'=> 0,
         'status_max'=> 5,
-    ));
+    ]);
 
     
     $l = count($milestones);
     foreach($milestones as $milestone) {
-        $tasks = Task::getAll(array(
+        $tasks = Task::getAll([
             //'is_milestone'=>true,
             'project' => $project->id,
-            'category_in' => array(TCATEGORY_TASK, TCATEGORY_BUG),
+            'category_in' => [TCATEGORY_TASK, TCATEGORY_BUG],
             'status_min'=> 0,
             'status_max'=> 5,
             'for_milestone' => $milestone->id,
             'order_by' => 'order_id',
-        ));        
+        ]);        
         renderTaskGroup($tasks, $milestone->name, $milestone->id, $project->id, $milestone->view_collapsed);
     }
     echo "</div>";  // /task-list

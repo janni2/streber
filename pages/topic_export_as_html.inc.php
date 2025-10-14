@@ -125,7 +125,7 @@ function extractToc2($code)
         $head->lastChild->appendChild($link_node);
 
         # build ID
-        $levels = array();
+        $levels = [];
         $tmp = &$head;
 
         # walk subtree up to fragment root node of this subtree

@@ -48,7 +48,7 @@ class ListGroupingCompany extends ListGrouping {
  */
 class ListBlock_projects extends ListBlock
 {    
-	public $filters = array();
+	public $filters = [];
 	
     public function __construct($args=NULL)
     {
@@ -60,25 +60,25 @@ class ListBlock_projects extends ListBlock
         $this->title    = "related Projects";
 
         $this->add_col( new ListBlockColSelect());
-        $this->add_col( new ListBlockColPrio(array(
+        $this->add_col( new ListBlockColPrio([
             'key'=>'prio',
             'name'=>"P",
             'tooltip'=>__("Project priority (the icons have tooltips, too)"),
             'sort'=>1,
-        )));
-        $this->add_col( new ListBlockColStatus(array(
+        ]));
+        $this->add_col( new ListBlockColStatus([
             'key'=>'status',
             'name'=>"S",
             'tooltip'=>__("Task-Status"),
             'sort'=>0
-        )));
-            $this->add_col( new ListBlockColMethod(array(
+        ]));
+            $this->add_col( new ListBlockColMethod([
                 'id'    =>'company',
                 'key'=>'c.name',
                 'name'=>__("Company"),
                 'tooltip'=>__("Company"),
                 'func'=>'getCompanyLink',
-            )));
+            ]));
 
         /*$this->add_col( new ListBlockColFormat(array(
             'key'=>'short',
@@ -99,12 +99,12 @@ class ListBlock_projects extends ListBlock
         )));
         */
 
-        $this->add_col( new ListBlockColFormat(array(
+        $this->add_col( new ListBlockColFormat([
             'key'=>'status_summary',
             'name'=>__("Status Summary"),
             'tooltip'=>__("Short discription of the current status"),
             'format'=>'{?status_summary}'
-        )));
+        ]));
 
         if(!$auth->hideOtherPeoplesDetails()) {
             $this->add_col( new ListBlockCol_ProjectPeople);       
@@ -112,123 +112,123 @@ class ListBlock_projects extends ListBlock
         
         $this->add_col( new ListBlockCol_ProjectEffortSum);
 
-        $this->add_col( new ListBlockColMethod(array(
+        $this->add_col( new ListBlockColMethod([
             'name'=>__("Tasks"),
             'tooltip'=>__("Number of open Tasks"),
             'sort'=>0,
             'func'=>'getNumTasks',
             'style' =>'right',
             'id'    =>'tasks',
-        )));
-        $this->add_col( new ListBlockColDate(array(
+        ]));
+        $this->add_col( new ListBlockColDate([
             'key'=>'date_start',
             'name'=>__("Opened"),
             'tooltip'=>__("Day the Project opened"),
             'sort'=>0,
-        )));
-        $this->add_col( new ListBlockColDate(array(
+        ]));
+        $this->add_col( new ListBlockColDate([
             'key'=>'date_closed',
             'name'=>__("Closed"),
             'tooltip'=>__("Day the Project state changed to closed"),
             'sort'=>0,
-        )));
+        ]));
 
         #---- functions ------------------------
         global $PH;
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projEdit')->id,
             'name'  =>__('Edit project'),
             'id'    =>'projEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projDelete')->id,
             'name'  =>__('Delete project'),
             'id'    =>'projDelete',
             'icon'  =>'delete'
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortNew')->id,
             'name'  =>__('Log hours for a project'),
             'id'    =>'effortNew',
             'context_menu'=>'submit',
             'icon'  =>'loghours',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projChangeStatus')->id,
             'name'  =>__('Open / Close'),
             'id'    =>'projOpenClose',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projNew')->id,
             'name'  =>__('Create new project'),
             'id'    =>'projNew',
             'icon'  =>'new',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projCreateTemplate')->id,
             'name'  =>__('Create Template'),
             'id'    =>'projCreateTemplate',
             'dropdown_menu'=>true,
             'context_menu'=>'submit',
 
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projNewFromTemplate')->id,
             'name'  =>__('Project from Template'),
             'id'    =>'projNewFromTemplate',
             'dropdown_menu'=>true,
 
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
 		
         ### block style functions ###
-        $this->add_blockFunction(new BlockFunction(array(
+        $this->add_blockFunction(new BlockFunction([
             'target'=>'changeBlockStyle',
             'key'=>'list',
             'name'=>__('List','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'list',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
 #                'use_collapsed'=>true, @@@ this parameter seems useless
-             ),
+             ],
             'default'=>true,
-        )));
-        $this->groupings= new BlockFunction_grouping(array(
+        ]));
+        $this->groupings= new BlockFunction_grouping([
             'target'=>'changeBlockStyle',
             'key'=>'grouped',
             'name'=>__('Grouped','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'grouped',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
-            ),
-        ));
+            ],
+        ]);
 
         $this->add_blockFunction($this->groupings);
 
 
         ### list groupings ###
 
-        $this->groupings->groupings= array(
+        $this->groupings->groupings= [
             new ListGroupingStatus(),
             new ListGroupingPrio(),
             new ListGroupingCompany(),
-        );
+        ];
     }
 
 
@@ -324,7 +324,7 @@ class ListBlockCol_ProjectPeople extends ListBlockCol
             foreach($pps as $pp){
                 ### ###
                 if( $person= Person::getVisibleById($pp->person)) {
-                    $link= $PH->getLink('personView',$person->getShort(),array('person'=>$person->id));
+                    $link= $PH->getLink('personView',$person->getShort(),['person'=>$person->id]);
                     print  $str_delimiter . $link;
 
                     $str_delimiter=", ";
@@ -356,7 +356,7 @@ class ListBlockCol_ProjectName extends ListBlockCol
     {
         global $PH;
         print "<td><b><nobr>"
-             . $PH->getLink('projView', $project->name, array('prj' => $project->id)) 
+             . $PH->getLink('projView', $project->name, ['prj' => $project->id]) 
              ."</nobr></b></td>";
     }
 }
@@ -383,7 +383,7 @@ class ListBlockCol_ProjectEffortSum extends ListBlockCol{
         $value = round($project->getOpenEffortsSum()/60/60,1);
         if($value) {
             print "<td>"
-                . $PH->getLink('projViewEfforts', $value ."h", array('prj'=> $project->id, 'preset' => 'open_efforts' ))
+                . $PH->getLink('projViewEfforts', $value ."h", ['prj'=> $project->id, 'preset' => 'open_efforts' ])
                 . "</td>";
         }
         else {

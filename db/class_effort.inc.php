@@ -45,55 +45,55 @@ class Effort extends DbProjectItem
     static function initFields()
     {
         global $effort_fields;
-        $effort_fields=array();
+        $effort_fields=[];
         addProjectItemFields($effort_fields);
     
-                foreach(array(
-                    new FieldInternal(array(    'name'=>'id',
+                foreach([
+                    new FieldInternal([    'name'=>'id',
                         'default'=>0,
                         'in_db_object'=>1,
                         'in_db_item'=>1,
-                    )),
-                    new FieldInternal(array(    'name'=>'project',
+                    ]),
+                    new FieldInternal([    'name'=>'project',
                         'default'=>0,
                         'in_db_object'=>1,
                         'in_db_item'=>1,
-                    )),
-                    new FieldString(array(      'name'=>'name',
+                    ]),
+                    new FieldString([      'name'=>'name',
                         'title'=>__('Summary'),
                         'tooltip'=>__('optional if tasks linked to this effort'),
-                    )),
+                    ]),
     
-                    new FieldInternal(array(      'name'=>'task',
-                    )),
+                    new FieldInternal([      'name'=>'task',
+                    ]),
     
-                    new FieldInternal(array(      'name'=>'billing',
-                    )),
-                    new FieldInternal(array(      'name'=>'productivity',
+                    new FieldInternal([      'name'=>'billing',
+                    ]),
+                    new FieldInternal([      'name'=>'productivity',
                         'default'=> 3
-                    )),
+                    ]),
     
-                    new FieldDatetime(array(    'name'=>'time_start',
+                    new FieldDatetime([    'name'=>'time_start',
                         'title'=> __('Time Start'),
                         'default'=>FINIT_NOW
-                    )),
-                    new FieldDatetime(array(    'name'=>'time_end',
+                    ]),
+                    new FieldDatetime([    'name'=>'time_end',
                         'title'=> __('Time End'),
                         'default'=>FINIT_NOW
-                    )),
-                    new FieldInternal(array(    'name'=>'person',
-                    )),
-                    new FieldText(array(        'name'=>'description',
+                    ]),
+                    new FieldInternal([    'name'=>'person',
+                    ]),
+                    new FieldText([        'name'=>'description',
                         'title'=>__('Description'),
-                    )),
-                    new FieldInternal(array(    'name'=>'as_duration',
+                    ]),
+                    new FieldInternal([    'name'=>'as_duration',
                         'default'=>0,
-                    )),
-                    new FieldOption   (array(    'name'=>'status',
+                    ]),
+                    new FieldOption   ([    'name'=>'status',
                         'title'=>__('Status'),
                         'view_in_forms'=>true,
                         'default'=>1,
-                    )),
+                    ]),
                     
                     /**
                     * DEPRECATED! this internal field is for backwards compatibility to old db-structures
@@ -103,7 +103,7 @@ class Effort extends DbProjectItem
                     #    'log_changes' => true,
                     #)),
     
-                ) as $f) {
+                ] as $f) {
                     $effort_fields[$f->name]=$f;
                 }
     }
@@ -347,7 +347,7 @@ class Effort extends DbProjectItem
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
         
-        $efforts=array();
+        $efforts=[];
         foreach($tmp as $t) {
             $effort=new Effort($t);
             $efforts[]=$effort;
@@ -476,7 +476,7 @@ class Effort extends DbProjectItem
             $sth = $dbh->prepare($query_str);
             $sth->execute("",1);
             $tmp=$sth->fetchall_assoc();
-            $efforts=array();
+            $efforts=[];
             foreach($tmp as $t) {
                 $effort=new Effort($t);
                 $efforts[]=$effort;
@@ -544,7 +544,7 @@ class Effort extends DbProjectItem
             $sth = $dbh->prepare($query_str);
             $sth->execute("",1);
             $tmp=$sth->fetchall_assoc();
-            $efforts=array();
+            $efforts=[];
             foreach($tmp as $t) {
                 $effort=new Effort($t);
                 $efforts[]=$effort;
@@ -661,10 +661,10 @@ class Effort extends DbProjectItem
 
         global $PH;
         if($short_name) {
-            return '<span  title="'.asHtml($this->name).'" class="item task">'.$PH->getLink('effortView',$this->getShort(),array('effort'=>$this->id),$style_isdone).'</span>';
+            return '<span  title="'.asHtml($this->name).'" class="item task">'.$PH->getLink('effortView',$this->getShort(),['effort'=>$this->id],$style_isdone).'</span>';
         }
         else {
-            return '<span  class="item task">'.$PH->getLink('effortView',$this->name,array('effort'=>$this->id),$style_isdone).'</span>';
+            return '<span  class="item task">'.$PH->getLink('effortView',$this->name,['effort'=>$this->id],$style_isdone).'</span>';
         }
     }
     

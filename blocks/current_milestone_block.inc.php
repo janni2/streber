@@ -86,28 +86,28 @@ class CurrentMilestoneBlock extends PageBlock
         echo "</div>";
 
         echo $PH->getLink('projViewTasks',  sprintf(__("%s completed task"), $milestone_task_summary['num_closed']),
-                    array(
+                    [
                         'prj'          => $this->project->id,
                         'for_milestone'=> $this->current_milestone->id,
                         'preset'       =>'closed_tasks',
-                    ))
+                    ])
              . $PH->getLink('projViewTasks',  sprintf(__("%s open"), $milestone_task_summary['num_open'] - $milestone_task_summary['num_need_approval']),
-                    array(
+                    [
                         'prj'          => $this->project->id,
                         'for_milestone'=> $this->current_milestone->id,
                         'preset'       =>'next_milestone',
-                    ), "open_task_count")
+                    ], "open_task_count")
              . '<br>';
 
         if($milestone_task_summary['num_need_approval']) {
             echo $PH->getLink('projViewTasks',  $milestone_task_summary['num_need_approval'] < 2
                                                 ? sprintf(__("%s needs approval"), $milestone_task_summary['num_need_approval']) 
                                                 : sprintf(__("%s need approval"), $milestone_task_summary['num_need_approval']) ,
-                    array(
+                    [
                         'prj'          => $this->project->id,
                         'for_milestone'=> $this->current_milestone->id,
                         'preset'       =>'approve_tasks',
-                    ));
+                    ]);
             
         }
 

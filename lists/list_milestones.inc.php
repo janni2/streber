@@ -21,7 +21,7 @@ require_once(confGet('DIR_STREBER') . 'lists/list_tasks.inc.php');
 class ListBlock_milestones extends ListBlock
 {
 
-    public $filters= array();                               # assoc arry of ListFilters
+    public $filters= [];                               # assoc arry of ListFilters
     public $active_block_function = 'grouped';              #@@@ HACK
     public $tasks_assigned_to= NULL;
 
@@ -49,39 +49,39 @@ class ListBlock_milestones extends ListBlock
         ### columns ###
         $this->add_col( new ListBlockColSelect());
 
-   	    $this->add_col( new ListBlockCol_MilestoneName(      array('use_short_names'=>false,'indention'=>true)));
+   	    $this->add_col( new ListBlockCol_MilestoneName(      ['use_short_names'=>false,'indention'=>true]));
         $this->add_col( new listBlockCol_MilestoneDate());
 
    	    $this->add_col( new ListBlockCol_MilestoneTasksGraph());
-	    $this->add_col( new ListBlockCol_TaskAssignedTo(array('use_short_names'=>false )));
+	    $this->add_col( new ListBlockCol_TaskAssignedTo(['use_short_names'=>false ]));
 
         $this->add_col( new ListBlockColPubLevel());
 
 
         ### functions ###
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('taskEdit')->id,
             'name'  =>__('Edit'),
             'id'    =>'taskEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
+        ]));
 
         ### functions ###
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('tasksDelete')->id,
             'name'  =>__('Delete'),
             'id'    =>'taskDelete',
             'icon'  =>'delete',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
         
     }
 
@@ -111,20 +111,20 @@ class ListBlock_milestones extends ListBlock
 
 
                 ### get subtasks if expanded
-                $this->tasks_open= Task::getAll(array(
+                $this->tasks_open= Task::getAll([
                     'for_milestone' => $t->id,
                     'status_min'    => STATUS_NEW,
                     'status_max'    => STATUS_COMPLETED,
                     'project'       => $t->project,
                     'show_folders'  => false,
-                ));
-                $this->tasks_closed= Task::getAll(array(
+                ]);
+                $this->tasks_closed= Task::getAll([
                     'for_milestone' => $t->id,
                     'status_min'    => STATUS_APPROVED,
                     'status_max'    => STATUS_CLOSED,
                     'project'       => $t->project,
                     'show_folders'  => false,
-                ));
+                ]);
 
 
                 $this->num_closed= count($this->tasks_closed);
@@ -288,13 +288,13 @@ class ListBlockCol_MilestoneName extends ListBlockCol
 
         ### collapsed view ###
 		if($task->view_collapsed) {
-    		$buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"". getThemeFile("img/toggle_folder_closed.gif") . "\">",array('tsk'=>$task->id),NULL, true)
+    		$buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"". getThemeFile("img/toggle_folder_closed.gif") . "\">",['tsk'=>$task->id],NULL, true)
     		        . $html_link;
 		}
 		### expanded view ###
 		else {
 
-    		$buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"" . getThemeFile("img/toggle_folder_open.gif") . "\">",array('tsk'=>$task->id),NULL, true)
+    		$buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"" . getThemeFile("img/toggle_folder_open.gif") . "\">",['tsk'=>$task->id],NULL, true)
     		. $html_link
     		. '<br>';
             
@@ -436,18 +436,18 @@ class ListBlockCol_MilestoneTasksGraph extends ListBlockCol
 
             if(!$obj->view_collapsed) {
                  echo $PH->getLink('projViewTasks', $this->parent_block->num_closed." ". __("closed"),
-                            array(
+                            [
                                 'prj'          => $obj->project,
                                 'for_milestone'=>$obj->id,
                                 'preset'       =>'closed_tasks',
-                            ))
+                            ])
                      . " / "
                      . $PH->getLink('projViewTasks', ($this->parent_block->num_open - $this->parent_block->num_completed)." ". __("open"),
-                            array(
+                            [
                                 'prj'          => $obj->project,
                                 'for_milestone'=>$obj->id,
                                 'preset'       =>'next_milestone',
-                            ))
+                            ])
                      . '<br>';
                 if( $this->parent_block->sum_estimated_min) {
                     echo renderEstimationGraph($this->parent_block->sum_estimated_min, $this->parent_block->sum_estimated_max, ($this->parent_block->sum_completion_min/ $this->parent_block->sum_estimated_min) * 100);

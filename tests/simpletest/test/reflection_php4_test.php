@@ -44,7 +44,7 @@ class TestOfReflection extends UnitTestCase {
         $reflection = new SimpleReflection('AnyOldThing');
         $this->assertEqual(
                 $reflection->getInterfaces(),
-                array());
+                []);
     }
 
     function testMostGeneralPossibleSignature() {

@@ -104,7 +104,7 @@ class SimpleTest {
      */
     function preferred($classes) {
         if (! is_array($classes)) {
-            $classes = array($classes);
+            $classes = [$classes];
         }
         $registry = &SimpleTest::_getRegistry();
         for ($i = count($registry['Preferred']) - 1; $i >= 0; $i--) {
@@ -232,14 +232,14 @@ class SimpleTest {
      *    @static
      */
     function _getDefaults() {
-        return array(
+        return [
                 'StubBaseClass' => 'SimpleStub',
                 'MockBaseClass' => 'SimpleMock',
-                'IgnoreList' => array(),
+                'IgnoreList' => [],
                 'DefaultProxy' => false,
                 'DefaultProxyUsername' => false,
                 'DefaultProxyPassword' => false,
-                'Preferred' => array(new HtmlReporter(), new TextReporter(), new XmlReporter()));
+                'Preferred' => [new HtmlReporter(), new TextReporter(), new XmlReporter()]];
     }
 }
 
@@ -261,7 +261,7 @@ class SimpleTestContext {
      *    @access public
      */
     function clear() {
-        $this->_resources = array();
+        $this->_resources = [];
     }
 
     /**
@@ -401,7 +401,7 @@ class SimpleStackTrace {
         if (function_exists('debug_backtrace')) {
             return array_reverse(debug_backtrace());
         }
-        return array();
+        return [];
     }
 }
 

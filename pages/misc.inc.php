@@ -95,7 +95,7 @@ function changeSort()
             }
             else {
                 $new_sort = "$col ASC";
-                $list_new=array();
+                $list_new=[];
 
                 foreach($list_old as $c) {
 
@@ -127,7 +127,7 @@ function changeSort()
             0);
 
         ### keep for current page ###
-        $ref= array($id => $str);
+        $ref= [$id => $str];
         addRequestVars($ref);
 
 
@@ -135,7 +135,7 @@ function changeSort()
 
     ### set up page ####
     if(!$PH->showFromPage()) {
-        $PH->show('home',array());
+        $PH->show('home',[]);
     }
 }
 
@@ -169,7 +169,7 @@ function changeBlockStyle()
         0);
 
     ### keep for current page ###
-    $ref= array($id => $style);
+    $ref= [$id => $style];
     addRequestVars($ref);
 
     ### return to from-page ###
@@ -206,7 +206,7 @@ function changeBlockGrouping()
         0);
 
     ### keep for current page ###
-    $ref= array($id => $grouping);
+    $ref= [$id => $grouping];
     addRequestVars($ref);
 
 
@@ -281,11 +281,11 @@ function systemInfo()
     {
         $page= new Page();
 
-        $page->tabs['admin']=  array('target'=>"index.php?go=systemInfo",     'title'=>__('Admin','top navigation tab'), 'bg'=>"misc");
+        $page->tabs['admin']=  ['target'=>"index.php?go=systemInfo",     'title'=>__('Admin','top navigation tab'), 'bg'=>"misc"];
     	$page->cur_tab='admin';
-    	$page->crumbs[]=new NaviCrumb(array(
+    	$page->crumbs[]=new NaviCrumb([
     	    'target_id'=>'systemInfo'
-    	));
+    	]);
 
         $page->title=__("System information");
         $page->type=__("Admin");
@@ -294,7 +294,7 @@ function systemInfo()
     }
     echo (new PageContentOpen);
 
-    $block=new PageBlock(array('title'=>__('Overview'),'id'=>'overview'));
+    $block=new PageBlock(['title'=>__('Overview'),'id'=>'overview']);
     $block->render_blockStart();
 
 
@@ -333,9 +333,9 @@ function systemInfo()
 */
 function getSysInfo() {
     global $PH;
-    $a=array();
+    $a=[];
 
-    $PH->defineFromHandle(array());
+    $PH->defineFromHandle([]);
 
 
     ### database ###
@@ -437,7 +437,7 @@ function showLog()
     $handle = fopen($filename, "r");
     $last_error_time= NULL;
     $hide_errors=get('hide_errors');
-    $hide_error_hash=array();
+    $hide_error_hash=[];
     foreach(explode(',', $hide_errors) as $error) {
         if($error) {
             $hide_error_hash[$error]=true;
@@ -453,22 +453,22 @@ function showLog()
                 }
             }
             echo "$key (".
-            $PH->getLink('showLog','show', array('hide_errors'=> $list));
+            $PH->getLink('showLog','show', ['hide_errors'=> $list]);
             echo ")<br>";
         }
     }
 
 
     echo $PH->getLink('systemInfo','back to sysInfo') . " | ";
-    echo $PH->getLink('showLog','log', array('showlog'=>1)) . " | ";
-    echo $PH->getLink('showLog','errors', array()) . " | ";
-    echo $PH->getLink('showLog','newbots', array('newbots'=>1)) . " | ";
+    echo $PH->getLink('showLog','log', ['showlog'=>1]) . " | ";
+    echo $PH->getLink('showLog','errors', []) . " | ";
+    echo $PH->getLink('showLog','newbots', ['newbots'=>1]) . " | ";
     echo "<hr>";
 
     
     $count_requests= 0;
     $count_requests_by_crawlers= 0;
-    $new_bots= array();
+    $new_bots= [];
 
 
     while (!feof($handle)) {
@@ -520,9 +520,9 @@ function showLog()
                     $rest= $matches[4];
                     if(!isset($hide_error_hash[$file.':'.$line])) {
                         if($time != $last_error_time) {
-                            echo $PH->getLink('showLog', $time, array('time'=> $time));
+                            echo $PH->getLink('showLog', $time, ['time'=> $time]);
                             echo " $type: <b>$file:$line</b> -  $rest (";
-                            echo $PH->getLink('showLog',__('hide'), array('hide_errors'=> $hide_errors.','.$file.':'.$line));
+                            echo $PH->getLink('showLog',__('hide'), ['hide_errors'=> $hide_errors.','.$file.':'.$line]);
                             echo ")<br>";
                             $last_error_time= $time;
                         }

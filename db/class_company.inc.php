@@ -14,94 +14,94 @@
  */
 
 global $g_company_fields;
-$g_company_fields=array();
+$g_company_fields=[];
 addProjectItemFields($g_company_fields);
 
-foreach(array(
-    new FieldInternal(array(    'name'=>'id',
+foreach([
+    new FieldInternal([    'name'=>'id',
         'default'=>0,
         'in_db_object'=>1,
         'in_db_item'=>1,
-    )),
-    new FieldInternal(array(    'name'=>'state',    ### cached in project-table to speed up queries ###
+    ]),
+    new FieldInternal([    'name'=>'state',    ### cached in project-table to speed up queries ###
         'default'=>1,
         'in_db_object'=>1,
         'in_db_item'=>1,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'name',
         'title'=>__('Name'),
         'tooltip'=>__('Required. (e.g. pixtur ag)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'short',
         'title'=>__('Short','form field for company'),
         'tooltip'=>__('Optional: Short name shown in lists (eg. pixtur)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'tagline',
         'title'=>__('Tag line','form field for company'),
         'tooltip'=>__('Optional: Additional tagline (eg. multimedia concepts)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'phone',
         'title'=>__('Phone','form field for company'),
         'tooltip'=>__('Optional: Phone (eg. +49-30-12345678)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'fax',
         'title'=>__('Fax','form field for company'),
         'tooltip'=>__('Optional: Fax (eg. +49-30-12345678)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'street',
         'title'=>__('Street'),
         'tooltip'=>__('Optional: (eg. Poststreet 28)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'zipcode',
         'title'=>__('Zipcode'),
         'tooltip'=>__('Optional: (eg. 12345 Berlin)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'homepage',
         'title'=>__('Website'),
         'tooltip'=>__('Optional: (eg. http://www.pixtur.de)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'intranet',
         'title'=>__('Intranet'),
         'tooltip'=>__('Optional: (eg. http://www.pixtur.de/login.php?name=someone)'),
         'log_changes'=>true,
-    )),
-    new FieldString(array(
+    ]),
+    new FieldString([
         'name'=>'email',
         'title'=>__('E-Mail'),
         'tooltip'=>__('Optional: (eg. http://www.pixtur.de/login.php?name=someone)'),
         'log_changes'=>true,
-    )),
-    new FieldText(array(
+    ]),
+    new FieldText([
         'name'=>'comments',
         'title'=>__('Comments','form label for company'),
         'tooltip'=>__('Optional'),
         'log_changes'=>true,
-    )),
+    ]),
     ### company category ###
-    new FieldInternal(array(
+    new FieldInternal([
         'name'=>'category',
         'view_in_forms' =>false,
         'default'=>0,
         'log_changes'=>true,
-    )),
-) as $f) {
+    ]),
+] as $f) {
     $g_company_fields[$f->name]=$f;
 }
 
@@ -131,10 +131,10 @@ class Company extends DbProjectItem
     {
         global $PH;
         if($show_long) {
-            $out= '<span class="item company">'. $PH->getLink('companyView',$this->name, array('company'=>$this->id)).'</span>';
+            $out= '<span class="item company">'. $PH->getLink('companyView',$this->name, ['company'=>$this->id]).'</span>';
         }
         else {
-            $out= '<span class="item company">'. $PH->getLink('companyView',$this->getShortWithTitle(),array('company'=>$this->id),'item company',true).'</span>';
+            $out= '<span class="item company">'. $PH->getLink('companyView',$this->getShortWithTitle(),['company'=>$this->id],'item company',true).'</span>';
         }
         return $out;
     }
@@ -164,9 +164,9 @@ class Company extends DbProjectItem
     static function getVisibleById($id)
     {
 
-        $companies= Company::getAll(array(
+        $companies= Company::getAll([
                     'order_str'=>NULL,
-                    'has_id'=>intval($id)));
+                    'has_id'=>intval($id)]);
 
         if(count($companies) == 1) {
             if($companies[0]->id) {
@@ -199,7 +199,7 @@ class Company extends DbProjectItem
 
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $companies=array();
+        $companies=[];
         foreach($tmp as $t) {
             $company=new Company($t);
             $companies[]=$company;
@@ -379,7 +379,7 @@ class Company extends DbProjectItem
 
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $projects=array();
+        $projects=[];
         foreach($tmp as $t) {
             $projects[]=new Project($t);
         }
@@ -405,7 +405,7 @@ class Company extends DbProjectItem
         );
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $es=array();
+        $es=[];
         foreach($tmp as $t) {
             $es[]=new Employment($t);
         }
@@ -435,7 +435,7 @@ class Company extends DbProjectItem
         
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $es=array();
+        $es=[];
 
         foreach($tmp as $t) {
             if($person = Person::getVisibleById($t['id'])) {

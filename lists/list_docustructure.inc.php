@@ -32,7 +32,7 @@ class Block_DocuNavigation extends PageBlock
 {
     public  $current_task   = NULL;
     public  $project_id     = NULL;     # object
-    private $tasks          = array();
+    private $tasks          = [];
     public  $root           = NULL;
 
     public function __construct($args=NULL) {
@@ -43,7 +43,7 @@ class Block_DocuNavigation extends PageBlock
 
     private function initStructure()
     {
-        $tasks= array();
+        $tasks= [];
 
         if(!$this->project_id) {
             if(!$this->current_task) {
@@ -232,7 +232,7 @@ class Block_DocuNavigation extends PageBlock
             $style= 'current';
         }
 
-        return $PH->getLink($page, $t->name, array('tsk' => $t->id), $style );
+        return $PH->getLink($page, $t->name, ['tsk' => $t->id], $style );
     }
 }
 

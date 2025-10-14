@@ -76,11 +76,11 @@ class Field
 
         #--- try to automatically assign functions for rendering...
         if($this->view_in_forms) {
-            foreach(array(
+            foreach([
             '_renderToForm',
             '_parseForm',
             '_getFormElement'
-            ) as $fn_append) {
+            ] as $fn_append) {
                 $fname= $this->type.$fn_append;
                 $fn= 'func'.$fn_append;
                 if(!$this->$fn) {
@@ -91,7 +91,7 @@ class Field
             }
         }
         if($this->view_in_lists) {
-            foreach(array('_renderListHead','_renderListRow') as $fn_append) {
+            foreach(['_renderListHead','_renderListRow'] as $fn_append) {
                 $fname= $this->type.$fn_append;
                 $fn= 'func'.$fn_append;
                 if(!$this->$fn) {
@@ -288,7 +288,7 @@ class FieldOption extends Field {
         $this->type=__class__;
         $this->view_in_forms=true;
         $this->view_in_lists=true;
-        $this->options=array();
+        $this->options=[];
         parent::__construct($args);
     }
 }

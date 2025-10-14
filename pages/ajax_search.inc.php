@@ -19,14 +19,14 @@ function ajaxSearch()
 
     if($results= SearchResult::getForQuery($sanitized_query))
     {
-        usort($results,  array("SearchResult", "cmp"));
+        usort($results,  ["SearchResult", "cmp"]);
         $results= array_reverse($results);
     }
     else {
         return "[]";
     }
 
-    $resultList = array();
+    $resultList = [];
     $count = 0;
     foreach($results as $r) {
         $annotation = "";
@@ -54,9 +54,9 @@ function ajaxSearch()
             }
         }
 
-        $resultList[] = array('name'=> $r->name ." – "  . $annotation , 'id'=>$r->item->id);
+        $resultList[] = ['name'=> $r->name ." – "  . $annotation , 'id'=>$r->item->id];
         if(++$count > 15) {
-            $resultList[] = array( 'name' => __("Show all results"), 'id' => -1);            
+            $resultList[] = [ 'name' => __("Show all results"), 'id' => -1];            
             break;
         }
     }

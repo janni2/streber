@@ -36,246 +36,246 @@ function homeListEfforts()
     ### get current project ###
     $person= $auth->cur_user;
         
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_efforts' => array(
+        'all_efforts' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NEW,
                     'max'       => EFFORT_STATUS_BALANCED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### new efforts ###
-        'new_efforts' => array(
+        'new_efforts' => [
             'name'=> __('new'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NEW,
                     'max'       => EFFORT_STATUS_NEW,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### open efforts ###
-        'open_efforts' => array(
+        'open_efforts' => [
             'name'=> __('open'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_OPEN,
                     'max'       => EFFORT_STATUS_OPEN,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### discounted efforts ###
-        'discounted_efforts' => array(
+        'discounted_efforts' => [
             'name'=> __('discounted'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_DISCOUNTED,
                     'max'       => EFFORT_STATUS_DISCOUNTED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### not chargeable efforts ###
-        'notchargeable_efforts' => array(
+        'notchargeable_efforts' => [
             'name'=> __('not chargeable'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NOTCHARGEABLE,
                     'max'       => EFFORT_STATUS_NOTCHARGEABLE,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### balanced efforts ###
-        'balanced_efforts' => array(
+        'balanced_efforts' => [
             'name'=> __('balanced'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_BALANCED,
                     'max'       => EFFORT_STATUS_BALANCED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ## last logout ##
-        'last_logout' => array(
+        'last_logout' => [
             'name'=> __('last logout'),
-            'filters'=> array(
-                'last_logout'   => array(
+            'filters'=> [
+                'last_logout'   => [
                     'id'        => 'last_logout',
                     'visible'   => true,
                     'active'    => true,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 1 week ##
-        'last_week' => array(
+        'last_week' => [
             'name'=> __('1 week'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 7,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 2 weeks ##
-        'last_two_weeks' => array(
+        'last_two_weeks' => [
             'name'=> __('2 weeks'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 14,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 3 weeks ##
-        'last_three_weeks' => array(
+        'last_three_weeks' => [
             'name'=> __('3 weeks'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 21,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 1 month ##
-        'last_month' => array(
+        'last_month' => [
             'name'=> __('1 month'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 28,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## prior ##
-        'prior' => array(
+        'prior' => [
             'name'=> __('prior'),
-            'filters'=> array(
-                'prior'    => array(
+            'filters'=> [
+                'prior'    => [
                     'id'        => 'prior',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 29,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
-    );
+                ]
+            ],
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'homeListEfforts';
@@ -305,7 +305,7 @@ function homeListEfforts()
         }
     }
     ### create from handle ###
-    $PH->defineFromHandle(array('person'=>$person->id, 'preset_id' =>$preset_id));
+    $PH->defineFromHandle(['person'=>$person->id, 'preset_id' =>$preset_id]);
 
     ### set up page ####
     {
@@ -345,27 +345,27 @@ function homeListEfforts()
             foreach($preset['filters'] as $f_name=>$f_settings) {
                 switch($f_name) {
                     case 'effort_status':
-                        $list->filters[]= new ListFilter_effort_status_min(array(
+                        $list->filters[]= new ListFilter_effort_status_min([
                             'value'=>$f_settings['min'],
-                        ));
-                        $list->filters[]= new ListFilter_effort_status_max(array(
+                        ]);
+                        $list->filters[]= new ListFilter_effort_status_max([
                             'value'=>$f_settings['max'],
-                        ));
+                        ]);
                         break;
                     case 'last_logout':
-                        $list->filters[]= new ListFilter_last_logout(array(
+                        $list->filters[]= new ListFilter_last_logout([
                             'value'=>$f_settings['value'],
-                        ));
+                        ]);
                         break;
                     case 'last_weeks':
-                        $list->filters[]= new ListFilter_min_week(array(
+                        $list->filters[]= new ListFilter_min_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         break;
                     case 'prior':
-                        $list->filters[]= new ListFilter_max_week(array(
+                        $list->filters[]= new ListFilter_max_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         break;
                     default:
                         trigger_error("Unknown filter setting $f_name", E_USER_WARNING);
@@ -378,12 +378,12 @@ function homeListEfforts()
                                   : NULL;
         }
         
-        $page->print_presets(array(
+        $page->print_presets([
         'target' => $preset_location,
         'project_id' => '',
         'preset_id' => $preset_id,
         'presets' => $presets,
-        'person_id' => $person->id));
+        'person_id' => $person->id]);
         
         $list->query_options['order_by'] = $order_by;
         $list->query_options['person'] = $person->id;

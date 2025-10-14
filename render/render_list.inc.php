@@ -50,11 +50,11 @@ class FilterSetting_tasks extends FilterSetting
     public function __construct($args=NULL)
     {
         parent::__construct($args);
-        $tmp_filters= array(
+        $tmp_filters= [
             new ListFilter_for_milestone(),
             new ListFilter_project(),
             new ListFilter_status(),
-        );
+        ];
 
         foreach($tmp_filters as $f) {
             $this->filters[$f->id] = $f;
@@ -84,8 +84,8 @@ class FilterPreset_Setting extends BaseObject
     public $valid_for_setting;
     public $id;
 
-    public $active_filters  =array();
-    public $filter_values   = array();
+    public $active_filters  =[];
+    public $filter_values   = [];
 
 
 
@@ -134,7 +134,7 @@ abstract class ListFilter extends BaseObject
 
     public function getQuerryAttributes()
     {
-        $a=array();
+        $a=[];
         if($this->active) {
             $name= $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
@@ -406,7 +406,7 @@ class ListFilter_last_logout extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
+        $a = [];
         if($this->active) {
             $name= $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
@@ -440,7 +440,7 @@ class ListFilter_today extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
+        $a = [];
         if($this->active) {
             $name= $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
@@ -478,7 +478,7 @@ class ListFilter_min_week extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
+        $a = [];
         if($this->active) {
             $name= $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
@@ -514,7 +514,7 @@ class ListFilter_max_week extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
+        $a = [];
         if($this->active) {
             $name= $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
@@ -543,7 +543,7 @@ class ListFilter_category_in extends ListFilter
     {
         parent::__construct($args);
         global $auth;
-        $this->default = array(0);
+        $this->default = [0];
     }
 }
 
@@ -555,7 +555,7 @@ class ListFilter_not_older extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a=array();
+        $a=[];
         if($this->active) {
             if($this->value) {
                 $a['date_min'] = getGMTString( (time() - $this->value));
@@ -663,7 +663,7 @@ class ListFilter_can_login extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
+        $a = [];
         if($this->active) {
             $name= $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
@@ -682,7 +682,7 @@ class ListFilter_is_alive extends ListFilter
 
     public function getQuerryAttributes()
     {
-        $a = array();
+        $a = [];
         if($this->active) {
             $name= $this->sql_querry_attribute
                  ? $this->sql_querry_attribute
@@ -790,11 +790,11 @@ class BlockFunction_grouping extends BlockFunction
         $this->getActiveFromCookie();
 
         foreach($this->groupings as $g) {
-            $url= $PH->getUrl('changeBlockGrouping',array(
+            $url= $PH->getUrl('changeBlockGrouping',[
                 'block_id'  => $this->parent_block->id,
                 'page_id'   => $PH->cur_page->id,
                 'grouping'  => $g->id,
-            ));
+            ]);
 
             if($g->id == $this->active_grouping_key) {
                 $selected= 'selected';
@@ -1219,9 +1219,9 @@ class ListFunction {
 */
 class ListBlock extends PageBlock
 {
-    public $columns         = array();
-    public $functions       = array();
-    public $query_options   = array();      # options passed to database-query functions (filtering, sorting, etc)
+    public $columns         = [];
+    public $functions       = [];
+    public $query_options   = [];      # options passed to database-query functions (filtering, sorting, etc)
 
     public $row_count       = 0;
     public $show_functions  = false;        # is set true, when adding functions without icon
@@ -1231,7 +1231,7 @@ class ListBlock extends PageBlock
     public $show_footer     = true;
     public $show_summary    = true;
     public $summary;
-    public $footer_links    = array();      # additional http-fragments in footer (e.g. export links)
+    public $footer_links    = [];      # additional http-fragments in footer (e.g. export links)
     public $no_items_html   = '';           # should be overwritten by 'create first link'
     public $groupings;                      # list of BlockFunction_grouping
     public $active_grouping_key;            #
@@ -1475,7 +1475,7 @@ class ListBlock extends PageBlock
         }
 
         ## header ##
-        $ids = array();
+        $ids = [];
         $count = 0;
         foreach($list[0]->fields as $field_name => $field){
             if($field->export) {
@@ -1514,7 +1514,7 @@ class ListBlock extends PageBlock
         }
 
         ## list ##
-        $values = array();
+        $values = [];
         foreach($list as $row){
             foreach($list[0]->fields as $field_name => $field){
                 if($field->export) {
@@ -1583,7 +1583,7 @@ class ListBlock extends PageBlock
             return $value;
         }
         
-        $value2 = preg_replace(array("/\n/si","/\r/si","/\t/si",'/"/',"/`/"),array("\n","","\t",'',""), $value);
+        $value2 = preg_replace(["/\n/si","/\r/si","/\t/si",'/"/',"/`/"],["\n","","\t",'',""], $value);
         $value2 = str_replace(';', ',', $value2);
     
         if($value2 != $value) {

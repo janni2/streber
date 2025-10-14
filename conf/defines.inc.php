@@ -172,7 +172,7 @@ define('STATUS_CLOSED',   8);
 
 
 
-$COMMENTTYPE_VALUES=array(
+$COMMENTTYPE_VALUES=[
 'undefined'=>0,
 'Comment'=>1,
 'Reply'=>2,
@@ -180,7 +180,7 @@ $COMMENTTYPE_VALUES=array(
 'Phone'=>4,
 'Meeting'=>5,
 'Idea'=>6,
-);
+];
 $COMMENTTYPE_NAMES=array_flip($COMMENTTYPE_VALUES);
 
 
@@ -223,12 +223,12 @@ define('USER_SETTING_FILTER_OWN_CHANGES',           1<<8);  # filter items chang
 define('EFFORT_STYLE_TIMES',1);
 define('EFFORT_STYLE_DURATION',2);
 
-$g_security_questions=array(
+$g_security_questions=[
 'in your youth you wanted to become a...',
 'person you would like to kick in the ass...',
 'your favorit car is a...',
 'your best vacation was in...',
-);
+];
 
 /**
 * company types
@@ -323,7 +323,7 @@ define('FINIT_RAND_MD5',   '__rand_md5__');
 define('TIME_OFFSET_AUTO', 25);
 
 global $g_time_zones;
-$g_time_zones=array(
+$g_time_zones=[
     "-- ".__("autodetect"). " --"          =>  TIME_OFFSET_AUTO,
     'GMT -12 : Dateline Standard'               => -12,
     'GMT -11 : Samoa'                           => -11,
@@ -356,7 +356,7 @@ $g_time_zones=array(
     'GMT +11 : Central Pacific'                 => 11,
     'GMT +12 : Fiji, New Zealand'              => 12,
     'GMT +13 : Tonga'                           => 13
-);
+];
 
 
 /**

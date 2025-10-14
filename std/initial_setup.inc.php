@@ -84,5 +84,5 @@ function filterGlobalArrays()
     addRequestVars($_POST);
     addRequestVars($_COOKIE);
 
-    $_COOKIE= $_GET= $_POST=array();
+    $_COOKIE= $_GET= $_POST=[];
 }

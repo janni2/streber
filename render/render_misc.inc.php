@@ -182,7 +182,7 @@ function url2linkMail($url,$show=false, $maxlen=32) {
 function initPageForTask($page, $task, $project=NULL) 
 {
     global $PH;
-    $crumbs=array();
+    $crumbs=[];
 
     if(!$project) {
         $project= Project::getVisibleById($task->project);
@@ -207,7 +207,7 @@ function initPageForTask($page, $task, $project=NULL)
 	$page->cur_tab='projects';
 	$page->title = $task->name;
 	if($task->id) {
-        $page->title_minor_html= $PH->getLink('taskView', sprintf('#%d', $task->id), array('tsk'=>$task->id));
+        $page->title_minor_html= $PH->getLink('taskView', sprintf('#%d', $task->id), ['tsk'=>$task->id]);
 	}
             
     $page->type = $task->buildTypeText();;    
@@ -230,7 +230,7 @@ function initPageForTask($page, $task, $project=NULL)
 function initPageForComment($page, $comment, $project=NULL) 
 {
     global $PH;
-    $crumbs=array();
+    $crumbs=[];
 
     if(!$project) {
         $project= Project::getVisibleById($comment->project);
@@ -261,7 +261,7 @@ function initPageForComment($page, $comment, $project=NULL)
 	else {
 	    $page->title = __('Comment');
 	}
-    $page->title_minor_html= $PH->getLink('commentView', sprintf('#%d', $comment->id), array('comment'=>$comment->id));
+    $page->title_minor_html= $PH->getLink('commentView', sprintf('#%d', $comment->id), ['comment'=>$comment->id]);
 
 
     /**
@@ -302,7 +302,7 @@ function initPageForComment($page, $comment, $project=NULL)
 function initPageForFile($page, $file, $project=NULL) 
 {
     global $PH;
-    $crumbs=array();
+    $crumbs=[];
 
     if(!$project) {
         $project= Project::getVisibleById($file->project);
@@ -321,7 +321,7 @@ function initPageForFile($page, $file, $project=NULL)
 	else {
 	    $page->title = __('File');
 	}
-    $page->title_minor_html= $PH->getLink('fileView', sprintf('#%d', $file->id), array('file'=>$file->id));
+    $page->title_minor_html= $PH->getLink('fileView', sprintf('#%d', $file->id), ['file'=>$file->id]);
 
 
     /**
@@ -361,7 +361,7 @@ function initPageForFile($page, $file, $project=NULL)
 function initPageForEffort($page, $effort, $project=NULL) 
 {
     global $PH;
-    $crumbs=array();
+    $crumbs=[];
 
     if(!$project) {
         $project= Project::getVisibleById($effort->project);
@@ -379,7 +379,7 @@ function initPageForEffort($page, $effort, $project=NULL)
 	else {
 	    $page->title = __('Effort');
 	}
-    $page->title_minor_html= $PH->getLink('effortView', sprintf('#%d', $effort->id), array('effort'=>$effort->id));
+    $page->title_minor_html= $PH->getLink('effortView', sprintf('#%d', $effort->id), ['effort'=>$effort->id]);
 
 
     /**
@@ -408,41 +408,41 @@ function initPageForEffort($page, $effort, $project=NULL)
 
 
 function build_person_crumbs(&$person) {
-    $crumbs=array();
+    $crumbs=[];
 
-	$crumbs[]= new NaviCrumb(array(
+	$crumbs[]= new NaviCrumb([
 		'target_id'     =>'personList',
 		'name'          =>__('Other People','page option'),
-	));
+	]);
     
-    $crumbs[]= new NaviCrumb(array(
+    $crumbs[]= new NaviCrumb([
         'target_id'     => 'personView',
-        'target_params' => array('person'=> $person->id),
+        'target_params' => ['person'=> $person->id],
         'name'          => $person->name,
         'type'=>'person',
-  	));
+  	]);
   	return $crumbs;
 }
 
 function build_company_crumbs(&$company) {
-    $crumbs=array();
+    $crumbs=[];
 
-	$crumbs[]= new NaviCrumb(array(
+	$crumbs[]= new NaviCrumb([
 		'target_id'     => 'companyList',
-	));
+	]);
 
-    $crumbs[]= new NaviCrumb(array(
+    $crumbs[]= new NaviCrumb([
             'target_id'     => 'companyView',
             'name'          => $company->name,
-            'target_params' => array('company'=>$company->id),
-    ));
+            'target_params' => ['company'=>$company->id],
+    ]);
 
   	return $crumbs;
 }
 
 
 function build_project_crumbs($project) {
-    $a=array();
+    $a=[];
 
     ### breadcrumbs (distinguish active/closed projects ###
 	/*if($project->status > 3) {
@@ -466,13 +466,13 @@ function build_project_crumbs($project) {
     */
 
 
-    $a[]= new NaviCrumb(array(
+    $a[]= new NaviCrumb([
             'target_id'=>'projView',
             'name'=>    $project->getShort(),
             'tooltip'=> $project->name,
-            'target_params'=>array('prj'=>$project->id ),
+            'target_params'=>['prj'=>$project->id ],
             'type'=>'project',
-        ));
+        ]);
 
     return $a;
 }
@@ -506,27 +506,27 @@ function buildProjectSelector()
     $buffer.= "<span style='display:none;' id='projectselectorlist' class=selectorlist><span class=selectorlist_content>";
 
     foreach(Company::getAll() as $c) {
-	    if($projects= Project::getAll(array(
+	    if($projects= Project::getAll([
 	    	'order_by'   => 'c.name',
 	        'company'    => $c->id,
-	    ))) {
+	    ])) {
 	        $buffer .= "<div class='companies'><span style='float:left;margin-right:3px;'>" . __("for","short for client") . "</span>" . $c->getLink() . "</div>";
 	        $buffer .= "<div class='projects'><ul>";
 	        foreach($projects as $p) {
-	            $buffer.= "<li>" . $PH->getLink('projView',$p->name, array('prj' => $p->id)) . "</li>";
+	            $buffer.= "<li>" . $PH->getLink('projView',$p->name, ['prj' => $p->id]) . "</li>";
 	        }
 	        $buffer .= "</ul></div>";
 	    }
     }
 	/* projects without client */
-	if($projects= Project::getAll(array(
+	if($projects= Project::getAll([
        'order_by'   => 'c.name',
        'company'    => 0,
-    ))) {
+    ])) {
         $buffer .= "<div class='companies'><span style='float:left;margin-right:3px;'>" . __("without client","short for client") . "</span>&nbsp;</div>";
 		$buffer .= "<div class='projects'><ul>";
         foreach($projects as $p){
-			$buffer.= "<li>" . $PH->getLink('projView',$p->name, array('prj' => $p->id)) . "</li>";
+			$buffer.= "<li>" . $PH->getLink('projView',$p->name, ['prj' => $p->id]) . "</li>";
         } 
         $buffer .= "</ul></div>";
     }
@@ -559,24 +559,24 @@ function buildHomeSelector()
     $buffer.="<span id=homeselector class=selector>&nbsp;</span>";
     $buffer.= "<span style='display:none;' id='homeselectorlist' class=selectorlist><span class=selectorlist_content>";
 
-    $buffer.= $PH->getLink('home',NULL, array());
+    $buffer.= $PH->getLink('home',NULL, []);
 
-    $buffer.= $PH->getLink('homeTasks',NULL, array());
+    $buffer.= $PH->getLink('homeTasks',NULL, []);
 
     if($auth->cur_user->settings & USER_SETTING_ENABLE_EFFORTS) {
-        $buffer.= $PH->getLink('homeListEfforts',NULL, array());
-        $buffer.= $PH->getLink('homeTimetracking',NULL, array());
+        $buffer.= $PH->getLink('homeListEfforts',NULL, []);
+        $buffer.= $PH->getLink('homeTimetracking',NULL, []);
     }
     
     if($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
-        $buffer.= $PH->getLink('homeBookmarks',NULL, array());
+        $buffer.= $PH->getLink('homeBookmarks',NULL, []);
     }
 
     if($auth->cur_user->user_rights & RIGHT_VIEWALL) {
-        $buffer.= $PH->getLink('homeMonthlyReport',NULL, array());
+        $buffer.= $PH->getLink('homeMonthlyReport',NULL, []);
     }
 
-    $buffer.= $PH->getLink('homeAllChanges',NULL, array());
+    $buffer.= $PH->getLink('homeAllChanges',NULL, []);
 
     $buffer.="</span></span>";
     return $buffer;
@@ -591,35 +591,35 @@ function buildHomeSelector()
 function build_home_options()
 {
     global $auth;
-    $options= array();
+    $options= [];
 
-    $options[]= new NaviOption(array(
+    $options[]= new NaviOption([
                 'target_id'=>'home',
-        ));
+        ]);
 
-    $options[]= new NaviOption(array(
+    $options[]= new NaviOption([
             'target_id'     =>'homeTasks',
-        ));
+        ]);
 
     if($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
         
-        $options[]= new NaviOption(array(
+        $options[]= new NaviOption([
             'target_id'     =>'homeBookmarks',
-        ));
+        ]);
     }
 
     if($auth->cur_user->settings & USER_SETTING_ENABLE_EFFORTS) {
-        $options[]= new NaviOption(array(
+        $options[]= new NaviOption([
             'target_id'     =>'homeListEfforts',
-        ));
-        $options[]= new NaviOption(array(
+        ]);
+        $options[]= new NaviOption([
             'target_id'     =>'homeTimetracking',
-        ));
+        ]);
     }
 
-    $options[]= new NaviOption(array(
+    $options[]= new NaviOption([
         'target_id'     =>'homeAllChanges',
-    ));
+    ]);
 
     return $options;
 }
@@ -633,51 +633,51 @@ function build_projView_options($project)
 {
     global $auth;
 	
-    $options=array();
+    $options=[];
     if($project->settings & PROJECT_SETTING_ENABLE_TASKS) {
-        $options[]=  new NaviOption(array(
+        $options[]=  new NaviOption([
                 'target_id'=>'projViewTasks',
                 'name'=>__('Tasks','Project option'),
-                'target_params'=>array('prj'=>$project->id )
-        ));
+                'target_params'=>['prj'=>$project->id ]
+        ]);
     }
 
-    $options[]=  new NaviOption(array(
+    $options[]=  new NaviOption([
             'target_id'=>'projViewDocu',
             'name'=>__('Topics','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-    ));
+            'target_params'=>['prj'=>$project->id ]
+    ]);
 
     if($project->settings & PROJECT_SETTING_ENABLE_MILESTONES) {
-        $options[]=  new NaviOption(array(
+        $options[]=  new NaviOption([
             'target_id'=>'projViewMilestones',
             'name'=>__('Milestones','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-        ));
+            'target_params'=>['prj'=>$project->id ]
+        ]);
     }
 
     if($project->settings & PROJECT_SETTING_ENABLE_VERSIONS) {
-        $options[]=  new NaviOption(array(
+        $options[]=  new NaviOption([
                 'target_id'=>'projViewVersions',
                 'name'=>__('Versions','Project option'),
-                'target_params'=>array('prj'=>$project->id )
-        ));
+                'target_params'=>['prj'=>$project->id ]
+        ]);
     }
 
     if($project->settings & PROJECT_SETTING_ENABLE_FILES) {
-        $options[]=new NaviOption(array(
+        $options[]=new NaviOption([
             'target_id'=>'projViewFiles',
             'name'=>__('Files','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-        ));
+            'target_params'=>['prj'=>$project->id ]
+        ]);
     }
 
     if($project->settings & PROJECT_SETTING_ENABLE_EFFORTS) {
-        $options[]=  new NaviOption(array(
+        $options[]=  new NaviOption([
                 'target_id'=>'projViewEfforts',
                 'name'=>__('Efforts','Project option'),
-                'target_params'=>array('prj'=>$project->id )
-        ));
+                'target_params'=>['prj'=>$project->id ]
+        ]);
     }
 	
 	
@@ -691,80 +691,80 @@ function build_projView_options($project)
 	#}
 	
 	
-    $options[]=  new NaviOption(array(
+    $options[]=  new NaviOption([
             'target_id'=>'projViewChanges',
             'name'=>__('Changes','Project option'),
-            'target_params'=>array('prj'=>$project->id )
-    ));
+            'target_params'=>['prj'=>$project->id ]
+    ]);
     return $options;
 }
 
 
 function build_personList_options()
 {
-    return array(
-        new NaviOption(array(
+    return [
+        new NaviOption([
             'target_id'=>'personList',
             'name'=>__('People', 'page option')
-        ))
-    );
+        ])
+    ];
 }
 
 function build_companyList_options()
 {
-    return array(
-        new NaviOption(array(
+    return [
+        new NaviOption([
             'target_id'=>'companyList',
             'name'=>__('Companies', 'page option')
-        )),
-    );
+        ]),
+    ];
 }
 
 
 function build_projList_options()
 {
-    return array(
-        new NaviOption(array(
+    return [
+        new NaviOption([
             'target_id'=>'projList',
             'name'=>__('Active')
-        )),
-        new NaviOption(array(
+        ]),
+        new NaviOption([
             'target_id'=>'projListClosed',
             'name'=>__('Closed')
-        )),
-        new NaviOption(array(
+        ]),
+        new NaviOption([
             'target_id'=>'projListTemplates',
             'name'=>__('Templates'),
             'separated'=> true,
-        )),
-    );
+        ]),
+    ];
 }
 
 
 function build_person_options(&$person) {
 
-    return array(
-        new NaviOption(array(
+    return [
+        new NaviOption([
             'target_id'=>'personViewProjects',
             'name'=>__('Projects'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-        new NaviOption(array(
+            'target_params'=>['person'=>$person->id ]
+        ]),
+        new NaviOption([
             'target_id'=>'personViewTasks',
             'name'=>__('Tasks'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-        new NaviOption(array(
+            'target_params'=>['person'=>$person->id ]
+        ]),
+        new NaviOption([
             'target_id'=>'personViewEfforts',
             'name'=>__('Efforts'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-        new NaviOption(array(
+            'target_params'=>['person'=>$person->id ]
+        ]),
+        new NaviOption([
             'target_id'=>'personViewChanges',
             'name'=>__('Changes'),
-            'target_params'=>array('person'=>$person->id )
-        )),
-    );
+            'target_params'=>['person'=>$person->id ]
+        ]),
+    ];
 }
 
 

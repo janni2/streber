@@ -240,7 +240,7 @@ class DB_MysqlStatement implements DB_Statement
         #}
 
         #--- bind args in member with 1 ----
-        $this->binds=array();
+        $this->binds=[];
         foreach($args as $index => $name) {
             $this->binds[$index + 1] = $name;
         }
@@ -273,7 +273,7 @@ class DB_MysqlStatement implements DB_Statement
     public function fetch_assoc()
     {
         global $sql_obj;
-        $row=array();
+        $row=[];
 
         if($res=$sql_obj->fetchArray()) {
             foreach($res as $key=>$value) {
@@ -286,7 +286,7 @@ class DB_MysqlStatement implements DB_Statement
     public function fetchall_assoc()
     {
         global $sql_obj;
-        $retval = array();
+        $retval = [];
 
         /**
         * We do not have to strip slashes here, because this is done by fetch_assoc
@@ -304,7 +304,7 @@ class DB_MysqlStatement implements DB_Statement
 
 class _DB_Result {
   protected $stmt;
-  protected $result = array();
+  protected $result = [];
   private $rowIndex = 0;
   private $currIndex = 0;
   private $done = false;

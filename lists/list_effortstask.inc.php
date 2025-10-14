@@ -84,7 +84,7 @@ class ListBlock_effortsTask extends ListBlock
 				$sum_proj = Effort::getSumEfforts(array('project'=>$efforts[0]->project, 'status'=>$efforts[0]->status));
 			}
 			else{*/
-				$sum_proj = Effort::getSumEfforts(array('project'=>$efforts[0]->project));
+				$sum_proj = Effort::getSumEfforts(['project'=>$efforts[0]->project]);
 			#}
 			
 			if($sum_proj){
@@ -113,7 +113,7 @@ class ListBlockCol_EffortTaskName extends ListBlockCol
 
         if(isset($obj->task)) {
             if($task= Task::getById($obj->task)) {
-                $str= $PH->getLink('taskView',$task->name,array('tsk'=>$task->id));
+                $str= $PH->getLink('taskView',$task->name,['tsk'=>$task->id]);
     		}
 		}
 	    print "<td><nobr>$str</nobr></td>";
@@ -140,7 +140,7 @@ class ListBlockCol_EffortTaskAmount extends ListBlockCol
 			$sum_task = Effort::getSumEfforts(array('project'=>$obj->project, 'task'=>$obj->task, 'status'=>$obj->status));
 		}
 		else{*/
-			$sum_task = Effort::getSumEfforts(array('project'=>$obj->project, 'task'=>$obj->task));
+			$sum_task = Effort::getSumEfforts(['project'=>$obj->project, 'task'=>$obj->task]);
 		#}
 		
 		if($sum_task)
@@ -176,8 +176,8 @@ class ListBlockCol_EffortTaskGraph extends ListBlockCol
 				$sum_proj = Effort::getSumEfforts(array('project'=>$obj->project, 'status'=>$obj->status));
 			}
 			else{*/
-				$sum_task = Effort::getSumEfforts(array('project'=>$obj->project, 'task'=>$obj->task));
-				$sum_proj = Effort::getSumEfforts(array('project'=>$obj->project));
+				$sum_task = Effort::getSumEfforts(['project'=>$obj->project, 'task'=>$obj->task]);
+				$sum_proj = Effort::getSumEfforts(['project'=>$obj->project]);
 			#}
 			
 			if($sum_task && $sum_proj){

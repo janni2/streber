@@ -31,7 +31,7 @@ function itemsRemoveManyPreview()
     ### cancel ? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -70,10 +70,10 @@ function itemsRemoveManyPreview()
 function renderPreviewList() 
 {
 
-    $options = array(
+    $options = [
         'date_min'=> getDateTimeFieldValue('time_start'),
         'date_max'=> getDateTimeFieldValue('time_end')
-    );
+    ];
     
     ### author
     if (intval( get('person')) ) {
@@ -81,7 +81,7 @@ function renderPreviewList()
     }
     
     ### Object types
-    $types= array();
+    $types= [];
     if(get('type_task') || get('type_topic')) {
         $types[]= ITEM_TASK;
     }

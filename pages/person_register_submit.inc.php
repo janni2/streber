@@ -30,7 +30,7 @@ function personRegisterSubmit()
     ### cancel ? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -40,7 +40,7 @@ function personRegisterSubmit()
     }
 
 
-    $person= new Person(array('id'=>0));
+    $person= new Person(['id'=>0]);
     $person->user_rights= RIGHT_PERSON_EDIT_SELF;
 
     ### person category ###
@@ -272,11 +272,11 @@ function personRegisterSubmit()
 
             if($c= Company::getVisibleById($c_id)) {
                 require_once(confGet('DIR_STREBER') . 'db/class_employment.inc.php');
-                $e= new Employment(array(
+                $e= new Employment([
                     'id'=>0,
                     'person'=>$person->id,
                     'company'=>$c->id
-                ));
+                ]);
                 $e->insert();
             }
         }
@@ -289,11 +289,11 @@ function personRegisterSubmit()
         if(isset($prj_num)){
             if($prj_num != -1){
                 if($p= Project::getVisibleById($prj_num)){
-                    $prj_person = new ProjectPerson(array(
+                    $prj_person = new ProjectPerson([
                             'person' => $person->id,
                             'project' => $p->id,
                             'name' => $g_user_profile_names[$person->profile],
-                            ));
+                            ]);
                     $prj_person->insert();
                 }
             }
@@ -303,12 +303,12 @@ function personRegisterSubmit()
         new FeedbackMessage(sprintf(__('Person %s created'), $person->getLink()));
 
         ### automatically login ###
-        $foo= array(
+        $foo= [
             'login_name' => $person->nickname,
             'login_password_md5' => $person->password,
-        );
+        ];
         addRequestVars($foo);
-        $PH->show('loginFormSubmit',array());
+        $PH->show('loginFormSubmit',[]);
         exit();
     }
     else {
@@ -317,7 +317,7 @@ function personRegisterSubmit()
 
     ### display fromPage ####
     if(!$PH->showFromPage()) {
-        $PH->show('home',array());
+        $PH->show('home',[]);
     }
 }
 

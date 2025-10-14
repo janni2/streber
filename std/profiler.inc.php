@@ -19,9 +19,9 @@
 /**
 * some global vars
 */
-$measure_times=array();
-$measure_counts=array();
-$measure_times_started=array();
+$measure_times=[];
+$measure_counts=[];
+$measure_times_started=[];
 $time_total=1;
 
 /**

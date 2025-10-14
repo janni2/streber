@@ -42,15 +42,15 @@ function projectPersonEdit($pp= NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'projectperson_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'projectperson_name']);
     	$page->cur_tab='projects';
         $page->type=__("Edit Team Member");
         $page->title=sprintf(__("role of %s in %s","edit team-member title"),$person->name,$project->name);
 
         $page->crumbs=build_project_crumbs($project);
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id' => 'projectPersonEdit',
-        ));
+        ]);
 
 
         echo(new PageHeader);
@@ -139,10 +139,10 @@ function projectPersonEdit($pp= NULL)
         }
 
         ### effort-style ###
-        $effort_styles=array(
+        $effort_styles=[
             __("start times and end times")=> 1,
             __("duration")=> 2,
-        );
+        ];
 
         //$form->add(new Form_Dropdown('projectperson_effort_style',  __("Log Efforts as"), $effort_styles, $pp->adjust_effort_style));
 		$tab->add(new Form_Dropdown('projectperson_effort_style',  __("Log Efforts as"), $effort_styles, $pp->adjust_effort_style));
@@ -181,7 +181,7 @@ function projectPersonEditSubmit()
     $id= getOnePassedId('projectperson',true,'invalid id');
 
     if($id == 0) {
-        $pp= new ProjectPerson(array('id'=>0));
+        $pp= new ProjectPerson(['id'=>0]);
     }
     else {
         $pp= new ProjectPerson($id);
@@ -194,7 +194,7 @@ function projectPersonEditSubmit()
     ### cancel ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$pp->project));
+            $PH->show('projView',['prj'=>$pp->project]);
         }
         exit();
     }
@@ -277,7 +277,7 @@ function projectPersonEditSubmit()
 
     ### return to from-page ###
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$pp->project));
+        $PH->show('projView',['prj'=>$pp->project]);
     }
 }
 
@@ -323,7 +323,7 @@ function projectPersonDelete()
     }
 
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$pp->project));
+        $PH->show('projView',['prj'=>$pp->project]);
     }
 }
 

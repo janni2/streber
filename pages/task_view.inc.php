@@ -49,7 +49,7 @@ function TaskView()
     }
 
     ### create from handle ###
-    $from_handle= $PH->defineFromHandle(array('tsk'=>$task->id));
+    $from_handle= $PH->defineFromHandle(['tsk'=>$task->id]);
 
 
     global $g_wiki_task;
@@ -62,7 +62,7 @@ function TaskView()
         $page->use_autocomplete = true;
         initPageForTask($page, $task, $project);
 
-        $page->title_minor_html=$PH->getLink('taskView', sprintf('#%d', $task->id), array('tsk'=>$task->id));
+        $page->title_minor_html=$PH->getLink('taskView', sprintf('#%d', $task->id), ['tsk'=>$task->id]);
         if($task->state== -1) {
             $page->title_minor_html .= ' ' . sprintf(__('(deleted %s)','page title add on with date of deletion'),renderTimestamp($task->deleted));
         }
@@ -71,90 +71,90 @@ function TaskView()
         ### page functions ###
         if($project->isPersonVisibleTeamMember($auth->cur_user)) {
             if($editable) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskEdit',
-                    'params'=>array('tsk'=>$task->id),
+                    'params'=>['tsk'=>$task->id],
                     'icon'=>'edit',
                     'tooltip'=> sprintf(__('Edit this %s'), $task->getLabel()),
                     'name'=> __('Edit'),
-                )));
+                ]));
 
             }
 
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'=>'tasksMoveToFolder',
-                'params'=>array('tsk'=>$task->id),
+                'params'=>['tsk'=>$task->id],
                 'icon'=>'edit',
                 'name'=>__('Move', 'page function to move current task'),
-            )));
+            ]));
 
 
             if($editable) {
                 if($task->state == 1) {
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'=>'tasksDelete',
-                        'params'=>array('tsk'=>$task->id),
+                        'params'=>['tsk'=>$task->id],
                         'icon'=>'delete',
                         'tooltip'=>__('Delete this task'),
                         'name'=>__('Delete')
-                    )));
+                    ]));
                 }
                 if($task->state == -1) {
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'=>'tasksUndelete',
-                        'params'=>array('tsk'=>$task->id),
+                        'params'=>['tsk'=>$task->id],
                         'icon'=>'undelete',
                         'tooltip'=>__('Restore this task'),
                         'name'=>__('Undelete')
-                    )));
+                    ]));
                 }
             }
 
             ### folder ###
             if($task->category == TCATEGORY_FOLDER) {
 
-                $page->add_function(new PageFunctionGroup(array(
+                $page->add_function(new PageFunctionGroup([
                     'name'=>__('new'),
-                )));
+                ]));
 
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNew',
-                    'params'=>array('parent_task'=>$task->id),
+                    'params'=>['parent_task'=>$task->id],
                     'icon'=>'new',
                     'tooltip'=>__('new subtask for this folder'),
                     'name'=>__('Task'),
-                )));
+                ]));
 
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNewBug',
-                    'params'=>array('parent_task'=>$task->id),
+                    'params'=>['parent_task'=>$task->id],
                     'icon'=>'new',
                     'tooltip'=>__('new bug for this folder'),
                     'name'=>__('Bug'),
-                )));
+                ]));
             }
 
             ### milestone ###
             else if($task->isMilestoneOrVersion()) {
-                $page->add_function(new PageFunctionGroup(array(
+                $page->add_function(new PageFunctionGroup([
                     'name'=>__('new'),
-                )));
+                ]));
 
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNew',
-                    'params'=>array('parent_task'=>$task->id, 'for_milestone'=>$task->id),
+                    'params'=>['parent_task'=>$task->id, 'for_milestone'=>$task->id],
                     'icon'=>'new',
                     'tooltip'=>__('new task for this milestone'),
                     'name'=>__('Task'),
-                )));
+                ]));
 
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNewBug',
-                    'params'=>array('parent_task'=>$task->id),
+                    'params'=>['parent_task'=>$task->id],
                     'icon'=>'new',
                     'tooltip'=>__('new bug for this folder'),
                     'name'=>__('Bug'),
-                )));
+                ]));
             }
 
             ### normal task ###
@@ -171,22 +171,22 @@ function TaskView()
             #}
 
             if($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
-                $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$task->id));
+                $item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$task->id]);
                 if((!$item) || ($item[0]->is_bookmark == 0)){
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'    =>'itemsAsBookmark',
-                        'params'    =>array('task'=>$task->id),
+                        'params'    =>['task'=>$task->id],
                         'tooltip'   =>__('Mark this task as bookmark'),
                         'name'      =>__('Bookmark'),
-                    )));
+                    ]));
                 }
                 else{
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'    =>'itemsRemoveBookmark',
-                        'params'    =>array('task'=>$task->id),
+                        'params'    =>['task'=>$task->id],
                         'tooltip'   =>__('Remove this bookmark'),
                         'name'      =>__('Remove Bookmark'),
-                    )));
+                    ]));
                 }
             }
 
@@ -195,15 +195,15 @@ function TaskView()
                 && 
                 ($project->settings & PROJECT_SETTING_ENABLE_EFFORTS)
             ) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'effortNew',
-                    'params'=>array(
+                    'params'=>[
                         'parent_task'=>$task->id,
 
-                    ),
+                    ],
                     'icon'=>'effort',
                     'name'=>__('Book Effort'),
-                )));
+                ]));
             }
 
         }
@@ -229,10 +229,10 @@ function TaskView()
 
     #--- info block ------------
     {
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title'=>__("Summary","Block title"),
             'id'=>'summary',
-        ));
+        ]);
         $block->render_blockStart();
 
         echo "<div class=text>";
@@ -307,7 +307,7 @@ function TaskView()
             if(count($versions) > 1) {
                 $str_version=     $PH->getLink('itemViewDiff',
                                     sprintf(__("View previous %s versions"), count($versions)),
-                                    array('item' => $task->id)
+                                    ['item' => $task->id]
                                 );
                 echo "<div class=labeled><label></label>$str_version</div>";
             }
@@ -319,7 +319,7 @@ function TaskView()
         $sum_efforts= $task->getSumEfforts();
         if($sum_efforts) {
             echo "<div class=labeled><label>".__("Open effort","Label in task-summary")."</label>".
-            $PH->getLink('taskViewEfforts',round($sum_efforts/60/60,1), array('task'=>$task->id))
+            $PH->getLink('taskViewEfforts',round($sum_efforts/60/60,1), ['task'=>$task->id])
             ."</div>" ;
         }
 
@@ -342,7 +342,7 @@ function TaskView()
             echo "<div class=labeled><label>".__("Publish to","Label in Task summary")."</label>".$g_pub_level_names[$task->pub_level] ;
             if($editable) {
                 echo '<br>('
-                    . $PH->getLink('itemsSetPubLevel',__('Set to Open'), array('item' => $task->id,'item_pub_level' => PUB_LEVEL_OPEN))
+                    . $PH->getLink('itemsSetPubLevel',__('Set to Open'), ['item' => $task->id,'item_pub_level' => PUB_LEVEL_OPEN])
                     . ')';
             }
             echo "</div>";
@@ -357,10 +357,10 @@ function TaskView()
     #--- navigation structure for documentation --------------------------------------------
     if($task->category == TCATEGORY_FOLDER) {
         require_once(confGet('DIR_STREBER') . 'lists/list_docustructure.inc.php');
-        $list=new Block_DocuNavigation(array(
+        $list=new Block_DocuNavigation([
             'current_task'=> $task,
             'root'          => $task,
-        ));
+        ]);
 
         $list->title = __("Further Documentation");
 
@@ -407,8 +407,8 @@ function TaskView()
 
     #--- feedback notice ------------------------------------------------------------
     {
-        if($view = ItemPerson::getAll(array('person'=>$auth->cur_user->id, 'item'=>$task->id, 'feedback_requested_by'=>true))){
-            if ($requested_by= Person::getPeople( array( 'id' => $view[0]->feedback_requested_by ) )) {
+        if($view = ItemPerson::getAll(['person'=>$auth->cur_user->id, 'item'=>$task->id, 'feedback_requested_by'=>true])){
+            if ($requested_by= Person::getPeople( [ 'id' => $view[0]->feedback_requested_by ] )) {
                 echo "<div class=item_notice>";
                 echo "<h3>" . sprintf(__("Your feedback is requested by %s."), asHtml($requested_by[0]->nickname) ) . "</h3>";
                 echo __("Please edit or comment this item.");
@@ -422,16 +422,16 @@ function TaskView()
         #$descriptionWithUpdates= $task->getTextfieldWithUpdateNotes('description');
         echo "<div class=description>";
         echo  wikifieldAsHtml($task, 'description',
-                            array(
+                            [
                                 'empty_text'=> "[quote]" . __("This task does not have any text yet.\nDoubleclick here to add some.") . "[/quote]",
-                            ));
+                            ]);
 
         echo "</div>";
 
         ### Apply automatic link conversions
         if( checkAutoWikiAdjustments() ) {            
             $task->description= applyAutoWikiAdjustments( $task->description );
-            $task->update(array('description'),false);
+            $task->update(['description'],false);
         }
     }
 
@@ -488,11 +488,11 @@ function TaskView()
 
         if($buffer) {
 
-            $block=new PageBlock(array(
+            $block=new PageBlock([
                 'title'=>__('Issue report'),
                 'id'=>'issue_report'
 
-            ));
+            ]);
             $block->render_blockStart();
 
             echo "<div class=text>";
@@ -508,33 +508,33 @@ function TaskView()
     #--- list tasks -------------------------------------------------------------
     if($task->category== TCATEGORY_FOLDER || $task->getNumSubtasks() > 0 ) {
 
-        $list= new ListBlock_tasks(array(
+        $list= new ListBlock_tasks([
             'active_block_function'=>'tree',
             'title'=>__('Sub tasks'),
 
-        ));
+        ]);
         unset($list->columns['project']);
         unset($list->columns['created_by']);
         unset($list->columns['planned_start']);
         unset($list->columns['modified']);
         unset($list->columns['estimate_complete']);
         unset($list->columns['pub_level']);
-        $list->filters[]= new ListFilter_status_max(array(
+        $list->filters[]= new ListFilter_status_max([
             'value'=>STATUS_COMPLETED,
-        ));
-        $list->filters[]= new ListFilter_category_in(array(
-            'value'=>array(TCATEGORY_FOLDER, TCATEGORY_TASK, TCATEGORY_BUG),
-        ));
+        ]);
+        $list->filters[]= new ListFilter_category_in([
+            'value'=>[TCATEGORY_FOLDER, TCATEGORY_TASK, TCATEGORY_BUG],
+        ]);
         $list->print_automatic($project, $task);
 
     }
 
     #--- list milestone-tasks ---------------------------------------------------
-    if($task->isOfCategory(array(TCATEGORY_MILESTONE, TCATEGORY_VERSION))) {
-        $list= new ListBlock_tasks(array(
+    if($task->isOfCategory([TCATEGORY_MILESTONE, TCATEGORY_VERSION])) {
+        $list= new ListBlock_tasks([
             'active_block_function'=>'tree',
             'title'=> __('Open tasks for milestone'),
-        ));
+        ]);
 
         $list->no_items_html=__('No open tasks for this milestone');
         unset($list->columns['project']);
@@ -554,17 +554,17 @@ function TaskView()
     {
 
         ### get resolved tasks ###
-        if($resolved= Task::getAll(array(
+        if($resolved= Task::getAll([
             'project'               => $task->project,
             'resolved_version'      => $task->id,
             'status_min'            => 0,
             'status_max'            => 200,
             'order_by'              => 'resolve_reason',
-        ))) {
-            $block=new PageBlock(array(
+        ])) {
+            $block=new PageBlock([
                 'title'=>__("Resolved tasks","Block title"),
                 'id'=>'resolved_tasks',
-            ));
+            ]);
             $block->render_blockStart();
 
             echo "<div class=text>";
@@ -667,10 +667,10 @@ class Block_task_quickedit extends PageBlock
 
                 ### Comment ###
                 $comment_name= '';
-                $comment= new Comment(array(
+                $comment= new Comment([
                     'id'=>0,
                     'name'=>$comment_name,
-                ));
+                ]);
 
                 $tab->add($comment->fields['name']->getFormElement($comment,__('Comment')));
                 $e= $comment->fields['description']->getFormElement($comment);
@@ -682,7 +682,7 @@ class Block_task_quickedit extends PageBlock
             }
 
             ### update ###
-            if($editable && $task->isOfCategory(array(TCATEGORY_TASK,  TCATEGORY_BUG))) {
+            if($editable && $task->isOfCategory([TCATEGORY_TASK,  TCATEGORY_BUG])) {
                 $tab_group->add($tab=new Page_Tab("update",__("Update")));
 
                 #$tab->add(new Form_Dropdown('task_for_milestone', __('For Milestone'), $project->buildPlannedForMilestoneList(), $task->for_milestone));
@@ -721,7 +721,7 @@ class Block_task_quickedit extends PageBlock
                         trigger_error("view a task with zero id?");
                     }
 
-                    $team=array(__('- select person -')=>0);
+                    $team=[__('- select person -')=>0];
 
                     ### create team-list ###
                     foreach($project->getPeople() as $p) {
@@ -766,7 +766,7 @@ class Block_task_quickedit extends PageBlock
 
                 ### estimated ###
                 {
-                    $ar= array(
+                    $ar= [
                         __('undefined')=> 0,
                         __('30 min')    => 30*60,
                         __('1 h')  => 60*60,
@@ -779,14 +779,14 @@ class Block_task_quickedit extends PageBlock
                         __('1 Week')   =>   1 * confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60,
                         __('2 Weeks')  =>   2 * confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60,
                         __('3 Weeks')  =>   3 * confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60,
-                    );
+                    ];
                     $tab->add(new Form_Dropdown('task_estimated',__("Estimated time"),$ar,  $task->estimated));
                     $tab->add(new Form_Dropdown('task_estimated_max',__("Estimated worst case"),$ar,  $task->estimated_max));
                 }
 
                 ### completion ###
                 {
-                    $ar= array(
+                    $ar= [
                         __('undefined')=> -1,
                         '0%'    => 0,
                         '10%'    => 10,
@@ -802,7 +802,7 @@ class Block_task_quickedit extends PageBlock
                         '98%'    => 98,
                         '99%'    => 99,
                         '100%'   => 100,
-                    );
+                    ];
                     $tab->add(new Form_Dropdown('task_completion',__("Completed"),$ar,  $task->completion));
                 }
 
@@ -811,7 +811,7 @@ class Block_task_quickedit extends PageBlock
 
                 ### status ###
                 {
-                    $st=array();
+                    $st=[];
                     foreach($g_status_names as $s=>$n) {
                         if($s >= STATUS_NEW) {
                             $st[$s]=$n;
@@ -880,7 +880,7 @@ function taskViewAsDocu()
     }
 
     ### create from handle ###
-    $from_handle= $PH->defineFromHandle(array('tsk'=>$task->id));
+    $from_handle= $PH->defineFromHandle(['tsk'=>$task->id]);
 
     global $g_wiki_task;
     $g_wiki_task= $task;
@@ -894,7 +894,7 @@ function taskViewAsDocu()
         initPageForTask($page, $task, $project);
 
 
-        $page->title_minor_html=$PH->getLink('taskView', sprintf('#%d', $task->id), array('tsk'=>$task->id));
+        $page->title_minor_html=$PH->getLink('taskView', sprintf('#%d', $task->id), ['tsk'=>$task->id]);
         if($task->state == -1) {
             $page->title_minor_html .= ' ' . sprintf(__('(deleted %s)','page title add on with date of deletion'),renderTimestamp($task->deleted));
         }
@@ -904,43 +904,43 @@ function taskViewAsDocu()
             ### edit ###
             if($editable) {
 
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskEdit',
-                    'params'=>array('tsk'=>$task->id),
+                    'params'=>['tsk'=>$task->id],
                     'icon'=>'edit',
                     'tooltip'=>__('Edit this task'),
                     'name'=>__('Edit')
-                )));
-                $page->add_function(new PageFunction(array(
+                ]));
+                $page->add_function(new PageFunction([
                     'target'=>'tasksMoveToFolder',
-                    'params'=>array('tsk'=>$task->id),
+                    'params'=>['tsk'=>$task->id],
                     'icon'=>'edit',
                     'name'=>__('Move', 'page function to move current task'),
-                )));
+                ]));
 
                 if($task->state == 1) {
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'=>'tasksDelete',
-                        'params'=>array('tsk'=>$task->id),
+                        'params'=>['tsk'=>$task->id],
                         'icon'=>'delete',
                         'tooltip'=>__('Delete this task'),
                         'name'=>__('Delete')
-                    )));
+                    ]));
                 }
                 else if($task->state == -1) {
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'=>'tasksUndelete',
-                        'params'=>array('tsk'=>$task->id),
+                        'params'=>['tsk'=>$task->id],
                         'icon'=>'undelete',
                         'tooltip'=>__('Restore this task'),
                         'name'=>__('Undelete')
-                    )));
+                    ]));
                 }
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'topicExportAsHtml',
-                    'params'=>array('tsk'=>$task->id),
+                    'params'=>['tsk'=>$task->id],
                     'name'=>__('Export')
-                )));
+                ]));
             }
 
             if(
@@ -948,74 +948,74 @@ function taskViewAsDocu()
                 && 
                 ($project->settings & PROJECT_SETTING_ENABLE_EFFORTS)
             ) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'effortNew',
-                    'params'=>array(
+                    'params'=>[
                         'parent_task'=>$task->id,
 
-                    ),
+                    ],
                     'icon'=>'effort',
                     'name'=>__('Book Effort'),
-                )));
+                ]));
             }
 
             ### new ###
             if($task->category == TCATEGORY_FOLDER) {
 
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNew',
-                    'params'=>array(
+                    'params'=>[
                         'parent_task'=>$task->id,
                         'task_category' =>TCATEGORY_DOCU,
                         'task_show_folder_as_documentation' => 1,
-                    ),
+                    ],
                     'icon'=>'edit',
                     'name'=>__('New topic'),
-                )));
+                ]));
             }
             else if($task->parent_task) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNew',
-                    'params'=>array(
+                    'params'=>[
                         'parent_task' => $task->parent_task,
                         'task_category' =>TCATEGORY_DOCU,
                         'task_show_folder_as_documentation' => 1,
-                    ),
+                    ],
                     'icon'=>'edit',
                     'name'=>__('New topic'),
-                )));
+                ]));
             }
             else {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNew',
-                    'params'=>array(
+                    'params'=>[
                         'prj'=>$task->project,
                         'task_category' =>TCATEGORY_DOCU,
-                    ),
+                    ],
                     'icon'=>'edit',
                     'name'=>__('New topic'),
-                )));
+                ]));
             }
 
             if($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
                 require_once(confGet('DIR_STREBER') . 'db/db_itemperson.inc.php');
 
-                $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$task->id));
+                $item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$task->id]);
                 if((!$item) || ($item[0]->is_bookmark == 0)){
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'    =>'itemsAsBookmark',
-                        'params'    =>array('task'=>$task->id),
+                        'params'    =>['task'=>$task->id],
                         'tooltip'   =>__('Mark this task as bookmark'),
                         'name'      =>__('Bookmark'),
-                    )));
+                    ]));
                 }
                 else{
-                    $page->add_function(new PageFunction(array(
+                    $page->add_function(new PageFunction([
                         'target'    =>'itemsRemoveBookmark',
-                        'params'    =>array('task'=>$task->id),
+                        'params'    =>['task'=>$task->id],
                         'tooltip'   =>__('Remove this bookmark'),
                         'name'      =>__('Remove Bookmark'),
-                    )));
+                    ]));
                 }
             }
         }
@@ -1029,19 +1029,19 @@ function taskViewAsDocu()
     #--- navigation structure for documentation --------------------------------------------
     {
         require_once(confGet('DIR_STREBER') . 'lists/list_docustructure.inc.php');
-        $list=new Block_DocuNavigation(array(
+        $list=new Block_DocuNavigation([
             'current_task'=> $task
-        ));
+        ]);
 
         $list->print_all();
     }
 
     #--- info block ------------
     {
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'id'=>'summary',
             'reduced_header'=>true,
-        ));
+        ]);
         $block->render_blockStart();
 
         echo "<div class=text>";
@@ -1061,7 +1061,7 @@ function taskViewAsDocu()
             if(count($versions) > 1) {
                 $str_version=     $PH->getLink('itemViewDiff',
                                     sprintf(__("View previous %s versions"), count($versions)),
-                                    array('item' => $task->id)
+                                    ['item' => $task->id]
                                 );
                 echo "<div class=labeled><label></label>$str_version</div>";
             }
@@ -1074,7 +1074,7 @@ function taskViewAsDocu()
             echo "<div class=labeled><label>".__("Publish to","Label in Task summary")."</label>".$g_pub_level_names[$task->pub_level] ;
             if($editable) {
                 echo '<br>('
-                    . $PH->getLink('itemsSetPubLevel',__('Set to Open'), array('item' => $task->id,'item_pub_level' => PUB_LEVEL_OPEN))
+                    . $PH->getLink('itemsSetPubLevel',__('Set to Open'), ['item' => $task->id,'item_pub_level' => PUB_LEVEL_OPEN])
                     . ')';
             }
             echo "</div>";
@@ -1098,8 +1098,8 @@ function taskViewAsDocu()
     #--- feedback notice ------------------------------------------------------------
     {
         require_once(confGet('DIR_STREBER') . 'db/db_itemperson.inc.php');        
-        if($view = ItemPerson::getAll(array('person'=>$auth->cur_user->id, 'item'=>$task->id, 'feedback_requested_by'=>true))){
-            if ($requested_by= Person::getPeople( array( 'id' => $view[0]->feedback_requested_by ) )) {
+        if($view = ItemPerson::getAll(['person'=>$auth->cur_user->id, 'item'=>$task->id, 'feedback_requested_by'=>true])){
+            if ($requested_by= Person::getPeople( [ 'id' => $view[0]->feedback_requested_by ] )) {
                 echo "<div class=item_notice>";
                 echo "<h3>" . sprintf(__("Your feedback is requested by %s."), asHtml($requested_by[0]->nickname) ) . "</h3>";
                 echo __("Please edit or comment this item.");
@@ -1114,16 +1114,16 @@ function taskViewAsDocu()
         #$descriptionWithUpdates= $task->getTextfieldWithUpdateNotes('description');
         echo "<div class=description>";
         echo wikifieldAsHtml($task, 'description', 
-                            array(
+                            [
                                 'empty_text'=> "[quote]" . __("This topic does not have any text yet.\nDoubleclick here to add some.") . "[/quote]",
-                            ));
+                            ]);
 
         echo "</div>";
 
         ### Apply automatic link conversions
         if( checkAutoWikiAdjustments() ) {            
             $task->description= applyAutoWikiAdjustments( $task->description );
-            $task->update(array('description'),false);
+            $task->update(['description'],false);
         }
     }
 
@@ -1150,7 +1150,7 @@ function taskViewAsDocu()
 */
 function buildRequestFeedbackInput( $project ) 
 {
-    $nicknames = array();
+    $nicknames = [];
     $names = $project->getTeamMemberNames();
     foreach( $names as $nickname => $name) {
         $nicknames[] = asHtml($nickname) ;
@@ -1164,10 +1164,10 @@ function buildRequestFeedbackInput( $project )
         false,                      # required
         "request_feedback",         # id
         "",                         # display
-        array(                      # input_attributes
+        [                      # input_attributes
             'class' => 'autocomplete',
             'autocomplete_list'=> join($nicknames, ','),
-        )                           
+        ]                           
     );
 }
 

@@ -249,7 +249,7 @@ class SimpleReporter extends SimpleScorer {
      */
     function SimpleReporter() {
         $this->SimpleScorer();
-        $this->_test_stack = array();
+        $this->_test_stack = [];
         $this->_size = null;
         $this->_progress = 0;
     }
@@ -620,7 +620,7 @@ class SimpleReporterDecorator {
  *    @subpackage UnitTester
  */
 class MultipleReporter {
-    var $_reporters = array();
+    var $_reporters = [];
 
     /**
      *    Adds a reporter to the subscriber list.

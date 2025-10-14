@@ -24,10 +24,10 @@ require_once(confGet('DIR_STREBER') . 'db/db_itemperson.inc.php');
 */
 function taskNewBug()
 {
-    $foo=array(
+    $foo=[
         'add_issue'=>1,
         'task_category' =>TCATEGORY_BUG
-        );
+        ];
     addRequestVars($foo);
     TaskNew();
     exit();
@@ -40,10 +40,10 @@ function taskNewBug()
 */
 function taskNewDocu()
 {
-    $foo=array(
+    $foo=[
         'task_category' =>TCATEGORY_DOCU,
         'show_folder_as_documentation' => 1,
-        );
+        ];
     addRequestVars($foo);
     TaskNew();
     exit();
@@ -66,15 +66,15 @@ function TaskNewMilestone()
 
 
     ### build dummy form ###
-    $newtask= new Task(array(
+    $newtask= new Task([
         'id'        =>0,
         'name'      =>__("New Milestone"),
         'project'   =>$prj_id,
         'category' =>TCATEGORY_MILESTONE,
         'status'    =>STATUS_OPEN,
-        )
+        ]
     );
-    $PH->show('taskEdit',array('tsk'=>$newtask->id),$newtask);
+    $PH->show('taskEdit',['tsk'=>$newtask->id],$newtask);
 
 }
 
@@ -94,7 +94,7 @@ function TaskNewVersion()
     }
 
     ### build dummy form ###
-    $newtask= new Task(array(
+    $newtask= new Task([
         'id'            => 0,
         'name'          => __("New Version"),
         'project'       => $prj_id,
@@ -103,9 +103,9 @@ function TaskNewVersion()
         'category' =>TCATEGORY_VERSION,
         'is_released'   => RELEASED_PUBLIC,
         'time_released' => getGMTString(),
-        )
+        ]
     );
-    $PH->show('taskEdit',array('tsk'=>$newtask->id),$newtask);
+    $PH->show('taskEdit',['tsk'=>$newtask->id],$newtask);
 }
 
 
@@ -145,7 +145,7 @@ function TaskNewFolder()
     }
 
     ### build dummy form ###
-    $newtask= new Task(array(
+    $newtask= new Task([
         'id'        =>0,
         'name'      =>__("New folder"),
         'project'   =>$prj_id,
@@ -153,9 +153,9 @@ function TaskNewFolder()
         'category' =>TCATEGORY_FOLDER,
         'parent_task'=>$parent_task_id,
         'for_milestone'=>$for_milestone,
-        )
+        ]
     );
-    $PH->show('taskEdit',array('tsk'=>$newtask->id),$newtask);
+    $PH->show('taskEdit',['tsk'=>$newtask->id],$newtask);
 }
 
 
@@ -245,7 +245,7 @@ function TaskNew()
         ($category == TCATEGORY_DOCU) ? 1 : 0);
 
     ### build dummy form ###
-    $newtask= new Task(array(
+    $newtask= new Task([
         'id'        =>0,
         'name'      =>$name,
         'project'   =>$prj_id,
@@ -255,7 +255,7 @@ function TaskNew()
         'parent_task'=>$parent_task_id,
         'for_milestone'=>$for_milestone_id,
         'show_folder_as_documentation' =>intval($folder_as_docu)
-    ));
+    ]);
 
     ### set a valid create-level ###
     $newtask->pub_level= $project->getCurrentLevelCreate();
@@ -265,13 +265,13 @@ function TaskNew()
 
         $newtask->insert();
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$prj));
+            $PH->show('projView',['prj'=>$prj]);
         }
     }
 
     ### pass newobject to edit-page ###
     else {
-        $PH->show('taskEdit',array('tsk'=>$newtask->id),$newtask);
+        $PH->show('taskEdit',['tsk'=>$newtask->id],$newtask);
     }
 }
 
@@ -290,7 +290,7 @@ function TasksDelete()
     $tasks_selected=get('tasks_*');
     $ids=getPassedIds('tsk','tasks_*');
 
-    $tasks= array();
+    $tasks= [];
 
     if(count($ids)==1) {
         $tsk=$ids[0];
@@ -393,12 +393,12 @@ function TasksUndelete()
         ### go to project view ###
         ### return to from-page? ###
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$project->id));
+            $PH->show('projView',['prj'=>$project->id]);
         }
     }
     else if($ids) {
        #--- get tasks ----
-        $tasks=array();
+        $tasks=[];
         $num_tasks=count($tasks);
         $num_subtasks=0;
 
@@ -668,7 +668,7 @@ function TaskToggleViewCollapsed()
             else {
                 $task->view_collapsed= 1;
             }
-            if(!$task->update(array('view_collapsed'),false)) {
+            if(!$task->update(['view_collapsed'],false)) {
                 new FeedbackError(__("Could not update task"));
                 $num_errors++;
             }
@@ -717,7 +717,7 @@ function TaskAddIssueReport()
 
         $task->issue_report= -1;
         new FeedbackHint(__("Adding issue-report to task"));
-        $PH->show('taskEdit',array('tsk'=>$task->id),$task);
+        $PH->show('taskEdit',['tsk'=>$task->id],$task);
         exit();
 
     }
@@ -754,7 +754,7 @@ function taskEditDescription($task=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>false, 'autofocus_field'=>'task_name'));
+        $page= new Page(['use_jscalendar'=>false, 'autofocus_field'=>'task_name']);
 
         initPageForTask($page, $task);
 
@@ -769,9 +769,9 @@ function taskEditDescription($task=NULL)
     {
         require_once(confGet('DIR_STREBER') . 'render/render_form.inc.php');
 
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'id'    =>'edit',
-        ));
+        ]);
         $block->render_blockStart();
 
         $form=new PageForm();
@@ -808,7 +808,7 @@ function taskEditDescriptionSubmit()
     ### cancel? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('taskView',array('tsk'=>$task->id));
+            $PH->show('taskView',['tsk'=>$task->id]);
         }
         exit();
     }
@@ -842,11 +842,11 @@ function taskEditDescriptionSubmit()
 
 
     ### write to db ###
-    $task->update(array('name','description'));
+    $task->update(['name','description']);
 
     ### return to from-page? ###
     if(!$PH->showFromPage()) {
-        $PH->show('taskView',array('tsk'=>$task->id));
+        $PH->show('taskView',['tsk'=>$task->id]);
     }
 }
 
@@ -872,7 +872,7 @@ function TaskViewEfforts()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array('task'=>$task->id));
+    $PH->defineFromHandle(['task'=>$task->id]);
 
     if(!$project= Project::getVisibleById($task->project)) {
         $PH->abortWarning("not enough rights");
@@ -886,12 +886,12 @@ function TaskViewEfforts()
         $page->title_minor= __("Task Efforts");
 
         ### page functions ###
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'=>'effortNew',
-            'params'=>array('task'=>$task->id),
+            'params'=>['task'=>$task->id],
             'icon'=>'new',
             'name'=>__('new Effort'),
-        )));
+        ]));
 
 
         ### render title ###
@@ -904,11 +904,11 @@ function TaskViewEfforts()
         $order_by=get('sort_'.$PH->cur_page->id."_efforts");
 
         require_once(confGet('DIR_STREBER') . 'db/class_effort.inc.php');
-        $efforts= Effort::getAll(array(
+        $efforts= Effort::getAll([
             'task'      => $task->id,
             'order_by'  => $order_by,
 
-        ));
+        ]);
         $list= new ListBlock_efforts();
         $list->render_list($efforts);
     }
@@ -950,13 +950,13 @@ function TaskEditMultiple()
 
     $project= NULL;
 
-    $tasks= array();
+    $tasks= [];
 
-    $task_assignments = array();
-    $task_assignments_count = array();
+    $task_assignments = [];
+    $task_assignments_count = [];
     $different_assignments = false;
 
-    $edit_fields=array(
+    $edit_fields=[
         'category',
         'prio',
         'status',
@@ -965,8 +965,8 @@ function TaskEditMultiple()
         'resolve_reason',
         'label',
         'pub_level'
-    );
-    $different_fields=array();  # hash containing fieldnames which are different in tasks
+    ];
+    $different_fields=[];  # hash containing fieldnames which are different in tasks
 
     $count=0;
 
@@ -1027,13 +1027,13 @@ function TaskEditMultiple()
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true));
+        $page= new Page(['use_jscalendar'=>true]);
         $page->cur_tab='projects';
 
 
-        $page->options[]= new naviOption(array(
+        $page->options[]= new naviOption([
             'target_id'     =>'taskEdit',
-        ));
+        ]);
 
         $page->type= __("Edit multiple tasks","Page title");
 
@@ -1062,7 +1062,7 @@ function TaskEditMultiple()
 
         ### category ###
         {
-            $a= array();
+            $a= [];
             global $g_tcategory_names;
             foreach($g_tcategory_names as $s=>$n) {
                 $a[$s]=$n;
@@ -1079,7 +1079,7 @@ function TaskEditMultiple()
 
         ### status ###
         {
-            $st=array();
+            $st=[];
             foreach($g_status_names as $s => $n) {
                 if($s >= STATUS_NEW) {
                     $st[$s]=$n;
@@ -1110,7 +1110,7 @@ function TaskEditMultiple()
         }
 
         ### labels ###
-        $labels=array(__('undefined') => 0);
+        $labels=[__('undefined') => 0];
         $counter= 1;
         foreach(explode(",",$project->labels) as $l) {
             $labels[$l]=$counter++;
@@ -1128,7 +1128,7 @@ function TaskEditMultiple()
         ### prio ###
         {
             global $g_prio_names;
-            $pr= array();
+            $pr= [];
             foreach($g_prio_names as $key => $value) {
                 $pr[$key]= $value;
             }
@@ -1191,7 +1191,7 @@ function TaskEditMultiple()
         ### resolve reason ###
         {
             global $g_resolve_reason_names;
-            $rr= array();
+            $rr= [];
             foreach($g_resolve_reason_names as $key => $value) {
                 $rr[$key]= $value;
             }
@@ -1206,8 +1206,8 @@ function TaskEditMultiple()
 
         ## assignement ##
         {
-            $ass = array();
-            $ass_also = array();
+            $ass = [];
+            $ass_also = [];
 
             ## get project team ##
             if($proj_people = $project->getPeople()){
@@ -1301,7 +1301,7 @@ function taskEditMultipleSubmit()
                     $PH->abortWarning('could not get project');
                 }
 
-                $team= array();
+                $team= [];
                 foreach($project->getPeople() as $p) {
                     $team[$p->id]= $p;
                 }
@@ -1309,11 +1309,11 @@ function taskEditMultipleSubmit()
 
             ### assignment ###
             {
-                $task_assigned_people = array();
-                $task_assignments = array();
-                $task_people_overwrite = array();
-                $task_people_new = array();
-                $task_people_delete = array();
+                $task_assigned_people = [];
+                $task_assignments = [];
+                $task_people_overwrite = [];
+                $task_people_new = [];
+                $task_people_delete = [];
 
                 ## previous assigend people ##
                 if($task_people = $task->getAssignedPeople(false))
@@ -1503,12 +1503,12 @@ function taskEditMultipleSubmit()
                     }
                     foreach($task_people_overwrite as $tpo)
                     {
-                        $task_pers_over = new TaskPerson(array(
+                        $task_pers_over = new TaskPerson([
                                         'person'=> $team[$tpo]->id,
                                         'task'  => $task->id,
                                         'comment'=>'',
                                         'project'=>$project->id,
-                                        ));
+                                        ]);
                         $task_pers_over->insert();
                     }
                 }
@@ -1518,12 +1518,12 @@ function taskEditMultipleSubmit()
                     foreach($task_people_new as $tpn){
                         if(!isset($task_assigned_people[$tpn]))
                         {
-                            $task_pers_new = new TaskPerson(array(
+                            $task_pers_new = new TaskPerson([
                                          'person'=> $team[$tpn]->id,
                                          'task'  => $task->id,
                                          'comment'=>'',
                                          'project'=>$project->id,
-                                          ));
+                                          ]);
                            $task_pers_new->insert();
                         }
                     }
@@ -1550,7 +1550,7 @@ function taskEditMultipleSubmit()
 
     ### return to from-page? ###
     if(!$PH->showFromPage()) {
-        $PH->show('taskView',array('tsk'=>$task->id));
+        $PH->show('taskView',['tsk'=>$task->id]);
     }
 
 }

@@ -29,26 +29,26 @@ function personRegister($person=NULL)
     if(!confGet('REGISTER_NEW_USERS')) {
         $PH->abortWarning(__("Registering is not enabled"));
     }
-    $person=new Person(array(
+    $person=new Person([
         'id'=>0,
         'description'=> __('Because we are afraid of spam bots, please provide some information about you and why you want to register.')
                       . __('The staff will then review your request and approve your account as soon as possible.'),
-    ));
+    ]);
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'person_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'person_name']);
         $page->cur_tab='people';
         $page->type=__('Edit Person','Page type');
         $page->title= __("Register as a new user");
         $page->title_minor='';
 
         $page->crumbs= build_person_crumbs($person);
-        $page->options=array(
-            new NaviOption(array(
+        $page->options=[
+            new NaviOption([
                 'target_id' => 'personEdit',
-            )),
-        );
+            ]),
+        ];
         echo(new PageHeader);
     }
     echo (new PageContentOpen);
@@ -95,14 +95,14 @@ function personRegister($person=NULL)
 
         ### notification ###
         {
-            $a=array(
+            $a=[
                 sprintf(__('daily'),  1)        =>1,
                 sprintf(__('each 3 days'), 3)   =>3,
                 sprintf(__('each 7 days'), 7)   =>7,
                 sprintf(__('each 14 days'), 14)  =>14,
                 sprintf(__('each 30 days'), 30)  =>30,
                 __('Never')                     =>0,
-            );
+            ];
             $p= $person->notification_period;
             if(!$person->settings & USER_SETTING_NOTIFICATIONS) {
                 $p= 0;

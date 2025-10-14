@@ -11,37 +11,37 @@
 
 
 global $g_form_fields;
-$g_form_fields=array(
-    'db_type'=>array(
+$g_form_fields=[
+    'db_type'=>[
         'id'        =>'db_type',
         'label'     =>'Type database',
         'options'   =>$g_supported_db_types,
         'type'      =>'option',
 
-    ),'hostname'=>array(
+    ],'hostname'=>[
         'id'        =>'hostname',
         'default'   =>'localhost',
         'label'     =>' Hostname (for Database Server)',
         'required' => true,
-    ),
-    'db_username'=>array(
+    ],
+    'db_username'=>[
         'id'        =>'db_username',
         'default'   =>'root',
         'label'     =>'Username (for Database)',
         'required' => true,
-    ),
-    'db_password'=>array(
+    ],
+    'db_password'=>[
         'id'        =>'db_password',
         'default'   =>'',
         'label'     =>'Password (for Database)',
         'type' =>'password',
-    ),
-    'db_name'=>array(
+    ],
+    'db_name'=>[
         'id'        =>'db_name',
         'default'   =>'streber',
         'label'     =>'Name of database',
         'required' => true,
-    ),
+    ],
 /*    'db_admin_user'=>array(
         'id'        =>'db_admin_user',
         'default'   =>'',
@@ -53,48 +53,48 @@ $g_form_fields=array(
         'label'     =>'Admin Password (to create Database)',
         'comment'   =>'not required, if database already exists',
     ),*/
-    'db_table_prefix'=>array(
+    'db_table_prefix'=>[
         'id'        =>'db_table_prefix',
         'default'   =>'',
         'label'     =>'SQL Table prefix (e.g. "streb_")',
         'comment'   =>'',
-    ),
-    'continue_on_sql_errors'=>array(
+    ],
+    'continue_on_sql_errors'=>[
         'id'        =>'continue_on_sql_errors',
         'default'   =>'on',
         'label'     =>'Continue Upgrade on sql errors',
         'comment'   =>'',
         'type'      =>'checkbox',
-    ),
-    'user_admin_name'=>array(
+    ],
+    'user_admin_name'=>[
         'id'        =>'user_admin_name',
         'default'   =>'admin',
         'label'     =>'Streber administrator name',
         'comment'   =>'',
         'required' => true,
-    ),
-    'user_admin_password'=>array(
+    ],
+    'user_admin_password'=>[
         'id'        =>'user_admin_password',
         'default'   =>'',
         'label'     =>'Streber administrator password',
         'comment'   =>'',
         'type'      =>'password'
-    ),
-    'site_name' => array(
+    ],
+    'site_name' => [
     	'id'	  => 'site_name',
     	'default' => 'Streber',
     	'label'   => 'Website name',
     	'comment'  => 'The name of this installation.',
     	'required'=> true,
-    ),
-    'site_email' => array(
+    ],
+    'site_email' => [
     	'id'	  => 'site_email',
     	'defualt' => 'postmaster@' . $_SERVER['HTTP_HOST'],
     	'label'   => 'Administrator\'s e-mail',
     	'comment' => 'E-mail address of site Administrator.',
     	'required'=> true,
-    ),
-);
+    ],
+];
 
 
 

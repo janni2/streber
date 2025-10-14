@@ -43,10 +43,10 @@ function personDelete()
         }
 
         ### people in project can't be deleted ###
-        if($pps = $person->getProjectPeople(array(
+        if($pps = $person->getProjectPeople([
             'alive_only' => false,
             'visible_only' => false 
-        ))) {
+        ])) {
             new FeedbackWarning(sprintf(__('<b>%s</b> has been assigned to projects and can not be deleted. However, we deativated his right to login and removed him from all projects.'), $person->getLink()));
             
             ### delete from projects          

@@ -59,7 +59,7 @@ abstract class NaviLink
     public $tooltip;                # optional
     public $active=false;           # hightlight as current option
     public $parent_of_active= false; # this is required for advanced css styling of breadcrumbs
-    public $target_params=array();  # assoc. array of target-params
+    public $target_params=[];  # assoc. array of target-params
     public $type;                   # e.g. 'project', 'task' (addes as additional style-class to a)
 
     public function __construct( $args)
@@ -118,7 +118,7 @@ class NaviCrumb extends NaviLink
         if(isset($this->target_id) && $this->target_id != "") {
             if($PH->getValidPage($this->target_id)) {
 
-                $classes= array($this->type);   # add type as additional class
+                $classes= [$this->type];   # add type as additional class
 
                 if($this->active) {
                     $classes[]="current";
@@ -163,7 +163,7 @@ class NaviOption extends NaviLink
         if(isset($this->target_id) && $this->target_id != "") {
 
             if($PH->getValidPage($this->target_id)) {
-                $classes= array();
+                $classes= [];
                 if($this->active) {
                     $classes[]="current";
                 }
@@ -211,7 +211,7 @@ class Page
     public  $content_col;
     public  $use_jscalendar =false;
     public  $autofocus_field=false;
-    public  $functions      =array();
+    public  $functions      =[];
     public  $content_columns=false;
     public  $format         = FORMAT_HTML;
     public  $extra_header_html = '';    # useful for injecting addition javascript load statements
@@ -245,8 +245,8 @@ class Page
             $this->format = get('format');
         }
 
-        $this->tabs=array(
-            "home"      =>array(
+        $this->tabs=[
+            "home"      =>[
                 'target'=>$PH->getUrl('home'),
                 'title'=>__('Home', 'section'),
 
@@ -255,38 +255,38 @@ class Page
                 'bg'=>"misc"       ,
                 'accesskey'=>'h',
                 'tooltip'=>__('Go to your home. Alt-h / Option-h')
-            ),
-            "projects"  =>array(
-                'target'    => $PH->getUrl('projList',array()),
+            ],
+            "projects"  =>[
+                'target'    => $PH->getUrl('projList',[]),
                 'title'     =>__("<span class=accesskey>P</span>rojects"),
                 'html'=>   buildProjectSelector(),
                 'tooltip'   =>__('Your projects. Alt-P / Option-P'),
                 'bg'        =>"projects",
                 'accesskey' =>'p'
-            ),
-            "people"    =>array(
-                'target'    =>$PH->getUrl('personList',array()),
+            ],
+            "people"    =>[
+                'target'    =>$PH->getUrl('personList',[]),
                 'title'     =>__("People"),
                 'tooltip'   =>__('Your related People'),
                 'bg'        =>"people"
-            ),
-            "companies"  =>array(
-                'target'    =>$PH->getUrl('companyList',array()),
+            ],
+            "companies"  =>[
+                'target'    =>$PH->getUrl('companyList',[]),
                 'title'     =>__("Companies"),
                 'tooltip'   =>__('Your related Companies'),
                 'bg'        =>"people"
-            ),
-            "search"    =>array(
+            ],
+            "search"    =>[
                 'target'    =>'javascript:document.my_form.go.value=\'search\';document.my_form.submit();',
                 'title'     =>__("<span class=accesskey>S</span>earch:&nbsp;"),
                 'html'      =>'<input class=searchfield accesskey=s '.$old_search_query.' name=search_query onFocus=\'document.my_form.go.value="search";\'>',
 
                 'tooltip'   =>__("Click Tab for complex search or enter word* or Id and hit return. Use ALT-S as shortcut. Use `Search!` for `Good Luck`")
-            )
-        );          # assoc. array with tab-definition
+            ]
+        ];          # assoc. array with tab-definition
         $this->cur_tab="";
-        $this->options=array();       # assoc. array with options-definition
-        $this->crumbs=array();        # assoc. array with breadcrumb-definition
+        $this->options=[];       # assoc. array with options-definition
+        $this->crumbs=[];        # assoc. array with breadcrumb-definition
 
         ### set params ###
         if($args) {
@@ -409,10 +409,10 @@ class Page
             #echo __("Filter-Preset:");
             foreach($presets as $p_id=>$p_settings) {
                 if($p_id == $preset_id) {
-                    echo $PH->getLink($preset_location, $p_settings['name'], array('prj'=>$project_id,'preset'=>$p_id, 'person'=>$person_id),'current');
+                    echo $PH->getLink($preset_location, $p_settings['name'], ['prj'=>$project_id,'preset'=>$p_id, 'person'=>$person_id],'current');
                 }
                 else {
-                    echo $PH->getLink($preset_location, $p_settings['name'], array('prj'=>$project_id,'preset'=>$p_id, 'person'=>$person_id));
+                    echo $PH->getLink($preset_location, $p_settings['name'], ['prj'=>$project_id,'preset'=>$p_id, 'person'=>$person_id]);
                 }
             }
             echo "</div>";
@@ -434,7 +434,7 @@ class Page
 class PageElement extends BaseObject
 {
     public $page;
-    public $children=array();
+    public $children=[];
     public $name;
     public $title;
 
@@ -749,10 +749,10 @@ class PageHeader extends PageElement
             if($auth->cur_user->id == confGet('ANONYMOUS_USER')) {
                 $buffer.="<div id=\"user_functions\">"
                        ."<span class=\"features\">"
-                       . "<b>".$PH->getLink('loginForm',__('Login'),array()). "</b>";
+                       . "<b>".$PH->getLink('loginForm',__('Login'),[]). "</b>";
                 if(confGet('REGISTER_NEW_USERS')) {
                    $buffer  .= "<em>|</em>"
-                            .  $PH->getLink('personRegister',__('Register'),array());
+                            .  $PH->getLink('personRegister',__('Register'),[]);
                 }
                 $buffer.= "</span>"
                        .  "</div>";
@@ -761,7 +761,7 @@ class PageHeader extends PageElement
 
             ### account / logout ###
             else {
-                $link_home= $PH->getLink('personView',$auth->cur_user->name,array('person'=>$auth->cur_user->id),'name');;
+                $link_home= $PH->getLink('personView',$auth->cur_user->name,['person'=>$auth->cur_user->id],'name');;
 
                 $buffer.="<div id=\"user_functions\">"
                        . "<span class=\"user\">". __("you are"). " </span>"
@@ -778,7 +778,7 @@ class PageHeader extends PageElement
         else if(confGet('REGISTER_NEW_USERS')) {
                 $buffer.="<div id=\"user_functions\">"
                        ."<span class=\"features\">"
-                       ."<b>". $PH->getLink('personRegister',__('Register'),array()) . "</b>"
+                       ."<b>". $PH->getLink('personRegister',__('Register'),[]) . "</b>"
                       . "</span>"
                       . "</div>";
 

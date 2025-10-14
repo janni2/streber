@@ -57,10 +57,10 @@ class TestOfExceptionTrap extends UnitTestCase {
 
     function testMatchingExceptionTriggersAssertion() {
         $test = new MockSimpleTestCase();
-        $test->expectOnce('assert', array(
+        $test->expectOnce('assert', [
                 '*',
                 new ExceptionExpectation(new Exception()),
-                'message'));
+                'message']);
         $queue = new SimpleExceptionTrap();
         $queue->expectException(new ExceptionExpectation(new Exception()), 'message');
         $queue->isExpected($test, new Exception());

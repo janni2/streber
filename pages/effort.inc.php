@@ -52,7 +52,7 @@ function effortView()
           : NULL;
 
     ### create from handle ###
-    $from_handle= $PH->defineFromHandle(array('effort'=>$effort->id));
+    $from_handle= $PH->defineFromHandle(['effort'=>$effort->id]);
 
     ## is viewed by user ##
     $effort->nowViewedByUser();
@@ -63,30 +63,30 @@ function effortView()
         initPageForEffort($page, $effort, $project);
 
         ### page functions ###
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target' =>'effortEdit',
-            'params' =>array('effort'=>$effort->id),
+            'params' =>['effort'=>$effort->id],
             'icon'  =>'edit',
             'tooltip' =>__('Edit this effort'),
             'name'  =>__('Edit')
-        )));
+        ]));
         
-        $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$effort->id));
+        $item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$effort->id]);
         if((!$item) || ($item[0]->is_bookmark == 0)){
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target' =>'itemsAsBookmark',
-                'params' =>array('effort'=>$effort->id),
+                'params' =>['effort'=>$effort->id],
                 'tooltip' =>__('Mark this effort as bookmark'),
                 'name'  =>__('Bookmark'),
-            )));
+            ]));
         }
         else{
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target' =>'itemsRemoveBookmark',
-                'params' =>array('effort'=>$effort->id),
+                'params' =>['effort'=>$effort->id],
                 'tooltip' =>__('Remove this bookmark'),
                 'name'  =>__('Remove Bookmark'),
-            )));
+            ]));
         } 
 
         ### render title ###
@@ -97,10 +97,10 @@ function effortView()
 
     ### details ###
     {
-        $block = new PageBlock(array(
+        $block = new PageBlock([
             'title'=>__('Description'),
             //'id'=>'details',
-        ));
+        ]);
 
         $block->render_blockStart();
 
@@ -153,10 +153,10 @@ function effortView()
 
     ### description ###
     {
-        $block = new PageBlock(array(
+        $block = new PageBlock([
             'title'=>__('Description'),
             'id'=>'description',
-        ));
+        ]);
 
         $block->render_blockStart();
 
@@ -167,13 +167,13 @@ function effortView()
             ### update task if relative links have been converted to ids ###
             if( checkAutoWikiAdjustments() ) {
                 $effort->description= applyAutoWikiAdjustments( $effort->description );
-                $effort->update(array('description'),false);
+                $effort->update(['description'],false);
             }
             echo "</div>";
         }
         else {
             if($auth->cur_user->user_rights & RIGHT_PROJECT_ASSIGN) {
-                echo '<div class="empty">' . $PH->getLink('effortEdit','',array('effort'=>$effort->id)) . "</div>";
+                echo '<div class="empty">' . $PH->getLink('effortEdit','',['effort'=>$effort->id]) . "</div>";
             }
             else {
                 echo '<div class="text">' . __('No description available') . "</div>";
@@ -286,10 +286,10 @@ function effortViewMultiple()
     echo '<div class="text"><h3>' . __('summary') . "</h3></div>";
     {
         ### content ###
-        $block = new PageBlock(array(
+        $block = new PageBlock([
                 'title'=>__('Information'),
                 'id'=>'info',
-                ));
+                ]);
 
         $block->render_blockStart();
 
@@ -328,10 +328,10 @@ function effortViewMultiple()
 
         ### details ###
         {
-            $block = new PageBlock(array(
+            $block = new PageBlock([
                 'title'=>__('Details'),
                 'id'=>'details' . $effort->id,
-            ));
+            ]);
 
             $block->render_blockStart();
 
@@ -385,10 +385,10 @@ function effortViewMultiple()
 
         ### description ###
         {
-            $block = new PageBlock(array(
+            $block = new PageBlock([
                 'title'=>__('Description'),
                 'id'=>'description' . $effort->id,
-            ));
+            ]);
 
             $block->render_blockStart();
 
@@ -400,13 +400,13 @@ function effortViewMultiple()
                 ### update task if relative links have been converted to ids ###
                 if( checkAutoWikiAdjustments() ) {
                     $effort->description= applyAutoWikiAdjustments( $effort->description );
-                    $effort->update(array('description'),false);
+                    $effort->update(['description'],false);
                 }
                 echo "</div>";
             }
             else {
                 if($auth->cur_user->user_rights & RIGHT_PROJECT_ASSIGN) {
-                    echo '<div class="empty">' . $PH->getLink('effortEdit','',array('effort'=>$effort->id)) . "</div>";
+                    echo '<div class="empty">' . $PH->getLink('effortEdit','',['effort'=>$effort->id]) . "</div>";
                 }
                 else {
                     echo '<div class="text">' . __('No description available') . "</div>";
@@ -528,7 +528,7 @@ function effortNew()
 
 
     ### build new object ###
-    $newEffort= new Effort(array(
+    $newEffort= new Effort([
         'id'  =>0,
         'name'  =>$name,
         'project' =>$project->id,
@@ -537,9 +537,9 @@ function effortNew()
         'task'  =>$task_id,
         'as_duration'=>$as_duration,
         'person' =>$auth->cur_user->id,
-        )
+        ]
     );
-    $PH->show('effortEdit',array('effort'=>$newEffort->id),$newEffort);
+    $PH->show('effortEdit',['effort'=>$newEffort->id],$newEffort);
 }
 
 
@@ -577,7 +577,7 @@ function effortEdit($effort=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'effort_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'effort_name']);
         $page->cur_tab='projects';
         $page->type=__('Edit Effort','page type');
         $page->title=$effort->name;
@@ -591,9 +591,9 @@ function effortEdit($effort=NULL)
 #        else {
             $page->crumbs= build_project_crumbs($project);
 #        }
-        $page->crumbs[]= new NaviCrumb(array(
+        $page->crumbs[]= new NaviCrumb([
             'target_id' => 'effortEdit',
-        ));
+        ]);
 
         if($effort->id) {
             $page->title=__('Edit Effort','page title');
@@ -611,9 +611,9 @@ function effortEdit($effort=NULL)
 
     ### write form #####
     {
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'id' =>'edit',
-        ));
+        ]);
         $block->render_blockStart();
 
 
@@ -650,11 +650,11 @@ function effortEdit($effort=NULL)
         $form->add($effort->fields['description']->getFormElement($effort));
         $form->add(new Form_Dropdown("effort_status", __('Status'), array_flip($g_effort_status_names), $effort->status));
         $form->add(new Form_Dropdown("effort_billing", __('Billing'), array_flip($g_effort_billing_names), $effort->billing));
-        $form->add(new Form_Dropdown("effort_productivity", __('Productivity'), array( "*****"=>5, "****"=>4, "***"=>3, "**"=>2, "*"=>1  ), $effort->productivity));
+        $form->add(new Form_Dropdown("effort_productivity", __('Productivity'), [ "*****"=>5, "****"=>4, "***"=>3, "**"=>2, "*"=>1  ], $effort->productivity));
 
         ### get meta-tasks / folders ###
         #$folders= $project->getFolders();
-        $folders= Task::getAll(array(
+        $folders= Task::getAll([
             'sort_hierarchical'=>true,
             'parent_task'=> 0,
             'show_folders'=>true,
@@ -663,9 +663,9 @@ function effortEdit($effort=NULL)
             'status_max'=> STATUS_CLOSED,
             'project'=> $project->id,
 
-        ));
+        ]);
         if($folders) {
-            $folder_list= array("undefined"=>"0");
+            $folder_list= ["undefined"=>"0"];
 
             if($effort->task) {
                 if($task= Task::getVisibleById($effort->task)) {
@@ -727,7 +727,7 @@ function effortEditSubmit()
     $id= getOnePassedId('effort');
 
     if($id == 0) {
-        $effort= new Effort(array('id'=>0));
+        $effort= new Effort(['id'=>0]);
     }
     else {
         $effort= Effort::getEditableById($id);
@@ -742,7 +742,7 @@ function effortEditSubmit()
     ### cancel ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$effort->project));
+            $PH->show('projView',['prj'=>$effort->project]);
         }
         exit();
     }
@@ -899,7 +899,7 @@ function effortEditSubmit()
 
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$effort->project));
+        $PH->show('projView',['prj'=>$effort->project]);
     }
 }
 
@@ -918,14 +918,14 @@ function effortEditMultiple()
         exit();
     }
     
-    $efforts = array();
-    $different_fields=array();
+    $efforts = [];
+    $different_fields=[];
     
-    $edit_fields = array(
+    $edit_fields = [
         'status',
         'pub_level',
         'task'
-    );
+    ];
     
     foreach($effort_ids as $id){
         if($effort = Effort::getEditableById($id)) {
@@ -956,13 +956,13 @@ function effortEditMultiple()
     
     ### set up page and write header ####
     {
-        $page = new Page(array('use_jscalendar'=>true,'autofocus_field'=>'effort_name'));
+        $page = new Page(['use_jscalendar'=>true,'autofocus_field'=>'effort_name']);
         $page->cur_tab = 'projects';
 
 
-        $page->options[] = new naviOption(array(
+        $page->options[] = new naviOption([
             'target_id'  =>'effortEdit',
-        ));
+        ]);
 
         $page->type = __("Edit multiple efforts","Page title");
         $page->title = sprintf(__("Edit %s efforts","Page title"), count($efforts));
@@ -978,7 +978,7 @@ function effortEditMultiple()
             }
         echo "</ol>";
         
-        $block = new PageBlock(array('id'=>'functions','reduced_header' => true,));
+        $block = new PageBlock(['id'=>'functions','reduced_header' => true,]);
         $block->render_blockStart();
             
         $form = new PageForm();
@@ -986,7 +986,7 @@ function effortEditMultiple()
         
         ### status ###
         {
-            $st = array();
+            $st = [];
             foreach($g_effort_status_names as $key=>$value) {
                     $st[$key] = $value;
             }
@@ -1000,7 +1000,7 @@ function effortEditMultiple()
         }
         
         ### get meta-tasks / folders ###
-        $folders= Task::getAll(array(
+        $folders= Task::getAll([
             'sort_hierarchical'=>true,
             'parent_task'=> 0,
             'show_folders'=>true,
@@ -1009,9 +1009,9 @@ function effortEditMultiple()
             'status_max'=> STATUS_CLOSED,
             'project'=> $project->id,
 
-        ));
+        ]);
         if($folders) {
-            $folder_list = array("undefined"=>"0");
+            $folder_list = ["undefined"=>"0"];
 
             if($effort->task) {
                 if($task = Task::getVisibleById($effort->task)) {
@@ -1089,7 +1089,7 @@ function effortEditMultipleSubmit()
     global $PH;
     global $auth;
     
-    $ids = array();
+    $ids = [];
     $count = 0;
     $error = 0;
     $changes = false;
@@ -1097,7 +1097,7 @@ function effortEditMultipleSubmit()
     ### cancel ? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }

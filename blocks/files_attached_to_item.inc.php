@@ -38,7 +38,7 @@ class FilesAttachedToItemBlock extends PageBlock
         global $auth;
 
         require_once(confGet('DIR_STREBER') . 'lists/list_files.inc.php');
-        $files= File::getall(array('parent_item'=> $this->item_with_attachments->id));
+        $files= File::getall(['parent_item'=> $this->item_with_attachments->id]);
 
         $list= new ListBlock_files();
         $list->reduced_header= true;

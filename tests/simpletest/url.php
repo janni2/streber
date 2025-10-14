@@ -68,9 +68,9 @@ class SimpleUrl {
     function _chompCoordinates(&$url) {
         if (preg_match('/(.*)\?(\d+),(\d+)$/', $url, $matches)) {
             $url = $matches[1];
-            return array((integer)$matches[2], (integer)$matches[3]);
+            return [(integer)$matches[2], (integer)$matches[3]];
         }
-        return array(false, false);
+        return [false, false];
     }
     
     /**
@@ -107,12 +107,12 @@ class SimpleUrl {
         if (preg_match('/^([^\/]*)@(.*)/', $url, $matches)) {
             $url = $prefix . $matches[2];
             $parts = explode(":", $matches[1]);
-            return array(
+            return [
                     urldecode($parts[0]),
-                    isset($parts[1]) ? urldecode($parts[1]) : false);
+                    isset($parts[1]) ? urldecode($parts[1]) : false];
         }
         $url = $prefix . $url;
-        return array(false, false);
+        return [false, false];
     }
     
     /**

@@ -60,7 +60,7 @@ function taskEdit($task=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true,'autofocus_field'=>'task_name'));
+        $page= new Page(['use_jscalendar'=>true,'autofocus_field'=>'task_name']);
 
         initPageForTask($page, $task, $project);
         
@@ -106,10 +106,10 @@ function taskEdit($task=NULL)
         global $g_prio_names;
         global $g_status_names;
 
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             #'title' =>__('Edit Task'),
             'id'    =>'functions',
-        ));
+        ]);
         $block->render_blockStart();
 
 
@@ -120,9 +120,9 @@ function taskEdit($task=NULL)
 
         ### task category ###
         {
-            $list= array();                       
+            $list= [];                       
             if($task->category == TCATEGORY_MILESTONE ||  $task->category == TCATEGORY_VERSION) {
-                $list= array(TCATEGORY_MILESTONE, TCATEGORY_VERSION);
+                $list= [TCATEGORY_MILESTONE, TCATEGORY_VERSION];
 
                 ### make sure it's valid
                 if($task->category != TCATEGORY_MILESTONE || $task->category != TCATEGORY_VERSION) {
@@ -135,7 +135,7 @@ function taskEdit($task=NULL)
                 }
             }
             else {
-                $list=array();
+                $list=[];
                 if($project->settings & PROJECT_SETTING_ENABLE_TASKS) {
                     $list[]= TCATEGORY_TASK;
                 }
@@ -146,7 +146,7 @@ function taskEdit($task=NULL)
                 $list[]= TCATEGORY_FOLDER;
             }
             global $g_tcategory_names;
-            $cats= array();
+            $cats= [];
             foreach($list as $c) {
                 $cats[$c]= $g_tcategory_names[$c];
             }
@@ -240,7 +240,7 @@ function taskEdit($task=NULL)
                     }
                 }
 
-                $team=array(__('- select person -')=>0);
+                $team=[__('- select person -')=>0];
 
                 ### create team-list ###
                 foreach($project->getPeople() as $p) {
@@ -282,7 +282,7 @@ function taskEdit($task=NULL)
             ### completion ###
             if(!$task->is_released > RELEASED_UPCOMMING) {
                 #$form->add($task->fields['estimated'    ]->getFormElement($task));
-                $ar= array(
+                $ar= [
                     __('undefined')=> -1,
                     '0%'    => 0,
                     '10%'    => 10,
@@ -298,13 +298,13 @@ function taskEdit($task=NULL)
                     '98%'    => 98,
                     '99%'    => 99,
                     '100%'   => 100,
-                );
+                ];
                 $tab->add(new Form_Dropdown('task_completion',__("Completed"),$ar,  $task->completion));
             }
 
             ### status ###
             {
-                $st=array();
+                $st=[];
                 foreach($g_status_names as $s=>$n) {
                     if($s >= STATUS_NEW) {
                         $st[$s]=$n;
@@ -347,7 +347,7 @@ function taskEdit($task=NULL)
 
             ### create new one ###
             if($task->issue_report <= 0) {
-                $issue= new Issue(array('id'=>0));
+                $issue= new Issue(['id'=>0]);
 
                 ### get recent issue-reports ###
                 if($recent_ir=Issue::getCreatedRecently()) {
@@ -403,7 +403,7 @@ function taskEdit($task=NULL)
             ### estimated ###
             if(!$task->isMilestoneOrVersion()){
                 #$tab->add($task->fields['estimated'    ]->getFormElement($task));
-                $ar= array(
+                $ar= [
                     __('undefined')=> 0,
                     __('30 min')    => 30*60,
                     __('1 h')  => 60*60,
@@ -417,7 +417,7 @@ function taskEdit($task=NULL)
                     #__('1,5 Weeks')=> 1.5 * confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60,
                     __('2 Weeks')  =>   2 * confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60,
                     __('3 Weeks')  =>   3 * confGet('WORKDAYS_PER_WEEK') * confGet('WORKHOURS_PER_DAY') * 60 * 60,
-                );
+                ];
                 $tab->add(new Form_Dropdown('task_estimated',__("Estimated time"),$ar,  $task->estimated));
                 $tab->add(new Form_Dropdown('task_estimated_max',__("Estimated worst case"),$ar,  $task->estimated_max));
 
@@ -475,7 +475,7 @@ function taskEdit($task=NULL)
 
             ### label ###
             if(!$task->isOfCategory(TCATEGORY_VERSION, TCATEGORY_MILESTONE, TCATEGORY_FOLDER)) {
-                $labels=array(__('undefined') => 0);
+                $labels=[__('undefined') => 0];
                 $counter= 1;
                 foreach(explode(",",$project->labels) as $l) {
                     $labels[$l]=$counter++;
@@ -554,16 +554,16 @@ function taskEditSubmit()
     * keep a list of items linking to this task, task is new
     * we have to change the linking id after(!) inserting the task
     */
-    $link_items=array();
+    $link_items=[];
 
 
     ### temporary object or from database? ###
     $tsk_id=getOnePassedId('tsk','',true,'invalid id');
     if($tsk_id == 0) {
-        $task= new Task(array(
+        $task= new Task([
             'id'=>0,
             'project'=>get('task_project'),
-        ));
+        ]);
         $was_category= 0;                       # undefined category for new tasks
         $was_resolved_version= 0;
     }
@@ -580,7 +580,7 @@ function taskEditSubmit()
     ### cancel? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('taskView',array('tsk'=>$task->id));
+            $PH->show('taskView',['tsk'=>$task->id]);
         }
         exit();
     }
@@ -612,12 +612,12 @@ function taskEditSubmit()
     {
         ### check for request feedback
         if($request_feedback= get('request_feedback')) {
-            $team_members_by_nickname = array();
+            $team_members_by_nickname = [];
 
             foreach($project->getProjectPeople() as $pp) {
                 $team_members_by_nickname[ $pp->getPerson()->nickname ] = $pp->getPerson();
             }
-            $requested_people= array();
+            $requested_people= [];
 
             foreach( explode('\s*,\s*', $request_feedback) as $nickname) {
                 
@@ -627,15 +627,15 @@ function taskEditSubmit()
                         $person = $team_members_by_nickname[$nickname];
 
                         ### update to itemperson table...
-                        if($view = ItemPerson::getAll(array('person'=>$person->id, 'item'=>$task->id))){
+                        if($view = ItemPerson::getAll(['person'=>$person->id, 'item'=>$task->id])){
                             $view[0]->feedback_requested_by = $auth->cur_user->id;
                             $view[0]->update();
                         }
                         else{
-                            $new_view = new ItemPerson(array(
+                            $new_view = new ItemPerson([
                             'item'          =>$task->id,
                             'person'        =>$person->id,
-                            'feedback_requested_by'=> $auth->cur_user->id ));
+                            'feedback_requested_by'=> $auth->cur_user->id ]);
                             $new_view->insert();
                         }
                         $requested_people[]= "<b>". asHtml($nickname) ."</b>";
@@ -657,12 +657,12 @@ function taskEditSubmit()
             $valid_comment= true;
 
             ### new object? ###
-            $comment= new Comment(array(
+            $comment= new Comment([
                 'name'=> get('comment_name'),
                 'description' =>get('comment_description'),
                 'project' => $task->project,
                 'task' => $task->id
-            ));
+            ]);
             validateNotSpam($comment->name . $comment->description);
 
             ### write to db ###
@@ -680,7 +680,7 @@ function taskEditSubmit()
                                 $task->status = STATUS_OPEN;
                             }
                         }
-                        $task->update(array('modified','status'));
+                        $task->update(['modified','status']);
                     }
 
                     $added_comment= true;
@@ -696,7 +696,7 @@ function taskEditSubmit()
         if($added_comment) {
             ### display taskView ####
             if(!$PH->showFromPage()) {
-                $PH->show('home',array());
+                $PH->show('home',[]);
             }
             exit();
         }
@@ -762,8 +762,8 @@ function taskEditSubmit()
     */
     {
 
-        $assigned_people = array();
-        $task_assignments = array();
+        $assigned_people = [];
+        $task_assignments = [];
 
         if($task->id) {
             foreach($task->getAssignedPeople() as $p) {
@@ -775,15 +775,15 @@ function taskEditSubmit()
             }
         }
 
-        $team= array();
+        $team= [];
         foreach($project->getPeople() as $p) {
             $team[$p->id]= $p;
         }
 
-        $new_task_assignments= array();                     # store assigments after(!) validation
+        $new_task_assignments= [];                     # store assigments after(!) validation
         $forwarded = 0;
         $forward_comment = '';
-        $old_task_assignments = array();
+        $old_task_assignments = [];
         
         if(isset($task_assignments)) {
             foreach($task_assignments as $id=>$t_old) {
@@ -804,7 +804,7 @@ function taskEditSubmit()
                 }
                 
                 if($id == $id_new) {
-                    if($tp = TaskPerson::getTaskPeople(array('person'=>$id, 'task'=>$task->id))){
+                    if($tp = TaskPerson::getTaskPeople(['person'=>$id, 'task'=>$task->id])){
                         $tp[0]->forward = $forwarded;
                         $tp[0]->forward_comment = $forward_comment;
                         $old_task_assignments[] = $tp[0];
@@ -832,14 +832,14 @@ function taskEditSubmit()
                 $t_old->comment = sprintf(__("unassigned to %s","task-assignment comment"),$team[$id_new]->name);
                 $t_old->update();
                 $t_old->delete();
-                $new_assignment= new TaskPerson(array(
+                $new_assignment= new TaskPerson([
                     'person'=> $team[$id_new]->id,
                     'task'  => $task->id,
                     'comment'=>sprintf(__("formerly assigned to %s","task-assigment comment"), $team[$id]->name),
                     'project'=>$project->id,
                     'forward'=>$forwarded,
                     'forward_comment'=>$forward_comment,
-                ));
+                ]);
 
                 $new_task_assignments[]=$new_assignment;
                 $link_items[]=$new_assignment;
@@ -863,7 +863,7 @@ function taskEditSubmit()
             
             ### check if already assigned ###
             if(isset($task_assignments[$id_new])) {
-                if($tp = TaskPerson::getTaskPeople(array('person'=>$id_new,'task'=>$task->id))){
+                if($tp = TaskPerson::getTaskPeople(['person'=>$id_new,'task'=>$task->id])){
                     $tp[0]->forward = $forwarded;
                     $tp[0]->forward_comment = $forward_comment;
                     $old_task_assignments[] = $tp[0];
@@ -876,14 +876,14 @@ function taskEditSubmit()
                     $PH->abortWarning("unknown person id $id_new",ERROR_DATASTRUCTURE);
                 }
 
-                $new_assignment= new TaskPerson(array(
+                $new_assignment= new TaskPerson([
                     'person'=> $team[$id_new]->id,
                     'task'  => $task->id,
                     'comment'=>"",
                     'project'=>$project->id,
                     'forward'=>$forwarded,
                     'forward_comment'=>$forward_comment,
-                ));
+                ]);
 
                 /**
                 * BUG?
@@ -898,7 +898,7 @@ function taskEditSubmit()
         }
     }
     
-    if($task->isOfCategory(array(TCATEGORY_VERSION, TCATEGORY_MILESTONE))) {
+    if($task->isOfCategory([TCATEGORY_VERSION, TCATEGORY_MILESTONE])) {
         if($is_released=get('task_is_released')) {
             if(!is_null($is_released)) {
                 $task->is_released = $is_released;
@@ -942,25 +942,25 @@ function taskEditSubmit()
     }
     ### task-name already exist ###
     else if($task->id == 0){
-        $other_tasks = array();
+        $other_tasks = [];
 
         if($parent_task) {
-            $other_tasks= Task::getAll(array(
+            $other_tasks= Task::getAll([
                 'project' => $project->id,
                 'parent_task'=> $parent_task->id,
                 'status_min'=> STATUS_NEW,
                 'status_max'=> STATUS_CLOSED,
                 'visible_only' => false,
-            ));
+            ]);
         }
         else {
-            $other_tasks= Task::getAll(array(
+            $other_tasks= Task::getAll([
                 'project' => $project->id,
                 'parent_task'=> 0,
                 'status_min'=> STATUS_NEW,
                 'status_max'=> STATUS_CLOSED,
                 'visible_only' => false,
-            ));
+            ]);
         }
         foreach($other_tasks as $ot) {
             if(!strcasecmp($task->name, $ot->name)) {
@@ -1006,7 +1006,7 @@ function taskEditSubmit()
         if($parent_task->isMilestoneOrVersion()) {
             if($parent_task->is_folder) {
                 $parent_task->is_folder= 0;
-                $parent_task->update(array('is_folder'),false);
+                $parent_task->update(['is_folder'],false);
             }
             $PH->abortWarning(__("Milestones may not have sub tasks"));
         }
@@ -1063,11 +1063,11 @@ function taskEditSubmit()
         ### new report as / temporary ###
         if($task_issue_report == 0 || $task_issue_report == -1) {
 
-            $issue= new Issue(array(
+            $issue= new Issue([
                 'id'=>0,
                 'project'   => $project->id,
                 'task'      => $task->id,
-            ));
+            ]);
 
             ### querry form-information ###
             foreach($issue->fields as $f) {
@@ -1181,21 +1181,21 @@ function taskEditSubmit()
 
         new FeedbackMessage(sprintf(__("Changed %s %s with ID %s","type,link,id"),  $task->getLabel(), $task->getLink(false),$task->id));
         $task->update();
-        $project->update(array(), true);
+        $project->update([], true);
     }
 
 
     ### add any recently resolved tasks if this is a just released version  ###
     if($task->category == TCATEGORY_VERSION && $was_category != TCATEGORY_VERSION) {
-        if($resolved_tasks= Task::getAll(array(
+        if($resolved_tasks= Task::getAll([
             'project'           => $task->project,
             'status_min'        => 0,
             'status_max'        => 10,
             'resolved_version'  => RESOLVED_IN_NEXT_VERSION,
-        ))) {
+        ])) {
             foreach($resolved_tasks as $rt) {
                 $rt->resolved_version= $task->id;
-                $rt->update(array('resolved_version'));
+                $rt->update(['resolved_version']);
             }
             new FeedbackMessage(sprintf(__('Marked %s tasks to be resolved in this version.'), count($resolved_tasks)));
         }
@@ -1209,7 +1209,7 @@ function taskEditSubmit()
 
 
         ### build dummy form ###
-        $newtask= new Task(array(
+        $newtask= new Task([
             'id'        =>0,
             'name'      =>__('Name'),
             'project'   =>$task->project,
@@ -1219,21 +1219,21 @@ function taskEditSubmit()
             'parent_task'=>$task->parent_task,
             'for_milestone'=>$task->for_milestone,
             'category'  =>$task->category,
-        ));
+        ]);
 
 
-        $PH->show('taskEdit',array('tsk'=>$newtask->id),$newtask);
+        $PH->show('taskEdit',['tsk'=>$newtask->id],$newtask);
     }
     else {
 
         ### go to task, if new
         if($tsk_id == 0) {
-            $PH->show('taskView',array('tsk' => $task->id));
+            $PH->show('taskView',['tsk' => $task->id]);
             exit();
         }
         ### display taskView ####
         else if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
     }
 }

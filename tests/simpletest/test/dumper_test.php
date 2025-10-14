@@ -71,8 +71,8 @@ class TestOfTextFormatting extends UnitTestCase {
     
     function testDescribeArray() {
         $dumper = new SimpleDumper();
-        $this->assertPattern('/array/i', $dumper->describeValue(array(1, 4)));
-        $this->assertPattern('/2/i', $dumper->describeValue(array(1, 4)));
+        $this->assertPattern('/array/i', $dumper->describeValue([1, 4]));
+        $this->assertPattern('/2/i', $dumper->describeValue([1, 4]));
     }
     
     function testDescribeObject() {

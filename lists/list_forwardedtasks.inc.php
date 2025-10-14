@@ -135,13 +135,13 @@ class ListBlockCol_ForwardedTaskName extends ListBlockCol
 		#if($task = Task::getVisibleById($obj->task)) {
 		if($task = Task::getById($obj->task)) {
 			$str_name = asHtml($task->name);
-			$str_url = $PH->getUrl('taskView',array('tsk'=>$task->id));
+			$str_url = $PH->getUrl('taskView',['tsk'=>$task->id]);
 			if($task->status >= STATUS_COMPLETED){
 				$isDone = "class=isDone";
 			}
 			#if($prj = Project::getVisibleById($task->project)) {
 			if($prj = Project::getById($task->project)) {
-				$link = $PH->getLink('projView',$prj->getShort(),array('prj'=>$prj->id));
+				$link = $PH->getLink('projView',$prj->getShort(),['prj'=>$prj->id]);
 				$html_details .=__('in', 'very short for IN folder...'). ' '. $link;
 				if($tmp = $task->getFolderLinks()) {
 					$html_details .= ' > ' . $tmp;

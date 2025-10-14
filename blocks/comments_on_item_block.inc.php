@@ -48,14 +48,14 @@ class CommentsOnItemBlock extends PageBlock
         
         #--- news -----------------------------------------------------------
             
-        $comments= $this->item_with_comments->getComments(array('order_by'=>'created'  ));
+        $comments= $this->item_with_comments->getComments(['order_by'=>'created'  ]);
 
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title'=> sprintf( __("%s Comments"),    count($comments) 
                                                    ? count($comments)
                                                    : __("No", "As in... >No< Comments")  ),
             'id'=>'news',
-        ));
+        ]);
         $block->render_blockStart();
 
         
@@ -103,7 +103,7 @@ class CommentsOnItemBlock extends PageBlock
                 if(count($versions) > 1) {
                                     echo " (" . $PH->getLink('itemViewDiff', 
                                         sprintf(__("%s. update", "like in... Nth update"), count($versions)), 
-                                        array('item' => $c->id)
+                                        ['item' => $c->id]
                                     ); 
                                     echo " " . renderTimeAgo($c->modified);
                                     echo ") ";
@@ -120,7 +120,7 @@ class CommentsOnItemBlock extends PageBlock
                     ($parent_task= Task::getEditableById($c->task))
                     && ($c->pub_level < PUB_LEVEL_OPEN) 
                 ) {
-                    echo " - " .  $PH->getLink('itemsSetPubLevel', __('Publish'), array( 'item'=>$c->id, 'item_pub_level'=>PUB_LEVEL_OPEN));
+                    echo " - " .  $PH->getLink('itemsSetPubLevel', __('Publish'), [ 'item'=>$c->id, 'item_pub_level'=>PUB_LEVEL_OPEN]);
                 }
 
             }
@@ -129,7 +129,7 @@ class CommentsOnItemBlock extends PageBlock
 
             ### delete
             if( $is_comment_editable) {
-                echo " - " .  $PH->getLink('commentsDelete', __('Delete'), array('comment'=>$c->id));
+                echo " - " .  $PH->getLink('commentsDelete', __('Delete'), ['comment'=>$c->id]);
             }
 
 
@@ -139,7 +139,7 @@ class CommentsOnItemBlock extends PageBlock
                 echo wikifieldAsHtml($c, 'description');
             }
             else {
-                echo wikifieldAsHtml($c, 'description', array('editable'=>false));
+                echo wikifieldAsHtml($c, 'description', ['editable'=>false]);
             }
         
             echo "</div>";                
@@ -175,10 +175,10 @@ class CommentsOnItemBlock extends PageBlock
 
             ### Comment ###
             $comment_name= '';
-            $comment= new Comment(array(
+            $comment= new Comment([
                 'id'=>0,
                 'name'=>$comment_name,
-            ));
+            ]);
 
             $e= $comment->fields['description']->getFormElement($comment,__('Comment'));
             $e->rows=8;

@@ -5,7 +5,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 ### TIME FORMATS ###
 'en_US.utf8,en_US,enu|list of locales'=>'de_DE.UTF8,de_DE@euro,de_DE,de,gede.utf8,deu,german',
@@ -2375,6 +2375,6 @@ $g_lang_table= array(
 'Edit rights|Page function for edit user rights'=>'Rechte bearbeiten',
 'Remove|Tooltip for page function'=>'Löschen',
 
-);
+];
 
 ?>

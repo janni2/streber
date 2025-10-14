@@ -51,13 +51,13 @@ class RSS
         }
 
         ### get all the changes (array of history items) ##
-        $changes= ChangeLine::getChangeLines(array(
+        $changes= ChangeLine::getChangeLines([
             'project'           => $project->id,
             'unviewed_only'     => false,
             'limit_rowcount'    => 20,
-            'type'              => array(ITEM_TASK, ITEM_FILE),
+            'type'              => [ITEM_TASK, ITEM_FILE],
             'limit_offset'      => 0,
-        ));
+        ]);
         
                 
         

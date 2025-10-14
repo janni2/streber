@@ -34,7 +34,7 @@ class SimpleTagBuilder {
      *    @access public
      */
     function createTag($name, $attributes) {
-        static $map = array(
+        static $map = [
                 'a' => 'SimpleAnchorTag',
                 'title' => 'SimpleTitleTag',
                 'base' => 'SimpleBaseTag',
@@ -43,7 +43,7 @@ class SimpleTagBuilder {
                 'option' => 'SimpleOptionTag',
                 'label' => 'SimpleLabelTag',
                 'form' => 'SimpleFormTag',
-                'frame' => 'SimpleFrameTag');
+                'frame' => 'SimpleFrameTag'];
         $attributes = $this->_keysToLowerCase($attributes);
         if (array_key_exists($name, $map)) {
             $tag_class = $map[$name];
@@ -80,7 +80,7 @@ class SimpleTagBuilder {
             return new SimpleTextTag($attributes);
         }
         $type = strtolower(trim($attributes['type']));
-        $map = array(
+        $map = [
                 'submit' => 'SimpleSubmitTag',
                 'image' => 'SimpleImageSubmitTag',
                 'checkbox' => 'SimpleCheckboxTag',
@@ -88,7 +88,7 @@ class SimpleTagBuilder {
                 'text' => 'SimpleTextTag',
                 'hidden' => 'SimpleTextTag',
                 'password' => 'SimpleTextTag',
-                'file' => 'SimpleUploadTag');
+                'file' => 'SimpleUploadTag'];
         if (array_key_exists($type, $map)) {
             $tag_class = $map[$type];
             return new $tag_class($attributes);
@@ -103,7 +103,7 @@ class SimpleTagBuilder {
      *    @access private
      */
     function _keysToLowerCase($map) {
-        $lower = array();
+        $lower = [];
         foreach ($map as $key => $value) {
             $lower[strtolower($key)] = $value;
         }
@@ -149,7 +149,7 @@ class SimplePageBuilder extends SimpleSaxListener {
      *    @access public
      */
     function parse($response) {
-        $this->_tags = array();
+        $this->_tags = [];
         $this->_page = &$this->_createPage($response);
         $parser = &$this->_createParser($this);
         $parser->parse($response->getContent());
@@ -320,7 +320,7 @@ class SimplePageBuilder extends SimpleSaxListener {
     function _openTag(&$tag) {
         $name = $tag->getTagName();
         if (! in_array($name, array_keys($this->_tags))) {
-            $this->_tags[$name] = array();
+            $this->_tags[$name] = [];
         }
         $this->_tags[$name][] = &$tag;
     }
@@ -358,13 +358,13 @@ class SimplePage {
      *    @access public
      */
     function SimplePage($response = false) {
-        $this->_links = array();
+        $this->_links = [];
         $this->_title = false;
-        $this->_left_over_labels = array();
-        $this->_open_forms = array();
-        $this->_complete_forms = array();
+        $this->_left_over_labels = [];
+        $this->_open_forms = [];
+        $this->_complete_forms = [];
         $this->_frameset = false;
-        $this->_frames = array();
+        $this->_frames = [];
         $this->_frameset_nesting_level = 0;
         $this->_text = false;
         if ($response) {
@@ -548,7 +548,7 @@ class SimplePage {
      *    @access public
      */
     function getFrameFocus() {
-        return array();
+        return [];
     }
 
     /**
@@ -632,7 +632,7 @@ class SimplePage {
      *    @access private
      */
     function _isFormElement($name) {
-        return in_array($name, array('input', 'button', 'textarea', 'select'));
+        return in_array($name, ['input', 'button', 'textarea', 'select']);
     }
 
     /**
@@ -764,7 +764,7 @@ class SimplePage {
         if (! $this->_frameset) {
             return false;
         }
-        $urls = array();
+        $urls = [];
         for ($i = 0; $i < count($this->_frames); $i++) {
             $name = $this->_frames[$i]->getAttribute('name');
             $url = new SimpleUrl($this->_frames[$i]->getAttribute('src'));
@@ -790,7 +790,7 @@ class SimplePage {
      *    @access public
      */
     function getUrls() {
-        $all = array();
+        $all = [];
         foreach ($this->_links as $link) {
             $url = $this->_getUrlFromLink($link);
             $all[] = $url->asString();
@@ -806,7 +806,7 @@ class SimplePage {
      *    @access public
      */
     function getUrlsByLabel($label) {
-        $matches = array();
+        $matches = [];
         foreach ($this->_links as $link) {
             if ($link->getText() == $label) {
                 $matches[] = $this->_getUrlFromLink($link);

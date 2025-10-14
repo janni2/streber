@@ -183,17 +183,17 @@ function playground() {
 
 
     ### create from handle ###
-    $PH->defineFromHandle(array());
+    $PH->defineFromHandle([]);
 
     ### set up page ####
     {
         $page= new Page();
     	$page->cur_tab='home';
-    	$page->options=array(
-            new NaviOption(array(
+    	$page->options=[
+            new NaviOption([
                 'target_id'=>'home',
                 'name'=>__('Today')
-            )),
+            ]),
             #new NaviOption(array(
             #    'target_id'     =>'personViewEfforts',
             #    'target_params' =>array('person' =>  $auth->cur_user->id),
@@ -201,7 +201,7 @@ function playground() {
             #
             #)),
 
-    	);
+    	];
 
         $page->title=__("Today"); # $auth->cur_user->name;
         $page->type=__("At Home");

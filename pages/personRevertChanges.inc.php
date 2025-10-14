@@ -56,11 +56,11 @@ function personRevertChanges()
     {
         $page= new Page();
 
-        $page->tabs['admin']=  array('target'=>"index.php?go=systemInfo",     'title'=>__('Admin','top navigation tab'), 'bg'=>"misc");
+        $page->tabs['admin']=  ['target'=>"index.php?go=systemInfo",     'title'=>__('Admin','top navigation tab'), 'bg'=>"misc"];
     	$page->cur_tab='admin';
-    	$page->crumbs[]=new NaviCrumb(array(
+    	$page->crumbs[]=new NaviCrumb([
     	    'target_id'=>'systemInfo'
-    	));
+    	]);
 
         $page->title=__("Reverting user changes");
         $page->type=__("Admin");
@@ -69,7 +69,7 @@ function personRevertChanges()
     }
     echo (new PageContentOpen);
 
-    $block=new PageBlock(array('title'=>__('Overview'),'id'=>'overview'));
+    $block=new PageBlock(['title'=>__('Overview'),'id'=>'overview']);
     $block->render_blockStart();
 
     echo "<div class=text>";
@@ -77,7 +77,7 @@ function personRevertChanges()
 
     ### get changes of person ###
     $count_reverted_fields = 0;
-    $changes = ItemChange::getItemChanges(array('person' => $person_id, 'order_by' => 'id DESC'));
+    $changes = ItemChange::getItemChanges(['person' => $person_id, 'order_by' => 'id DESC']);
     foreach( $changes as $c) {
         if(!$project_item = DbProjectItem::getObjectById($c->item)) {
             #print "unable to get item %s" % $c->item;
@@ -99,7 +99,7 @@ function personRevertChanges()
                     }
                 }
                 $project_item->$field_name = $c->value_old;
-                $project_item->update(array($field_name, 'deleted_by', 'deleted'), false, false);
+                $project_item->update([$field_name, 'deleted_by', 'deleted'], false, false);
             }
             else {
                 echo "<li>"

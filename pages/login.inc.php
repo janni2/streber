@@ -16,21 +16,21 @@ require_once(confGet('DIR_STREBER') . 'render/render_list.inc.php');
 
 
 global $g_tabs_login;
-$g_tabs_login= array(
-            "login" =>array(
+$g_tabs_login= [
+            "login" =>[
                 'target'=>"index.php?go=loginForm",
                 'title'=>__('Login','tab in top navigation'),
                 'bg'=>"misc"       ,
                 'tooltip'=>__('Go to your home. Alt-h / Option-h'),
-            ),
-            "license"   =>array(
+            ],
+            "license"   =>[
                 'target'=>"index.php?go=helpLicense",
                 'title'=>__('License','tab in top navigation'),
                 'tooltip'=>__('Your projects. Alt-P / Option-P'),
                 'bg'=>"projects",
                 'accesskey'=>'p'
-            )
-        );
+            ]
+        ];
 
 
 /**
@@ -39,7 +39,7 @@ $g_tabs_login= array(
 * hidden paramter. The following list defines the valid paramters for this.
 */
 global $g_valid_login_params;
-$g_valid_login_params= array('prj','task','tsk','comment','effort','person','client','item');
+$g_valid_login_params= ['prj','task','tsk','comment','effort','person','client','item'];
 
 /**
 * Render login form 
@@ -62,7 +62,7 @@ function loginForm() {
 
     ### set up page and write header ###
     {
-        $page= new Page(array('autofocus_field'=>'login_name'));
+        $page= new Page(['autofocus_field'=>'login_name']);
         global $g_tabs_login;
         $page->tabs= $g_tabs_login;
 
@@ -134,7 +134,7 @@ function loginFormSubmit()
     */
     if($auth->checkLdapOption($name)){
         if($auth->tryLoginUserByLdap($name,$password)){
-            $PH->messages= array();
+            $PH->messages= [];
     
             $auth->storeUserCookie();
     
@@ -147,7 +147,7 @@ function loginFormSubmit()
                     
             ### if go-parameter was present before logging in
             if($go_after= get('go_after')) {
-                $params=array();
+                $params=[];
                 foreach($g_valid_login_params as $var) {
                     if(get($var)) {
                         $params[$var]= get($var);
@@ -159,11 +159,11 @@ function loginFormSubmit()
             ### if user has only one project directly go there ###
             else if(count($projects) == 1) {
                 setWelcomeToProjectMessage($projects[0]);
-                $PH->show('projView',array('prj'=>$projects[0]->id));
+                $PH->show('projView',['prj'=>$projects[0]->id]);
             }
             else {
                 $PH->messages[] = sprintf( __("Welcome to %s", "Notice after login"), confGet('APP_NAME'));
-                $PH->show('home',array());
+                $PH->show('home',[]);
             }
         }
         else{
@@ -180,7 +180,7 @@ function loginFormSubmit()
             $auth->tryLoginUser($name,$password_md5)
     
         ) {
-            $PH->messages= array();
+            $PH->messages= [];
     
             $auth->storeUserCookie();
     
@@ -193,7 +193,7 @@ function loginFormSubmit()
                     
             ### if go-parameter was present before logging in
             if($go_after= get('go_after')) {
-                $params=array();
+                $params=[];
                 foreach($g_valid_login_params as $var) {
                     if(get($var)) {
                         $params[$var]= get($var);
@@ -205,11 +205,11 @@ function loginFormSubmit()
             ### if user has only one project go there ###
             else if(count($projects) == 1) {
                 setWelcomeToProjectMessage($projects[0]);
-                $PH->show('projView',array('prj'=>$projects[0]->id));
+                $PH->show('projView',['prj'=>$projects[0]->id]);
             }
             else {
                 $PH->messages[] = sprintf( __("Welcome to %s", "Notice after login"), confGet('APP_NAME'));
-                $PH->show('home',array());
+                $PH->show('home',[]);
             }
         }
         else {
@@ -288,7 +288,7 @@ function loginForgotPassword()
 
     ### set up page and write header ###
     {
-        $page= new Page(array('autofocus_field'=>'login_name'));
+        $page= new Page(['autofocus_field'=>'login_name']);
         global $g_tabs_login;
         $page->tabs= $g_tabs_login;
 
@@ -305,10 +305,10 @@ function loginForgotPassword()
         require_once(confGet('DIR_STREBER') . 'render/render_form.inc.php');
 
 
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title' =>__('Please enter your nickname'),
             'id'    =>'functions',
-        ));
+        ]);
         $block->render_blockStart();
 
 
@@ -397,7 +397,7 @@ function activateAccount()
             $auth->storeUserCookie();
             $PH->messages[]=sprintf(__("Welcome %s. Please adjust your profile and insert a good password to activate your account."), asHtml($user->name));
             global $g_person_fields;
-            $PH->show('personEdit',array('person'=>$user->id));
+            $PH->show('personEdit',['person'=>$user->id]);
             exit();
         }
     }
@@ -420,7 +420,7 @@ function helpLicense()
 
     ### set up page and write header ####
     {
-        $page= new Page(array());
+        $page= new Page([]);
 
         global $g_tabs_login;
         $page->tabs=$g_tabs_login;

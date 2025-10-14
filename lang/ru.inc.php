@@ -11,7 +11,7 @@
 *
 */
 
-global $g_lang_table;$g_lang_table= array(
+global $g_lang_table;$g_lang_table= [
 
 #------------------------------
 # ../conf/defines.inc.php
@@ -2282,4 +2282,4 @@ global $g_lang_table;$g_lang_table= array(
 'Please use this link to'     =>'Используйте ссылку на',  # line 621
 'update your account settings'=>'обновите настройки вашего аккаунта',  # line 624
                               
-'x'=>'x');?>
+'x'=>'x'];?>

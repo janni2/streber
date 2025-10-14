@@ -17,7 +17,7 @@
 *
 */
 global $g_cache_people;
-$g_cache_people=array();
+$g_cache_people=[];
 
 
 
@@ -51,230 +51,230 @@ class Person extends DbProjectItem {
     static function initFields()
     {
         global $g_person_fields;
-        $g_person_fields=array();
+        $g_person_fields=[];
         addProjectItemFields($g_person_fields);
     
-        foreach(array(
-            new FieldInternal(array(    'name'=>'id',
+        foreach([
+            new FieldInternal([    'name'=>'id',
                 'default'=>0,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
                 'log_changes'=>false,
     
-            )),
-            new FieldInternal(array(    'name'=>'state',    ### cached in project-table to speed up queries ###
+            ]),
+            new FieldInternal([    'name'=>'state',    ### cached in project-table to speed up queries ###
                 'default'=>1,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-            new FieldString(array(      'name'=>'name',
+            ]),
+            new FieldString([      'name'=>'name',
                 'title'     =>__('Full name'),
                 'tooltip'   =>__('Required. Full name like (e.g. Thomas Mann)'),
                 'required'=>true,
-            )),
-            new FieldString(array(      'name'=>'nickname',
+            ]),
+            new FieldString([      'name'=>'nickname',
                 'title'     =>__('Nickname'),
                 'tooltip'   =>__('only required if user can login (e.g. pixtur)'),
-            )),
-            new FieldString(array(      'name'=>'tagline',
+            ]),
+            new FieldString([      'name'=>'tagline',
                 'title'     =>__('Tagline'),
                 'tooltip'   =>__('Optional: Additional tagline (eg. multimedia concepts)'),
-            )),
-            new FieldString(array(      'name'=>'mobile_phone',
+            ]),
+            new FieldString([      'name'=>'mobile_phone',
                 'title'     =>__('Mobile Phone'),
                 'tooltip'   =>__('Optional: Mobile phone (eg. +49-172-12345678)'),
-            )),
+            ]),
     
             ### office stuff ###
-            new FieldString(array(      'name'=>'office_phone',
+            new FieldString([      'name'=>'office_phone',
                 'title'     =>__('Office Phone'),
                 'tooltip'   =>__('Optional: Office Phone (eg. +49-30-12345678)'),
-            )),
-            new FieldString(array(      'name'=>'office_fax',
+            ]),
+            new FieldString([      'name'=>'office_fax',
                 'title'     =>__('Office Fax'),
                 'tooltip'   =>__('Optional: Office Fax (eg. +49-30-12345678)'),
-            )),
-            new FieldString(array(      'name'=>'office_street',
+            ]),
+            new FieldString([      'name'=>'office_street',
                 'title'     =>__('Office Street'),
                 'tooltip'   =>__('Optional: Official Street and Number (eg. Poststreet 28)'),
-            )),
-            new FieldString(array(      'name'=>'office_zipcode',
+            ]),
+            new FieldString([      'name'=>'office_zipcode',
                 'title'     =>__('Office Zipcode'),
                 'tooltip'   =>__('Optional: Official Zip-Code and City (eg. 12345 Berlin)'),
-            )),
-            new FieldString(array(      'name'=>'office_homepage',
+            ]),
+            new FieldString([      'name'=>'office_homepage',
                 'title'     =>__('Office Page'),
                 'tooltip'   =>__('Optional: (eg. www.pixtur.de)'),
-            )),
-            new FieldString(array(      'name'=>'office_email',
+            ]),
+            new FieldString([      'name'=>'office_email',
                 'title'     =>__('Office E-Mail'),
                 'tooltip'   =>__('Optional: (eg. thomas@pixtur.de)'),
-            )),
+            ]),
 
             ### personal stuff ###
-            new FieldString(array(      'name'=>'personal_phone',
+            new FieldString([      'name'=>'personal_phone',
                 'title'     =>__('Personal Phone'),
                 'tooltip'   =>__('Optional: Private Phone (eg. +49-30-12345678)'),
-            )),
-            new FieldString(array(      'name'=>'personal_fax',
+            ]),
+            new FieldString([      'name'=>'personal_fax',
                 'title'     =>__('Personal Fax'),
                 'tooltip'   =>__('Optional: Private Fax (eg. +49-30-12345678)'),
-            )),
-            new FieldString(array(      'name'=>'personal_street',
+            ]),
+            new FieldString([      'name'=>'personal_street',
                 'title'     =>__('Personal Street'),
                 'tooltip'   =>__('Optional:  Private (eg. Poststreet 28)'),
-            )),
-            new FieldString(array(      'name'=>'personal_zipcode',
+            ]),
+            new FieldString([      'name'=>'personal_zipcode',
                 'title'     =>__('Personal Zipcode'),
                 'tooltip'   =>__('Optional: Private (eg. 12345 Berlin)'),
-            )),
-            new FieldString(array(      'name'=>'personal_homepage',
+            ]),
+            new FieldString([      'name'=>'personal_homepage',
                 'title'     =>__('Personal Page'),
                 'tooltip'   =>__('Optional: (eg. www.pixtur.de)'),
-            )),
-            new FieldString(array(      'name'=>'personal_email',
+            ]),
+            new FieldString([      'name'=>'personal_email',
                 'title'     =>__('Personal E-Mail'),
                 'tooltip'   =>__('Optional: (eg. thomas@pixtur.de)'),
-            )),
-            new FieldDate(array(      'name'=>'birthdate',
+            ]),
+            new FieldDate([      'name'=>'birthdate',
                 'title'     =>__('Birthdate'),
                 'tooltip'   =>__('Optional')
-            )),
+            ]),
     
-            new FieldString(array(      'name'=>'color',
+            new FieldString([      'name'=>'color',
                 'title'     =>__('Color'),
                 'tooltip'   =>__('Optional: Color for graphical overviews (e.g. #FFFF00)'),
                 'view_in_forms'=>false,
-            )),
+            ]),
     
-            new FieldText(array(        'name'=>'description',
+            new FieldText([        'name'=>'description',
                 'title'     =>__('Comments'),
                 'tooltip'   =>'Optional'
-            )),
-            new FieldPassword(array(    'name'=>'password',
+            ]),
+            new FieldPassword([    'name'=>'password',
                 'view_in_forms'=>false,
                 'title'     =>__('Password'),
                 'tooltip'   =>__('Only required if user can login','tooltip'),
                 'log_changes'=>false,
-            )),
+            ]),
     
             /**
             * reservated
             */
-            new FieldInternal(array(    'name'=>'security_question',
+            new FieldInternal([    'name'=>'security_question',
                 'view_in_forms' =>false,
                 'export'        =>false,
-            )),
+            ]),
     
-            new FieldInternal(array(    'name'=>'security_answer',
+            new FieldInternal([    'name'=>'security_answer',
                 'view_in_forms'=>false,
                 'export'        =>false,
-            )),
+            ]),
     
             /**
             * used for...
             * - initializing project-member-roles
             * - custimizing the interface (like hiding advance options to clients)
             */
-            new FieldInternal(array(    'name'=>'profile',
+            new FieldInternal([    'name'=>'profile',
                 'title'         =>__('Profile'),
                 'view_in_forms'=>false,
                 'default'=>3,
                 'log_changes'=>true,
-            )),
+            ]),
     
             /**
             * theme
             */
-            new FieldInternal(array(
+            new FieldInternal([
                 'name'          =>'theme',
                 'title'         =>__('Theme','Formlabel'),
                 'view_in_forms' =>false,
                 'default'       => confGet('THEME_DEFAULT'),
                 'log_changes'   =>true,
                 'export'        =>false,
-            )),
+            ]),
     
             /**
             * language
             */
-            new FieldInternal(array(
+            new FieldInternal([
                 'name'          =>'language',
                 'view_in_forms' =>false,
                 'default'       => confGet('DEFAULT_LANGUAGE'),
                 'log_changes'=>true,
-            )),
+            ]),
     
             /**
             * at home show assigned only, unassigned, all open
             *
             * OBSOLETE
             */
-            new FieldInternal(array(
+            new FieldInternal([
                 'name'          =>'show_tasks_at_home',
                 'view_in_forms' =>false,
                 'default'       => confGet('SHOW_TASKS_AT_HOME_DEFAULT'),
-            )),
+            ]),
     
     
             /**
             * all items modified after this date will be highlighted if changed
             */
-            new FieldDatetime(array(    'name'=>'date_highlight_changes',
+            new FieldDatetime([    'name'=>'date_highlight_changes',
                 'view_in_forms' =>false,
                 'log_changes'=>false,
                 'default'   =>FINIT_NOW
-            )),
+            ]),
     
             /**
             * flag if person has an account
             */
-            new FieldInternal(array(    'name'=>'can_login',
+            new FieldInternal([    'name'=>'can_login',
                 'view_in_forms' =>false,
                 'log_changes'=>true,
-            )),
+            ]),
     
     
-            new FieldDatetime(array(    'name'=>'last_login',
+            new FieldDatetime([    'name'=>'last_login',
                 'view_in_forms' =>false,
                 'log_changes'=>false,
                 'default'=> FINIT_NEVER
-            )),
+            ]),
     
             /**
             * used for highlighting modified items
             */
-            new FieldDatetime(array(    'name'=>'last_logout',
+            new FieldDatetime([    'name'=>'last_logout',
                 'view_in_forms' =>false,
                 'log_changes'=>false,
                 'default'=>FINIT_NOW,
-            )),
+            ]),
     
             /**
             * bit-field of user-rights. See "std/auth.inc.php"
             */
-            new FieldInternal(array(    'name'=>'user_rights',
+            new FieldInternal([    'name'=>'user_rights',
                 'tooltip'=>'Optional',
                 'log_changes'   =>true,
                 'export'        =>false,
-            )),
+            ]),
     
             /**
             * md5 random-identifier for validating login
             */
-            new FieldInternal(array(    'name'=>'cookie_string',
+            new FieldInternal([    'name'=>'cookie_string',
                 'log_changes'   =>false,
                 'export'        =>false,
-            )),
+            ]),
     
             /**
             * ip-address of last valid login
             * - is checked if 'CHECK_IP_ADDRESS' is true
             */
-            new FieldInternal(array(    'name'=>'ip_address',
+            new FieldInternal([    'name'=>'ip_address',
                 'log_changes'   =>false,
                 'export'        =>false,
-            )),
+            ]),
     
             /**
             * random-identifier for securitry
@@ -282,36 +282,36 @@ class Person extends DbProjectItem {
             * - initialized on creation
             * - used for identifaction without password (like change password notification emails)
             */
-            new FieldInternal(array(    'name'=>'identifier',
+            new FieldInternal([    'name'=>'identifier',
                 'default'       =>FINIT_RAND_MD5,
                 'log_changes'   =>false,
                 'export'        =>false,
-            )),
+            ]),
     
             /**
             * bit-field of misc settings
             */
-            new FieldInternal(array(    'name'=>'settings',
+            new FieldInternal([    'name'=>'settings',
                 'default'=> (confGet('PERSON_DEFAULT_SETTINGS')
                              ),
                 'log_changes'   =>false,
                 'export'        =>false,
 
-            )),
+            ]),
 
-            new FieldInternal(array(    'name'=>'notification_last',
+            new FieldInternal([    'name'=>'notification_last',
                 'default'       => FINIT_NEVER,
                 'log_changes'   =>false,
                 'export'        =>false,
-            )),
+            ]),
     
             /**
             * notification are off by default
             */
-            new FieldInternal(array(    'name'=>'notification_period',
+            new FieldInternal([    'name'=>'notification_period',
                 'default'   => 0,
                 'log_changes'=>false,
-            )),
+            ]),
     
     
             /**
@@ -319,58 +319,58 @@ class Person extends DbProjectItem {
             * - client's time zone setting.
             * - TIME_OFFSET_AUTO will use javascript to detect client's time zone
             */
-            new FieldInternal(array(    'name'=>'time_zone',
+            new FieldInternal([    'name'=>'time_zone',
                 'default'   =>TIME_OFFSET_AUTO,
                 'export'    =>false,
-            )),
+            ]),
     
             /**
             * time offset in seconds
             */
-            new FieldInternal(array(    'name'=>'time_offset',
+            new FieldInternal([    'name'=>'time_offset',
                 'default'   =>0,
                 'export'    =>false,
-            )),
+            ]),
     
             /**
             * reservated for non-project public-level (is not implemented / used)
             */
-            new FieldInternal(array(    'name'=>'user_level_create',
+            new FieldInternal([    'name'=>'user_level_create',
                 'log_changes'=>false,
                 'export'        =>false,
-            )),
-            new FieldInternal(array(    'name'=>'user_level_view',
+            ]),
+            new FieldInternal([    'name'=>'user_level_view',
                 'log_changes'=>false,
                 'export'        =>false,
-            )),
-            new FieldInternal(array(    'name'=>'user_level_edit',
+            ]),
+            new FieldInternal([    'name'=>'user_level_edit',
                 'log_changes'=>false,
                 'export'        =>false,
-            )),
-            new FieldInternal(array(    'name'=>'user_level_reduce',
+            ]),
+            new FieldInternal([    'name'=>'user_level_reduce',
                 'log_changes'=>false,
                 'export'        =>false,
-            )),
+            ]),
             
             /* person category */
-            new FieldInternal(array(    'name'=>'category',
+            new FieldInternal([    'name'=>'category',
                 'view_in_forms' =>false,
                 'default'       =>0,
                 'log_changes'   =>true,
-            )),
-            new FieldString(array(     'name'=>'salary_per_hour',
+            ]),
+            new FieldString([     'name'=>'salary_per_hour',
                 'title'     =>__('Salary per hour') . " " . __('in Euro'),
                 'default'   =>0.0,
                 'export'    =>false,
-            )),
-            new FieldInternal(array(    'name'=>'ldap',
+            ]),
+            new FieldInternal([    'name'=>'ldap',
                 'view_in_forms' =>false,
                 'log_changes'=>false,
                 'default'=>0,
                 'export'=>false,
-            )),
+            ]),
     
-        ) as $f) {
+        ] as $f) {
             $g_person_fields[$f->name]=$f;
         }
     }
@@ -418,9 +418,9 @@ class Person extends DbProjectItem {
         }
         else {
             $p=NULL;
-            $people= Person::getPeople(array(
+            $people= Person::getPeople([
                 'id'=>$id
-            ));
+            ]);
             if(count($people) == 1) {
 
 
@@ -455,9 +455,9 @@ class Person extends DbProjectItem {
             ||
             $auth->cur_user->user_rights & RIGHT_PERSON_EDIT
         ) {
-            $people= Person::getPeople(array(
+            $people= Person::getPeople([
                 'id'=>$id
-            ));
+            ]);
             if(count($people) == 1) {
                 if($people[0]->id) {
                     return $people[0];
@@ -477,10 +477,10 @@ class Person extends DbProjectItem {
     {
         global $PH;
         if($this->nickname) {
-            $out='<span title="'. asHtml($this->name) . '" class="item person">'.$PH->getLink('personView',$this->nickname,array('person'=>$this->id)).'</span>';
+            $out='<span title="'. asHtml($this->name) . '" class="item person">'.$PH->getLink('personView',$this->nickname,['person'=>$this->id]).'</span>';
         }
         else {
-            $out='<span  title="'. asHtml( $this->name) . '" class="item person">'.$PH->getLink('personView',$this->getShort(),array('person'=>$this->id)).'</span>';
+            $out='<span  title="'. asHtml( $this->name) . '" class="item person">'.$PH->getLink('personView',$this->getShort(),['person'=>$this->id]).'</span>';
         }
         return $out;
     }
@@ -497,7 +497,7 @@ class Person extends DbProjectItem {
 
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $people=array();
+        $people=[];
         foreach($tmp as $t) {
             $person=new Person($t);
             $people[]=$person;
@@ -740,7 +740,7 @@ class Person extends DbProjectItem {
             " );
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $es=array();
+        $es=[];
         foreach($tmp as $t) {
             $es[]=new Employment($t);
         }
@@ -824,7 +824,7 @@ class Person extends DbProjectItem {
         }
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $ppeople=array();
+        $ppeople=[];
         foreach($tmp as $n) {
             $pperson=new ProjectPerson($n);
             $ppeople[]= $pperson;
@@ -885,7 +885,7 @@ class Person extends DbProjectItem {
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
 
-        $projects=array();
+        $projects=[];
         foreach($tmp as $n_array) {
             require_once(confGet('DIR_STREBER') . 'db/class_project.inc.php');
             if($n_array['id']){
@@ -937,9 +937,9 @@ class Person extends DbProjectItem {
             $efforts[]=new Effort($t);
         }*/
         require_once(confGet('DIR_STREBER') . 'db/class_effort.inc.php');
-        $efforts= Effort::getAll(array(
+        $efforts= Effort::getAll([
             'person'=> $this->id
-        ));
+        ]);
 
 
         return $efforts;
@@ -968,7 +968,7 @@ class Person extends DbProjectItem {
 
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $taskpeople=array();
+        $taskpeople=[];
         require_once(confGet('DIR_STREBER') . 'db/class_taskperson.inc.php');
 
         foreach($tmp as $tp) {
@@ -1013,7 +1013,7 @@ class Person extends DbProjectItem {
     {
         require_once(confGet('DIR_STREBER') . 'db/class_company.inc.php');
         $emps= $this->getEmployments();
-        $cs=array();
+        $cs=[];
         foreach($emps as $e) {
             if($e->company) {
                 $c= Company::getById($e->company);

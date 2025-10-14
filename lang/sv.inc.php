@@ -12,7 +12,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 ### ../lists/list_projectchanges.inc.php   ###
 'new'                         =>'ny',  # line 211
@@ -2740,6 +2740,6 @@ $g_lang_table= array(
 'Skipped recently editted item #%s: <b>%s<b>'=>'Hoppade över nyligen ändrade posten #%s <b>%s<b>',
 'Reverted all changes (%s) of user %s'=>'Återkalla alla ändringar (%s) av %s',
 'newly created items by this user remain unaffected.'=>'nyligen skapade poster av denna användare är fortfarande ej påverkade'
-);
+];
 
 ?>

@@ -18,7 +18,7 @@
 *
 */
 global $g_cache_projects;
-$g_cache_projects=array();
+$g_cache_projects=[];
 
 
 
@@ -48,87 +48,87 @@ class Project extends DbProjectItem
     {
             
         global $g_project_fields;
-        $g_project_fields=array();
+        $g_project_fields=[];
         addProjectItemFields($g_project_fields);
         
-        foreach(array(
-            new FieldInternal(array(    'name'=>'id',
+        foreach([
+            new FieldInternal([    'name'=>'id',
                 'default'=>0,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-            new FieldInternal(array(    'name'=>'state',    ### cached in project-table to speed up queries ###
+            ]),
+            new FieldInternal([    'name'=>'state',    ### cached in project-table to speed up queries ###
                 'default'=>1,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-            new FieldString(array(      'name'=>'name',
+            ]),
+            new FieldString([      'name'=>'name',
                 'title'=>__('Name'),
                 'required'=>true,
-            )),
-            new FieldString(array(      'name'=>'short',
+            ]),
+            new FieldString([      'name'=>'short',
                 'title'=>__('Short'),
-            )),
-            new FieldString(array(      'name'=>'status_summary',
+            ]),
+            new FieldString([      'name'=>'status_summary',
                 'title'=>__('Status summary'),
-            )),
-            new FieldString(array(      'name'=>'color',
+            ]),
+            new FieldString([      'name'=>'color',
                 'title'=>__('Color'),
-            )),
-            new FieldDate(array(        'name'=>'date_start',
+            ]),
+            new FieldDate([        'name'=>'date_start',
                 'title'=>__('Date start'),
                 'default'=>FINIT_TODAY
-            )),
-            new FieldDate(array(        'name'=>'date_closed',
+            ]),
+            new FieldDate([        'name'=>'date_closed',
                 'title'=>__('Date closed'),
                 'default'=>FINIT_NEVER
-            )),
-            new FieldOption(array(      'name'=>'status',
+            ]),
+            new FieldOption([      'name'=>'status',
                 'title'=>__('Status'),
                 'default'=>3
-            )),
-            new FieldString(array(      'name'=>'projectpage',
+            ]),
+            new FieldString([      'name'=>'projectpage',
                 'title'=>__('Project page'),
-            )),
-            new FieldString(array(      'name'=>'wikipage',
+            ]),
+            new FieldString([      'name'=>'wikipage',
                 'title'=>__('Wiki page'),
-            )),
-            new FieldInt(array(         'name'=>'prio',
+            ]),
+            new FieldInt([         'name'=>'prio',
                 'title'=>__('Priority'),
                 'default'=>3
-            )),     # @@@ todo: default-status and prio should be project-setting!
-            new FieldText(array(        'name'=>'description',
+            ]),     # @@@ todo: default-status and prio should be project-setting!
+            new FieldText([        'name'=>'description',
                 'title'=>__('Description'),
-            )),
-            new FieldInt(array(         'name'=>'company',
+            ]),
+            new FieldInt([         'name'=>'company',
                 'title'=>__('Company'),
-            )),
-            new FieldBool(array(        'name'=>'show_in_home',
+            ]),
+            new FieldBool([        'name'=>'show_in_home',
                 'default'=>1,
                 'title'=>__('show tasks in home'),
-            )),
+            ]),
         
             /**
             * bit-field of user-rights. See "std/auth.inc.php"
             */
-            new FieldInternal(array(    'name'=>'settings',
+            new FieldInternal([    'name'=>'settings',
                 'default'=>    confGet('PROJECT_DEFAULT_SETTINGS'),
                 'log_changes'=>true,
-            )),
+            ]),
         
         
             /**
             * labels for newly created projects
             */
-            new FieldHidden(array(      'name'=>'labels',
+            new FieldHidden([      'name'=>'labels',
                 'default'=>  confGet("PROJECT_DEFAULT_LABELS"),
-            )),
+            ]),
         
-            new FieldInternal(array(    'name'=>'default_pub_level',    # level of new items
+            new FieldInternal([    'name'=>'default_pub_level',    # level of new items
                 'view_in_forms'=>false,
                 'default'=>PUB_LEVEL_OPEN,
-            )),
-        ) as $f) {
+            ]),
+        ] as $f) {
             $g_project_fields[$f->name]=$f;
         }
     }
@@ -215,11 +215,11 @@ class Project extends DbProjectItem
     */
     function getFolders($order_by=NULL)
     {
-        return $this->getTasks(array(
+        return $this->getTasks([
             'folders_only'      =>true,
             'sort_hierarchical' =>true,
             'use_collapsed'     =>false,
-        ));
+        ]);
     }
 
 
@@ -227,9 +227,9 @@ class Project extends DbProjectItem
     function getEfforts($order_by=NULL, $visible_only=true, $alive_only=true)
     {
         require_once(confGet('DIR_STREBER') . 'db/class_effort.inc.php');
-        $efforts= Effort::getAll(array(
+        $efforts= Effort::getAll([
             'project'   => $this->id
-        ));
+        ]);
         return $efforts;
     }
 
@@ -285,7 +285,7 @@ class Project extends DbProjectItem
         $sth= $dbh->prepare($str_query);
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $taskpeople=array();
+        $taskpeople=[];
         foreach($tmp as $t) {
             $taskpeople[]=new TaskPerson($t);
         }
@@ -317,10 +317,10 @@ class Project extends DbProjectItem
         $sum=0.0;
         require_once(confGet('DIR_STREBER') . 'db/class_effort.inc.php');
             
-        $efforts= Effort::getAll(array(
+        $efforts= Effort::getAll([
             'project'   => $this->id,
             'effort_status_max' => EFFORT_STATUS_OPEN
-        ));
+        ]);
         
         foreach($efforts as $e) {
             $sum+= 1.0*strToGMTime($e->time_end)-1.0*strToGMTime($e->time_start);
@@ -359,7 +359,7 @@ class Project extends DbProjectItem
     *   alive_only=true,
     *   parent_task=NULL)  # if NULL parent-task is ignored
     */
-    function getTasks( $args=array())
+    function getTasks( $args=[])
     {
         $args['project']= $this->id;
         $result= Task::getAll($args);
@@ -416,7 +416,7 @@ class Project extends DbProjectItem
     * @@@ ToDo:
     * the following function should be moved to Comment-class
     */
-    function getComments($args=Array())
+    function getComments($args=[])
     {
         global $auth;
         $prefix = confGet('DB_TABLE_PREFIX');
@@ -503,7 +503,7 @@ class Project extends DbProjectItem
         $sth= $dbh->prepare($str_query);
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $comments=array();
+        $comments=[];
         foreach($tmp as $n) {
             $comment=new Comment($n);
             $comments[]= $comment;
@@ -520,19 +520,19 @@ class Project extends DbProjectItem
         * - The original flat list needs to be presorted, e.g. by creation date
         * - The hierarchy is flattened, if the parent objects are not part of the list.
         */
-        $dict_id_comment=array();
+        $dict_id_comment=[];
 
-        $dummy= new Comment(array(
+        $dummy= new Comment([
             'id'=> 0
 
-        ));
-        $dict_id_dict=array();  # zero id item as root
+        ]);
+        $dict_id_dict=[];  # zero id item as root
 
         ### 1st pass: build dict for all ids ###
         foreach($comments as $c) {
-            $c->children= array(1=>2);
+            $c->children= [1=>2];
             $dict_id_dict[$c->id] = $c;
-            $dict_id_dict[$c->id]->children = array();
+            $dict_id_dict[$c->id]->children = [];
 
         }
 
@@ -547,7 +547,7 @@ class Project extends DbProjectItem
         }
 
         ### 3rd pass: roll out tree
-        $list=array();
+        $list=[];
         if(isset($dict_id_dict[0]->children)) {
             foreach($dict_id_dict[0]->children as $c) {
                 sortObjectsRecursively($c, $list);
@@ -616,7 +616,7 @@ class Project extends DbProjectItem
         $sth= $dbh->prepare($str_query);
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $issues=array();
+        $issues=[];
         foreach($tmp as $n) {
             $i=new Issue($n);
             $issues[]= $i;
@@ -628,7 +628,7 @@ class Project extends DbProjectItem
     * create assoc. array of team for optimized visibilty-checks
     */
     private function getVisibleTeam() {
-        $a= array();
+        $a= [];
         $people= $this->getPeople();
         foreach($people as $p) {
             if($p->id) {
@@ -779,7 +779,7 @@ class Project extends DbProjectItem
         $sth->execute("",1);
         
         $tmp=$sth->fetchall_assoc();
-        $ppeople=array();
+        $ppeople=[];
         foreach($tmp as $n) {
             $pperson=new ProjectPerson($n);
             $ppeople[]= $pperson;
@@ -848,7 +848,7 @@ class Project extends DbProjectItem
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
         
-        $names= array();
+        $names= [];
         foreach($tmp as $t) {
             $names[$t['nickname']] = $t['name'];
         }
@@ -862,7 +862,7 @@ class Project extends DbProjectItem
     function getPeople($visible_only=true)
     {
         $ppeople= $this->getProjectPeople(NULL, true, $visible_only);
-        $people= array();
+        $people= [];
         foreach($ppeople as $pp) {
             if($p= Person::getById($pp->person)) {
                 $people[]= $p;
@@ -880,10 +880,10 @@ class Project extends DbProjectItem
     public function getLink($show_shortname=true) {
         global $PH;
         if($show_shortname) {
-            return '<span class="item project">'.$PH->getLink('projView',$this->getShort(),array('prj'=>$this->id)).'</span>';
+            return '<span class="item project">'.$PH->getLink('projView',$this->getShort(),['prj'=>$this->id]).'</span>';
         }
         else {
-            return '<span class="item project">'.$PH->getLink('projView',$this->name,array('prj'=>$this->id)).'</span>';
+            return '<span class="item project">'.$PH->getLink('projView',$this->name,['prj'=>$this->id]).'</span>';
         }
     }
 
@@ -917,7 +917,7 @@ class Project extends DbProjectItem
 
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $projects=array();
+        $projects=[];
         foreach($tmp as $t) {
             $project=new Project($t);
             $projects[]=$project;
@@ -1060,9 +1060,9 @@ class Project extends DbProjectItem
             trigger_error("requires string", E_USER_WARNING);
             return;
         }
-        return self::getAll(array(
+        return self::getAll([
             'order_by'  => $order_by,
-        ));
+        ]);
     }
 
     public static function getClosed($order_by=NULL){
@@ -1070,22 +1070,22 @@ class Project extends DbProjectItem
             trigger_error("requires string", E_USER_WARNING);
             return;
         }
-        return self::getAll(array(
+        return self::getAll([
             'order_by'  => $order_by,
             'status_min'=> STATUS_BLOCKED,
             'status_max'=> STATUS_CLOSED,
-        ));
+        ]);
     }
     public static function getTemplates($order_by=NULL){
         if($order_by && !is_string($order_by)) {
             trigger_error("requires string", E_USER_WARNING);
             return;
         }
-        return self::getAll(array(
+        return self::getAll([
             'order_by'  => $order_by,
             'status_min'=> STATUS_TEMPLATE,
             'status_max'=> STATUS_TEMPLATE,
-        ));
+        ]);
     }
 
     /**
@@ -1114,7 +1114,7 @@ class Project extends DbProjectItem
         );
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $ppeople=array();
+        $ppeople=[];
         foreach($tmp as $n) {
             $pperson=new ProjectPerson($n);
             $ppeople[]= $pperson;
@@ -1397,26 +1397,26 @@ class Project extends DbProjectItem
     */
     public function buildResolvedInList()
     {
-        $tmp_resolvelist= array(
-            NO_OPTION_GROUP => array(
+        $tmp_resolvelist= [
+            NO_OPTION_GROUP => [
                                 '0'  =>  ('-- ' . __('undefined')   . ' --'),
                                 '-1' =>  ('-- ' . __('next released version') . ' --'),
-                               )
-        );
+                               ]
+        ];
 
         #$tmp_resolvelist= array(
         #            ('-- ' . __('undefined')             . ' --') => '0',
         #            ('-- ' . __('next released version') . ' --') => -1);
         
-        $versions=Task::getAll(array(
+        $versions=Task::getAll([
             'category'      => TCATEGORY_VERSION,
             'project'       => $this->id,
             'status_min'    => 0,
             'status_max'    => 10,
             'order_by'      => "name",            
-        ));
+        ]);
 
-        $version_options= array();
+        $version_options= [];
         foreach($versions as $version) {
             $version_options[$version->id]= $version->name;
         }
@@ -1425,14 +1425,14 @@ class Project extends DbProjectItem
             $tmp_resolvelist[__('Versions')] = $version_options;
         }
     
-        $milestone_options= array();
-        if($milestones =Task::getAll(array(
+        $milestone_options= [];
+        if($milestones =Task::getAll([
             'category'      => TCATEGORY_MILESTONE,
             'project'       => $this->id,
             'status_min'    => 0,
             'status_max'    => 10,
             'order_by'      => "name",
-        ))) {
+        ])) {
             foreach($milestones as $milestone) {
                 $milestone_options[$milestone->id]= $milestone->name;
             }
@@ -1457,21 +1457,21 @@ class Project extends DbProjectItem
     */
     public function buildPlannedForMilestoneList()
     {
-        $tmp_milestonelist= array(
-            NO_OPTION_GROUP => array('0' => '-- ' . __('undefined')   . ' --')
-        );
+        $tmp_milestonelist= [
+            NO_OPTION_GROUP => ['0' => '-- ' . __('undefined')   . ' --']
+        ];
         
-        $milestone_options= array();
-        $closed_milestone_options = array();
+        $milestone_options= [];
+        $closed_milestone_options = [];
 
-        foreach(Task::getAll(array(
+        foreach(Task::getAll([
             'category'      => TCATEGORY_MILESTONE,
             'project'       => $this->id,
             'status_min'    => 0,
             'status_max'    => 10,
             'order_by'      => "name",
 
-        )) as $milestone) {
+        ]) as $milestone) {
             if ($milestone->status >= STATUS_COMPLETED) {
                 $closed_milestone_options[$milestone->id] = $milestone->name;            
             }
@@ -1489,15 +1489,15 @@ class Project extends DbProjectItem
         }
 
 
-        $version_options= array();        
+        $version_options= [];        
         
-        if($versions =Task::getAll(array(
+        if($versions =Task::getAll([
             'category'      => TCATEGORY_VERSION,
             'project'       => $this->id,
             'status_min'    => 0,
             'status_max'    => 10,
             'order_by'      => "name",
-        ))) {
+        ])) {
             #$tmp_milestonelist[('-- ' . __('Released versions')             . ' --')] = '-2';
             foreach($versions as $version) {
                 $version_options[ $version->id] = $version->name;

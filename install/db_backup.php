@@ -58,7 +58,7 @@ class MySQLDumper {
     var $crlf               ="\n";
     var $use_backquotes     = true;
     var $use_gzip           = true;
-    var $line_buffer        = array();
+    var $line_buffer        = [];
 
     function connect($hostname,$db_username,$db_password,$db_name) {
 
@@ -268,13 +268,13 @@ class MySQLDumper {
             $schema_insert = 'INSERT INTO ' . $this->backquote($table) . ' (' . $fields . ') VALUES (';
 
 
-            $search       = array("\x00", "\x0a", "\x0d", "\x1a"); //\x08\\x09, not required
-            $replace      = array('\0', '\n', '\r', '\Z');
+            $search       = ["\x00", "\x0a", "\x0d", "\x1a"]; //\x08\\x09, not required
+            $replace      = ['\0', '\n', '\r', '\Z'];
             $current_row  = 0;
 
             while ($row = mysql_fetch_row($result)) {
 
-                $values= array();
+                $values= [];
             	$current_row++;
                 for ($j = 0; $j < $fields_cnt; $j++) {
                     if (!isset($row[$j])) {

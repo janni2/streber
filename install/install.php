@@ -28,7 +28,7 @@ if (function_exists('date_default_timezone_set')) {
 * Add here new supported databases (the first being the default)
 *
 */
-$g_supported_db_types= array();
+$g_supported_db_types= [];
 
 if(function_exists('mysql_connect')){
     $g_supported_db_types[]='mysql';
@@ -110,13 +110,13 @@ function step_01_checkEvironment() {
     }
 
     ### check temporary directories writeable ###
-    foreach( array(
+    foreach( [
         confGet('DIR_SETTINGS'),
         confGet('DIR_TEMP'),
         confGet('DIR_FILES'),
         confGet('DIR_IMAGE_CACHE'),
         confGet('DIR_RSS'),    
-    ) as $dir) {
+    ] as $dir) {
         print_testStart("check write-permissions for settings directory '<b>$dir</b>'?");
         if(!is_writeable('../'. $dir)) {
             if(!is_dir('../'. $dir)){
@@ -372,7 +372,7 @@ function step_02_proceed()
                     ### update ###
                     print_testResult(RESULT_PROBLEM,"version is $db_version. Upgrading...");
 
-                    $result= upgrade(array(
+                    $result= upgrade([
                         'db_type'       => $f_db_type,
                         'hostname'      => $f_hostname,
                         'db_username'   => $f_db_username,
@@ -381,7 +381,7 @@ function step_02_proceed()
                         'db_name'       => $f_db_name,
                         'db_version'    => $db_version,                    # autodetect
                         'continue_on_sql_errors'=>$f_continue_on_sql_errors,
-                    ));
+                    ]);
                     return $result;
 
                 }
@@ -393,7 +393,7 @@ function step_02_proceed()
                 {
                     $filename= '../'. confGet('DIR_SETTINGS').  confGet('FILE_DB_SETTINGS');
                     print_testStart("writing configuration file '$filename'...");
-                    $write_ok = writeSettingsFile($filename, array(
+                    $write_ok = writeSettingsFile($filename, [
                         'DB_TYPE'       => $f_db_type,
                         'HOSTNAME'      => $f_hostname,
                         'DB_USERNAME'   => $f_db_username,
@@ -401,7 +401,7 @@ function step_02_proceed()
                         'DB_TABLE_PREFIX'=> $f_db_table_prefix,
                         'DB_NAME'       => $f_db_name,
                         'DB_VERSION'    => confGet('STREBER_VERSION'),
-                    ));
+                    ]);
                     
                     if($write_ok) {
                         print_testResult(RESULT_GOOD, "Current database (version $db_version) looks fine. Installation finished with database setting rewritten to file. Please view ".getStreberWikiLink('installation','Installation Guide')." on how to fix unsolved problems.");
@@ -455,7 +455,7 @@ function step_02_proceed()
         ### upgrade
         if($upgradeFromVersion != confGet('STREBER_VERSION')) {
             print_testStart("updating to latest version...");
-            $result= upgrade(array(
+            $result= upgrade([
                 'db_type'       => $f_db_type,
                 'hostname'      => $f_hostname,
                 'db_username'   => $f_db_username,
@@ -464,7 +464,7 @@ function step_02_proceed()
                 'db_name'       => $f_db_name,
                 'continue_on_sql_errors'=>$f_continue_on_sql_errors,
                 'db_version'    => $upgradeFromVersion,
-            ));
+            ]);
             if(!$result) {
                 print_testResult(RESULT_FAILED,"Upgrading failed. This is an internal error. Look at ". getStreberWikiLink('installation','Installation Guide') ." for clues. ");
                 return false;
@@ -567,11 +567,11 @@ function step_02_proceed()
         	
         	$filename = "../" . confGet("DIR_SETTINGS") . confGet("SITE_SETTINGS");
         	print_testStart("writing configuration file '" . $filename . "'...");
-        	$settings = array(
+        	$settings = [
         		"APP_NAME"	          => $g_form_fields["site_name"]["value"],
         		"EMAIL_ADMINISTRATOR" => $g_form_fields["site_email"]["value"],
         		'APP_TITLE_HEADER'    => $g_form_fields["site_name"]["value"] . "<span class=extend>PM</span>",
-        	);
+        	];
         	
         	$write_ok= writeSettingsFile($filename, $settings);
 
@@ -590,7 +590,7 @@ function step_02_proceed()
         	
             $filename='../'. confGet('DIR_SETTINGS').  confGet('FILE_DB_SETTINGS');
             print_testStart("writing configuration file '$filename'...");
-            $settings= array(
+            $settings= [
                 'DB_TYPE'       => $f_db_type,
                 'HOSTNAME'      => $f_hostname,
                 'DB_USERNAME'   => $f_db_username,
@@ -598,7 +598,7 @@ function step_02_proceed()
                 'DB_TABLE_PREFIX'=> $f_db_table_prefix,
                 'DB_NAME'       => $f_db_name,
                 'DB_VERSION'    => confGet('STREBER_VERSION'),
-            );
+            ];
 
             $write_ok= writeSettingsFile($filename, $settings);
 
@@ -694,7 +694,7 @@ function upgrade($args=NULL)
     }
 
 
-    $update_queries=array();
+    $update_queries=[];
     require(dirname(__FILE__)."/db_updates.inc.php");
 
 
@@ -753,11 +753,11 @@ function upgrade($args=NULL)
     {
     	$filename = "../" . confGet("DIR_SETTINGS") . confGet("SITE_SETTINGS");
     	print_testStart("writing configuration file '" . $filename . "'...");
-    	$write_ok= writeSettingsFile($filename, $settings = array(
+    	$write_ok= writeSettingsFile($filename, $settings = [
     		"APP_NAME"	          => $g_form_fields["site_name"]["value"],
     		"EMAIL_ADMINISTRATOR" => $g_form_fields["site_email"]["value"],
     		'APP_TITLE_HEADER'    => $g_form_fields["site_name"]["value"] . "<span class=extend>PM</span>",
-    	));
+    	]);
     	
 		if(!$write_ok) 
 		{
@@ -775,7 +775,7 @@ function upgrade($args=NULL)
     	
         $filename='../'. confGet('DIR_SETTINGS').  confGet('FILE_DB_SETTINGS');
         print_testStart("writing configuration file '$filename'...");
-        $write_ok= writeSettingsFile($filename, array(
+        $write_ok= writeSettingsFile($filename, [
             'DB_TYPE'       => $db_type,
             'HOSTNAME'      => $hostname,
             'DB_USERNAME'   => $db_username,
@@ -783,7 +783,7 @@ function upgrade($args=NULL)
             'DB_TABLE_PREFIX'=> $db_table_prefix,
             'DB_NAME'       => $db_name,
             'DB_VERSION'    => confGet('STREBER_VERSION'),
-        ));
+        ]);
 
         if(!$write_ok) {
             print_testResult(RESULT_FAILED,"can not write '$filename'.");

@@ -57,119 +57,119 @@ function personList()
         exit();        
     }
     
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_people' => array(
+        'all_people' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'person_category'=> array(
+            'filters'=> [
+                'person_category'=> [
                     'id'        => 'person_category',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => PCATEGORY_UNDEFINED,
                     'max'       => PCATEGORY_PARTNER,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'tree',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### without account ###
-        'people_without_account' => array(
+        'people_without_account' => [
             'name'=> __('without account'),
-            'filters'=> array(
-                'can_login'=> array(
+            'filters'=> [
+                'can_login'=> [
                     'id'        => 'can_login',
                     'value'     => '0',
                     'visible'   => true,
                     'active'    => true,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### with account ###
-        'people_with_account' => array(
+        'people_with_account' => [
             'name'=> __('with account'),
-            'filters'=> array(
-                'can_login'=> array(
+            'filters'=> [
+                'can_login'=> [
                     'id'        => 'can_login',
                     'value'     => '1', 
                     'visible'   => true,
                     'active'    => true,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ### employee ###
-        'person_employee' => array(
+        'person_employee' => [
             'name'=> __('employees'),
-            'filters'=> array(
-                'person_category'=> array(
+            'filters'=> [
+                'person_category'=> [
                     'id'        => 'person_category',
                     'visible'   => false,
                     'active'    => true,
                     'min'       => PCATEGORY_STAFF,
                     'max'       => PCATEGORY_EXEMPLOYEE,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ### contact people ###
-        'person_contact' => array(
+        'person_contact' => [
             'name'=> __('contact people'),
-            'filters'=> array(
-                'person_category'=> array(
+            'filters'=> [
+                'person_category'=> [
                     'id'        => 'person_category',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => PCATEGORY_CLIENT,
                     'max'       => PCATEGORY_PARTNER,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### deleted people ###
-        'deleted_people' => array(
+        'deleted_people' => [
             'name'=> __('deleted'),
-            'filters'=> array(
-                'person_is_alive'=> array(
+            'filters'=> [
+                'person_is_alive'=> [
                     'id'        => 'person_is_alive',
                     'value'     => false,
                     'visible'   => true,
                     'active'    => true,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
-    );
+                ]
+            ]
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'personList';
@@ -199,7 +199,7 @@ function personList()
     }
     
     ### create from handle ###
-    $PH->defineFromHandle(array('preset_id'=>$preset_id));
+    $PH->defineFromHandle(['preset_id'=>$preset_id]);
 
     ### set up page and write header ####
     {
@@ -219,12 +219,12 @@ function personList()
 
 
         ### page functions ###
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'    =>'personNew',
-            'params'    =>array(),
+            'params'    =>[],
             'icon'      =>'new',
             'tooltip'   =>__('New person'),
-        )));
+        ]));
 
 
         ### render title ###
@@ -254,22 +254,22 @@ function personList()
         foreach($preset['filters'] as $f_name=>$f_settings) {
             switch($f_name) {
                 case 'person_category':
-                    $list->filters[]= new ListFilter_person_category_min(array(
+                    $list->filters[]= new ListFilter_person_category_min([
                         'value'=>$f_settings['min'],
-                    ));
-                    $list->filters[]= new ListFilter_person_category_max(array(
+                    ]);
+                    $list->filters[]= new ListFilter_person_category_max([
                         'value'=>$f_settings['max'],
-                    ));
+                    ]);
                     break;
                 case 'can_login':
-                    $list->filters[]= new ListFilter_can_login(array(
+                    $list->filters[]= new ListFilter_can_login([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
                 case 'person_is_alive':
-                    $list->filters[]= new ListFilter_is_alive(array(
+                    $list->filters[]= new ListFilter_is_alive([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
                 default:
                     trigger_error("Unknown filter setting $f_name", E_USER_WARNING);
@@ -289,12 +289,12 @@ function personList()
             $list->no_items_html=__("no related people");
         }
         
-        $page->print_presets(array(
+        $page->print_presets([
             'target' => $preset_location,
             'project_id' => '',
             'preset_id' => $preset_id,
             'presets' => $presets,
-            'person_id' => ''));
+            'person_id' => '']);
             
         
         $list->query_options['order_by'] = $order_by;
@@ -330,67 +330,67 @@ function personViewProjects()
         return;
     }
     
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_related_projects' => array(
+        'all_related_projects' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'project_status'=> array(
+            'filters'=> [
+                'project_status'=> [
                     'id'        => 'project_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_UNDEFINED,
                     'max'       => STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### open projects ###
-        'open_related_projects' => array(
+        'open_related_projects' => [
             'name'=> __('open'),
-            'filters'=> array(
-                'project_status'=> array(
+            'filters'=> [
+                'project_status'=> [
                     'id'        => 'project_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_UNDEFINED,
                     'max'       => STATUS_OPEN,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### closed projects ###
-        'closed_related_projects' => array(
+        'closed_related_projects' => [
             'name'=> __('closed'),
-            'filters'=> array(
-                'project_status'=> array(
+            'filters'=> [
+                'project_status'=> [
                     'id'        => 'project_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_BLOCKED,
                     'max'       => STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
-    );
+                ]
+            ]
+        ],
+    ];
     
     ## set preset location ##
     $preset_location = 'personViewProjects';
@@ -420,7 +420,7 @@ function personViewProjects()
         }
     }
     ### create from handle ###
-    $PH->defineFromHandle(array('person'=>$person->id, 'preset_id' =>$preset_id));
+    $PH->defineFromHandle(['person'=>$person->id, 'preset_id' =>$preset_id]);
     
     ### set up page ####
     {
@@ -455,12 +455,12 @@ function personViewProjects()
             foreach($preset['filters'] as $f_name=>$f_settings) {
                 switch($f_name) {
                     case 'project_status':
-                        $list->filters[]= new ListFilter_status_min(array(
+                        $list->filters[]= new ListFilter_status_min([
                             'value'=>$f_settings['min'],
-                        ));
-                        $list->filters[]= new ListFilter_status_max(array(
+                        ]);
+                        $list->filters[]= new ListFilter_status_max([
                             'value'=>$f_settings['max'],
-                        ));
+                        ]);
                         break;
                     default:
                         trigger_error("Unknown filter setting $f_name", E_USER_WARNING);
@@ -473,12 +473,12 @@ function personViewProjects()
                                   : NULL;
         }
         
-        $page->print_presets(array(
+        $page->print_presets([
         'target' => $preset_location,
         'project_id' => '',
         'preset_id' => $preset_id,
         'presets' => $presets,
-        'person_id' => $person->id));
+        'person_id' => $person->id]);
         
         $list->query_options['order_by'] = $order_by;
         $list->query_options['person'] = $person->id;
@@ -506,144 +506,144 @@ function personViewTasks()
         return;
     }
     
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_tasks' => array(
+        'all_tasks' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### open tasks ###
-        'new_tasks' => array(
+        'new_tasks' => [
             'name'=> __('new'),
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_NEW,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### open tasks ###
-        'open_tasks' => array(
+        'open_tasks' => [
             'name'=> __('open'),
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_OPEN,
                     'max'       => STATUS_OPEN,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### blocked tasks ###
-        'blocked_tasks' => array(
+        'blocked_tasks' => [
             'name'=> __('blocked'),
             'filter_empty_folders'=>true,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_BLOCKED,
                     'max'       => STATUS_BLOCKED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
 
         ### to be approved ###
-        'approve_tasks' => array(
+        'approve_tasks' => [
             'name'=> __('needs approval'),
             'filter_empty_folders'=>true,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_COMPLETED,
                     'max'       => STATUS_COMPLETED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### closed tasks ###
-        'closed_tasks' => array(
+        'closed_tasks' => [
             'name'=> __('closed'),
             'filter_empty_folders'=>false,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
-                    'values'    => array( STATUS_APPROVED, STATUS_CLOSED),
+                    'values'    => [ STATUS_APPROVED, STATUS_CLOSED],
                     'min'       => STATUS_APPROVED,
                     'max'       => STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
-    );
+                ]
+            ]
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'personViewTasks';
@@ -673,7 +673,7 @@ function personViewTasks()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array('person'=>$person->id, 'preset_id' =>$preset_id));
+    $PH->defineFromHandle(['person'=>$person->id, 'preset_id' =>$preset_id]);
     
     ### set up page ####
     {
@@ -696,9 +696,9 @@ function personViewTasks()
 
         require_once(confGet('DIR_STREBER') . 'db/class_project.inc.php');
         
-        $list= new ListBlock_tasks(array(
+        $list= new ListBlock_tasks([
             'active_block_function'=>'list'
-        ));
+        ]);
 
         unset($list->columns['created_by']);
         unset($list->columns['planned_start']);
@@ -714,12 +714,12 @@ function personViewTasks()
                 switch($f_name) {
     
                     case 'task_status':
-                        $list->filters[]= new ListFilter_status_min(array(
+                        $list->filters[]= new ListFilter_status_min([
                             'value'=>$f_settings['min'],
-                        ));
-                        $list->filters[]= new ListFilter_status_max(array(
+                        ]);
+                        $list->filters[]= new ListFilter_status_max([
                             'value'=>$f_settings['max'],
-                        ));
+                        ]);
                         break;
     
                     default:
@@ -735,12 +735,12 @@ function personViewTasks()
 
     
         
-        $page->print_presets(array(
+        $page->print_presets([
         'target' => $preset_location,
         'project_id' => '',
         'preset_id' => $preset_id,
         'presets' => $presets,
-        'person_id' => $person->id));
+        'person_id' => $person->id]);
         
         $list->query_options['assigned_to_person']= $person->id;
         $list->query_options['person'] = $person->id;
@@ -771,246 +771,246 @@ function personViewEfforts()
         return;
     }
     
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_efforts' => array(
+        'all_efforts' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NEW,
                     'max'       => EFFORT_STATUS_BALANCED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### new efforts ###
-        'new_efforts' => array(
+        'new_efforts' => [
             'name'=> __('new'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NEW,
                     'max'       => EFFORT_STATUS_NEW,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### open efforts ###
-        'open_efforts' => array(
+        'open_efforts' => [
             'name'=> __('open'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_OPEN,
                     'max'       => EFFORT_STATUS_OPEN,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### discounted efforts ###
-        'discounted_efforts' => array(
+        'discounted_efforts' => [
             'name'=> __('discounted'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_DISCOUNTED,
                     'max'       => EFFORT_STATUS_DISCOUNTED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### not chargeable efforts ###
-        'notchargeable_efforts' => array(
+        'notchargeable_efforts' => [
             'name'=> __('not chargeable'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NOTCHARGEABLE,
                     'max'       => EFFORT_STATUS_NOTCHARGEABLE,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### balanced efforts ###
-        'balanced_efforts' => array(
+        'balanced_efforts' => [
             'name'=> __('balanced'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_BALANCED,
                     'max'       => EFFORT_STATUS_BALANCED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ## last logout ##
-        'last_logout' => array(
+        'last_logout' => [
             'name'=> __('last logout'),
-            'filters'=> array(
-                'last_logout'   => array(
+            'filters'=> [
+                'last_logout'   => [
                     'id'        => 'last_logout',
                     'visible'   => true,
                     'active'    => true,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 1 week ##
-        'last_week' => array(
+        'last_week' => [
             'name'=> __('1 week'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 7,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 2 weeks ##
-        'last_two_weeks' => array(
+        'last_two_weeks' => [
             'name'=> __('2 weeks'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 14,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 3 weeks ##
-        'last_three_weeks' => array(
+        'last_three_weeks' => [
             'name'=> __('3 weeks'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 21,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 1 month ##
-        'last_month' => array(
+        'last_month' => [
             'name'=> __('1 month'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 28,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## prior ##
-        'prior' => array(
+        'prior' => [
             'name'=> __('prior'),
-            'filters'=> array(
-                'prior'    => array(
+            'filters'=> [
+                'prior'    => [
                     'id'        => 'prior',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 29,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
-    );
+                ]
+            ],
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'personViewEfforts';
@@ -1040,7 +1040,7 @@ function personViewEfforts()
         }
     }
     ### create from handle ###
-    $PH->defineFromHandle(array('person'=>$person->id, 'preset_id' =>$preset_id));
+    $PH->defineFromHandle(['person'=>$person->id, 'preset_id' =>$preset_id]);
 
     ### set up page ####
     {
@@ -1076,27 +1076,27 @@ function personViewEfforts()
             foreach($preset['filters'] as $f_name=>$f_settings) {
                 switch($f_name) {
                     case 'effort_status':
-                        $list->filters[]= new ListFilter_effort_status_min(array(
+                        $list->filters[]= new ListFilter_effort_status_min([
                             'value'=>$f_settings['min'],
-                        ));
-                        $list->filters[]= new ListFilter_effort_status_max(array(
+                        ]);
+                        $list->filters[]= new ListFilter_effort_status_max([
                             'value'=>$f_settings['max'],
-                        ));
+                        ]);
                         break;
                     case 'last_logout':
-                        $list->filters[]= new ListFilter_last_logout(array(
+                        $list->filters[]= new ListFilter_last_logout([
                             'value'=>$f_settings['value'],
-                        ));
+                        ]);
                         break;
                     case 'last_weeks':
-                        $list->filters[]= new ListFilter_min_week(array(
+                        $list->filters[]= new ListFilter_min_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         break;
                     case 'prior':
-                        $list->filters[]= new ListFilter_max_week(array(
+                        $list->filters[]= new ListFilter_max_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         break;
                     default:
                         trigger_error("Unknown filter setting $f_name", E_USER_WARNING);
@@ -1109,12 +1109,12 @@ function personViewEfforts()
                                   : NULL;
         }
         
-        $page->print_presets(array(
+        $page->print_presets([
         'target' => $preset_location,
         'project_id' => '',
         'preset_id' => $preset_id,
         'presets' => $presets,
-        'person_id' => $person->id));
+        'person_id' => $person->id]);
         
         $list->query_options['order_by'] = $order_by;
         $list->query_options['person'] = $person->id;
@@ -1141,83 +1141,83 @@ function personViewChanges()
     }
     
     ### sets the presets ###
-    $presets = array(
+    $presets = [
         ### all ###
-        'all_changes' => array(
+        'all_changes' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'task_status'   =>  array(
+            'filters'=> [
+                'task_status'   =>  [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'    =>  STATUS_UNDEFINED,
                     'max'    =>  STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ## last logout ##
-        'last_logout' => array(
+        'last_logout' => [
             'name'=> __('last logout'),
-            'filters'=> array(
-                'last_logout'   => array(
+            'filters'=> [
+                'last_logout'   => [
                     'id'        => 'last_logout',
                     'visible'   => true,
                     'active'    => true,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ## 1 week ##
-        'last_week' => array(
+        'last_week' => [
             'name'=> __('1 week'),
-            'filters'=> array(
-                'last_week'   => array(
+            'filters'=> [
+                'last_week'   => [
                     'id'        => 'last_week',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 7,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ## 2 week ##
-        'last_two_weeks' => array(
+        'last_two_weeks' => [
             'name'=> __('2 weeks'),
-            'filters'=> array(
-                'last_two_weeks'   => array(
+            'filters'=> [
+                'last_two_weeks'   => [
                     'id'        => 'last_two_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 14,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
-    );
+                ]
+            ],
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'personViewChanges';
@@ -1247,7 +1247,7 @@ function personViewChanges()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array('person'=>$person->id, 'preset_id'=>$preset_id));
+    $PH->defineFromHandle(['person'=>$person->id, 'preset_id'=>$preset_id]);
     
     ### set up page ####
     {
@@ -1278,30 +1278,30 @@ function personViewChanges()
             foreach($preset['filters'] as $f_name=>$f_settings) {
                 switch($f_name) {
                     case 'task_status':
-                        $list->filters[]= new ListFilter_status_min(array(
+                        $list->filters[]= new ListFilter_status_min([
                             'value'=>$f_settings['min'],
-                        ));
+                        ]);
                         #$list->filters[]= new ListFilter_status_max(array(
                         #    'value'=>$f_settings['max'],
                         #));
                         break;
                     case 'last_logout':
-                        $list->filters[]= new ListFilter_last_logout(array(
+                        $list->filters[]= new ListFilter_last_logout([
                             'value'=>$f_settings['value'],
-                        ));
+                        ]);
                         break;
                     case 'last_week':
-                        $list->filters[]= new ListFilter_min_week(array(
+                        $list->filters[]= new ListFilter_min_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         #$list->filters[]= new ListFilter_max_week(array(
                         #   'value'=>$f_settings['value'],
                         #));
                         break;
                     case 'last_two_weeks':
-                        $list->filters[]= new ListFilter_min_week(array(
+                        $list->filters[]= new ListFilter_min_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         #$list->filters[]= new ListFilter_max_week(array(
                         #   'value'=>$f_settings['value'],
                         #));
@@ -1317,12 +1317,12 @@ function personViewChanges()
                                   : NULL;
         }
         
-        $page->print_presets(array(
+        $page->print_presets([
         'target' => $preset_location,
         'project_id' => '',
         'preset_id' => $preset_id,
         'presets' => $presets,
-        'person_id' => $person->id));
+        'person_id' => $person->id]);
         
         $list->query_options['modified_by'] = $person->id;
         $list->print_automatic();
@@ -1357,7 +1357,7 @@ function personNew() {
     }
 
     ### build new object ###
-    $person_new= new Person(array(
+    $person_new= new Person([
         'id'                    => 0,                                           # temporary new
         'name'                  => $name,
         'profile'               => confGet('PERSON_PROFILE_DEFAULT'),
@@ -1365,10 +1365,10 @@ function personNew() {
         'language'              => $auth->cur_user->language,
         'notification_period'   => 3,                                            # in days
         'can_login'             => 1,
-        )
+        ]
     );
 
-    $PH->show('personEdit',array('person' => $person_new->id),$person_new);
+    $PH->show('personEdit',['person' => $person_new->id],$person_new);
 
 }
 
@@ -1416,26 +1416,26 @@ function personEdit($person=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'person_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'person_name']);
         $page->cur_tab='people';
         $page->type=__('Edit Person','Page type');
         $page->title=$person->name;
         $page->title_minor='';
 
         $page->crumbs= build_person_crumbs($person);
-        $page->options=array(
-            new NaviOption(array(
+        $page->options=[
+            new NaviOption([
                 'target_id' => 'personEdit',
-            )),
-        );
+            ]),
+        ];
         echo(new PageHeader);
     }
     echo (new PageContentOpen);
 
     ### form background ###
-    $block=new PageBlock(array(
+    $block=new PageBlock([
         'id'    =>'person_edit',
-    ));
+    ]);
     $block->render_blockStart();
 
     ### write form #####
@@ -1500,7 +1500,7 @@ function personEdit($person=NULL)
             
             ### authentication ###
             if(confGet('LDAP')){
-                $authentication = array('streber'=>0, 'ldap'=>1);
+                $authentication = ['streber'=>0, 'ldap'=>1];
                 $tab->add(new Form_Dropdown('person_auth', __("Authentication with","form label"), $authentication, $person->ldap));
             }
 
@@ -1538,7 +1538,7 @@ function personEdit($person=NULL)
 
             ### notification ###
             {
-                $a=array(
+                $a=[
                     sprintf(__('ASAP'),  -1)        => -1,
                     sprintf(__('daily'),  1)        =>  1,
                     sprintf(__('each 3 days'), 3)   =>  3,
@@ -1546,7 +1546,7 @@ function personEdit($person=NULL)
                     sprintf(__('each 14 days'), 14) => 14,
                     sprintf(__('each 30 days'), 30) => 30,
                     __('Never')                     =>  0,
-                );
+                ];
                 $p= $person->notification_period;
                 if(!$person->settings & USER_SETTING_NOTIFICATIONS) {
                     $p= 0;
@@ -1561,7 +1561,7 @@ function personEdit($person=NULL)
                 if($person->id == 0){
                     $prj_num = '-1';
 
-                    $prj_names = array();
+                    $prj_names = [];
                     $prj_names['-1'] = __('- no -');
 
                     ## get all projects ##
@@ -1646,10 +1646,10 @@ function personEdit($person=NULL)
 
 
             ### effort-style ###
-            $effort_styles=array(
+            $effort_styles=[
                 __("start times and end times")=> 1,
                 __("duration")=> 2,
-            );
+            ];
             $effort_style= ($person->settings & USER_SETTING_EFFORTS_AS_DURATION)
                          ? 2
                          : 1;
@@ -1722,7 +1722,7 @@ function personEditSubmit()
     ### cancel ? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -1737,7 +1737,7 @@ function personEditSubmit()
 
     ### temporary obj, not in db
     if($id == 0) {
-        $person= new Person(array('id'=>0));
+        $person= new Person(['id'=>0]);
     }
     else {
         if(!$person= Person::getEditableById($id)) {
@@ -2095,11 +2095,11 @@ function personEditSubmit()
 
                 if($c= Company::getVisibleById($c_id)) {
                     require_once(confGet('DIR_STREBER') . 'db/class_employment.inc.php');
-                    $e= new Employment(array(
+                    $e= new Employment([
                         'id'=>0,
                         'person'=>$person->id,
                         'company'=>$c->id
-                    ));
+                    ]);
                     $e->insert();
                 }
             }
@@ -2111,11 +2111,11 @@ function personEditSubmit()
             if(isset($prj_num)){
                 if($prj_num != -1){
                     if($p= Project::getVisibleById($prj_num)){
-                        $prj_person = new ProjectPerson(array(
+                        $prj_person = new ProjectPerson([
                                 'person' => $person->id,
                                 'project' => $p->id,
                                 'name' => $g_user_profile_names[$person->profile],
-                                ));
+                                ]);
                         $prj_person->insert();
                     }
                 }
@@ -2150,7 +2150,7 @@ function personEditSubmit()
     ### create another person ###
     if(get('create_another')) {
         if($c_id= get('company')) {
-            $PH->show('personNew',array('company'=>$c_id));
+            $PH->show('personNew',['company'=>$c_id]);
         }
         else {
             $PH->show('personNew');
@@ -2159,7 +2159,7 @@ function personEditSubmit()
     else {
         ### display fromPage ####
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
     }
 }
@@ -2212,7 +2212,7 @@ function personSendActivation()
 
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$person->project));
+        $PH->show('projView',['prj'=>$person->project]);
     }
 }
 
@@ -2267,7 +2267,7 @@ function peopleFlushNotifications()
 
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$person->project));
+        $PH->show('projView',['prj'=>$person->project]);
     }
 }
 
@@ -2300,15 +2300,15 @@ function personEditRights($person=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('autofocus_field'=>'person_nickname'));
+        $page= new Page(['autofocus_field'=>'person_nickname']);
         $page->cur_tab='people';
 
         $page->crumbs= build_person_crumbs($person);
-        $page->options=array(
-            new NaviOption(array(
+        $page->options=[
+            new NaviOption([
                 'target_id' => 'personEditRights',
-            )),
-        );
+            ]),
+        ];
 
         $page->type=__('Edit Person','page type');
         $page->title= $person->name;
@@ -2362,7 +2362,7 @@ function personEditRightsSubmit()
     ### cancel ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -2406,7 +2406,7 @@ function personEditRightsSubmit()
 
         ### display taskView ####
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
     }
     ### otherwise return to form ###
@@ -2435,7 +2435,7 @@ function personLinkCompanies() {
 
     ### set up page and write header ####
     {
-        $page = new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'company_name'));
+        $page = new Page(['use_jscalendar'=>true, 'autofocus_field'=>'company_name']);
         $page->cur_tab = 'people';
         $page->type = __("Edit Person");
         $page->title = sprintf(__("Edit %s"),$person->name);
@@ -2443,9 +2443,9 @@ function personLinkCompanies() {
 
 
         $page->crumbs = build_person_crumbs($person);
-        $page->options[] = new NaviOption(array(
+        $page->options[] = new NaviOption([
             'target_id'     => 'personLinkCompanies',
-        ));
+        ]);
 
         echo(new PageHeader);
     }
@@ -2508,11 +2508,11 @@ function personLinkCompaniesSubmit()
             }
         }
         if(!$already_in) {
-            $e_new = new Employment(array(
+            $e_new = new Employment([
                 'id'=>0,
                 'person'=>$person->id,
                 'company'=>$company->id,
-            ));
+            ]);
             $e_new->insert();
         }
         else {
@@ -2521,7 +2521,7 @@ function personLinkCompaniesSubmit()
     }
     ### display personView ####
     if(!$PH->showFromPage()) {
-        $PH->show('personView',array('person'=>$person->id));
+        $PH->show('personView',['person'=>$person->id]);
     }
 }
 
@@ -2587,7 +2587,7 @@ function personCompaniesDelete()
     }
 
     if(!$PH->showFromPage()) {
-        $PH->show('personView',array('person'=>$person->id));
+        $PH->show('personView',['person'=>$person->id]);
     }
 }
 
@@ -2631,7 +2631,7 @@ function personAllItemsViewed()
     }
 
     $person->date_highlight_changes = getGMTString();
-    $person->update(array('date_highlight_changes'),false);
+    $person->update(['date_highlight_changes'],false);
 
     /**
     * note, we have to update the current user to get an emmidate effect
@@ -2643,7 +2643,7 @@ function personAllItemsViewed()
     new FeedbackMessage(sprintf(__("Marked all previous items as viewed.")));
 
     if(!$PH->showFromPage()) {
-        $PH->show('personView',array('person'=>$person->id));
+        $PH->show('personView',['person'=>$person->id]);
     }
 }
 
@@ -2666,7 +2666,7 @@ function personToggleFilterOwnChanges()
     }
 
     $p->settings ^= USER_SETTING_FILTER_OWN_CHANGES;
-    $p->update(array('settings'), false);
+    $p->update(['settings'], false);
 
     if( $auth->cur_user && $p->id == $auth->cur_user->id) {
       $auth->cur_user->settings ^= USER_SETTING_FILTER_OWN_CHANGES;    
@@ -2674,7 +2674,7 @@ function personToggleFilterOwnChanges()
 
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$person->project));
+        $PH->show('projView',['prj'=>$person->project]);
     }
 }
 

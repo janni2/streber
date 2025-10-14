@@ -12,7 +12,7 @@ interface DummyInterface {
 }
 
 Mock::generate('DummyInterface');
-Mock::generatePartial('DummyInterface', 'PartialDummyInterface', array());
+Mock::generatePartial('DummyInterface', 'PartialDummyInterface', []);
 
 class TestOfMockInterfaces extends UnitTestCase {
 

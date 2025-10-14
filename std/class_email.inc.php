@@ -34,7 +34,7 @@ class Email
     
     public function __construct($person)
     {
-        $this->errors= Array();
+        $this->errors= [];
         $this->recipient= $person;
         $this->url= confGet('SELF_PROTOCOL').'://'.confGet('SELF_URL');
         $this->from_domain = confGet('SELF_DOMAIN');

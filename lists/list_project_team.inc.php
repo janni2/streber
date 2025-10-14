@@ -94,27 +94,27 @@ class ListBlock_projectTeam extends ListBlock
 
         #---- functions ----
         global $PH;
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projectPersonEdit')->id,
             'name'  =>__('Edit team member'),
             'id'    =>'projectPersonEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projAddPerson')->id,
             'name'  =>__('Add team member'),
             'id'    =>'projectPersonAdd',
             'icon'  =>'add',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('projectPersonDelete')->id,
             'name'  =>__('Remove person from team'),
             'id'    =>'projectPersonDelete',
             'icon'  =>'sub',
             'context_menu'=>'submit',
-        )));
+        ]));
         /*$this->add_function(new ListFunction(array(
             'target'=>$PH->getPage('personDelete')->id,
             'name'  =>'Delete person',

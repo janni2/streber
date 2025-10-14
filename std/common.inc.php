@@ -22,7 +22,7 @@
 * -
 */
 global $g_request_vars;
-$g_request_vars=array();
+$g_request_vars=[];
 
 global $g_tags_removed;
 $g_tags_removed= 0;
@@ -33,7 +33,7 @@ $g_tags_removed= 0;
 */
 function clearRequestVars() {
     global $g_request_vars;
-    $g_request_vars=array();
+    $g_request_vars=[];
 }
 
 
@@ -49,7 +49,7 @@ function addRequestVars(&$referred_vars)
     global $g_tags_removed;
 
     if(!isset($g_request_vars)) {
-        $g_request_vars= array();
+        $g_request_vars= [];
     }
 
     if(!isset($referred_vars) ) {
@@ -133,7 +133,7 @@ function get($key, $default_value= NULL) {
         $key= str_replace("*",".*",$key);
 
 
-        $hash= array();
+        $hash= [];
         foreach($g_request_vars as $ikey=>$ivalue) {
             if(preg_match("/" . $key . "/", $ikey)) {
                 $hash[$ikey]=$ivalue;
@@ -183,7 +183,7 @@ function getPassedIds($name=false,$wild=false)
         #--- try original id ---
         if($name) {
             $id=get($name);
-            $ids=array();
+            $ids=[];
             if(isset($id)) {
                 $ids[]=$id;
             }
@@ -359,7 +359,7 @@ function parse_mysql_dump($url, $table_prefix, $sql_obj)
             if(preg_match("/;\s*$/", $sql_line)){
 
                 ### add table-prefixes ###
-                $matches= array();
+                $matches= [];
                 if(preg_match("/(CREATE\s*TABLE\s[`'](.*)[`'])\s*\(/", $query, $matches)) {
                     $create_string_old= $matches[1];
                     $table_name_old= $matches[2];
@@ -466,7 +466,7 @@ function fillMissingValues(&$list, $settings)
 */
 function string2month(&$string) {
     $mon=1;
-    foreach(array('Jan','Feb','Ma?.r','Apr','Ma','Jun','Jul','Aug','Sep','O','Nov','Dec') as $m) {
+    foreach(['Jan','Feb','Ma?.r','Apr','Ma','Jun','Jul','Aug','Sep','O','Nov','Dec'] as $m) {
         if(preg_match("/^$m/i",$string,$matches)) {
             return "$mon";      # TODO-printf-formated layout for 2 digits
         }
@@ -477,7 +477,7 @@ function string2month(&$string) {
 
 
 function mysqlDatetime2utc($datetime) {
-    $out=array();
+    $out=[];
     if(preg_match("/\b(\d\d\d\d)[^\d](\d?\d)[^\d](\d?\d)\s+(\d\d)[^\d](\d\d)[^\d](\d\d)\b/",$datetime,$matches)) {
         if(count($matches)==7) {
             $out['year']=$matches[1];
@@ -531,7 +531,7 @@ function __ ( $str, $context=NULL ) {
     ### not found -> keep in not-found-list for later output ###
     global $g_lang_new;
     if(!isset($g_lang_new)) {
-        $g_lang_new=array();
+        $g_lang_new=[];
     }
     $g_lang_new[$str."|".$context]="?";
 
@@ -924,11 +924,11 @@ function trace($message, $options= '')
             require_once('lib/firephp/FirePHP.class.php');
             #require_once('lib/firephp/fb.php');
             $g_firephp = FirePHP::getInstance(true);
-            $options = array('maxObjectDepth' => 1,
+            $options = ['maxObjectDepth' => 1,
                  'maxArrayDepth' => 1,
                  'useNativeJsonEncode' => true,
                  'includeLineNumbers' => true
-                 );
+                 ];
 
              $g_firephp->setOptions($options);
         }

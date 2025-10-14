@@ -39,31 +39,31 @@ class TaskPerson extends DbProjectItem {
     static function initFields()
     {
         global $g_task_person_fields;
-        $g_task_person_fields=array();
+        $g_task_person_fields=[];
         addProjectItemFields($g_task_person_fields);
         
-        foreach(array(
-            new FieldInternal(array(    'name'=>'id',               # add id to both tables for caching
+        foreach([
+            new FieldInternal([    'name'=>'id',               # add id to both tables for caching
                 'default'=>0,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-            new FieldInternal(array(    'name'=>'task',             # id task
-            )),
-            new FieldInternal(array(    'name'=>'person',           # id of assigned person
-            )),
-            new FieldString(array(      'name'=>'comment',
-            )),
-            new FieldInternal(array(    'name'=>'assigntype',
+            ]),
+            new FieldInternal([    'name'=>'task',             # id task
+            ]),
+            new FieldInternal([    'name'=>'person',           # id of assigned person
+            ]),
+            new FieldString([      'name'=>'comment',
+            ]),
+            new FieldInternal([    'name'=>'assigntype',
                 'default'=>ASSIGNTYPE_INITIAL,
-            )),
-			new FieldInternal(array(    'name'=>'forward',
+            ]),
+			new FieldInternal([    'name'=>'forward',
                 'default'=>0,
-            )),
-			new FieldString(array(      'name'=>'forward_comment',
-            )),
+            ]),
+			new FieldString([      'name'=>'forward_comment',
+            ]),
         
-        ) as $f) {
+        ] as $f) {
             $g_task_person_fields[$f->name]=$f;
         }
     }
@@ -200,7 +200,7 @@ class TaskPerson extends DbProjectItem {
 
 		$sth->execute("",1);
 		$tmp=$sth->fetchall_assoc();
-		$tps=array();
+		$tps=[];
 		foreach($tmp as $t) {
 			$c=new TaskPerson($t);
 			$tps[]=$c;

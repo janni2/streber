@@ -114,7 +114,7 @@ class ParametersExpectation extends SimpleExpectation {
                     "] but got " . count($parameters) .
                     " arguments of [" . $this->_renderArguments($parameters) . "]";
         }
-        $messages = array();
+        $messages = [];
         for ($i = 0; $i < count($expected); $i++) {
             $comparison = $this->_coerceToExpectation($expected[$i]);
             if (! $comparison->test($parameters[$i])) {
@@ -148,7 +148,7 @@ class ParametersExpectation extends SimpleExpectation {
      *    @access private
      */
     function _renderArguments($args) {
-        $descriptions = array();
+        $descriptions = [];
         if (is_array($args)) {
             foreach ($args as $arg) {
                 $dumper = new SimpleDumper();
@@ -308,7 +308,7 @@ class SimpleSignatureMap {
      *    @access public
      */
     function SimpleSignatureMap() {
-        $this->_map = array();
+        $this->_map = [];
     }
 
     /**
@@ -319,7 +319,7 @@ class SimpleSignatureMap {
      */
     function add($parameters, &$action) {
         $place = count($this->_map);
-        $this->_map[$place] = array();
+        $this->_map[$place] = [];
         $this->_map[$place]['params'] = new ParametersExpectation($parameters);
         $this->_map[$place]['content'] = &$action;
     }
@@ -403,8 +403,8 @@ class SimpleCallSchedule {
      *    Creates an empty call map.
      */
     function SimpleCallSchedule() {
-        $this->_always = array();
-        $this->_at = array();
+        $this->_always = [];
+        $this->_at = [];
     }
     
     /**
@@ -439,7 +439,7 @@ class SimpleCallSchedule {
         $args = $this->_replaceWildcards($args);
         $method = strtolower($method);
         if (! isset($this->_at[$method])) {
-            $this->_at[$method] = array();
+            $this->_at[$method] = [];
         }
         if (! isset($this->_at[$method][$step])) {
             $this->_at[$method][$step] = new SimpleSignatureMap();
@@ -654,11 +654,11 @@ class SimpleMock {
     function SimpleMock() {
         $this->_actions = new SimpleCallSchedule();
         $this->_expectations = new SimpleCallSchedule();
-        $this->_call_counts = array();
-        $this->_expected_counts = array();
-        $this->_max_counts = array();
-        $this->_expected_args = array();
-        $this->_expected_args_at = array();
+        $this->_call_counts = [];
+        $this->_expected_counts = [];
+        $this->_max_counts = [];
+        $this->_expected_args = [];
+        $this->_expected_args_at = [];
         $test = &$this->_getCurrentTestCase();
         $test->tell($this);
     }
@@ -872,7 +872,7 @@ class SimpleMock {
         $this->_checkArgumentsIsArray($args, 'set expected arguments at time');
         $args = $this->_replaceWildcards($args);
         if (! isset($this->_expected_args_at[$timing])) {
-            $this->_expected_args_at[$timing] = array();
+            $this->_expected_args_at[$timing] = [];
         }
         $method = strtolower($method);
         $message .= Mock::getExpectationLine();
@@ -1166,7 +1166,7 @@ class Mock {
      *    @static
      */
     function getExpectationLine() {
-        $trace = new SimpleStackTrace(array('expect'));
+        $trace = new SimpleStackTrace(['expect']);
         return $trace->traceMethod();
     }
 }
@@ -1224,7 +1224,7 @@ class MockGenerator {
         if ($mock_reflection->classExistsSansAutoload()) {
             return false;
         }
-        $code = $this->_createClassCode($methods ? $methods : array());
+        $code = $this->_createClassCode($methods ? $methods : []);
         return eval("$code return \$code;");
     }
     
@@ -1248,10 +1248,10 @@ class MockGenerator {
             return false;
         }
         if ($this->_reflection->isInterface() || $this->_reflection->hasFinal()) {
-            $code = $this->_createClassCode($methods ? $methods : array());
+            $code = $this->_createClassCode($methods ? $methods : []);
             return eval("$code return \$code;");
         } else {
-            $code = $this->_createSubclassCode($methods ? $methods : array());
+            $code = $this->_createSubclassCode($methods ? $methods : []);
             return eval("$code return \$code;");
         }
     }
@@ -1288,7 +1288,7 @@ class MockGenerator {
         $implements = '';
         $interfaces = $this->_reflection->getInterfaces();
         if (function_exists('spl_classes')) {
-            $interfaces = array_diff($interfaces, array('Traversable'));
+            $interfaces = array_diff($interfaces, ['Traversable']);
         }
         if (count($interfaces) > 0) {
             $implements = 'implements ' . implode(', ', $interfaces);
@@ -1422,7 +1422,7 @@ class MockGenerator {
     function _isConstructor($method) {
         return in_array(
                 strtolower($method),
-                array('__construct', '__destruct'));
+                ['__construct', '__destruct']);
     }
 
     /**

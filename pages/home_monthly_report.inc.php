@@ -36,13 +36,13 @@ global $PH;
     $month= get('month', date('m'));
     $year= get('year', date('Y'));
 
-    $efforts = Effort::getAll(array(
+    $efforts = Effort::getAll([
         'effort_time_min' => date("$year-$month-01 00:00:01"),
         'effort_time_max' => date("$year-$month-t 23:59:59")
-    ));
+    ]);
 
-    $projects_with_efforts = array();
-    $people = array();
+    $projects_with_efforts = [];
+    $people = [];
     
     foreach($efforts as $e) {
         $project_id = $e->project;
@@ -52,7 +52,7 @@ global $PH;
         }
 
         if(!isset($projects_with_efforts[$project_id])) {
-            $projects_with_efforts[$project_id] = array();
+            $projects_with_efforts[$project_id] = [];
         }
 
         if(!isset($projects_with_efforts[$project_id][$e->person] )) {
@@ -67,12 +67,12 @@ global $PH;
     
     ### set up page and write header ####
     {
-        $page = new Page(array('use_jscalendar'=>true));
+        $page = new Page(['use_jscalendar'=>true]);
         $page->cur_tab = 'projects';
 
-        $page->options[] = new naviOption(array(
+        $page->options[] = new naviOption([
             'target_id'  =>'effortEdit',
-        ));
+        ]);
 
         $page->type = __("Edit multiple efforts","Page title");
         $page->title = sprintf(__("Monthly effort report","Page title"), count($efforts));
@@ -83,7 +83,7 @@ global $PH;
     
     {
 
-        $block = new PageBlock(array('id'=>'functions','reduced_header' => true,));
+        $block = new PageBlock(['id'=>'functions','reduced_header' => true,]);
         $block->render_blockStart();
         
 

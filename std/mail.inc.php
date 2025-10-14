@@ -23,7 +23,7 @@ class Notifier
     public static function sendNotifications()
     {
         global $PH;
-        $people=Person::getPeople(array('visible_only'=>false, 'can_login'=>true));
+        $people=Person::getPeople(['visible_only'=>false, 'can_login'=>true]);
 
         $num_notifications_sent = 0;
         $num_warnings = 0;
@@ -54,7 +54,7 @@ class Notifier
                 }
             }
         }
-        return array($num_notifications_sent, $num_warnings);
+        return [$num_notifications_sent, $num_warnings];
     }
 }
 

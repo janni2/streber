@@ -8,7 +8,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 #--- top navigation tabs -------------------------------------------------------
 '<span class=accesskey>H</span>ome'
@@ -1788,7 +1788,7 @@ $g_lang_table= array(
 'No news for <b>%s</b>'       =>'Nenhuma novidade para <b>%s<b>',
 
 
-);
+];
 
 
 ?>

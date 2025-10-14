@@ -33,7 +33,7 @@ function projViewFiles()
 	}
 
     ### define from-handle ###
-    $PH->defineFromHandle(array('prj'=>$project->id));
+    $PH->defineFromHandle(['prj'=>$project->id]);
 
 	## is viewed by user ##
 	$project->nowViewedByUser();
@@ -73,7 +73,7 @@ function projViewFiles()
 
 
     {
-        $block=new PageBlock(array('id'=>'support'));
+        $block=new PageBlock(['id'=>'support']);
         $block->render_blockStart();
         echo "<div class=text>";
 

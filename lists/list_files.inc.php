@@ -89,44 +89,44 @@ class ListBlock_files extends ListBlock
         $this->add_col( new ListBlockColSelect());
 		$this->add_col( new ListBlockCol_FileThumbnail());
    		$this->add_col( new ListBlockCol_FileName());
-   		$this->add_col( new ListBlockColFormat(array(
+   		$this->add_col( new ListBlockColFormat([
 			'key'=>'version',
 			'name'=>__("Version"),
 			'sort'=>0,
 			'format'=>'{?version}'
-		)));
+		]));
 		$this->add_col( new ListBlockCol_CreatedBy());
         $this->add_col( new ListBlockColDate());
         $this->add_col( new ListBlockCol_FileSummary());
 
         ### functions ###
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('fileEdit')->id,
             'name'  =>__('Edit file'),
             'id'    =>'fileEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('filesDelete')->id,
             'name'  =>__('Delete'),
             'id'    =>'filesDelete',
             'icon'  =>'delete',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('filesMoveToFolder')->id,
             'name'  =>__('Move files'),
             'id'    =>'filesMoveToFolder',
             'context_menu'=>'submit'
-        )));
-		$this->add_function(new ListFunction(array(
+        ]));
+		$this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
         /*
         $this->add_function(new ListFunction(array(
             'target'=>$PH->getPage('fileNew')->id,
@@ -138,40 +138,40 @@ class ListBlock_files extends ListBlock
         */
 
         ### block style functions ###
-        $this->add_blockFunction(new BlockFunction(array(
+        $this->add_blockFunction(new BlockFunction([
             'target'=>'changeBlockStyle',
             'key'=>'list',
             'name'=>__('List','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'list',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
 #                'use_collapsed'=>true,
-             ),
+             ],
             'default'=>true,
-        )));
-        $this->groupings= new BlockFunction_grouping(array(
+        ]));
+        $this->groupings= new BlockFunction_grouping([
             'target'=>'changeBlockStyle',
             'key'=>'grouped',
             'name'=>__('Grouped','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'grouped',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
-            ),
-        ));
+            ],
+        ]);
 
 
         $this->add_blockFunction($this->groupings);
 
         ### list groupings ###
-        $this->groupings->groupings= array(
+        $this->groupings->groupings= [
             new ListGroupingStatus(),
             new ListGroupingMimetype(),
             new ListGroupingCreatedBy(),
             new ListGroupingParentItem(),
 
-        );
+        ];
     }
 
 
@@ -274,11 +274,11 @@ class ListBlockCol_FileDownload extends ListBlockCol
 		  $file->mimetype == 'image/gif'
 		)
 		{
-            $buffer= "<a target='blank' href='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id))."'><img class='left' title='".asHtml($file->name)."' alt='".asHtml($file->name)."' src='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id,'max_size'=>100))."'></a>";
+            $buffer= "<a target='blank' href='".$PH->getUrl('fileDownloadAsImage',['file'=>$file->id])."'><img class='left' title='".asHtml($file->name)."' alt='".asHtml($file->name)."' src='".$PH->getUrl('fileDownloadAsImage',['file'=>$file->id,'max_size'=>100])."'></a>";
 
 		}
 		else {
-            $buffer= $PH->getLink('fileDownload',$file->name, array('file'=>$file->id));
+            $buffer= $PH->getLink('fileDownload',$file->name, ['file'=>$file->id]);
     	}
 		print "<td>$buffer</td>";
 	}
@@ -308,7 +308,7 @@ class ListBlockCol_FileName extends ListBlockCol
 
 		$buffer='<b>';
 
-        $buffer.= $PH->getLink('fileDownload',$file->name, array('file'=>$file->id));
+        $buffer.= $PH->getLink('fileDownload',$file->name, ['file'=>$file->id]);
 		$buffer.=  '</b>'
 				  .'<br />';
 
@@ -340,7 +340,7 @@ class ListBlockCol_FileName extends ListBlockCol
                     . ' / '
                     . sprintf(__("ID %s"), $file->id)
                     . ' / '
-                    . "<span class=sub>" . $PH->getLink('fileView', __('Show Details'), array('file'=>$file->id)). "</span>"
+                    . "<span class=sub>" . $PH->getLink('fileView', __('Show Details'), ['file'=>$file->id]). "</span>"
                     ."<br/>";
 
 
@@ -440,7 +440,7 @@ class ListBlockCol_FileSummary extends ListBlockCol
             $buffer.= "<span class=sub><a "
                    . "title='" .  sprintf(__("creatd on %s", "date a file was created"), renderDate($file->created)) .  "' "
                    . "target='blank' "
-                   . "href='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id))."' "
+                   . "href='".$PH->getUrl('fileDownloadAsImage',['file'=>$file->id])."' "
                    . "><img class='left' title='".asHtml($file->name)."' alt='".asHtml($file->name)."' "
                    #. "src='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id,'max_size'=>100))."'"
                    . "src='". $file->getCachedUrl(100) ."'"
@@ -451,7 +451,7 @@ class ListBlockCol_FileSummary extends ListBlockCol
                    .  "</span>"
                    . "<br>"
                    . "<span class=sub title='" . __('click to show details')  .  "'>" 
-                   . $PH->getLink('fileView', '#' . $file->id , array('file'=>$file->id))
+                   . $PH->getLink('fileView', '#' . $file->id , ['file'=>$file->id])
                    . ' '
                    . sprintf( __('by %s', 'person who uploaded a file'), $author_name)
                    . ', '
@@ -462,11 +462,11 @@ class ListBlockCol_FileSummary extends ListBlockCol
 
 		}
 		else {
-            $buffer.= "<b>" . $PH->getLink('fileDownload',$file->name, array('file'=>$file->id)). "</b>"
+            $buffer.= "<b>" . $PH->getLink('fileDownload',$file->name, ['file'=>$file->id]). "</b>"
                . "<br>"
                . "<span class=sub>" . $file->filesize ." bytes" ." / ". sprintf(__("ID %s"), $file->id) ." / " .  renderDateHtml($file->created) .  "</span>"
                . "<br>"
-               . "<span class=sub>" . $PH->getLink('fileView', __('Show Details'), array('file'=>$file->id)). "</span>"
+               . "<span class=sub>" . $PH->getLink('fileView', __('Show Details'), ['file'=>$file->id]). "</span>"
                ;
 
 		}
@@ -513,7 +513,7 @@ class ListBlockCol_FileThumbnail extends ListBlockCol
 		  $file->mimetype == 'image/gif'
 		)
 		{
-            $buffer.= "<a target='blank' href='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id))."'>";
+            $buffer.= "<a target='blank' href='".$PH->getUrl('fileDownloadAsImage',['file'=>$file->id])."'>";
             
             #$buffer.= "<img class='left' title='".asHtml($file->name)."' alt='".asHtml($file->name)."' src='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id,'max_size'=>100))."'>"
             $buffer.= "<img class='left' title='"

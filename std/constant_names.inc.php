@@ -14,7 +14,7 @@
  *
  */
 global $g_status_names;
-$g_status_names=array(
+$g_status_names=[
    STATUS_TEMPLATE  => __('template', 'status name'),
    STATUS_UNDEFINED => __('undefined','status_name'),
    STATUS_UPCOMING  => __('upcoming', 'status_name'),
@@ -24,11 +24,11 @@ $g_status_names=array(
    STATUS_COMPLETED => __('done?',    'status_name'),
    STATUS_APPROVED  => __('approved', 'status_name'),
    STATUS_CLOSED    => __('closed',   'status_name'),
-);
+];
 
 
 global $g_user_profile_names;
-$g_user_profile_names=array(
+$g_user_profile_names=[
     PROFILE_USER              => __('Member', 'profile name'),
     PROFILE_ADMIN             => __('Admin', 'profile name'),
     PROFILE_PM                => __('Project manager', 'profile name'),
@@ -38,12 +38,12 @@ $g_user_profile_names=array(
     PROFILE_CLIENT            => __('Client', 'profile name'),
     PROFILE_CLIENT_TRUSTED    => __('Client trusted', 'profile name'),
     PROFILE_GUEST             => __('Guest', 'profile name'),
-);
+];
 
 
 
 global $g_pub_level_names;
-$g_pub_level_names=array(
+$g_pub_level_names=[
     PUB_LEVEL_NONE      =>__('undefined', 'pub_level_name'),
     PUB_LEVEL_PRIVATE   =>__('private', 'pub_level_name'),
     PUB_LEVEL_SUGGESTED =>__('suggested', 'pub_level_name'),
@@ -53,11 +53,11 @@ $g_pub_level_names=array(
     PUB_LEVEL_CLIENTEDIT=>__('client_edit', 'pub_level_name'),
     PUB_LEVEL_ASSIGNED  =>__('assigned', 'pub_level_name'),
     PUB_LEVEL_OWNED     =>__('owned', 'pub_level_name'),
-);
+];
 
 
 global $g_pub_level_short_names;
-$g_pub_level_short_names=array(
+$g_pub_level_short_names=[
     PUB_LEVEL_NONE      =>'.',
     PUB_LEVEL_PRIVATE   =>__('priv','short for public level private'),
     PUB_LEVEL_SUGGESTED =>'?',
@@ -67,10 +67,10 @@ $g_pub_level_short_names=array(
     PUB_LEVEL_CLIENTEDIT=>__('PUB','short for public level client edit'),
     PUB_LEVEL_ASSIGNED  =>__('A','short for public level assigned'),
     PUB_LEVEL_OWNED     =>__('O','short for public level owned'),
-);
+];
 
 global $g_project_setting_names;
-$g_project_setting_names=array(
+$g_project_setting_names=[
     PROJECT_SETTING_ENABLE_TASKS    =>__('Enable tasks','Project setting'),
     PROJECT_SETTING_ENABLE_FILES    =>__('Enable files','Project setting'),
     PROJECT_SETTING_ENABLE_EFFORTS     =>__('Enable efforts','Project setting'),
@@ -79,11 +79,11 @@ $g_project_setting_names=array(
     PROJECT_SETTING_ENABLE_BUGS    =>__('Enable bugreports','Project setting'),
     PROJECT_SETTING_ENABLE_NEWS    =>__('Enable news','Project setting'),
     PROJECT_SETTING_ONLY_PM_MAY_CLOSE=>__('Only PM may close tasks','Project setting'),
-);
+];
 
 
 global $g_user_right_names;
-$g_user_right_names=array(
+$g_user_right_names=[
     RIGHT_PROJECT_CREATE     =>__('Create projects', 'a user right'),
     RIGHT_PROJECT_EDIT       =>__('Edit projects', 'a user right'),
     RIGHT_PROJECT_DELETE     =>__('Delete projects', 'a user right'),
@@ -102,25 +102,25 @@ $g_user_right_names=array(
     RIGHT_COMPANY_EDIT       =>__('Edit Companies', 'a user right'),
     RIGHT_COMPANY_DELETE     =>__('Delete Companies', 'a user right'),
     RIGHT_COMPANY_VIEWALL    =>__('View all Companies', 'a user right'),
-);
+];
 
 
 global $g_prio_names;
-$g_prio_names= array(
+$g_prio_names= [
  PRIO_UNDEFINED => __('undefined','priority'),
  PRIO_URGENT    => __('urgent','priority'),
  PRIO_HIGH      => __('high','priority'),
  PRIO_NORMAL    => __('normal','priority'),
  PRIO_LOWER     => __('lower','priority'),
  PRIO_LOWEST    => __('lowest','priority'),
-);
+];
 
 
 /**
 * name of table in database
 */
 global $g_item_type_names;
-$g_item_type_names=array(
+$g_item_type_names=[
     ITEM_PROJECT    =>__('Project'),
     ITEM_TASK       =>__('Task'),
     ITEM_PERSON     =>__('Person'),
@@ -133,11 +133,11 @@ $g_item_type_names=array(
     ITEM_COMMENT    =>__('Comment'),
     ITEM_FILE       =>__('File'),
     ITEM_TASKPERSON =>__('Task assignment'),
-);
+];
 
 
 global $g_severity_names;
-$g_severity_names=array(
+$g_severity_names=[
 SEVERITY_UNDEFINED    =>__('undefined'),
 SEVERITY_NITPICKY     =>__('Nitpicky','severity'),
 SEVERITY_FEATURE      =>__('Feature','severity'),
@@ -148,19 +148,19 @@ SEVERITY_MINOR        =>__('Minor','severity'),
 SEVERITY_MAJOR        =>__('Major','severity'),
 SEVERITY_CRASH        =>__('Crash','severity'),
 SEVERITY_BLOCK        =>__('Block','severity'),
-);
+];
 
 global $g_reproducibility_names;
-$g_reproducibility_names=array(
+$g_reproducibility_names=[
 REPRODUCIBILITY_UNDEFINED            => __('Not available','reproducabilty'),
 REPRODUCIBILITY_ALWAYS               => __('Always','reproducabilty'),
 REPRODUCIBILITY_SOMETIMES            => __('Sometimes','reproducabilty'),
 REPRODUCIBILITY_HAVE_NOT_TRIED       => __('Have not tried','reproducabilty'),
 REPRODUCIBILITY_UNABLE_TO_REPRODUCE  => __('Unable to reproduce','reproducabilty'),
-);
+];
 
 global $g_resolve_reason_names;
-$g_resolve_reason_names=array(
+$g_resolve_reason_names=[
 RESOLVED_UNDEFINED  =>  __('undefined'),
 RESOLVED_DONE       =>  __('done', 'Resolve reason'),
 RESOLVED_FIXED      =>  __('fixed','Resolve reason'),
@@ -169,11 +169,11 @@ RESOLVED_DUPLICATE  =>  __('duplicate','Resolve reason'),
 RESOLVED_BOGUS      =>  __('bogus','Resolve reason'),
 RESOLVED_REJECTED   =>  __('rejected','Resolve reason'),
 RESOLVED_DEFERRED   =>  __('deferred','Resolve reason'),
-);
+];
 
 
 global $g_released_names;
-$g_released_names=array(
+$g_released_names=[
 RELEASED_UNDEFINED       => __('Not defined', 'release type'),
 RELEASED_NOT_PLANNED     => __('Not planned',    'release type'),
 RELEASED_UPCOMMING       => __('Upcomming',     'release type'),
@@ -181,21 +181,21 @@ RELEASED_INTERNAL        => __('Internal',      'release type'),
 RELEASED_PUBLIC          => __('Public',        'release type'),
 RELEASED_WITHOUT_SUPPORT   => __('Without support',  'release type'),
 RELEASED_NO_LONGER_SUPPORTED   => __('No longer supported',  'release type'),
-);
+];
 
 ### company categories ###
 global $g_ccategory_names;
-$g_ccategory_names=array(
+$g_ccategory_names=[
 CCATEGORY_UNDEFINED 	=> __('undefined', 'company category'),
 CCATEGORY_CLIENT 		=> __('client', 'company category'),
 CCATEGORY_PROSCLIENT 	=> __('prospective client', 'company category'),
 CCATEGORY_SUPPLIER 		=> __('supplier', 'company category'),
 CCATEGORY_PARTNER 		=> __('partner', 'company category')
-);
+];
 
 ### person categories ###
 global $g_pcategory_names;
-$g_pcategory_names=array(
+$g_pcategory_names=[
 CCATEGORY_UNDEFINED		=> __('undefined', 'person category'),
 PCATEGORY_EMPLOYEE 		=> __('- employee -', 'person category'),
 PCATEGORY_STAFF 		=> __('staff', 'person category'),
@@ -209,12 +209,12 @@ PCATEGORY_CLIENT		=> __('client', 'person category'),
 PCATEGORY_PROSCLIENT	=> __('prospective client', 'person category'),
 PCATEGORY_SUPPLIER		=> __('supplier', 'person category'),
 PCATEGORY_PARTNER		=> __('partner', 'person category'),
-);
+];
 
 
 ### task categories ###
 global $g_tcategory_names;
-$g_tcategory_names=array(
+$g_tcategory_names=[
 TCATEGORY_TASK          => __('Task','Task Category'),
 TCATEGORY_BUG           => __('Bug','Task Category'),
 TCATEGORY_DOCU          => __('Topic','Task Category'),
@@ -222,11 +222,11 @@ TCATEGORY_EVENT         => __('Event','Task Category'),
 TCATEGORY_FOLDER        => __('Folder','Task Category'),
 TCATEGORY_MILESTONE     => __('Milestone','Task Category'),
 TCATEGORY_VERSION       => __('Version','Task Category'),
-);
+];
 
 ### task categories ###
 global $g_notifychange_period;
-$g_notitychange_period = array(
+$g_notitychange_period = [
 NOTIFY_NEVER 	 => __('never','notification period'),
 NOTIFY_ASAP 	 => __('ASAP','notification period'),
 NOTIFY_1DAY 	 => __('one day','notification period'),
@@ -239,25 +239,25 @@ NOTIFY_2WEEKS	 => __('two weeks','notification period'),
 NOTIFY_3WEEKS    => __('three weeks','notification period'),
 NOTIFY_1MONTH    => __('one month','notification period'),
 NOTIFY_2MONTH    => __('two months','notification period'),
-);
+];
 
 global $g_effort_status_names;
-$g_effort_status_names = array(
+$g_effort_status_names = [
 EFFORT_STATUS_NEW          => __('new','effort status'),
 EFFORT_STATUS_OPEN         => __('open','effort status'),
 EFFORT_STATUS_DISCOUNTED   => __('discounted','effort status'),
 EFFORT_STATUS_NOTCHARGEABLE=> __('not chargeable','effort status'),
 EFFORT_STATUS_BALANCED     => __('balanced','effort status')
-);
+];
 
 global $g_effort_billing_names;
-$g_effort_billing_names = array(
+$g_effort_billing_names = [
 EFFORT_IS_BILLABLE    => __('billable','effort billing'),
 EFFORT_IS_NOT_BILLABLE=> __('not billable','effort billing'),
 EFFORT_IS_REDUCED     => __('reduced','effort billing'),
 EFFORT_IS_TRAVEL      => __('travel','effort billing'),
 EFFORT_IS_CHARGE_EXTRA=> __('charged extra','effort billing')
-);
+];
 
 
 

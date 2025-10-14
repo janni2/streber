@@ -16,7 +16,7 @@
  */
 class ListBlock_efforts extends ListBlock
 {
-    public $filters = array();
+    public $filters = [];
     
     public function __construct($args=NULL)
     {
@@ -29,16 +29,16 @@ class ListBlock_efforts extends ListBlock
 
 
         $this->add_col( new ListBlockColSelect());
-        $this->add_col(new ListBlockColMethod(array(
+        $this->add_col(new ListBlockColMethod([
             'key'=>'p.name',
             'name'=>__('Project'),
             'func'=>'getProjectLink'
-        )));
-        $this->add_col(new ListBlockColMethod(array(
+        ]));
+        $this->add_col(new ListBlockColMethod([
             'key'=>'person',
             'name'=>__('person'),
             'func'=>'getPersonLink'
-        )));
+        ]));
         $this->add_col( new ListBlockCol_EffortTask);
         $this->add_col( new ListBlockCol_EffortStatus);
         $this->add_col( new ListBlockCol_EffortBilling);
@@ -49,80 +49,80 @@ class ListBlock_efforts extends ListBlock
         $this->add_col( new ListBlockCol_DayGraph);
 
         #---- functions ----
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortEdit')->id,
             'name'  =>__('Edit effort'),
             'id'    =>'effortEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortNew')->id,
             'name'  =>__('New effort'),
             'id'    =>'effortNew',
             'icon'  =>'new',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortsDelete')->id,
             'name'  =>__('Delete'),
             'id'    =>'effortsDelete',
             'icon'  =>'delete',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortViewMultiple')->id,
             'name'  =>__('View selected Efforts'),
             'id'    =>'effortViewMultiple',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortShowAsCSV')->id,
             'name'  =>__('Show as CSV'),
             'id'    =>'effortShowAsCSV',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
         
 
         ### block style functions ###
-        $this->add_blockFunction(new BlockFunction(array(
+        $this->add_blockFunction(new BlockFunction([
             'target'=>'changeBlockStyle',
             'key'=>'list',
             'default'=>true,
             'name'=>__('List','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'list',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
-             ),
+             ],
              //'default'=>true,
-        )));
-        $this->groupings= new BlockFunction_grouping(array(
+        ]));
+        $this->groupings= new BlockFunction_grouping([
             'target'=>'changeBlockStyle',
             'key'=>'grouped',
              'name'=>__('Grouped','List sort mode'),
-             'params'=>array(
+             'params'=>[
                'style'=>'grouped',
                'block_id'=>$this->id,
                'page_id'=>$PH->cur_page->id,
-           ),
-       ));
+           ],
+       ]);
        $this->add_blockFunction($this->groupings);
 
         ### list groupings ###
-        $this->groupings->groupings= array(
+        $this->groupings->groupings= [
             new ListGroupingEffortStatus(),
             new ListGroupingCreatedBy(),
             new ListGroupingTask(),
             new ListGroupingProject(),
-        );
+        ];
         
     }
     
@@ -285,7 +285,7 @@ class ListBlockCol_EffortName extends ListBlockCol
 
         if(isset($obj->name)) {
             if($effort= Effort::getById($obj->id)) {
-                 $str= $PH->getLink('effortView', $effort->name, array('effort'=>$effort->id));
+                 $str= $PH->getLink('effortView', $effort->name, ['effort'=>$effort->id]);
             }
         }
 
@@ -308,7 +308,7 @@ class ListBlockCol_EffortTask extends ListBlockCol
 
         if(isset($obj->task)) {
             if($task= Task::getById($obj->task)) {
-                $str= $PH->getLink('taskView',$task->getShort(),array('tsk'=>$task->id));
+                $str= $PH->getLink('taskView',$task->getShort(),['tsk'=>$task->id]);
             }
         }
         print "<td><nobr>$str</nobr></td>";

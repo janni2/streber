@@ -31,14 +31,14 @@ function effortShowAsCSV()
         exit();
     }
     
-    $efforts = array();
-    $different_fields=array();
+    $efforts = [];
+    $different_fields=[];
     
-    $edit_fields = array(
+    $edit_fields = [
         'status',
         'pub_level',
         'task'
-    );
+    ];
     
     foreach($effort_ids as $id){
         if($effort = Effort::getEditableById($id)) {
@@ -69,12 +69,12 @@ function effortShowAsCSV()
     
     ### set up page and write header ####
     {
-        $page = new Page(array('use_jscalendar'=>true));
+        $page = new Page(['use_jscalendar'=>true]);
         $page->cur_tab = 'projects';
 
-        $page->options[] = new naviOption(array(
+        $page->options[] = new naviOption([
             'target_id'  =>'effortEdit',
-        ));
+        ]);
 
         $page->type = __("Edit multiple efforts","Page title");
         $page->title = sprintf(__("%s efforts for copy and pasting into a spread-sheet","Page title"), count($efforts));
@@ -85,7 +85,7 @@ function effortShowAsCSV()
     
     {
 
-        $block = new PageBlock(array('id'=>'functions','reduced_header' => true,));
+        $block = new PageBlock(['id'=>'functions','reduced_header' => true,]);
         $block->render_blockStart();
         
         $format="[Date][Weekday][Task][Comment][Duration]";

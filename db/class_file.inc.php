@@ -36,22 +36,22 @@ class File extends DbProjectItem
     static function initFields() 
     {
         global $g_file_fields;
-        $g_file_fields= array();
+        $g_file_fields= [];
         addProjectItemFields($g_file_fields);
     
-        foreach(array(
-            new FieldInternal(array(    'name'=>'id',
+        foreach([
+            new FieldInternal([    'name'=>'id',
                 'default'=>0,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-                new FieldString(array(      'name'=>'name',
+            ]),
+                new FieldString([      'name'=>'name',
                     'title'=>__('Name'),
                     'view_in_forms'=>true
-                )),
-                new FieldString(array(      'name'=>'org_filename',
+                ]),
+                new FieldString([      'name'=>'org_filename',
                     'view_in_forms'=>false
-                )),
+                ]),
     
                 /**
                 * filepath and name under which file is stored on server
@@ -62,72 +62,72 @@ class File extends DbProjectItem
                 * e.g. prj321/bla.gif
                 *      prj321/bla.gif.1
                 */
-                new FieldString(array(      'name'=>'tmp_filename',
+                new FieldString([      'name'=>'tmp_filename',
                     'view_in_forms'=>false
-                )),
+                ]),
     
-                new FieldString(array(      'name'=>'tmp_dir',
+                new FieldString([      'name'=>'tmp_dir',
                     'view_in_forms'=>false
-                )),
+                ]),
     
-                new FieldString(array(      'name'=>'mimetype',
+                new FieldString([      'name'=>'mimetype',
                     'view_in_forms'=>false
-                )),
-                new FieldInternal(array(    'name'=>'status',
+                ]),
+                new FieldInternal([    'name'=>'status',
                     'view_in_forms'=>false
-                )),
-                new FieldInt(array(         'name'=>'filesize',
+                ]),
+                new FieldInt([         'name'=>'filesize',
                     'view_in_forms'=>false
-                )),
-                new FieldInt(array(         'name'=>'version',
+                ]),
+                new FieldInt([         'name'=>'version',
                     'view_in_forms'=>false,
                     'default'=>1,
-                )),
+                ]),
     
                 /**
                 * DEPRECIATED: if true, a thumbnail will be displayed in wiki-texts
                 * 
                 * The filetype is taken from mimetype
                 */
-                new FieldBool(array(         'name'=>'is_image',
+                new FieldBool([         'name'=>'is_image',
                     'view_in_forms' =>false,
                     'default'       =>0
-                )),
+                ]),
     
                 /**
                 * if several versions of a file with the same filenames are uploaded,
                 * the current / recent version is marked with this flag
                 */
-                new FieldBool(array(         'name'=>'is_latest',
+                new FieldBool([         'name'=>'is_latest',
                     'view_in_forms' =>false,
                     'default'       =>1
-                )),
+                ]),
     
                 /**
                 * if a thumbnail has been created this is the absolute
                 * path
                 */
-                new FieldString(array(      'name'=>'thumbnail',
+                new FieldString([      'name'=>'thumbnail',
                     'view_in_forms'=>false
-                )),
+                ]),
     
-                new FieldInternal(array(      'name'=>'parent_item',
+                new FieldInternal([      'name'=>'parent_item',
                     'view_in_forms'=>false
-                )),
+                ]),
     
                 /**
                 * if this is not zero file is and update of file with this id
                 */
-                new FieldInternal(array(      'name'=>'org_file',
+                new FieldInternal([      'name'=>'org_file',
                     'view_in_forms'=>false
-                )),
+                ]),
     
     
-                new FieldText(array(        'name'=>'description',
+                new FieldText([        'name'=>'description',
                     'title'=>__('Description'),
     
-                )),
-        ) as $f) {
+                ]),
+        ] as $f) {
             $g_file_fields[$f->name]=$f;
         }
     }
@@ -330,7 +330,7 @@ class File extends DbProjectItem
 
     	$sth->execute("",1);
     	$tmp=$sth->fetchall_assoc();
-    	$files=array();
+    	$files=[];
         require_once(confGet('DIR_STREBER') . 'db/class_file.inc.php');
         foreach($tmp as $t) {
             $file=new File($t);
@@ -375,11 +375,11 @@ class File extends DbProjectItem
             return NULL;
         }
 
-        $files= File::getAll(array(
+        $files= File::getAll([
             'latest_only' => true,
             'org_file'    => $org_file,
             'project'     => $project->id,
-        ));
+        ]);
         if(count($files) > 1) {
 
             foreach($files as $f) {
@@ -413,10 +413,10 @@ class File extends DbProjectItem
             if ($dimensions['downscale'] ) {
 
                 ### check if cached file exists
-                $md5= md5( http_build_query(array('filepath'=> $filepath,
+                $md5= md5( http_build_query(['filepath'=> $filepath,
                                 'new_width' => $new_width,
                                 'new_height' => $new_height,
-                            )));
+                            ]));
                 $cached_filepath= confGet('DIR_IMAGE_CACHE') . "/" . $md5 . ".jpg";
 
                 if( file_exists($cached_filepath )) {
@@ -425,7 +425,7 @@ class File extends DbProjectItem
             }
         }
         global $PH;
-        return $PH->getUrl('fileDownloadAsImage', array('file'=>$this->id,'max_size'=>$max_size));
+        return $PH->getUrl('fileDownloadAsImage', ['file'=>$this->id,'max_size'=>$max_size]);
         #return "index.php&go=fileDownloadAsImage&file=" . $this->id;
     }
 
@@ -499,14 +499,14 @@ class File extends DbProjectItem
 
         if(move_uploaded_file($_FILES[$upload_id]['tmp_name'], $upload_dir."/".$tmp_filename)) {
 
-            $f= new File(array(
+            $f= new File([
                 'id'            =>0,
                 'name'          => $org_filename,
                 'org_filename'  => $org_filename,
                 'tmp_filename'  => $tmp_filename,
                 'mimetype'      => $mimetype,
                 'filesize'      => $filesize,
-            ));
+            ]);
             return $f;
 
         }
@@ -650,14 +650,14 @@ class File extends DbProjectItem
             $new_width = $width;
             $new_height = $height;
         }
-        return array(
+        return [
             'new_width' => $new_width, 
             'new_height'=> $new_height, 
             'width'     => $width,
             'height'    => $height,
             'downscale' => $downscale,
             'filepath'  => $filepath
-        );
+        ];
     }
 
 
@@ -702,10 +702,10 @@ class File extends DbProjectItem
         }
         
         ### check if cached file exists
-        $md5= md5( http_build_query(array('filepath'=> $filepath,
+        $md5= md5( http_build_query(['filepath'=> $filepath,
                         'new_width' => $new_width,
                         'new_height' => $new_height,
-                    )));
+                    ]));
         $cached_filepath= confGet('DIR_IMAGE_CACHE') . "/" . $md5 . ".jpg";
 
         if( file_exists($cached_filepath )) {

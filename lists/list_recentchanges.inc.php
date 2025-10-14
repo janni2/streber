@@ -24,21 +24,21 @@ function printRecentChanges($projects, $print_project_headlines= true)
     /**
     * first get all changelines for projects to filter out projects without changes
     */
-    $projects_with_changes= array();    # array with projects
-    $project_changes= array();          # hash with project id and changelist
+    $projects_with_changes= [];    # array with projects
+    $project_changes= [];          # hash with project id and changelist
 
     foreach($projects as $project) {
                 
         /**
         * first query all unviewed changes
         */
-        $options = array(
+        $options = [
             'project'           => $project->id,
             'unviewed_only'     => false,
             'limit_rowcount'    => confGet('MAX_CHANGELINES')+ 1,  #increased by 1 to get "more link"
             'limit_offset'      => 0,
-            'type'              => array(ITEM_TASK, ITEM_FILE),
-        );
+            'type'              => [ITEM_TASK, ITEM_FILE],
+        ];
         if($auth->cur_user->settings&USER_SETTING_FILTER_OWN_CHANGES) {
             $options['not_modified_by'] = $auth->cur_user->id;
         }
@@ -58,11 +58,11 @@ function printRecentChanges($projects, $print_project_headlines= true)
             $link_name = __("Hide yours", "E.i. Filter out your changes");
         }
 
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title' =>__('Recent changes'),
             'id'    =>'recentchanges',
-            'headline_links' => array($PH->getLink('personToggleFilterOwnChanges', $link_name , array('person'=> $auth->cur_user->id))),
-        ));
+            'headline_links' => [$PH->getLink('personToggleFilterOwnChanges', $link_name , ['person'=> $auth->cur_user->id])],
+        ]);
         $block->render_blockStart();
     }
 
@@ -75,7 +75,7 @@ function printRecentChanges($projects, $print_project_headlines= true)
 
         ### more options ###
         echo "<p class=more>";
-        echo $PH->getLink('personToggleFilterOwnChanges', $link_name , array('person'=> $auth->cur_user->id));
+        echo $PH->getLink('personToggleFilterOwnChanges', $link_name , ['person'=> $auth->cur_user->id]);
         echo "</p>";
         $block->render_blockEnd();
     } 
@@ -98,7 +98,7 @@ function printRecentChanges($projects, $print_project_headlines= true)
             $changes= $project_changes[$project->id];
 
             if($print_project_headlines) {
-                echo '<h3>'. sprintf( __("%s project", "links to project in recent changes list"), $PH->getLink('projView', $project->name, array('prj'=>$project->id))) . "</h3>";
+                echo '<h3>'. sprintf( __("%s project", "links to project in recent changes list"), $PH->getLink('projView', $project->name, ['prj'=>$project->id])) . "</h3>";
             }
 
             echo "<ul id='changesOnProject_$project->id'>";
@@ -176,7 +176,7 @@ function printChangeLine($c)
         echo $c->item->getLink(false);
     }
     elseif($c->item->type == ITEM_FILE) {
-        echo '<li>' . $PH->getLink('fileView', $c->item->name, array('file' => $c->item->id));        
+        echo '<li>' . $PH->getLink('fileView', $c->item->name, ['file' => $c->item->id]);        
     }
     else {
         trigger_error('printChangeLine() for unknown item item', E_USER_WARNING);

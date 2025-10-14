@@ -57,7 +57,7 @@ function fileView()
     }
 
     ### create from handle ###
-    $from_handle= $PH->defineFromHandle(array('file'=>$file->id));
+    $from_handle= $PH->defineFromHandle(['file'=>$file->id]);
 
     ## is viewed by user ##
     $file->nowViewedByUser();
@@ -74,38 +74,38 @@ function fileView()
         }
 
         ### page functions ###
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'=>'fileEdit',
-            'params'=>array('file'=>$file->id),
+            'params'=>['file'=>$file->id],
             'icon'=>'edit',
             'tooltip'=>__('Edit this file'),
             'name'=>__('Edit')
-        )));
+        ]));
 
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'=>'filesMoveToFolder',
-            'params'=>array("file"=>$file->id),
+            'params'=>["file"=>$file->id],
             'tooltip'=>__('Move this file to another task'),
             'name'=>__('Move')
-        )));
+        ]));
         
         if($auth->cur_user->settings & USER_SETTING_ENABLE_BOOKMARKS) {
-            $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$file->id));
+            $item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$file->id]);
             if((!$item) || ($item[0]->is_bookmark == 0)){
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'itemsAsBookmark',
-                    'params'    =>array('file'=>$file->id),
+                    'params'    =>['file'=>$file->id],
                     'tooltip'   =>__('Mark this file as bookmark'),
                     'name'      =>__('Bookmark'),
-                )));
+                ]));
             }
             else{
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'itemsRemoveBookmark',
-                    'params'    =>array('file'=>$file->id),
+                    'params'    =>['file'=>$file->id],
                     'tooltip'   =>__('Remove this bookmark'),
                     'name'      =>__('Remove Bookmark'),
-                )));
+                ]));
             } 
         }
 
@@ -118,7 +118,7 @@ function fileView()
 
     #--- upload new versions --------
     {
-        $block=new PageBlock(array('title'=>__('Upload new version','block title'),'id'=>'summary'));
+        $block=new PageBlock(['title'=>__('Upload new version','block title'),'id'=>'summary']);
         $block->render_blockStart();
 
         echo "<div class=text>";
@@ -134,10 +134,10 @@ function fileView()
 
     #--- summary ----------------------------------------------------------------
     {
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title'=>sprintf(__('Version #%s (current): %s'), $file_latest->version, $file_latest->name),
             'id'=>'description'
-        ));
+        ]);
         $block->render_blockStart();
 
         echo "<div class=text>";
@@ -161,7 +161,7 @@ function fileView()
         if($file_latest->created != $file_latest->modified) {
             echo "<div class=labeled><label>" . __('Modified') .  "</label><span>". renderDateHtml($file_latest->created) ."</span></div>";
         }
-        echo "<div class=labeled><label>". __('Download'). "</label><span>". $PH->getLink('fileDownload', $file_latest->org_filename ,array('file'=>$file_latest->id))."</span></div>";
+        echo "<div class=labeled><label>". __('Download'). "</label><span>". $PH->getLink('fileDownload', $file_latest->org_filename ,['file'=>$file_latest->id])."</span></div>";
 
         $str= wikifieldAsHtml($file_latest, 'description');
         echo "<br>";
@@ -180,12 +180,12 @@ function fileView()
         * build list of old versions,
         * because org_file is zero for the original file, with have to append it
         */
-        $old_files= File::getAll(array(
+        $old_files= File::getAll([
             'latest_only'   =>false,
             'org_file'      =>$file_org->id,
             'order_by'      =>'version DESC',
             'project'       =>$project->id,
-        ));
+        ]);
         if($file_latest->id != $file_org->id) {
             $old_files[] = $file_org;
         }
@@ -193,10 +193,10 @@ function fileView()
         foreach($old_files as $of) {
             if($of->id != $file_latest->id) {
 
-                $block=new PageBlock(array(
+                $block=new PageBlock([
                     'title'=>sprintf(__('Version #%s : %s'),$of->version, $of->name),
                     'id'=>'version_'.$of->id,
-                ));
+                ]);
                 $block->render_blockStart();
 
                 echo "<div class=text>";
@@ -216,7 +216,7 @@ function fileView()
                 echo "<div class=labeled><label>" . __('Uploaded') .  "</label><span>". renderDateHtml($of->created) ."</span></div>";
 
                 #echo "<div class=labeled><label>" . __('Version') .  "</label><span>". intval($of->version) ."</span></div>";
-                echo "<div class=labeled>". $PH->getLink('fileDownload','',array('file'=>$of->id))."</div>";
+                echo "<div class=labeled>". $PH->getLink('fileDownload','',['file'=>$of->id])."</div>";
 
                 echo "</div>";
 
@@ -304,7 +304,7 @@ function fileUpdate()
     $new_file->org_file     = $file_org->id;
     $new_file->version      = $file_latest->version + 1;
 
-    $PH->show('fileEdit',array('file'=>$new_file->id),$new_file);
+    $PH->show('fileEdit',['file'=>$new_file->id],$new_file);
 
 }
 
@@ -373,7 +373,7 @@ function filesUpload()
 
     ### build new object ###
     $new_file->project = $project->id;
-    $PH->show('fileEdit',array('file'=>$new_file->id),$new_file);
+    $PH->show('fileEdit',['file'=>$new_file->id],$new_file);
 }
 
 
@@ -403,7 +403,7 @@ function fileEdit($file=NULL)
     {
 
 
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'file_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'file_name']);
         initPageForFile($page, $file, $project);
 
         if($file->id) {
@@ -420,9 +420,9 @@ function fileEdit($file=NULL)
     }
     echo (new PageContentOpen);
 
-    $block=new PageBlock(array(
+    $block=new PageBlock([
         'id'    =>'edit',
-    ));
+    ]);
     $block->render_blockStart();
 
     ### write form #####
@@ -457,7 +457,7 @@ function fileEdit($file=NULL)
 
         ### status ###
         {
-            $st=array();
+            $st=[];
             global $g_status_names;
             foreach($g_status_names as $s=>$n) {
                 if($s >= STATUS_NEW) {
@@ -502,7 +502,7 @@ function fileEditSubmit()
 
     ### temp new file-object ####
     if($id == 0) {
-        $file= new File(array('id'=>0));
+        $file= new File(['id'=>0]);
 
         $file->mimetype= get('file_mimetype')
             ? urldecode(get('file_mimetype'))
@@ -546,7 +546,7 @@ function fileEditSubmit()
     ### cancel ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$file->project));
+            $PH->show('projView',['prj'=>$file->project]);
         }
         exit();
     }
@@ -634,12 +634,12 @@ function fileEditSubmit()
 
     ### update date of parent items ? ###
     if($item= DbProjectItem::getEditableById($file->parent_item)) {
-        $item->update(array());        
+        $item->update([]);        
     }
 
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$file->project));
+        $PH->show('projView',['prj'=>$file->project]);
     }
 }
 
@@ -681,7 +681,7 @@ function filesDelete()
     }
 
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$file->project));
+        $PH->show('projView',['prj'=>$file->project]);
     }
 }
 
@@ -802,7 +802,7 @@ function FilesMoveToFolder()
             $parent_tasks[]= $target_task;
         }
         else {
-            $parent_tasks=array();
+            $parent_tasks=[];
         }
 
 
@@ -847,7 +847,7 @@ function FilesMoveToFolder()
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>false, 'autofocus_field'=>'company_name'));
+        $page= new Page(['use_jscalendar'=>false, 'autofocus_field'=>'company_name']);
         $page->cur_tab='projects';
         $page->type= __("Edit files");
         $page->title="$project->name";
@@ -855,9 +855,9 @@ function FilesMoveToFolder()
 
         $page->crumbs= build_project_crumbs($project);
 
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id'     =>'filesMoveToFolder',
-        ));
+        ]);
 
         echo(new PageHeader);
     }
@@ -892,7 +892,7 @@ function FilesMoveToFolder()
             unset($list->columns['label']);
             unset($list->columns['project']);
 
-            $list->functions= array();
+            $list->functions= [];
 
             $list->active_block_function = 'tree';
 

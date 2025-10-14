@@ -33,12 +33,12 @@ class ListBlock_comments extends ListBlock
         $this->add_col( new ListBlockCol_CommentText());
 
         ### functions 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
         /**
         * NOTE the following functions only work if quick-edit
         * form is shown (so not for folders). I am not sure, if
@@ -126,7 +126,7 @@ class ListBlockCol_CommentPoster extends ListBlockCol
                     $column_poster.= "<br>" . 
                                     $PH->getLink('itemViewDiff', 
                                         sprintf(__("version %s"), count($versions)), 
-                                        array('item' => $obj->id)
+                                        ['item' => $obj->id]
                                     ); 
                 }
                 
@@ -142,8 +142,8 @@ class ListBlockCol_CommentPoster extends ListBlockCol
                 if($obj->created_by == $auth->cur_user->id) {
 
                     if( $obj->isEditable()) {
-                        $column_poster.= $PH->getLink('commentEdit', __('Edit'), array('comment'=>$obj->id));
-                        $column_poster.= $PH->getLink('commentsDelete', __('Delete'), array('comment'=>$obj->id));
+                        $column_poster.= $PH->getLink('commentEdit', __('Edit'), ['comment'=>$obj->id]);
+                        $column_poster.= $PH->getLink('commentsDelete', __('Delete'), ['comment'=>$obj->id]);
                     }
                 }
                 else
@@ -151,10 +151,10 @@ class ListBlockCol_CommentPoster extends ListBlockCol
                     ### check sufficient rights ###
                     if($parent_task= Task::getEditableById($obj->task)) {
                         # have to send the task-id otherwise the reply function doesn't work
-                        $column_poster.= $PH->getLink('commentNew', __('Reply'), array( 'comment'=>$obj->id, 'parent_task'=>$obj->task));
+                        $column_poster.= $PH->getLink('commentNew', __('Reply'), [ 'comment'=>$obj->id, 'parent_task'=>$obj->task]);
 
                         if($obj->pub_level != PUB_LEVEL_OPEN) {
-                            $column_poster.= $PH->getLink('itemsSetPubLevel', __('Publish'), array( 'item'=>$obj->id, 'item_pub_level'=>PUB_LEVEL_OPEN));
+                            $column_poster.= $PH->getLink('itemsSetPubLevel', __('Publish'), [ 'item'=>$obj->id, 'item_pub_level'=>PUB_LEVEL_OPEN]);
                         }
 
                     }
@@ -206,8 +206,8 @@ class ListBlockCol_CommentText extends ListBlockCol
         $column_text.= "<div class=comment_block style='padding-left:".($obj->level*2.0)."em'>";
 
         if($obj->view_collapsed) {
-            $column_text.= $PH->getLink('commentToggleViewCollapsed',"<img src=\"" . getThemeFile("img/toggle_folder_closed.gif") . "\">",array('comment'=>$obj->id),NULL, true);
-            $column_text.= "<span class=title>" . $PH->getLink('commentView',$obj->name, array('comment' => $obj->id)) . "</span>";
+            $column_text.= $PH->getLink('commentToggleViewCollapsed',"<img src=\"" . getThemeFile("img/toggle_folder_closed.gif") . "\">",['comment'=>$obj->id],NULL, true);
+            $column_text.= "<span class=title>" . $PH->getLink('commentView',$obj->name, ['comment' => $obj->id]) . "</span>";
             if($obj->num_children) {
                 $column_text.= "<span class=children> (";
                 if($obj->num_children == 1) {
@@ -220,8 +220,8 @@ class ListBlockCol_CommentText extends ListBlockCol
             }
         }
         else {
-            $column_text.= $PH->getLink('commentToggleViewCollapsed',"<img src=\"" . getThemeFile("img/toggle_folder_open.gif") . "\">",array('comment'=>$obj->id),NULL,true);
-            $column_text.= "<span class=title>" . $PH->getLink('commentView',$obj->name, array('comment' => $obj->id)) . "</span>";
+            $column_text.= $PH->getLink('commentToggleViewCollapsed',"<img src=\"" . getThemeFile("img/toggle_folder_open.gif") . "\">",['comment'=>$obj->id],NULL,true);
+            $column_text.= "<span class=title>" . $PH->getLink('commentView',$obj->name, ['comment' => $obj->id]) . "</span>";
 
             require_once(confGet('DIR_STREBER') . 'render/render_wiki.inc.php');
             $project= Project::getVisibleById($obj->project);

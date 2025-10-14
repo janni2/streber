@@ -23,10 +23,10 @@ require_once(dirname(__FILE__) . '/xml.php');
  *    @subpackage UnitTester
  */
 class SimpleCommandLineParser {
-    var $_to_property = array(
+    var $_to_property = [
             'case' => '_case', 'c' => '_case',
             'test' => '_test', 't' => '_test',
-            'xml' => '_xml', 'x' => '_xml');
+            'xml' => '_xml', 'x' => '_xml'];
     var $_case = '';
     var $_test = '';
     var $_xml = false;
@@ -110,7 +110,7 @@ class DefaultReporter extends SimpleReporterDecorator {
         if (SimpleReporter::inCli()) {
             global $argv;
             $parser = new SimpleCommandLineParser($argv);
-            $interfaces = $parser->isXml() ? array('XmlReporter') : array('TextReporter');
+            $interfaces = $parser->isXml() ? ['XmlReporter'] : ['TextReporter'];
             $reporter = new SelectiveReporter(
                     SimpleTest::preferred($interfaces),
                     $parser->getTestCase(),

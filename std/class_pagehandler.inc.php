@@ -164,20 +164,20 @@ class FeedbackHint extends FeedbackMessage
 class PageHandler extends BaseObject
 {
     PUBLIC      $hash;
-    PUBLIC      $messages=array();
+    PUBLIC      $messages=[];
     public      $cur_page_md5=NULL;
     public      $cur_page_id;
     PUBLIC      $options;
     public      $go_submit=false;   # this is put into go-hidden-field
     public      $cur_page=NULL;     # page-handle object
     public      $page_params=NULL;  # params of the currently rendered page (used for client-view-url)
-    public      $valid_global_params= array(
+    public      $valid_global_params= [
                         'from'      =>'*.',
                         'id'        =>'[\w\d_]*]',
                         'show_client_view'=>'1',
-                        );
+                        ];
 
-    public      $recursions=array();
+    public      $recursions=[];
 
     public function __construct()
     {
@@ -186,10 +186,10 @@ class PageHandler extends BaseObject
             trigger_error("PageHandle can only be created once", E_USER_WARNING);
         }
         else {
-            $this->hash=array();
+            $this->hash=[];
 #            $PH=$this;
         }
-        $this->options=array();
+        $this->options=[];
     }
 
     public function addPage(PageHandle $phandle)
@@ -222,7 +222,7 @@ class PageHandler extends BaseObject
     {
         if(get_class($this->cur_page) == 'PageHandle') {
             if(!isset($this->page_params) || !$params=$this->page_params) {
-                $params=array();
+                $params=[];
             }
             if(!$flag_exit) {
                 $params['show_client_view']=1;
@@ -487,7 +487,7 @@ class PageHandler extends BaseObject
 
         #--- create new md5-handle and store page-id and params in local file
         if(!$params) {
-            $params=array();
+            $params=[];
         }
         $params['go']=$this->cur_page_id;
         $from= http_build_query($params);
@@ -498,7 +498,7 @@ class PageHandler extends BaseObject
         $this->cur_page_md5= $md5;
 
         $flag_already_stored=false;
-        $stored_handles=array();
+        $stored_handles=[];
 
         ### use modified version of user-cookie as filename ###
         $filename= confGet('DIR_TEMP').md5($auth->cur_user->identifier);
@@ -532,7 +532,7 @@ class PageHandler extends BaseObject
 
         }
         else {
-            $arr=array();
+            $arr=[];
         }
 
         ### add handle and write to file ###
@@ -591,7 +591,7 @@ class PageHandler extends BaseObject
             $arr= preg_split("/\n/",$data);
 
             ### convert to assoc. array and look for md5 ###
-            $stored_handles=array();
+            $stored_handles=[];
             foreach($arr as $line) {
                 $tmp_arr= preg_split("/\|/",$line);
                 if(count($tmp_arr)==2) {
@@ -604,7 +604,7 @@ class PageHandler extends BaseObject
             ### current from-handle already in there ###
             if(isset($stored_handles[$from_handle])) {
 
-                $params= array();
+                $params= [];
                 parse_str($stored_handles[$from_handle], $params);
                 return $params;
             }

@@ -81,14 +81,14 @@ class BlockFunction
 class PageBlock extends PageElement
 {
     public $id                      = NULL;         # required for cookies, block-toggle, javascript, etc.
-    public $css_classes             = array('block');      # additional classes of block. Id is automatically added
+    public $css_classes             = ['block'];      # additional classes of block. Id is automatically added
     public $style                   = NULL;
     public $title                   ='';
     public $title_append_hidden;
-    public $block_functions         = array();		# should be assoc array to allow user-settings
+    public $block_functions         = [];		# should be assoc array to allow user-settings
 	public $active_block_function   = NULL;	        # name of active block_function / style
     public $noshade                 = false;        # noframe for primary text blocks (like wiki)
-    public $headline_links          = array();      # List of links rendered behind block headline e.g. "(Show your)"
+    public $headline_links          = [];      # List of links rendered behind block headline e.g. "(Show your)"
     public $reduced_header= false; # 
 
 

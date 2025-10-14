@@ -51,7 +51,7 @@ function ProjView()
     }
 
     ### define from-handle ###
-    $PH->defineFromHandle(array('prj'=>$project->id));
+    $PH->defineFromHandle(['prj'=>$project->id]);
 
     ## is viewed by user ##
     $project->nowViewedByUser();
@@ -83,14 +83,14 @@ function ProjView()
         ### page functions ###
         if($project->isPersonVisibleTeamMember($auth->cur_user)) {
             if($editable) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'projEdit',
-                    'params'    =>array('prj'=>$project->id),
+                    'params'    =>['prj'=>$project->id],
                     'icon'      =>'edit',
                     'tooltip'   =>__('Edit this project'),
                     'name'      => __('Edit project')
     
-                )));
+                ]));
             }
 
             /*
@@ -142,46 +142,46 @@ function ProjView()
             )));
             */
             if($project->settings & PROJECT_SETTING_ENABLE_TASKS) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'taskNew',
-                    'params'    =>array('prj'=>$project->id),
+                    'params'    =>['prj'=>$project->id],
                     'icon'      =>'new',
                     'tooltip'   =>__('Create task'),
                     'name'      =>__('New task')
-                )));
+                ]));
             }
 
             if($project->settings & PROJECT_SETTING_ENABLE_BUGS) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'taskNewBug',
-                    'params'    =>array('prj'=>$project->id,'add_issue'=>1),
+                    'params'    =>['prj'=>$project->id,'add_issue'=>1],
                     'icon'      =>'new',
                     'tooltip'   =>__('Create task with issue-report'),
                     'name'      =>__('New bug'),
-                )));
+                ]));
             }
     
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'taskNewDocu',
-                'params'    =>array('prj'=>$project->id),
+                'params'    =>['prj'=>$project->id],
                 'icon'      =>'new',
                 'tooltip'   =>__('Create wiki documentation page or start discussion topic'),
                 'name'      =>__('New topic'),
-            )));
+            ]));
         
         
             if($project->settings & PROJECT_SETTING_ENABLE_EFFORTS && $auth->cur_user->settings & USER_SETTING_ENABLE_EFFORTS) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'effortNew',
-                    'params'    =>array('prj'=>$project->id),
+                    'params'    =>['prj'=>$project->id],
                     'icon'      =>'loghours',
                     'tooltip'   =>__('Book effort for this project'),
                     'name'      =>__('Book effort'),
-                )));
+                ]));
             }
         }
 
-        $url= $PH->getUrl("projViewAsRSS", array('prj' => $project->id));
+        $url= $PH->getUrl("projViewAsRSS", ['prj' => $project->id]);
         $page->extra_header_html.=
                 '<link rel="alternate" type="application/rss+xml" title="' .asHtml($project->name) .' '. __("News")  . '"'
                 .' href="' . $url . '" />';
@@ -218,9 +218,9 @@ function ProjView()
     {
         require_once(confGet('DIR_STREBER') . 'lists/list_docustructure.inc.php');
         if(Task::getDocuTasks($project->id,0)) {
-            $list=new Block_DocuNavigation(array(
+            $list=new Block_DocuNavigation([
                 'project_id' => $project->id
-            ));
+            ]);
             $list->print_all();
         }
     }
@@ -247,9 +247,9 @@ function ProjView()
         echo "<div class=description>";
 
         echo wikifieldAsHtml($project, 'description', 
-                            array(
+                            [
                                 'empty_text'=> "[quote]" . __("This project does not have any text yet.\nDoubleclick here to add some.") . "[/quote]"
-                            ));
+                            ]);
 
         echo "</div>";
     }
@@ -266,7 +266,7 @@ function ProjView()
     #--- list changes (new) -----------------------------------------------------------
     {
         require_once(confGet('DIR_STREBER') . './lists/list_recentchanges.inc.php');
-        printRecentChanges(array($project), false);
+        printRecentChanges([$project], false);
     }
 
 
@@ -281,7 +281,7 @@ function ProjView()
         #$rss_url = confGet('SELF_PROTOCOL').'://'.confGet('SELF_URL');
         #$rss_url = str_replace("index.php", "rss/", $rss_url);
         #$prj_id  = $this->page->options[0]->target_params['prj'];
-        $url= $PH->getUrl('projViewAsRSS',array('prj'=> $project->id));
+        $url= $PH->getUrl('projViewAsRSS',['prj'=> $project->id]);
         echo  "<a style='margin:0px; border-width:0px;' href='{$url}' target='_blank'>"
                 ."<img style='margin:0px; border-width:0px;' src='" . getThemeFile("icons/rss_icon.gif") ."'>"
                 ."</a>";

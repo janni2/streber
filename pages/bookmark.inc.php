@@ -56,7 +56,7 @@ function itemsAsBookmark()
         
     ## not a nice solution with 'bookmark'=>$ids[0], but the more important value is the '$ids' value ##
     if($valid){
-        $PH->show('itemBookmarkEdit', array('bookmark'=>$ids[0]), $ids);
+        $PH->show('itemBookmarkEdit', ['bookmark'=>$ids[0]], $ids);
     }
 }
 
@@ -107,9 +107,9 @@ function itemsRemoveBookmark()
     }
     else{
         foreach($ids as $id){
-            if($item = ItemPerson::getAll(array(
+            if($item = ItemPerson::getAll([
                     'person'=>$auth->cur_user->id,
-                    'item'=>$id)
+                    'item'=>$id]
                 )){
                 $item[0]->is_bookmark = 0;
                 $item[0]->update();
@@ -157,7 +157,7 @@ function itemBookmarkEdit($bookmark=NULL)
             exit();
         }
         
-        if(!$bookmark = ItemPerson::getAll(array('item'=>$ids[0], 'person'=>$auth->cur_user->id, 'is_bookmark'=>1))) {
+        if(!$bookmark = ItemPerson::getAll(['item'=>$ids[0], 'person'=>$auth->cur_user->id, 'is_bookmark'=>1])) {
             $PH->abortWarning(__("An error occured"), ERROR_NOTE);
         }
         else{
@@ -179,11 +179,11 @@ function itemBookmarkEdit($bookmark=NULL)
         elseif(count($bookmark) > 1)
         {
             ## not a nice solution with 'bookmark'=>$ids[0], but the more important value is the '$ids' value ##
-            $PH->show('itemBookmarkEditMultiple', array('bookmark'=>$bookmark[0]), $bookmark);
+            $PH->show('itemBookmarkEditMultiple', ['bookmark'=>$bookmark[0]], $bookmark);
             exit();
         }
                 
-        if($bookmarkitem = ItemPerson::getAll(array('person'=>$auth->cur_user->id, 'item'=>$bookmark[0], 'is_bookmark'=>0))){
+        if($bookmarkitem = ItemPerson::getAll(['person'=>$auth->cur_user->id, 'item'=>$bookmark[0], 'is_bookmark'=>0])){
             $editbookmark = $bookmarkitem[0];
             
             if(!$item = DbProjectItem::getById($editbookmark->item)){
@@ -191,7 +191,7 @@ function itemBookmarkEdit($bookmark=NULL)
             }
             $is_already_bookmark = FALSE;
         }
-        elseif($bookmarkitem = ItemPerson::getAll(array('person'=>$auth->cur_user->id, 'item'=>$bookmark[0], 'is_bookmark'=>1))){
+        elseif($bookmarkitem = ItemPerson::getAll(['person'=>$auth->cur_user->id, 'item'=>$bookmark[0], 'is_bookmark'=>1])){
             $editbookmark = $bookmarkitem[0];
             
             if(!$item = DbProjectItem::getById($editbookmark->item)){
@@ -201,14 +201,14 @@ function itemBookmarkEdit($bookmark=NULL)
         }
         else{
             $date = getGMTString();
-            $editbookmark = new ItemPerson(array(
+            $editbookmark = new ItemPerson([
             'id'=>0,
             'item'=>$bookmark[0],
             'person'=>$auth->cur_user->id,
             'is_bookmark'=>1,
             'notify_on_change'=>false,
             'notify_if_unchanged'=>false,
-            'created'=>$date));
+            'created'=>$date]);
             
             if(!$item = DbProjectItem::getById($bookmark[0])){
                 $PH->abortWarning("FATAL error! Related information cannot be opened.");
@@ -290,7 +290,7 @@ function itemBookmarkEdit($bookmark=NULL)
             $page = new Page();
             $page->cur_tab = 'home';
     
-            $page->options = array(new NaviOption(array('target_id'=>'itemBookmarkEdit','name'=>__('Edit bookmark'))));
+            $page->options = [new NaviOption(['target_id'=>'itemBookmarkEdit','name'=>__('Edit bookmark')])];
     
             $page->type= __('Bookmark');
             $page->title = __('Edit bookmark');
@@ -305,7 +305,7 @@ function itemBookmarkEdit($bookmark=NULL)
         {
             require_once(confGet('DIR_STREBER') . 'render/render_form.inc.php');
     
-            $block = new PageBlock(array('id'=>'functions'));
+            $block = new PageBlock(['id'=>'functions']);
             $block->render_blockStart();
     
             $form = new PageForm();
@@ -345,7 +345,7 @@ function itemBookmarkEditSubmit()
     ### cancel ? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -361,25 +361,25 @@ function itemBookmarkEditSubmit()
     $is_already_bookmark = getOnePassedId('is_already_bookmark');
     $count = 0;
     if(($bm_id != 0) && ($is_already_bookmark)){
-        if(!$bookmark = ItemPerson::getAll(array('item'=>$id, 'person'=>$auth->cur_user->id, 'is_bookmark'=>1))) {
+        if(!$bookmark = ItemPerson::getAll(['item'=>$id, 'person'=>$auth->cur_user->id, 'is_bookmark'=>1])) {
             $PH->abortWarning(__('Could not get bookmark'));
             return;
         }
     }
     elseif(($bm_id != 0) && (!$is_already_bookmark)){
-        if(!$bookmark = ItemPerson::getAll(array('item'=>$id, 'person'=>$auth->cur_user->id))) {
+        if(!$bookmark = ItemPerson::getAll(['item'=>$id, 'person'=>$auth->cur_user->id])) {
             $PH->abortWarning(__('Could not get bookmark'));
             return;
         }
     }
     elseif($bm_id == 0){
         $date = getGMTString();
-        $bookmark = new ItemPerson(array(
+        $bookmark = new ItemPerson([
             'id'=>0,
             'item'=>$id,
             'person'=>$auth->cur_user->id,
             'is_bookmark'=>1,
-            'created'=>$date));
+            'created'=>$date]);
     }
     
     if($bm_id != 0){
@@ -430,7 +430,7 @@ function itemBookmarkEditSubmit()
     
     ### display fromPage ####
     if(!$PH->showFromPage()) {
-        $PH->show('home',array());
+        $PH->show('home',[]);
     }
 }
 
@@ -443,22 +443,22 @@ function itemBookmarkEditMultiple($thebookmarks=NULL)
     global $auth;
     global $g_notitychange_period;
     
-    $is_already_bookmark = array();
-    $bookmarks = array();
-    $items = array();
+    $is_already_bookmark = [];
+    $bookmarks = [];
+    $items = [];
     
-    $edit_fields=array(
+    $edit_fields=[
         'notify_if_unchanged',
         'notify_on_change'
-    );
-    $different_fields=array();  # hash containing fieldnames which are different in bookmarks
+    ];
+    $different_fields=[];  # hash containing fieldnames which are different in bookmarks
     
     if(!$thebookmarks){
         $item_ids = getPassedIds('bookmark', 'bookmarks_*');
         
         foreach($item_ids as $is)
         {
-            if($bookmark = ItemPerson::getAll(array('item'=>$is, 'person'=>$auth->cur_user->id))){
+            if($bookmark = ItemPerson::getAll(['item'=>$is, 'person'=>$auth->cur_user->id])){
                 if($item = DbProjectItem::getById($bookmark[0]->item)){
                     $bookmarks[] = $bookmark[0];
                     $items[] = $item;
@@ -471,14 +471,14 @@ function itemBookmarkEditMultiple($thebookmarks=NULL)
         $item_ids = $thebookmarks;
         
         foreach($item_ids as $is){
-            if($bookmark = ItemPerson::getAll(array('item'=>$is, 'person'=>$auth->cur_user->id, 'is_bookmark'=>0))){
+            if($bookmark = ItemPerson::getAll(['item'=>$is, 'person'=>$auth->cur_user->id, 'is_bookmark'=>0])){
                 if($item = DbProjectItem::getById($bookmark[0]->item)){
                     $bookmarks[] = $bookmark[0];
                     $items[] = $item;
                     $is_already_bookmark[$bookmark[0]->id] = false;
                 }
             }
-            elseif($bookmark = ItemPerson::getAll(array('item'=>$is, 'person'=>$auth->cur_user->id, 'is_bookmark'=>1))){
+            elseif($bookmark = ItemPerson::getAll(['item'=>$is, 'person'=>$auth->cur_user->id, 'is_bookmark'=>1])){
                 if($item = DbProjectItem::getById($bookmark[0]->item)){
                     $bookmarks[] = $bookmark[0];
                     $items[] = $item;
@@ -487,14 +487,14 @@ function itemBookmarkEditMultiple($thebookmarks=NULL)
             }
             else{
                 $date = getGMTString();
-                $bookmark = new ItemPerson(array(
+                $bookmark = new ItemPerson([
                     'id'=>0,
                     'item'=>$is,
                     'person'=>$auth->cur_user->id,
                     'is_bookmark'=>1,
                     'notify_if_unchanged'=>0,
                     'notify_on_change'=>0,
-                    'created'=>$date));
+                    'created'=>$date]);
                     
                 if($item = DbProjectItem::getById($is)){
                     $bookmarks[] = $bookmark;
@@ -516,7 +516,7 @@ function itemBookmarkEditMultiple($thebookmarks=NULL)
             $page = new Page();
             $page->cur_tab = 'home';
     
-            $page->options = array(new NaviOption(array('target_id'=>'itemBookmarkEdit','name'=>__('Edit bookmarks'))));
+            $page->options = [new NaviOption(['target_id'=>'itemBookmarkEdit','name'=>__('Edit bookmarks')])];
     
             $page->type= __('Edit multiple bookmarks', 'page title');
             $page->title = sprintf(__('Edit %s bookmark(s)'), count($items));
@@ -608,7 +608,7 @@ function itemBookmarkEditMultiple($thebookmarks=NULL)
             }
         }
         
-        $block = new PageBlock(array('id'=>'functions'));
+        $block = new PageBlock(['id'=>'functions']);
         $block->render_blockStart();
         
         $form = new PageForm();
@@ -616,7 +616,7 @@ function itemBookmarkEditMultiple($thebookmarks=NULL)
         
         ### notify on change ###
         {
-            $b = array();
+            $b = [];
             $b[0] = __('no');
             $b[1] = __('yes');
             if(isset($different_fields['notify_on_change'])) {
@@ -630,7 +630,7 @@ function itemBookmarkEditMultiple($thebookmarks=NULL)
         
         ### notify if unchanged ###
         {
-            $a = array();
+            $a = [];
             foreach($g_notitychange_period as $key=>$value) {
                 $a[$key] = $value;
             }
@@ -675,7 +675,7 @@ function itemBookmarkEditMultipleSubmit()
     ### cancel ? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -683,8 +683,8 @@ function itemBookmarkEditMultipleSubmit()
     $count = 0;
     $error = 0;
     $edit = 0;
-    $bookmark_array = array();
-    $is_bookmark = array();
+    $bookmark_array = [];
+    $is_bookmark = [];
     
     $number = get('number');
             
@@ -696,7 +696,7 @@ function itemBookmarkEditMultipleSubmit()
         $is_bookmark[$bm_id] =  $is_already_bookmark;
         
         if(($bm_id != 0) && ($is_already_bookmark)){
-            if(!$bookmark = ItemPerson::getAll(array('id'=>$bm_id, 'person'=>$auth->cur_user->id, 'is_bookmark'=>1))) {
+            if(!$bookmark = ItemPerson::getAll(['id'=>$bm_id, 'person'=>$auth->cur_user->id, 'is_bookmark'=>1])) {
                 $error++;
             }
             else{
@@ -704,7 +704,7 @@ function itemBookmarkEditMultipleSubmit()
             }
         }
         elseif(($bm_id != 0) && (!$is_already_bookmark)){
-            if(!$bookmark = ItemPerson::getAll(array('id'=>$bm_id, 'person'=>$auth->cur_user->id, 'is_bookmark'=>0))) {
+            if(!$bookmark = ItemPerson::getAll(['id'=>$bm_id, 'person'=>$auth->cur_user->id, 'is_bookmark'=>0])) {
                 $error++;
             }
             else{
@@ -713,12 +713,12 @@ function itemBookmarkEditMultipleSubmit()
         }
         elseif($bm_id == 0){
             $date = getGMTString();
-            $bookmark = new ItemPerson(array(
+            $bookmark = new ItemPerson([
                 'id'=>0,
                 'item'=>$bm_item,
                 'person'=>$auth->cur_user->id,
                 'is_bookmark'=>1,
-                'created'=>$date));
+                'created'=>$date]);
             $bookmark_array[] = $bookmark;
         }
     }
@@ -771,7 +771,7 @@ function itemBookmarkEditMultipleSubmit()
     }
     ### display fromPage ####
     if(!$PH->showFromPage()) {
-        $PH->show('home',array());
+        $PH->show('home',[]);
     }
 }
 ?>

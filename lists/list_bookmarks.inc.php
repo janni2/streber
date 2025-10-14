@@ -67,50 +67,50 @@ class ListBlock_bookmarks extends ListBlock
 		#$this->add_col(new ListBlockCol_ItemModifier());
 		$this->add_col(new ListBlockCol_ItemModified());
 
-		$this->add_function(new ListFunction(array(
+		$this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemBookmarkEdit')->id,
             'name'  =>__('Edit bookmark'),
             'id'    =>'itemBookmarkEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-		$this->add_function(new ListFunction(array(
+        ]));
+		$this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsRemoveBookmark')->id,
             'name'  =>__('Remove bookmark'),
             'id'    =>'itemsRemoveBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
 		
 		### block style functions ###
-        $this->add_blockFunction(new BlockFunction(array(
+        $this->add_blockFunction(new BlockFunction([
             'target'=>'changeBlockStyle',
             'key'=>'list',
             'name'=>__('List','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'list',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
                 #'use_collapsed'=>true, @@@ this parameter seems useless
-             ),
+             ],
             'default'=>true,
-        )));
-        $this->groupings= new BlockFunction_grouping(array(
+        ]));
+        $this->groupings= new BlockFunction_grouping([
             'target'=>'changeBlockStyle',
             'key'=>'grouped',
             'name'=>__('Grouped','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'grouped',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
-            ),
-        ));
+            ],
+        ]);
 
         $this->add_blockFunction($this->groupings);
 		
 		### list groupings ###
-        $this->groupings->groupings= array(
+        $this->groupings->groupings= [
             new ListGroupingType(),
-        );
+        ];
    }
 
     public function print_automatic()
@@ -161,7 +161,7 @@ class ListBlock_bookmarks extends ListBlock
 
 		$bookmark_items = ItemPerson::getAll($this->query_options);
         
-        $items= array();
+        $items= [];
 
         foreach($bookmark_items as $bi) {
             if($item= DbProjectItem::getVisibleById($bi->item)) {
@@ -297,11 +297,11 @@ class ListBlockCol_ItemMonitored extends ListBlockCol
 		global $PH;
 
 		## notification on change ##
-		if($notification_items = ItemPerson::getAll(array('item'=>$item->id,'notify_on_change'=>1))){
+		if($notification_items = ItemPerson::getAll(['item'=>$item->id,'notify_on_change'=>1])){
 			print '<td><img title="' . __('Notify on change') . '" src="' . getThemeFile("icons/monitored.png"). '"></td>';
 		}
 		## notification only on unchanged ##
-		else if ($notification_items = ItemPerson::getAll(array('item'=>$item->id,'notify_if_unchanged_min'=>NOTIFY_1DAY))){
+		else if ($notification_items = ItemPerson::getAll(['item'=>$item->id,'notify_if_unchanged_min'=>NOTIFY_1DAY])){
 			print '<td><img title="' . __('Notify on change') . '" src="' . getThemeFile("icons/monitored.png"). '"></td>';
 		}
 		else{
@@ -342,12 +342,12 @@ class ListBlockCol_ItemName extends ListBlockCol
                     require_once("db/class_task.inc.php");
                     if($task = Task::getVisibleById($item->id)) {
                         $str_name = asHtml($task->name);
-                        $str_url = $PH->getUrl('taskView',array('tsk'=>$task->id));
+                        $str_url = $PH->getUrl('taskView',['tsk'=>$task->id]);
 						if($task->status >= STATUS_COMPLETED){
 							$isDone = "class=isDone";
 						}
 						if($prj = Project::getVisibleById($task->project)) {
-							$link = $PH->getLink('projView',$prj->getShort(),array('prj'=>$prj->id));
+							$link = $PH->getLink('projView',$prj->getShort(),['prj'=>$prj->id]);
 							$html_details .=__('in', 'very short for IN folder...'). ' '. $link;
 							if($tmp = $task->getFolderLinks()) {
 								$html_details .= ' > ' . $tmp;
@@ -361,15 +361,15 @@ class ListBlockCol_ItemName extends ListBlockCol
 					if($comment = Comment::getVisibleById($item->id)) {
 						$str_name = asHtml($comment->name);
 						if($comment->comment) {
-							$str_url = $PH->getUrl('taskView',array('tsk'=>$comment->task));
+							$str_url = $PH->getUrl('taskView',['tsk'=>$comment->task]);
 							$str_addon = __("(on comment)");
 						}
 						else if($comment->task) {
-							$str_url = $PH->getUrl('taskView',array('tsk'=>$comment->task));
+							$str_url = $PH->getUrl('taskView',['tsk'=>$comment->task]);
 							$str_addon = __("(on task)");
 						}
 						else {
-							$str_url = $PH->getUrl('projView',array('prj'=>$comment->project));
+							$str_url = $PH->getUrl('projView',['prj'=>$comment->project]);
 							$str_addon = __("(on project)");
 						}
 					}
@@ -379,7 +379,7 @@ class ListBlockCol_ItemName extends ListBlockCol
 					require_once("db/class_person.inc.php");
 					if($person = Person::getVisibleById($item->id)) {
 						$str_name = asHtml($person->name);
-						$str_url = $PH->getUrl('personView',array('person'=>$person->id));
+						$str_url = $PH->getUrl('personView',['person'=>$person->id]);
 					}
 					break;
 
@@ -387,10 +387,10 @@ class ListBlockCol_ItemName extends ListBlockCol
 					require_once("db/class_effort.inc.php");
 					if($e = Effort::getVisibleById($item->id)) {
 						$str_name = asHtml($e->name);
-						$str_url = $PH->getUrl('effortEdit',array('effort'=>$e->id));
+						$str_url = $PH->getUrl('effortEdit',['effort'=>$e->id]);
 					}
 					if($prj = Project::getVisibleById($e->project)) {
-						$link = $PH->getLink('projView',$prj->getShort(),array('prj'=>$prj->id));
+						$link = $PH->getLink('projView',$prj->getShort(),['prj'=>$prj->id]);
 						$html_details .=__('in', 'very short for IN folder...'). ' '. $link;
 					}
 					break;
@@ -399,12 +399,12 @@ class ListBlockCol_ItemName extends ListBlockCol
 					require_once("db/class_file.inc.php");
 					if($f = File::getVisibleById($item->id)) {
 						$str_name = asHtml($f->org_filename);
-						$str_url = $PH->getUrl('fileView',array('file'=>$f->id));
+						$str_url = $PH->getUrl('fileView',['file'=>$f->id]);
 						if($f->status >= STATUS_COMPLETED){
 							$isDone = "class=isDone";
 						}
 						if($prj = Project::getVisibleById($f->project)) {
-							$link = $PH->getLink('projView',$prj->getShort(),array('prj'=>$prj->id));
+							$link = $PH->getLink('projView',$prj->getShort(),['prj'=>$prj->id]);
 							$html_details .=__('in', 'very short for IN folder...'). ' '. $link;
 						}
 					}
@@ -414,7 +414,7 @@ class ListBlockCol_ItemName extends ListBlockCol
 					require_once("db/class_project.inc.php");
 					if($prj = Project::getVisibleById($item->id)) {
 						$str_name = asHtml($prj->name);
-						$str_url = $PH->getUrl('projView',array('prj'=>$prj->id));
+						$str_url = $PH->getUrl('projView',['prj'=>$prj->id]);
 						if($prj->status >= STATUS_COMPLETED){
 							$isDone = "class=isDone";
 						}
@@ -425,7 +425,7 @@ class ListBlockCol_ItemName extends ListBlockCol
 					require_once("db/class_company.inc.php");
 					if($c = Company::getVisibleById($item->id)) {
 						$str_name = asHtml($c->name);
-						$str_url = $PH->getUrl('companyView',array('company'=>$c->id));
+						$str_url = $PH->getUrl('companyView',['company'=>$c->id]);
 					}
 					break;
 
@@ -433,12 +433,12 @@ class ListBlockCol_ItemName extends ListBlockCol
 					require_once("db/class_task.inc.php");
 					if($tsk = Task::getVisibleById($item->id)) {
 						$str_name = asHtml($tsk->name);
-						$str_url = $PH->getUrl('taskView',array('tsk'=>$tsk->id));
+						$str_url = $PH->getUrl('taskView',['tsk'=>$tsk->id]);
 						if($tsk->status >= STATUS_COMPLETED){
 							$isDone = "class=isDone";
 						}
 						if($prj = Project::getVisibleById($task->project)) {
-							$link = $PH->getLink('projView',$prj->getShort(),array('prj'=>$prj->id));
+							$link = $PH->getLink('projView',$prj->getShort(),['prj'=>$prj->id]);
 							$html_details .=__('in', 'very short for IN folder...'). ' '. $link;
 						}
 					}
@@ -480,10 +480,10 @@ class ListBlockCol_ItemComment extends ListBlockCol
 	{
 		global $PH;
 
-		$bookmark_items = ItemPerson::getAll(array(
+		$bookmark_items = ItemPerson::getAll([
 			'item'          =>$item->id,
 		    'is_bookmark'   =>1
-		));
+		]);
 
         if($bookmark_items[0]->comment){
 			print "<td><span>" . $bookmark_items[0]->comment . "</span></td>";
@@ -510,7 +510,7 @@ class ListBlockCol_ItemRemind extends ListBlockCol
 
 	function render_tr(&$item, $style="")
 	{
-		if($ip = ItemPerson::getAll(array('item'=>$item->id,'notify_if_unchanged_min'=>NOTIFY_1DAY))){
+		if($ip = ItemPerson::getAll(['item'=>$item->id,'notify_if_unchanged_min'=>NOTIFY_1DAY])){
 			$period = '';
 			switch($ip[0]->notify_if_unchanged){
 				case NOTIFY_1DAY:

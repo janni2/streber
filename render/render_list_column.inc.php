@@ -43,7 +43,7 @@ class ListBlockCol
 		if($tooltip) {
             $this->tooltip= $tooltip;
         }
-        $this->functions=array();
+        $this->functions=[];
 
 
 		#--- either define as param-list or hash ----
@@ -97,12 +97,12 @@ class ListBlockCol
 		#--- text & link -----
 		echo "<th $tooltip class=\"$sort_style\" $width>";
         if($this->key) {
-            $link=$PH->getLink('changeSort',$this->name,array(
+            $link=$PH->getLink('changeSort',$this->name,[
                 'table_id'=>$this->parent_block->id,
                 'column'=>$this->key,
                 'page_id'=>$PH->cur_page->id,
                 'list_style'=>$this->parent_block->active_block_function,
-                ));
+                ]);
 			#echo "$sort_img<a href=\"$target\">";
 			#echo $this->name;
 			#echo "</a>";

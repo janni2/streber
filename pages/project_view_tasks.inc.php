@@ -56,224 +56,224 @@ function projViewTasks()
     #}
     
 
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_tasks' => array(
+        'all_tasks' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'tree',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### open tasks ###
-        'open_tasks' => array(
+        'open_tasks' => [
             'name'=> __('open'),
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
-                    'values'    => array(STATUS_NEW, STATUS_OPEN,STATUS_BLOCKED, STATUS_COMPLETED),
+                    'values'    => [STATUS_NEW, STATUS_OPEN,STATUS_BLOCKED, STATUS_COMPLETED],
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_COMPLETED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### my open tasks ###
-        'my_open_tasks' => array(
+        'my_open_tasks' => [
             'name'=> __('my open'),
             'filter_empty_folders'=>true,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
-                    'values'    => array( STATUS_NEW, STATUS_OPEN,STATUS_BLOCKED),
+                    'values'    => [ STATUS_NEW, STATUS_OPEN,STATUS_BLOCKED],
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_BLOCKED,
-                ),
-                'assigned_to'   => array(
+                ],
+                'assigned_to'   => [
                     'id'        => 'assigned_to',
                     'visible'   => true,
                     'active'    => true,
                     'value'    =>  $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            ),
-            'new_task_options'=> array(
+                ]
+            ],
+            'new_task_options'=> [
                 'task_assign_to_0'=> $auth->cur_user->id,
-            ),
+            ],
 
-        ),
+        ],
 
 
 
         ### next milestone ###
-        'next_milestone' => array(
+        'next_milestone' => [
             'name'=> __('for milestone'),
             'filter_empty_folders'=>true,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => false,
                     'active'    => true,
-                    'values'    => array( STATUS_NEW, STATUS_OPEN,STATUS_BLOCKED, STATUS_COMPLETED),
+                    'values'    => [ STATUS_NEW, STATUS_OPEN,STATUS_BLOCKED, STATUS_COMPLETED],
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_COMPLETED,
-                ),
-                'for_milestone'   => array(
+                ],
+                'for_milestone'   => [
                     'id'        => 'for_milestone',
                     'visible'   => true,
                     'active'    => true,
                     'value'     => $for_milestone,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            ),
-            'new_task_options'=> array(
+                ]
+            ],
+            'new_task_options'=> [
                 'for_milestone'=> $for_milestone,
-            ),
-        ),
+            ],
+        ],
 
         ### need Feedback ###
-        'needs_feedback' => array(
+        'needs_feedback' => [
             'name'=> __('modified'),
             'filter_empty_folders'=>true,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
-                    'values'    => array( STATUS_COMPLETED),
+                    'values'    => [ STATUS_COMPLETED],
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_COMPLETED,
-                ),
+                ],
                 'not_modified_by'=> $auth->cur_user->id,
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
 
         ### to be approved ###
-        'approve_tasks' => array(
+        'approve_tasks' => [
             'name'=> __('needs approval'),
             'filter_empty_folders'=>true,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
-                    'values'    => array( STATUS_COMPLETED),
+                    'values'    => [ STATUS_COMPLETED],
                     'min'       => STATUS_COMPLETED,
                     'max'       => STATUS_COMPLETED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### without milestone ###
-        'without_milestone' => array(
+        'without_milestone' => [
             'name'=> __('without milestone'),
             'filter_empty_folders'=>true,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
-                    'values'    => array( STATUS_COMPLETED),
+                    'values'    => [ STATUS_COMPLETED],
                     'min'       => STATUS_NEW,
                     'max'       => STATUS_COMPLETED,
-                ),
-                'for_milestone'   => array(
+                ],
+                'for_milestone'   => [
                     'id'        => 'for_milestone',
                     'visible'   => true,
                     'active'    => true,
                     'value'     => 0,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### closed tasks ###
-        'closed_tasks' => array(
+        'closed_tasks' => [
             'name'=> __('closed'),
             'filter_empty_folders'=>false,
-            'filters'=> array(
-                'task_status'=> array(
+            'filters'=> [
+                'task_status'=> [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
-                    'values'    => array( STATUS_APPROVED, STATUS_CLOSED),
+                    'values'    => [ STATUS_APPROVED, STATUS_CLOSED],
                     'min'       => STATUS_APPROVED,
                     'max'       => STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [
                         ''
-                    ),
+                    ],
                     'style'=> 'list',
-                )
-            )
-        ),
-    );
+                ]
+            ]
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'projViewTasks';
@@ -304,32 +304,32 @@ function projViewTasks()
 
     if($milestone) {
         ### create from handle ###
-        $PH->defineFromHandle(array(
+        $PH->defineFromHandle([
             'prj'      =>$project->id,
             'preset_id' =>$preset_id,
             'for_milestone'=>$milestone->id
-        ));
+        ]);
 
     }
     else {
         ### create from handle ###
-        $PH->defineFromHandle(array(
+        $PH->defineFromHandle([
             'prj'      =>$project->id,
             'preset_id' =>$preset_id
-        ));
+        ]);
     }
 
     $page= new Page();
 
     ### init known filters for preset ###
-    $list= new ListBlock_tasks(array(
+    $list= new ListBlock_tasks([
         'active_block_function'=>'tree',
 
-    ));
+    ]);
 
-    $list->filters[]=new ListFilter_category_in(array(
-        'value'=> array(TCATEGORY_TASK,TCATEGORY_BUG)
-    ));
+    $list->filters[]=new ListFilter_category_in([
+        'value'=> [TCATEGORY_TASK,TCATEGORY_BUG]
+    ]);
     {
 
         $preset= $presets[$preset_id];
@@ -337,30 +337,30 @@ function projViewTasks()
             switch($f_name) {
 
                 case 'task_status':
-                    $list->filters[]= new ListFilter_status_min(array(
+                    $list->filters[]= new ListFilter_status_min([
                         'value'=>$f_settings['min'],
-                    ));
-                    $list->filters[]= new ListFilter_status_max(array(
+                    ]);
+                    $list->filters[]= new ListFilter_status_max([
                         'value'=>$f_settings['max'],
-                    ));
+                    ]);
                     break;
 
                 case 'assigned_to':
-                    $list->filters[]= new ListFilter_assigned_to(array(
+                    $list->filters[]= new ListFilter_assigned_to([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
 
                 case 'for_milestone':
-                    $list->filters[]= new ListFilter_for_milestone(array(
+                    $list->filters[]= new ListFilter_for_milestone([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
 
                 case 'not_modified_by':
-                    $list->filters[]= new ListFilter_not_modified_by(array(
+                    $list->filters[]= new ListFilter_not_modified_by([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
 
 
@@ -410,7 +410,7 @@ function projViewTasks()
         ### page functions ###
         $new_task_options = isset($preset['new_task_options'])
                           ? $preset['new_task_options']
-                          : array();
+                          : [];
 
         if($project->isPersonVisibleTeamMember($auth->cur_user)) {
 
@@ -419,31 +419,31 @@ function projViewTasks()
             #    'name'=>__('new'),
             #)));
             if($preset_id != 'next_milestone') {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'taskNewFolder',
-                    'params'    =>array('prj'=>$project->id)+ $new_task_options,
+                    'params'    =>['prj'=>$project->id]+ $new_task_options,
                     'icon'      =>'new',
                     'tooltip'   =>__('Create a new folder for tasks and files'),
                     #'name'      =>__('New folder')
-                )));
+                ]));
             }
 
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'=>'taskNew',
-                'params'=>array('prj'=>$project->id)+ $new_task_options,
+                'params'=>['prj'=>$project->id]+ $new_task_options,
                 'icon'=>'new',
                 'tooltip'=>__('new subtask for this folder'),
                 #'name'=>__('Task'),
-            )));
+            ]));
 
             if($project->settings & PROJECT_SETTING_ENABLE_BUGS) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'    =>'taskNewBug',
-                    'params'    =>array('prj'=>$project->id,'add_issue'=>1)+ $new_task_options,
+                    'params'    =>['prj'=>$project->id,'add_issue'=>1]+ $new_task_options,
                     'icon'      =>'new',
                     'tooltip'   =>__('Create task with issue-report'),
                     #'name'      =>__('Bug')
-                )));
+                ]));
             }
         }
 
@@ -454,12 +454,12 @@ function projViewTasks()
 
     ### list available presets ###
     if($page->format != FORMAT_CSV){
-        $page->print_presets(array(
+        $page->print_presets([
             'target'=> $preset_location,
             'project_id'=> $project->id,
             'preset_id'=> $preset_id,
             'presets'=> $presets,
-            'person_id' => ''));
+            'person_id' => '']);
      }
 
 
@@ -489,9 +489,9 @@ function projViewTasks()
     #--- list tasks --------------------------------------------------------------------------
     {   
         if($for_milestone) {
-            $list->filters[]= new ListFilter_for_milestone(array(
+            $list->filters[]= new ListFilter_for_milestone([
                             'value'=>$for_milestone,
-                    ));
+                    ]);
         }
         $list->show_project_folder= false;
 

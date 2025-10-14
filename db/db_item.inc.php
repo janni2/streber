@@ -31,7 +31,7 @@ abstract class DbItem {
         }
 
         #--- create members for all fields ---
-        $this->field_states=array();
+        $this->field_states=[];
         foreach($this->fields as $f) {
             $this->field_states[$f->name]=FSTATE_UNKNOWN;
             $tmp_name=$f->name;
@@ -152,7 +152,7 @@ abstract class DbItem {
         #--- build value-array ----
         $prefix= confGet('DB_TABLE_PREFIX');
         $query = "UPDATE {$prefix}{$this->_type} SET  ";
-        $values=array();
+        $values=[];
         $counter=1;
         $delimiter="";
         $value_str="VALUES(";
@@ -173,7 +173,7 @@ abstract class DbItem {
 
         $dbh = new DB_Mysql;
         $statement=$dbh->prepare($query);
-        call_user_func_array(array($statement,'execute'),$values);
+        call_user_func_array([$statement,'execute'],$values);
         return true;
     }
 
@@ -194,8 +194,8 @@ abstract class DbItem {
         #--- build query-string like "INSERT INTO users (firstname, lastname) VALUES(:1, :2)" --
         #--- build value-array ----
         $prefix= confGet('DB_TABLE_PREFIX');
-        $t_values= array();
-        $t_fields= array();
+        $t_values= [];
+        $t_fields= [];
         foreach($this->field_states as $m_key => $m_state) {
             if(!isset($this->$m_key) && $this->$m_key!=NULL) {
                 trigger_error("$m_key is not a member of $this and can't be passed to db", E_USER_ERROR);
@@ -328,19 +328,19 @@ abstract class DbItem {
 
         require_once(confGet('DIR_STREBER') . 'db/db_itemperson.inc.php');
 
-        if($view = ItemPerson::getAll(array('person'=>$user->id, 'item'=>$this->id))){
+        if($view = ItemPerson::getAll(['person'=>$user->id, 'item'=>$this->id])){
             $view[0]->viewed        = true;
             $view[0]->viewed_last   = getGMTString();
             $view[0]->update();
         }
         else{
-            $new_view = new ItemPerson(array(
+            $new_view = new ItemPerson([
             'item'          =>$this->id,
             'person'        =>$user->id,
             'viewed'        =>1,
             'viewed_last'   =>getGMTString(),
             'is_bookmark'   =>0,
-            'notify_on_change'=>0));
+            'notify_on_change'=>0]);
             $new_view->insert();
         }
     }
@@ -371,10 +371,10 @@ abstract class DbItem {
         }
 
         require_once(confGet('DIR_STREBER') . 'db/db_itemperson.inc.php');
-        if($item_people = ItemPerson::getAll(array(
+        if($item_people = ItemPerson::getAll([
             'person'=>$auth->cur_user->id,
             'item' => $this->id
-        ))) {
+        ])) {
             $ip= $item_people[0];
             if($ip->viewed_last < $this->modified) {
                 return 2;
@@ -397,11 +397,11 @@ abstract class DbItem {
         global $auth;
 
         require_once(confGet('DIR_STREBER') . 'db/db_itemperson.inc.php');
-        if($item_people = ItemPerson::getAll(array(
+        if($item_people = ItemPerson::getAll([
             'person'=>$auth->cur_user->id,
             'item' => $this->id,
             'feedback_requested_by' => true,
-        ))) {
+        ])) {
             $ip= $item_people[0];
             return $ip->feedback_requested_by;
         }
@@ -419,9 +419,9 @@ abstract class DbItem {
         require_once('db/db_itemperson.inc.php');
         global $auth;
 
-        if ($ips = ItemPerson::getAll(array(
+        if ($ips = ItemPerson::getAll([
                                         'item'=>$this->id,
-                                        'person'=> $auth->cur_user->id))
+                                        'person'=> $auth->cur_user->id])
         ) {
 
             ### if notify_if_unchanged is set ###
@@ -496,8 +496,8 @@ function addProjectItemFields(&$ref_fields) {
 class DbProjectItem extends DbItem {
 
     public $fields_project;
-    private $_values_org=array();
-    public $children= array();
+    private $_values_org=[];
+    public $children= [];
 
     /**
     * create empty project-item or querry database
@@ -621,64 +621,64 @@ class DbProjectItem extends DbItem {
     
     static function initItemFields() {
         global $g_item_fields;
-        $g_item_fields=array();
+        $g_item_fields=[];
         
-        foreach(array(
+        foreach([
                     ### internal fields ###
-                    new FieldInternal  (array('name'=>'id',
+                    new FieldInternal  (['name'=>'id',
                         'default'=>0,
                         'log_changes'=>false,
-                    )),
-                    new FieldInternal  (array('name'=>'type',
+                    ]),
+                    new FieldInternal  (['name'=>'type',
                         'default'=>0,
                         'log_changes'=>false,
-                    )),
-                    new FieldUser     (array('name'=>'created_by',
+                    ]),
+                    new FieldUser     (['name'=>'created_by',
                         'default'=> FINIT_CUR_USER,
                         'view_in_forms'=>false,
                         'log_changes'=>false,
-                    )),
-                    new FieldDatetime( array('name'=>'created',
+                    ]),
+                    new FieldDatetime( ['name'=>'created',
                         'default'=>FINIT_NOW,
                         'view_in_forms'=>false,
                         'log_changes'=>false,
-                    )),
-                    new FieldUser     (array('name'=>'modified_by',
+                    ]),
+                    new FieldUser     (['name'=>'modified_by',
                         'default'=> FINIT_CUR_USER,
                         'view_in_forms'=>false,
                         'log_changes'=>false,
-                    )),
-                    new FieldDate     (array('name'=>'modified',
+                    ]),
+                    new FieldDate     (['name'=>'modified',
                         'default'=>FINIT_NOW,
                         'view_in_forms'=>false,
                         'log_changes'=>false,
-                    )),
-                    new FieldUser     (array('name'=>'deleted_by',
+                    ]),
+                    new FieldUser     (['name'=>'deleted_by',
                         'view_in_forms'=>false,
                         'log_changes'=>false,
                         'default'=>0,
-                    )),
-                    new FieldDate     (array('name'=>'deleted',
+                    ]),
+                    new FieldDate     (['name'=>'deleted',
                         'default'=>FINIT_NEVER,
                         'view_in_forms'=>false,
                         'log_changes'=>false,
-                    )),
-                    new FieldInternal(array(    'name'=>'pub_level',
+                    ]),
+                    new FieldInternal([    'name'=>'pub_level',
                         'view_in_forms'=>false,
                         'default'=>PUB_LEVEL_OPEN,
                         'log_changes'=>true,
         
-                    )),
-                    new FieldInternal  (array('name'=>'state',
+                    ]),
+                    new FieldInternal  (['name'=>'state',
                         'log_changes'=>true,
                         'default'=>1,
-                    )),
-                    new FieldInternal  (array('name'=>'project',
+                    ]),
+                    new FieldInternal  (['name'=>'project',
                         'default'=>0,
                         'log_changes'=>false,
-                    )),
+                    ]),
         
-               ) as $f) {
+               ] as $f) {
                     $g_item_fields[$f->name]=$f;
                }
             }
@@ -821,8 +821,8 @@ class DbProjectItem extends DbItem {
         {
             $dbh = new DB_Mysql;
 
-            $t_fields=array();
-            $t_values=array();
+            $t_fields=[];
+            $t_values=[];
             foreach($g_item_fields as $f) {
                 $name= $f->name;
                 if(!isset($this->$name) && $this->$name!=NULL) {
@@ -850,8 +850,8 @@ class DbProjectItem extends DbItem {
         #
         {
             $dbh = new DB_Mysql;
-            $t_fields=array();
-            $t_values=array();
+            $t_fields=[];
+            $t_values=[];
 
             foreach($this->fields as $f) {
                 $name= $f->name;
@@ -890,7 +890,7 @@ class DbProjectItem extends DbItem {
 
         ### build hash to fast access ##
         if($args) {
-            $update_fields=array();
+            $update_fields=[];
             foreach($args as $a) {
                 $update_fields[$a]=true;
             }
@@ -920,13 +920,13 @@ class DbProjectItem extends DbItem {
         }
 
 
-        $log_changed_fields= array();
+        $log_changed_fields= [];
 
         #--- first write item-fields ---
         #
         #--- build query-string like "update users SET firstname=:1, lastname=:2 where id=:3" --
         {
-            $t_pairs=array();
+            $t_pairs=[];
             foreach($g_item_fields as $f) {
                 $name= $f->name;
                 if($update_fields && !isset($update_fields[$name])) {
@@ -968,7 +968,7 @@ class DbProjectItem extends DbItem {
         #
         if($this->_type && $this->_type != 'dbprojectitem') {
 
-            $t_pairs=array();          # the 'id' field is skipped later, because it's defined as project-item-field. so we have to add it here
+            $t_pairs=[];          # the 'id' field is skipped later, because it's defined as project-item-field. so we have to add it here
             foreach($this->fields as $f) {
                 $name= $f->name;
 
@@ -1017,11 +1017,11 @@ class DbProjectItem extends DbItem {
                     /**
                     * keep changes in itemchange table
                     */
-                    $c= new ItemChange(array(
+                    $c= new ItemChange([
                         'item'=>    $this->id,
                         'field'=>   $name,
                         'value_old'=>$this->_values_org[$name],
-                    ));
+                    ]);
                     $c->insert();
                 }
             }
@@ -1181,7 +1181,7 @@ class DbProjectItem extends DbItem {
                 $min_pub_level= $pp->level_reduce;
 
                 ### get slice of assoc. array ###
-                $levels= array();
+                $levels= [];
                 for($i= $min_pub_level; $i <= $max_pub_level; $i++) {
                     if(isset($g_pub_level_names[$i])) {
                         $levels[$i]= $g_pub_level_names[$i];
@@ -1264,7 +1264,7 @@ class DbProjectItem extends DbItem {
     *
     * This function is used for getting changed items for projects or by user, etc.
     */
-    static function getAll($args=array())
+    static function getAll($args=[])
     {
         global $auth;
         $prefix = confGet('DB_TABLE_PREFIX');
@@ -1415,15 +1415,15 @@ class DbProjectItem extends DbItem {
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
 
-        $items= array();
+        $items= [];
         
         if($unviewed_only)
         {
             require_once(confGet('DIR_STREBER') . "db/db_itemperson.inc.php");
-            $viewed_items=array();
-            foreach(ItemPerson::getAll(array(
+            $viewed_items=[];
+            foreach(ItemPerson::getAll([
                 'person'=> $auth->cur_user->id,
-            )) as $vi) {
+            ]) as $vi) {
                 $viewed_items[$vi->item]= $vi;                
             }
 
@@ -1532,32 +1532,32 @@ class DbProjectItem extends DbItem {
 
         ### has user last edited this item? ###
         if($this->modified_by == $auth->cur_user->id) {
-            return array();      
+            return [];      
         }
 
         ### has user seen item? ###
-        else if($item_people = ItemPerson::getAll(array(
+        else if($item_people = ItemPerson::getAll([
             'person'=>$auth->cur_user->id,
             'item' => $this->id
-        ))) {
+        ])) {
             $ip= $item_people[0];
             if($ip->viewed_last > $this->modified) {
-                return array();
+                return [];
             }
         }
         else {
-            return array();
+            return [];
         }
         
-        $changes= ItemChange::getItemChanges(array(
+        $changes= ItemChange::getItemChanges([
             'item' => $this->id,
             'date_min' => $ip->viewed_last,
-        ));
+        ]);
         if(!$changes) {
-            return array();
+            return [];
         }
 
-        $changedFields = array();
+        $changedFields = [];
         foreach( $changes as $change ) 
         {
             $changedFields[$change->field] = true;
@@ -1584,10 +1584,10 @@ class DbProjectItem extends DbItem {
         }
 
         ### has user seen item? ###        
-        else if($item_people = ItemPerson::getAll(array(
+        else if($item_people = ItemPerson::getAll([
             'person'=>$auth->cur_user->id,
             'item' => $this->id
-        ))) {
+        ])) {
             $ip= $item_people[0];
             if($ip->viewed_last > $this->modified) {
                 return $this->$fieldname;
@@ -1598,12 +1598,12 @@ class DbProjectItem extends DbItem {
         }
         
         $new_version = $this->$fieldname;
-        $changes= ItemChange::getItemChanges(array(
+        $changes= ItemChange::getItemChanges([
             'item' => $this->id,
             'field' => $fieldname,
             'order_by' => 'modified',
             'date_min' => $ip->viewed_last,
-        ));
+        ]);
         if(!$changes) {
             return $this->$fieldname;
         }
@@ -1615,7 +1615,7 @@ class DbProjectItem extends DbItem {
         $nta = explode( "\n", str_replace( "\r\n", "\n", $new_version ) );
         $diffs = new Diff( $ota, $nta );
         
-        $new_lines= array();
+        $new_lines= [];
         foreach($diffs as $d) {
             foreach($d as $do) {
                 if($do->type == 'copy') {

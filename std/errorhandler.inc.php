@@ -29,7 +29,7 @@ DEFINE('ERROR_DATASTRUCTURE', 6);
 
 
 global $g_error_list;
-$g_error_list=array();
+$g_error_list=[];
 
 function customHandler($number, $error_string, $file, $line, $context)
 {
@@ -132,7 +132,7 @@ function customHandler($number, $error_string, $file, $line, $context)
 
     ### collect additional information
     {
-        $infos=array();
+        $infos=[];
         if(function_exists('confGet')) {
             $infos[]='v'. confGet('STREBER_VERSION');
         }
@@ -202,7 +202,7 @@ function customHandler($number, $error_string, $file, $line, $context)
 */
 function implodeArgs($args)
 {
-    $arr= array();
+    $arr= [];
     foreach($args as $a) {
         $out= '';
         switch(gettype($a)) {

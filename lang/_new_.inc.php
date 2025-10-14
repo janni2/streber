@@ -33,7 +33,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 'autodetect'                  =>'',
 'Summary'                     =>'',
@@ -1470,7 +1470,7 @@ $g_lang_table= array(
 'update your account settings'=>'',
 
 
-);
+];
 
 
 

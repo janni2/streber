@@ -50,7 +50,7 @@ class PageFormElement extends PageElement{
     
     protected function renderCssClasses() 
     {
-        $classes = array($this->type);        
+        $classes = [$this->type];        
 
         if($this->invalid) {
             $classes[]= 'invalid';
@@ -86,7 +86,7 @@ class Form_Captcha extends PageFormElement
     {
         global $PH;
 
-        $url= $PH->getUrl('imageRenderCaptcha',array('key' => $this->value));
+        $url= $PH->getUrl('imageRenderCaptcha',['key' => $this->value]);
 
         $buffer= "<p title='$this->tooltip' $this->id $this->display>
             <label>$this->title</label>
@@ -107,7 +107,7 @@ class Form_Input extends PageFormElement
 {
     public $required=false;
 
-    PUBLIC function __construct($name=false, $title="", $value=false, $tooltip=NULL, $required=false, $id="", $display="", $input_attributes= array())
+    PUBLIC function __construct($name=false, $title="", $value=false, $tooltip=NULL, $required=false, $id="", $display="", $input_attributes= [])
     {
         $this->type='input';
         parent::__construct();
@@ -453,7 +453,7 @@ class Form_Dropdown extends PageFormElement {
 
     private $options;
 
-    PUBLIC function __construct($name=false, $title="", $options=array(), $value=false, $id="", $display="")
+    PUBLIC function __construct($name=false, $title="", $options=[], $value=false, $id="", $display="")
     {
         $this->type='dropdown';
         parent::__construct();
@@ -465,7 +465,7 @@ class Form_Dropdown extends PageFormElement {
 
         $this->options= $options
                       ? $options
-                        :array();
+                        :[];
     }
 
     PUBLIC function __toString()
@@ -509,7 +509,7 @@ class Form_DropdownGrouped extends PageFormElement {
 
     private $options;
 
-    PUBLIC function __construct($name=false, $title="", $options=array(), $value=false, $id="", $display="")
+    PUBLIC function __construct($name=false, $title="", $options=[], $value=false, $id="", $display="")
     {
         $this->type='dropdown';
         parent::__construct();
@@ -521,7 +521,7 @@ class Form_DropdownGrouped extends PageFormElement {
 
         $this->options= $options
                       ? $options
-                      :array();
+                      :[];
     }
 
     PUBLIC function __toString()
@@ -684,13 +684,13 @@ class PageForm extends PageElement
     public  $button_apply= false;       # set to true to render
     public  $button_submit= "Submit";
 
-    public  $form_options=array();      # currently a list of html-snips
+    public  $form_options=[];      # currently a list of html-snips
 
     PUBLIC function __construct()
     {
         global $auth;
         global $PH;
-        $this->children=array();
+        $this->children=[];
 
         /**
         * NOTE:
@@ -712,7 +712,7 @@ class PageForm extends PageElement
     {
         $buffer= "<div class=form>";
 
-        $hidden_fields= array();
+        $hidden_fields= [];
         foreach($this->children as $key=>$field) {
             if($field instanceof Form_HiddenField) {
                 $hidden_fields[$field->name]= $field->value;

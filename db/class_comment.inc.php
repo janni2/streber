@@ -19,55 +19,55 @@
 */
     global $comment_fields;
     global $COMMENTTYPE_VALUES;
-    $comment_fields= array();
+    $comment_fields= [];
     addProjectItemFields($comment_fields);
 
-    foreach(array(
-        new FieldInternal(array(    'name'=>'id',
+    foreach([
+        new FieldInternal([    'name'=>'id',
             'default'=>0,
             'in_db_object'=>1,
             'in_db_item'=>1,
-        )),
-            new FieldString(array(      'name'=>'name',
+        ]),
+            new FieldString([      'name'=>'name',
                 'title'=>__('Summary'),
                 'log_changes'=>true,
-            )),
-            new FieldDatetime(array(    'name'=>'time',
+            ]),
+            new FieldDatetime([    'name'=>'time',
                 'default'=>FINIT_NOW,
                 'view_in_forms'=>false,
-            )),
-            new FieldHidden(array(      'name'=>'person',
+            ]),
+            new FieldHidden([      'name'=>'person',
                 'view_in_forms'=>true
-            )),
-            new FieldHidden(array(      'name'=>'comment',
+            ]),
+            new FieldHidden([      'name'=>'comment',
                 'view_in_forms'=>true
-            )),
-            new FieldHidden(array(      'name'=>'task',
+            ]),
+            new FieldHidden([      'name'=>'task',
                 'view_in_forms'=>true
-            )),
-            new FieldHidden(array(      'name'=>'effort'
-            )),
-            new FieldInternal(array(      'name'=>'view_collapsed'
-            )),
+            ]),
+            new FieldHidden([      'name'=>'effort'
+            ]),
+            new FieldInternal([      'name'=>'view_collapsed'
+            ]),
 
-            new FieldHidden(array(      'name'=>'file'
-            )),
-            new FieldBool(array(        'name'=>'starts_discussion',
+            new FieldHidden([      'name'=>'file'
+            ]),
+            new FieldBool([        'name'=>'starts_discussion',
                 'title'=>'Starts Project Discussion',
                 'view_in_forms'=>false,         # save discussions as a later feature
 
-            )),
-            new FieldText(array(        'name'=>'description',
+            ]),
+            new FieldText([        'name'=>'description',
                 'title'=>__('Details'),
                 'log_changes'=>true,
 
-            )),
-            new FieldHidden(array(         'name'=>'occasion',
+            ]),
+            new FieldHidden([         'name'=>'occasion',
                 'default'=>$COMMENTTYPE_VALUES['Comment'],
                 'view_in_forms'=>true,         # save discussions as a later feature
 
-            )),
-    ) as $f) {
+            ]),
+    ] as $f) {
         $comment_fields[$f->name]=$f;
     }
 
@@ -156,12 +156,12 @@ class Comment extends DbProjectItem
     public function getSubComments()
     {
         if(!$project= Project::getById($this->project)) {
-            return array();
+            return [];
         }
         
-        $comments= Comment::getAll(array(
+        $comments= Comment::getAll([
             'parent_comment'=> $this->id        
-        ));
+        ]);
         
         return $comments;
     }
@@ -170,7 +170,7 @@ class Comment extends DbProjectItem
     /**
     * getComments($project=false)
     */
-    static function getAll($args=Array())
+    static function getAll($args=[])
     {
         global $auth;
 		$prefix = confGet('DB_TABLE_PREFIX');
@@ -291,7 +291,7 @@ class Comment extends DbProjectItem
         $sth= $dbh->prepare($str_query);
     	$sth->execute("",1);
     	$tmp=$sth->fetchall_assoc();
-    	$comments=array();
+    	$comments=[];
         foreach($tmp as $n) {
             $comment=new Comment($n);
             $comments[]= $comment;
@@ -303,7 +303,7 @@ class Comment extends DbProjectItem
     public function getLink()
     {
         global $PH;
-        return $PH->getLink('commentView', $this->name, array('comment'=>$this->id));
+        return $PH->getLink('commentView', $this->name, ['comment'=>$this->id]);
     }
 }
 

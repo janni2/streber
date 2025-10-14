@@ -776,11 +776,11 @@ class IsAExpectation extends SimpleExpectation {
      */
     function _canonicalType($type) {
         $type = strtolower($type);
-        $map = array(
+        $map = [
                 'bool' => 'boolean',
                 'float' => 'double',
                 'real' => 'double',
-                'int' => 'integer');
+                'int' => 'integer'];
         if (isset($map[$type])) {
             $type = $map[$type];
         }
@@ -939,7 +939,7 @@ class ValidStructureExpectation extends SimpleExpectation {
 
     function testHtmlStructure($html) {
     
-        $tags=array(
+        $tags=[
             "html"    =>1,
             "head"    =>1,
             "body"    =>1,
@@ -973,9 +973,9 @@ class ValidStructureExpectation extends SimpleExpectation {
             #"option"=>1,
             #"select"=>1,
         
-        );
+        ];
             
-        $tag_stack=array();
+        $tag_stack=[];
         $buffer="";
         
         $lines= preg_split("/\n/",$html);

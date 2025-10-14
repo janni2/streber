@@ -149,7 +149,7 @@ function itemSaveField()
     }
 
     ### update 
-    $object->update(array($field_name));
+    $object->update([$field_name]);
     
     ### mark parent of comment as changes 
     if($item->type == ITEM_COMMENT) {
@@ -201,13 +201,13 @@ function AjaxMoreChanges()
           ? 20
           : intval(get('count'));
           
-    $options = array(
+    $options = [
         'project'           => $project->id,
         'unviewed_only'     => false,
         'limit_rowcount'    => $count,
         'limit_offset'      => $start,
-        'type'              => array(ITEM_TASK, ITEM_FILE),
-    );
+        'type'              => [ITEM_TASK, ITEM_FILE],
+    ];
 
     if( $auth->cur_user->settings & USER_SETTING_FILTER_OWN_CHANGES) {
         $options['not_modified_by'] = $auth->cur_user->id;

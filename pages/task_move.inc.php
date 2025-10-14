@@ -109,7 +109,7 @@ function TasksMoveToFolder()
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>false));
+        $page= new Page(['use_jscalendar'=>false]);
 
 
         $page->cur_tab='projects';
@@ -121,9 +121,9 @@ function TasksMoveToFolder()
 
         $page->crumbs= build_project_crumbs($project);
 
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id'     =>'tasksMoveToFolder',
-        ));
+        ]);
 
 
         echo(new PageHeader);
@@ -136,7 +136,7 @@ function TasksMoveToFolder()
 
 
         ### write project-selector ###
-        $prj_names = array();
+        $prj_names = [];
         
         if($projects = Project::getAll()){
             foreach($projects as $p){
@@ -196,9 +196,9 @@ function _moveTask($task_id, $target_project_id, $target_task_id)
         $task->project = $target_project_id;
 
         ### move linked comments
-        if($comments = Comment::getAll(array(   'visible_only'=>false,
+        if($comments = Comment::getAll([   'visible_only'=>false,
                                                 'alive_only'=>false,
-                                                'task'=>$task->id)  ) 
+                                                'task'=>$task->id]  ) 
         ){
             foreach($comments as $c){ 
                 $c->project = $target_project_id;
@@ -207,9 +207,9 @@ function _moveTask($task_id, $target_project_id, $target_task_id)
         }
 
         ### move linked efforts
-        if($efforts = Effort::getAll(array(   'visible_only'=>false,
+        if($efforts = Effort::getAll([   'visible_only'=>false,
                                                 'alive_only'=>false,
-                                                'task'=>$task->id)  ) 
+                                                'task'=>$task->id]  ) 
         ){
             foreach($efforts as $e){ 
                 $e->project = $target_project_id;
@@ -218,7 +218,7 @@ function _moveTask($task_id, $target_project_id, $target_task_id)
         }
 
         ### move subtasks
-        foreach($task->getSubtasksRecursiveAll(array('visible_only'=>true, 'alive_only'=>false)) as $subtask) {                    
+        foreach($task->getSubtasksRecursiveAll(['visible_only'=>true, 'alive_only'=>false]) as $subtask) {                    
             _moveTask($subtask->id, $target_project_id, $subtask->parent_task);
         }
 
@@ -247,7 +247,7 @@ function _getParentOfTaskId($task_id)
         $parents[]= $task;    
     }
     else {
-        $parents=array();
+        $parents=[];
     }
     return $parents;    
 }
@@ -311,7 +311,7 @@ function ajaxListProjectFolders()
         unset($list->columns['label']);
         unset($list->columns['project']);
 
-        $list->functions= array();
+        $list->functions= [];
 
         $list->active_block_function = 'tree';
 

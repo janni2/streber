@@ -55,20 +55,20 @@ function projList()
         if($auth->cur_user->user_rights & RIGHT_PROJECT_CREATE) {
 
             ### page functions ###
-            $page->add_function(new PageFunctionGroup(array(
+            $page->add_function(new PageFunctionGroup([
                     'name'      => __('New project from')
-                )));
+                ]));
         
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'=> 'projListTemplates',
                 'name'  => __("template"),
                 'icon'  => 'new',
-            )));
-            $page->add_function(new PageFunction(array(
+            ]));
+            $page->add_function(new PageFunction([
                 'target'=> 'projNew',
                 'name'  => __("scratch"),
                 'icon'  => 'new',
-            )));
+            ]));
         }
     
         ### render title ###
@@ -104,7 +104,7 @@ function projList()
                 $warning=__("<b>NOTE</b>: Some projects are hidden from your view. Please ask an administrator to adjust you rights to avoid double-creation of projects");
             }
 
-            $list->no_items_html= $PH->getLink('projNew',__('create new project'),array()). $warning;
+            $list->no_items_html= $PH->getLink('projNew',__('create new project'),[]). $warning;
         }
         else {
             $list->no_items_html= __("not assigned to a project");
@@ -266,133 +266,133 @@ function ProjViewChanges()
     }
 
     ### sets the presets ###
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_changes' => array(
+        'all_changes' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'task_status'   =>  array(
+            'filters'=> [
+                'task_status'   =>  [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'    =>  STATUS_UNDEFINED,
                     'max'    =>  STATUS_CLOSED,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ## modified by me ##
-        'modified_by_me' => array(
+        'modified_by_me' => [
             'name'=> __('modified by me'),
-            'filters'=> array(
-                'task_status'   =>  array(
+            'filters'=> [
+                'task_status'   =>  [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'    =>  STATUS_UNDEFINED,
                     'max'    =>  STATUS_CLOSED,
-                ),
-                'modified_by'   =>  array(
+                ],
+                'modified_by'   =>  [
                     'id'        => 'modified_by',
                     'visible'   => true,
                     'active'    => true,
                     'value'    =>  $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ## modified by others ##
-        'modified_by_others' => array(
+        'modified_by_others' => [
             'name'=> __('modified by others'),
-            'filters'=> array(
-                'task_status'   =>  array(
+            'filters'=> [
+                'task_status'   =>  [
                     'id'        => 'task_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'    =>  STATUS_UNDEFINED,
                     'max'    =>  STATUS_CLOSED,
-                ),
-                'not_modified_by'   => array(
+                ],
+                'not_modified_by'   => [
                     'id'        => 'not_modified_by',
                     'visible'   => true,
                     'active'    => true,
                     'value'    =>  $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ## last logout ##
-        'last_logout' => array(
+        'last_logout' => [
             'name'=> __('last logout'),
-            'filters'=> array(
-                'last_logout'   => array(
+            'filters'=> [
+                'last_logout'   => [
                     'id'        => 'last_logout',
                     'visible'   => true,
                     'active'    => true,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ## 1 week ##
-        'last_week' => array(
+        'last_week' => [
             'name'=> __('1 week'),
-            'filters'=> array(
-                'last_week'   => array(
+            'filters'=> [
+                'last_week'   => [
                     'id'        => 'last_week',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 7,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         ## 2 week ##
-        'last_two_weeks' => array(
+        'last_two_weeks' => [
             'name'=> __('2 weeks'),
-            'filters'=> array(
-                'last_two_weeks'   => array(
+            'filters'=> [
+                'last_two_weeks'   => [
                     'id'        => 'last_two_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 14,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
-    );
+                ]
+            ],
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'projViewChanges';
@@ -422,7 +422,7 @@ function ProjViewChanges()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array('prj'=>$project->id, 'preset_id'=>$preset_id));
+    $PH->defineFromHandle(['prj'=>$project->id, 'preset_id'=>$preset_id]);
 
     ## init known filters for preset ##
     require_once(confGet('DIR_STREBER') . './lists/list_changes.inc.php');
@@ -436,40 +436,40 @@ function ProjViewChanges()
         foreach($preset['filters'] as $f_name=>$f_settings) {
             switch($f_name) {
                 case 'task_status':
-                    $list->filters[]= new ListFilter_status_min(array(
+                    $list->filters[]= new ListFilter_status_min([
                         'value'=>$f_settings['min'],
-                    ));
+                    ]);
                     #$list->filters[]= new ListFilter_status_max(array(
                     #    'value'=>$f_settings['max'],
                     #));
                     break;
                 case 'modified_by':
-                    $list->filters[]= new ListFilter_modified_by(array(
+                    $list->filters[]= new ListFilter_modified_by([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
                 case 'not_modified_by':
-                    $list->filters[]= new ListFilter_not_modified_by(array(
+                    $list->filters[]= new ListFilter_not_modified_by([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
                 case 'last_logout':
-                    $list->filters[]= new ListFilter_last_logout(array(
+                    $list->filters[]= new ListFilter_last_logout([
                         'value'=>$f_settings['value'],
-                    ));
+                    ]);
                     break;
                 case 'last_week':
-                    $list->filters[]= new ListFilter_min_week(array(
+                    $list->filters[]= new ListFilter_min_week([
                         'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                    ));
+                    ]);
                     #$list->filters[]= new ListFilter_max_week(array(
                     #   'value'=>$f_settings['value'],
                     #));
                     break;
                 case 'last_two_weeks':
-                    $list->filters[]= new ListFilter_min_week(array(
+                    $list->filters[]= new ListFilter_min_week([
                         'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                    ));
+                    ]);
                     #$list->filters[]= new ListFilter_max_week(array(
                     #   'value'=>$f_settings['value'],
                     #));
@@ -510,12 +510,12 @@ function ProjViewChanges()
     }
     echo (new PageContentOpen);
 
-    $page->print_presets(array(
+    $page->print_presets([
         'target' => $preset_location,
         'project_id' => $project->id,
         'preset_id' => $preset_id,
         'presets' => $presets,
-        'person_id' => ''));
+        'person_id' => '']);
 
     #echo(new PageContentNextCol);
 
@@ -553,9 +553,9 @@ function ProjViewDocu()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array(
+    $PH->defineFromHandle([
         'prj'      =>$project->id,
-    ));
+    ]);
 
     ### set up page ####
     {
@@ -580,13 +580,13 @@ function ProjViewDocu()
 
         ### page functions ###
         if($project->isPersonVisibleTeamMember($auth->cur_user))  {
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'taskNew',
-                'params'    =>array('prj'=>$project->id, 'task_category'=>TCATEGORY_DOCU, 'task_show_folder_as_documentation'=>1),
+                'params'    =>['prj'=>$project->id, 'task_category'=>TCATEGORY_DOCU, 'task_show_folder_as_documentation'=>1],
                 'icon'      =>'new',
                 'tooltip'   =>__('Create a new page'),
                 'name'      =>__('New topic')
-            )));
+            ]));
         }
     
         ### render title ###
@@ -600,9 +600,9 @@ function ProjViewDocu()
     #--- list documentation pages  --------------------------------------------------------------------------
     {
         ### init known filters for preset ###
-        $list= new ListBlock_tasks(array(
+        $list= new ListBlock_tasks([
             'active_block_function'=>'tree'
-        ));
+        ]);
         $list->title= __('Topics');
 
         $list->query_options['category']= TCATEGORY_DOCU;
@@ -611,7 +611,7 @@ function ProjViewDocu()
         $list->query_options['order_by']= 'order_id';
 
         ### redefine columns ###
-        $c_new = array();
+        $c_new = [];
         foreach($list->columns as $cname => $c) {
             if($cname == '_select_col_') {
                 $c_new[$cname] = $c;
@@ -664,7 +664,7 @@ function ProjViewFiles()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array('prj'=>$project->id));
+    $PH->defineFromHandle(['prj'=>$project->id]);
 
     ### set up page ####
     {
@@ -690,7 +690,7 @@ function ProjViewFiles()
 
     ### upload files ###
     if($project->isPersonVisibleTeamMember($auth->cur_user))  {
-        $block=new PageBlock(array('title'=>__('Upload file','block title'),'id'=>'summary'));
+        $block=new PageBlock(['title'=>__('Upload file','block title'),'id'=>'summary']);
         $block->render_blockStart();
 
         echo "<div class=text>";
@@ -751,10 +751,10 @@ function ProjViewMilestones()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array(
+    $PH->defineFromHandle([
         'prj'=>$project->id,
         'preset'=> get('preset'),
-    ));
+    ]);
 
     ### set up page ####
     {
@@ -772,11 +772,11 @@ function ProjViewMilestones()
         ### page functions ###
         if($project->isPersonVisibleTeamMember($auth->cur_user)) {
             if($auth->cur_user->id != confGet('ANONYMOUS_USER')) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNewMilestone',
-                    'params'=>array('prj'=>$project->id),
+                    'params'=>['prj'=>$project->id],
                     'icon'=>'new',
-                )));
+                ]));
             }
         }
 
@@ -801,13 +801,13 @@ function ProjViewMilestones()
             echo $PH->getLink(
                         'projViewMilestones',
                         __('View open milestones'),
-                        array('prj'=>$project->id));
+                        ['prj'=>$project->id]);
         }
         else {
             echo $PH->getLink(
                         'projViewMilestones',
                         __('View closed milestones'),
-                        array('prj'=>$project->id, 'preset'=>'completed'));
+                        ['prj'=>$project->id, 'preset'=>'completed']);
         }
         echo "</div>";
 
@@ -842,246 +842,246 @@ function ProjViewEfforts()
         return;
     }
     
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_efforts' => array(
+        'all_efforts' => [
             'name'=> __('all','Filter preset'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NEW,
                     'max'       => EFFORT_STATUS_BALANCED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
 
         ### new efforts ###
-        'new_efforts' => array(
+        'new_efforts' => [
             'name'=> __('new','Filter preset'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NEW,
                     'max'       => EFFORT_STATUS_NEW,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### open efforts ###
-        'open_efforts' => array(
+        'open_efforts' => [
             'name'=> __('open','Filter preset'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NEW,
                     'max'       => EFFORT_STATUS_OPEN,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### discounted efforts ###
-        'discounted_efforts' => array(
+        'discounted_efforts' => [
             'name'=> __('discounted','Filter preset'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_DISCOUNTED,
                     'max'       => EFFORT_STATUS_DISCOUNTED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### not chargeable efforts ###
-        'notchargeable_efforts' => array(
+        'notchargeable_efforts' => [
             'name'=> __('not chargeable','Filter preset'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_NOTCHARGEABLE,
                     'max'       => EFFORT_STATUS_NOTCHARGEABLE,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ### balanced efforts ###
-        'balanced_efforts' => array(
+        'balanced_efforts' => [
             'name'=> __('balanced','Filter preset'),
-            'filters'=> array(
-                'effort_status'=> array(
+            'filters'=> [
+                'effort_status'=> [
                     'id'        => 'effort_status',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => EFFORT_STATUS_BALANCED,
                     'max'       => EFFORT_STATUS_BALANCED,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         
         ## last logout ##
-        'last_logout' => array(
+        'last_logout' => [
             'name'=> __('last logout','Filter preset'),
-            'filters'=> array(
-                'last_logout'   => array(
+            'filters'=> [
+                'last_logout'   => [
                     'id'        => 'last_logout',
                     'visible'   => true,
                     'active'    => true,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 1 week ##
-        'last_week' => array(
+        'last_week' => [
             'name'=> __('1 week','Filter preset'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 7,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 2 weeks ##
-        'last_two_weeks' => array(
+        'last_two_weeks' => [
             'name'=> __('2 weeks','Filter preset'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 14,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 3 weeks ##
-        'last_three_weeks' => array(
+        'last_three_weeks' => [
             'name'=> __('3 weeks','Filter preset'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 21,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## 1 month ##
-        'last_month' => array(
+        'last_month' => [
             'name'=> __('1 month','Filter preset'),
-            'filters'=> array(
-                'last_weeks'    => array(
+            'filters'=> [
+                'last_weeks'    => [
                     'id'        => 'last_weeks',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 28,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
+                ]
+            ],
+        ],
         
         ## prior ##
-        'prior' => array(
+        'prior' => [
             'name'=> __('prior','Filter preset'),
-            'filters'=> array(
-                'prior'    => array(
+            'filters'=> [
+                'prior'    => [
                     'id'        => 'prior',
                     'visible'   => true,
                     'active'    => true,
                     'factor'    => 29,
                     'value'     => $auth->cur_user->id,
-                ),
-            ),
-            'list_settings' => array(
-                'changes' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'changes' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'list',
-                )
-            ),
-        ),
-    );
+                ]
+            ],
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'projViewEfforts';
@@ -1111,10 +1111,10 @@ function ProjViewEfforts()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array(
+    $PH->defineFromHandle([
         'prj'      =>$project->id,
         'preset_id' =>$preset_id
-    ));
+    ]);
     
     ### set up page ####
     {
@@ -1139,19 +1139,19 @@ function ProjViewEfforts()
 
         ### page functions ###
         if($project->isPersonVisibleTeamMember($auth->cur_user)) {
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    => 'effortNew',
-                'params'    => array('prj'=>$project->id),
+                'params'    => ['prj'=>$project->id],
                 'icon'      => 'new',
                 'name'      => __('new Effort'),
-            )));
+            ]));
         }
         
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'    => 'projViewEffortCalculations',
-            'params'    => array('prj'=>$project->id),
+            'params'    => ['prj'=>$project->id],
             'name'      => __('View calculation'),
-        )));
+        ]));
 
 
         ### render title ###
@@ -1164,11 +1164,11 @@ function ProjViewEfforts()
         $order_by=get('sort_'.$PH->cur_page->id."_efforts");
 
         require_once(confGet('DIR_STREBER') . "db/class_effort.inc.php");
-        $efforts= Effort::getAll(array(
+        $efforts= Effort::getAll([
             'project'=> $project->id,
             'order_by'=> $order_by,
 
-        ));
+        ]);
         $list= new ListBlock_efforts();
         
         $list->filters[] = new ListFilter_efforts();
@@ -1177,29 +1177,29 @@ function ProjViewEfforts()
             foreach($preset['filters'] as $f_name=>$f_settings) {
                 switch($f_name) {
                     case 'effort_status':
-                        $list->filters[]= new ListFilter_effort_status_min(array(
+                        $list->filters[]= new ListFilter_effort_status_min([
                             'value'=>$f_settings['min'],
-                        ));
+                        ]);
                         $val1 = $f_settings['min'];
-                        $list->filters[]= new ListFilter_effort_status_max(array(
+                        $list->filters[]= new ListFilter_effort_status_max([
                             'value'=>$f_settings['max'],
-                        ));
+                        ]);
                         $val2 = $f_settings['max'];
                         break;
                     case 'last_logout':
-                        $list->filters[]= new ListFilter_last_logout(array(
+                        $list->filters[]= new ListFilter_last_logout([
                             'value'=>$f_settings['value'],
-                        ));
+                        ]);
                         break;
                     case 'last_weeks':
-                        $list->filters[]= new ListFilter_min_week(array(
+                        $list->filters[]= new ListFilter_min_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         break;
                     case 'prior':
-                        $list->filters[]= new ListFilter_max_week(array(
+                        $list->filters[]= new ListFilter_max_week([
                             'value'=>$f_settings['value'], 'factor'=>$f_settings['factor']
-                        ));
+                        ]);
                         break;
                     default:
                         trigger_error("Unknown filter setting $f_name", E_USER_WARNING);
@@ -1221,12 +1221,12 @@ function ProjViewEfforts()
 
         unset($list->columns['p.name']);
         
-        $page->print_presets(array(
+        $page->print_presets([
             'target' => $preset_location,
             'project_id' => $project->id,
             'preset_id' => $preset_id,
             'presets' => $presets,
-            'person_id' => ''));
+            'person_id' => '']);
             
             
         $list->query_options['order_by'] = $order_by;
@@ -1266,9 +1266,9 @@ function projViewEffortCalculations()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array(
+    $PH->defineFromHandle([
         'prj'      =>$project->id,
-    ));
+    ]);
     
     ### set up page ####
     {
@@ -1364,7 +1364,7 @@ function ProjViewVersions()
     }
 
     ### create from handle ###
-    $PH->defineFromHandle(array('prj'=>$project->id));
+    $PH->defineFromHandle(['prj'=>$project->id]);
 
     ### set up page ####
     {
@@ -1390,12 +1390,12 @@ function ProjViewVersions()
         ### page functions ###
         if($project->isPersonVisibleTeamMember($auth->cur_user)) {
             if($auth->cur_user->id != confGet('ANONYMOUS_USER')) {
-                $page->add_function(new PageFunction(array(
+                $page->add_function(new PageFunction([
                     'target'=>'taskNewVersion',
-                    'params'=>array('prj'=>$project->id),
+                    'params'=>['prj'=>$project->id],
                     'icon'=>'new',
                     'name'=>__('New released Version'),
-                )));
+                ]));
             }
         }
 
@@ -1420,18 +1420,18 @@ function ProjViewVersions()
     ### list changes for upcoming version ###
     {
 
-        if($tasks= Task::getAll(array(
+        if($tasks= Task::getAll([
             'project'           => $project->id,
             'status_min'        => STATUS_COMPLETED,
             'status_max'        => STATUS_CLOSED,
             'resolved_version'  => RESOLVED_IN_NEXT_VERSION,
             'resolve_reason_min'=> RESOLVED_DONE,                          # @@@ this is not the best solution (should be IS NOT)
-        ))) {
+        ])) {
 
-            $block=new PageBlock(array(
+            $block=new PageBlock([
                 'title'=>__("Tasks resolved in upcoming version"),
                 'id'=>'resolved_tasks',
-            ));
+            ]);
             $block->render_blockStart();
             echo "<div class=text>";
             echo '<ul>';
@@ -1467,16 +1467,16 @@ function projNew() {
     $company=get('company');
 
     ### build dummy form ###
-    $newproject= new Project(array(
+    $newproject= new Project([
         'id'        => 0,
         'name'      => __('New project'),
         'state'     => 1,
         'company'   => $company,
         'pub_level' => 100,
-        )
+        ]
     );
 
-    $PH->show('projEdit',array('prj'=>$newproject->id),$newproject);
+    $PH->show('projEdit',['prj'=>$newproject->id],$newproject);
 }
 
 
@@ -1502,16 +1502,16 @@ function projEdit($project=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true,'autofocus_field'=>'project_name'));
+        $page= new Page(['use_jscalendar'=>true,'autofocus_field'=>'project_name']);
         $page->cur_tab='projects';
         $page->type= __("Edit Project");
         $page->title=$project->name;
         $page->title_minor=$project->short;
 
         $page->crumbs= build_project_crumbs($project);
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id' => 'projEdit',
-        ));
+        ]);
 
         echo(new PageHeader);
     }
@@ -1524,9 +1524,9 @@ function projEdit($project=NULL)
         require_once(confGet('DIR_STREBER') . "render/render_form.inc.php");
 
         ### form background ###
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'id'    =>'project_edit',
-        ));
+        ]);
         $block->render_blockStart();
 
         $form=new PageForm();
@@ -1545,7 +1545,7 @@ function projEdit($project=NULL)
 
             ### build company-list ###
             $companies=Company::getAll();
-            $cl_options= array('undefined'=>0);
+            $cl_options= ['undefined'=>0];
             foreach($companies as $c) {
                 $cl_options[$c->name]= $c->id;
             }
@@ -1638,7 +1638,7 @@ function projEditSubmit()
     ### get project ####
     $project_id = getOnePassedId('prj');
     if($project_id == 0) {
-        $project= new Project(array());
+        $project= new Project([]);
     }
     else {
         if(!$project= Project::getEditableById($project_id)) {
@@ -1651,7 +1651,7 @@ function projEditSubmit()
     ### cancel ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$project->id));
+            $PH->show('projView',['prj'=>$project->id]);
         }
         exit();
     }
@@ -1682,7 +1682,7 @@ function projEditSubmit()
     * Missing checkboxes will clear the setting!
     */
     {
-        foreach( array(
+        foreach( [
             'PROJECT_SETTING_ENABLE_TASKS'          =>  PROJECT_SETTING_ENABLE_TASKS,
             'PROJECT_SETTING_ENABLE_BUGS'          =>  PROJECT_SETTING_ENABLE_BUGS,
             'PROJECT_SETTING_ENABLE_FILES'          =>  PROJECT_SETTING_ENABLE_FILES,
@@ -1692,7 +1692,7 @@ function projEditSubmit()
             'PROJECT_SETTING_ENABLE_NEWS'           =>  PROJECT_SETTING_ENABLE_NEWS,
             'project_setting_only_pm_may_close'    =>  PROJECT_SETTING_ONLY_PM_MAY_CLOSE,
             
-        ) as $form_name => $setting) {
+        ] as $form_name => $setting) {
             if(!is_null(get($form_name))) {
                 $project->settings |= $setting;
             }
@@ -1718,13 +1718,13 @@ function projEditSubmit()
                                 ? EFFORT_STYLE_DURATION
                                 : EFFORT_STYLE_TIMES;
 
-            $pp_new= new ProjectPerson(array(
+            $pp_new= new ProjectPerson([
                 'id'                    => 0,
                 'person'                => $person->id,
                 'project'               => $project->id,
                 'adjust_effort_style'   => $adjust_effort_style,
                 'pub_level' =>PUB_LEVEL_CLIENT,             # the creator should be visible to client
-            ));
+            ]);
 
             ### add project-right ###
             $pp_new->initWithUserProfile(PROFILE_ADMIN);
@@ -1755,7 +1755,7 @@ function projEditSubmit()
             exit();
         }
         else {
-            $PH->show('projView',array('prj'=>$project->id));
+            $PH->show('projView',['prj'=>$project->id]);
             exit();
         }
     }
@@ -1763,7 +1763,7 @@ function projEditSubmit()
     else {
         ### display taskView ####
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$project->id));
+            $PH->show('projView',['prj'=>$project->id]);
         }
     }
 }
@@ -1884,7 +1884,7 @@ function projAddPerson()
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>false));
+        $page= new Page(['use_jscalendar'=>false]);
         $page->cur_tab='projects';
         $page->type= __("Edit Project");
         $page->title="$project->name";
@@ -1892,10 +1892,10 @@ function projAddPerson()
 
         $page->crumbs= build_project_crumbs($project);
 
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id'     =>'projAddPerson',
 
-        ));
+        ]);
 
         echo(new PageHeader);
     }
@@ -1909,17 +1909,17 @@ function projAddPerson()
         ### write list of people ###
         {
             ### build hash of already added person ###
-            $pps= $project->getProjectPeople(array(
+            $pps= $project->getProjectPeople([
                 'alive_only' => true,
                 'visible_only' => false
-            ));
-            $pp_hash=array();
+            ]);
+            $pp_hash=[];
             foreach($pps as $pp) {
                 $pp_hash[$pp->person]= true;
             }
 
             ### filter already added people ###
-            $people = array();
+            $people = [];
         if($pers = Person::getPeople())
             {
                 foreach($pers as $p) {
@@ -1937,7 +1937,7 @@ function projAddPerson()
             unset($list->columns['companies']);
             unset($list->columns['changes']);
             unset($list->columns['last_login']);
-            $list->functions=array();
+            $list->functions=[];
             $list->no_items_html=__("Found no people to add. Go to `People` to create some.");
 
             $list->render_list($people);
@@ -1980,11 +1980,11 @@ function projAddPersonSubmit()
     }
 
     ### get team (including inactive members)  ###
-    $ppeople= $project->getProjectPeople(array(
+    $ppeople= $project->getProjectPeople([
         'alive_only' => false,
         'visible_only' => false,
         'person_id' => NULL,
-    ));
+    ]);
     
 
     ### go through selected people ###
@@ -2011,13 +2011,13 @@ function projAddPersonSubmit()
 
         ### add ###
         if(!$already_in) {
-            $pp_new= new ProjectPerson(array(
+            $pp_new= new ProjectPerson([
                 'id'                    => 0,
                 'person'                => $person->id,
                 'project'               => $project->id,
                 'adjust_effort_style'   => $adjust_effort_style,
                 'salary_per_hour'       => $person->salary_per_hour,
-            ));
+            ]);
 
             ### add project-right ###
             global $g_user_profile_names;
@@ -2046,7 +2046,7 @@ function projAddPersonSubmit()
     }
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$project->id));
+        $PH->show('projView',['prj'=>$project->id]);
     }
 }
 
@@ -2082,9 +2082,9 @@ function projCreateTemplate() {
     }
     $new_project->status= STATUS_TEMPLATE;
     $new_project->name= "- ".$new_project->name." - ". __("Template","as addon to project-templates");
-    $new_project->update(array('status','name'),false);
+    $new_project->update(['status','name'],false);
 
-    $PH->show('projEdit',array('prj'=>$new_project->id),$new_project);
+    $PH->show('projEdit',['prj'=>$new_project->id],$new_project);
 }
 
 
@@ -2123,14 +2123,14 @@ function projNewFromTemplate() {
 
 
     ### remove  template-string ###
-    $matches= array();
+    $matches= [];
     if(preg_match("/- (.*) ".__("Template","as addon to project-templates")."/", $new_project->name,$matches)) {
         if(count($matches)==2) {
             $new_project->name = $matches[1];
         }
     }
 
-    $PH->show('projEdit',array('prj'=>$new_project->id),$new_project);
+    $PH->show('projEdit',['prj'=>$new_project->id],$new_project);
 }
 
 
@@ -2203,10 +2203,10 @@ function projDuplicate($org_project_id=NULL)
     $flag_cur_user_in_project=false;
 
     ### copy projectpeople ###
-    if($org_ppeople= $org_project->getProjectPeople(array(
+    if($org_ppeople= $org_project->getProjectPeople([
          'alive_only' => false, 
          'visible_only' => false
-    ))){
+    ])){
         foreach($org_ppeople as $pp){
             $pp->id=0;
             $pp->project= $new_project->id;
@@ -2229,11 +2229,11 @@ function projDuplicate($org_project_id=NULL)
 
     ### be sure, current user is admin ###
     if(!$flag_cur_user_in_project) {
-        $pp_new= new ProjectPerson(array(
+        $pp_new= new ProjectPerson([
             'id'        =>0,
             'person'    =>$auth->cur_user->id,
             'project'   =>$new_project->id,
-        ));
+        ]);
         $pp_new->initWithUserProfile(PROFILE_ADMIN);
         if(!$pp_new->insert()) {
             trigger_error(__("Failed to insert new project person. Data structure might have been corrupted"),E_USER_WARNING);
@@ -2243,7 +2243,7 @@ function projDuplicate($org_project_id=NULL)
 
 
     ### copy issues ###
-    $dict_issues=array(0=>0);
+    $dict_issues=[0=>0];
 
     $org_issues= $org_project->getIssues(NULL,false,false);
 
@@ -2266,17 +2266,17 @@ function projDuplicate($org_project_id=NULL)
     ### copy tasks
     {
         ### pass1 ###
-        $dict_tasks=array(0=>0);    # assoc array of old / new task-ids
+        $dict_tasks=[0=>0];    # assoc array of old / new task-ids
 
-        $new_tasks=array();
+        $new_tasks=[];
 
-        if($org_tasks= $org_project->getTasks(array(
+        if($org_tasks= $org_project->getTasks([
             'show_folders'  =>true,
             'status_min'    =>0,
             'status_max'    =>10,
             'visible_only'  =>false,
             'alive_only'    =>false,
-            ))) {
+            ])) {
             foreach($org_tasks as $t) {
 
                 $org_task_id= $t->id;
@@ -2319,13 +2319,13 @@ function projDuplicate($org_project_id=NULL)
 
 
     ### copy efforts ###
-    $dict_efforts=array(0 => 0);
+    $dict_efforts=[0 => 0];
 
-    if($org_efforts= Effort::getAll(array(
+    if($org_efforts= Effort::getAll([
         'project'       => $org_project->id,
         'visible_only'  => false,
         'alive_only'    => false
-    ))) {
+    ])) {
         foreach($org_efforts as $e) {
 
             $org_effort_id= $e->id;
@@ -2349,7 +2349,7 @@ function projDuplicate($org_project_id=NULL)
     }
 
     ### copy task_assigments ###
-    $dict_taskpeople=array(0 => 0);                        # this hash is not required
+    $dict_taskpeople=[0 => 0];                        # this hash is not required
 
     if($org_taskpeople= $org_project->getTaskPeople(
                                       "",  # $order_by=NULL,
@@ -2381,8 +2381,8 @@ function projDuplicate($org_project_id=NULL)
 
     ### copy comments ###
     {
-        $dict_comments=array(0 => 0);
-        $new_comments=array();
+        $dict_comments=[0 => 0];
+        $new_comments=[];
 
         if($org_comments= $org_project->getComments(
                                             "",      # $order_by=NULL,

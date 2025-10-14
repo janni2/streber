@@ -170,35 +170,35 @@ class TestOfLiveFetching extends SimpleTestAcceptanceTest {
     }
     
     function testGetWithData() {
-        $this->get($this->samples() . 'network_confirm.php', array("a" => "aaa"));
+        $this->get($this->samples() . 'network_confirm.php', ["a" => "aaa"]);
         $this->assertPattern('/Request method.*?<dd>GET<\/dd>/');
         $this->assertText('a=[aaa]');
     }
     
     function testPostWithData() {
-        $this->post($this->samples() . 'network_confirm.php', array("a" => "aaa"));
+        $this->post($this->samples() . 'network_confirm.php', ["a" => "aaa"]);
         $this->assertPattern('/Request method.*?<dd>POST<\/dd>/');
         $this->assertText('a=[aaa]');
     }
 
     function testPostWithRecursiveData() {
-        $this->post($this->samples() . 'network_confirm.php', array("a" => "aaa"));
+        $this->post($this->samples() . 'network_confirm.php', ["a" => "aaa"]);
         $this->assertPattern('/Request method.*?<dd>POST<\/dd>/');
         $this->assertText('a=[aaa]');
 
-        $this->post($this->samples() . 'network_confirm.php', array("a[aa]" => "aaa"));
+        $this->post($this->samples() . 'network_confirm.php', ["a[aa]" => "aaa"]);
         $this->assertPattern('/Request method.*?<dd>POST<\/dd>/');
         $this->assertText('a=[aa=[aaa]]');
 
-        $this->post($this->samples() . 'network_confirm.php', array("a[aa][aaa]" => "aaaa"));
+        $this->post($this->samples() . 'network_confirm.php', ["a[aa][aaa]" => "aaaa"]);
         $this->assertPattern('/Request method.*?<dd>POST<\/dd>/');
         $this->assertText('a=[aa=[aaa=[aaaa]]]');
 
-        $this->post($this->samples() . 'network_confirm.php', array("a" => array("aa" => "aaa")));
+        $this->post($this->samples() . 'network_confirm.php', ["a" => ["aa" => "aaa"]]);
         $this->assertPattern('/Request method.*?<dd>POST<\/dd>/');
         $this->assertText('a=[aa=[aaa]]');
 
-        $this->post($this->samples() . 'network_confirm.php', array("a" => array("aa" => array("aaa" => "aaaa"))));
+        $this->post($this->samples() . 'network_confirm.php', ["a" => ["aa" => ["aaa" => "aaaa"]]]);
         $this->assertPattern('/Request method.*?<dd>POST<\/dd>/');
         $this->assertText('a=[aa=[aaa=[aaaa]]]');
     }
@@ -463,7 +463,7 @@ class TestOfLiveRedirects extends SimpleTestAcceptanceTest {
     }
     
     function testRedirectLosesGetData() {
-        $this->get($this->samples() . 'redirect.php', array('a' => 'aaa'));
+        $this->get($this->samples() . 'redirect.php', ['a' => 'aaa']);
         $this->assertNoText('a=[aaa]');
     }
     
@@ -473,7 +473,7 @@ class TestOfLiveRedirects extends SimpleTestAcceptanceTest {
     }
     
     function testRedirectLosesPostData() {
-        $this->post($this->samples() . 'redirect.php', array('a' => 'aaa'));
+        $this->post($this->samples() . 'redirect.php', ['a' => 'aaa']);
         $this->assertTitle('Simple test target file');
         $this->assertNoText('a=[aaa]');
     }
@@ -650,7 +650,7 @@ class LiveTestOfForms extends SimpleTestAcceptanceTest {
     
     function testAdditionalFormValues() {
         $this->get($this->samples() . 'form.html');
-        $this->assertTrue($this->clickSubmit('Go!', array('add' => 'A')));
+        $this->assertTrue($this->clickSubmit('Go!', ['add' => 'A']));
         $this->assertText('go=[Go!]');
         $this->assertText('add=[A]');
     }
@@ -664,7 +664,7 @@ class LiveTestOfForms extends SimpleTestAcceptanceTest {
     
     function testFormSubmissionByNameAndAdditionalParameters() {
         $this->get($this->samples() . 'form.html');
-        $this->assertTrue($this->clickSubmitByName('go', array('add' => 'A')));
+        $this->assertTrue($this->clickSubmitByName('go', ['add' => 'A']));
         $this->assertText('go=[Go!]');
         $this->assertText('add=[A]');
     }
@@ -779,7 +779,7 @@ class LiveTestOfForms extends SimpleTestAcceptanceTest {
     
     function testImageSubmissionByLabelWithAdditionalParameters() {
         $this->get($this->samples() . 'form.html');
-        $this->assertTrue($this->clickImage('Image go!', 10, 12, array('add' => 'A')));
+        $this->assertTrue($this->clickImage('Image go!', 10, 12, ['add' => 'A']));
         $this->assertText('add=[A]');
     }
     
@@ -998,11 +998,11 @@ class TestOfLiveMultiValueWidgets extends SimpleTestAcceptanceTest {
     
     function testDefaultFormValueSubmission() {
         $this->get($this->samples() . 'multiple_widget_form.html');
-        $this->assertFieldByName('a', array('a2', 'a3'));
-        $this->assertFieldByName('b', array('b2', 'b3'));
-        $this->assertFieldByName('c[]', array('c2', 'c3'));
-        $this->assertFieldByName('d', array('2', '3'));
-        $this->assertFieldByName('e', array('2', '3'));
+        $this->assertFieldByName('a', ['a2', 'a3']);
+        $this->assertFieldByName('b', ['b2', 'b3']);
+        $this->assertFieldByName('c[]', ['c2', 'c3']);
+        $this->assertFieldByName('d', ['2', '3']);
+        $this->assertFieldByName('e', ['2', '3']);
         $this->assertTrue($this->clickSubmit('Go!'));
         $this->assertText('a=[a2, a3]');
         $this->assertText('b=[b2, b3]');
@@ -1013,17 +1013,17 @@ class TestOfLiveMultiValueWidgets extends SimpleTestAcceptanceTest {
     
     function testSubmittingMultipleValues() {
         $this->get($this->samples() . 'multiple_widget_form.html');
-        $this->setFieldByName('a', array('a1', 'a4'));
-        $this->assertFieldByName('a', array('a1', 'a4'));
-        $this->assertFieldByName('a', array('a4', 'a1'));
-        $this->setFieldByName('b', array('b1', 'b4'));
-        $this->assertFieldByName('b', array('b1', 'b4'));
-        $this->setFieldByName('c[]', array('c1', 'c4'));
-        $this->assertField('c[]', array('c1', 'c4'));
-        $this->setFieldByName('d', array('1', '4'));
-        $this->assertField('d', array('1', '4'));
-        $this->setFieldByName('e', array('e1', 'e4'));
-        $this->assertField('e', array('1', '4'));
+        $this->setFieldByName('a', ['a1', 'a4']);
+        $this->assertFieldByName('a', ['a1', 'a4']);
+        $this->assertFieldByName('a', ['a4', 'a1']);
+        $this->setFieldByName('b', ['b1', 'b4']);
+        $this->assertFieldByName('b', ['b1', 'b4']);
+        $this->setFieldByName('c[]', ['c1', 'c4']);
+        $this->assertField('c[]', ['c1', 'c4']);
+        $this->setFieldByName('d', ['1', '4']);
+        $this->assertField('d', ['1', '4']);
+        $this->setFieldByName('e', ['e1', 'e4']);
+        $this->assertField('e', ['1', '4']);
         $this->assertTrue($this->clickSubmit('Go!'));
         $this->assertText('a=[a1, a4]');
         $this->assertText('b=[b1, b4]');
@@ -1034,19 +1034,19 @@ class TestOfLiveMultiValueWidgets extends SimpleTestAcceptanceTest {
     
     function testSettingByOptionValue() {
         $this->get($this->samples() . 'multiple_widget_form.html');
-        $this->setFieldByName('d', array('1', '4'));
-        $this->assertField('d', array('1', '4'));
+        $this->setFieldByName('d', ['1', '4']);
+        $this->assertField('d', ['1', '4']);
         $this->assertTrue($this->clickSubmit('Go!'));
         $this->assertText('d=[1, 4]');
     }
       
     function testSubmittingMultipleValuesByLabel() {
         $this->get($this->samples() . 'multiple_widget_form.html');
-        $this->setField('Multiple selection A', array('a1', 'a4'));
-        $this->assertField('Multiple selection A', array('a1', 'a4'));
-        $this->assertField('Multiple selection A', array('a4', 'a1'));
-        $this->setField('multiple selection C', array('c1', 'c4'));
-        $this->assertField('multiple selection C', array('c1', 'c4'));
+        $this->setField('Multiple selection A', ['a1', 'a4']);
+        $this->assertField('Multiple selection A', ['a1', 'a4']);
+        $this->assertField('Multiple selection A', ['a4', 'a1']);
+        $this->setField('multiple selection C', ['c1', 'c4']);
+        $this->assertField('multiple selection C', ['c1', 'c4']);
         $this->assertTrue($this->clickSubmit('Go!'));
         $this->assertText('a=[a1, a4]');
         $this->assertText('c=[c1, c4]');
@@ -1054,8 +1054,8 @@ class TestOfLiveMultiValueWidgets extends SimpleTestAcceptanceTest {
   
     function testSavantStyleHiddenFieldDefaults() {
         $this->get($this->samples() . 'savant_style_form.html');
-        $this->assertFieldByName('a', array('a0'));
-        $this->assertFieldByName('b', array('b0'));
+        $this->assertFieldByName('a', ['a0']);
+        $this->assertFieldByName('b', ['b0']);
         $this->assertTrue($this->clickSubmit('Go!'));
         $this->assertText('a=[a0]');
         $this->assertText('b=[b0]');
@@ -1063,7 +1063,7 @@ class TestOfLiveMultiValueWidgets extends SimpleTestAcceptanceTest {
     
     function testSavantStyleHiddenDefaultsAreOverridden() {
         $this->get($this->samples() . 'savant_style_form.html');
-        $this->assertTrue($this->setFieldByName('a', array('a1')));
+        $this->assertTrue($this->setFieldByName('a', ['a1']));
         $this->assertTrue($this->setFieldByName('b', 'b1'));
         $this->assertTrue($this->clickSubmit('Go!'));
         $this->assertText('a=[a1]');
@@ -1072,8 +1072,8 @@ class TestOfLiveMultiValueWidgets extends SimpleTestAcceptanceTest {
     
     function testSavantStyleFormSettingById() {
         $this->get($this->samples() . 'savant_style_form.html');
-        $this->assertFieldById(1, array('a0'));
-        $this->assertFieldById(4, array('b0'));
+        $this->assertFieldById(1, ['a0']);
+        $this->assertFieldById(4, ['b0']);
         $this->assertTrue($this->setFieldById(2, 'a1'));
         $this->assertTrue($this->setFieldById(5, 'b1'));
         $this->assertTrue($this->clickSubmitById(99));
@@ -1157,7 +1157,7 @@ class TestOfLiveHistoryNavigation extends SimpleTestAcceptanceTest {
     function testGetRetryResubmitsExtraData() {
         $this->assertTrue($this->get(
                 $this->samples() . 'network_confirm.php',
-                array('a' => 'aaa')));
+                ['a' => 'aaa']));
         $this->assertPattern('/Request method.*?<dd>GET<\/dd>/');
         $this->assertText('a=[aaa]');
         $this->retry();
@@ -1168,7 +1168,7 @@ class TestOfLiveHistoryNavigation extends SimpleTestAcceptanceTest {
     function testPostRetryResubmitsData() {
         $this->assertTrue($this->post(
                 $this->samples() . 'network_confirm.php',
-                array('a' => 'aaa')));
+                ['a' => 'aaa']));
         $this->assertPattern('/Request method.*?<dd>POST<\/dd>/');
         $this->assertText('a=[aaa]');
         $this->retry();

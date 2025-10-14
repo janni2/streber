@@ -21,7 +21,7 @@ function error()
     {
         $page= new Page();
 
-        $page->tabs['error']=  array('target'=>"index.php?go=error",     'title'=>__('Error','top navigation tab'), 'bg'=>"error");
+        $page->tabs['error']=  ['target'=>"index.php?go=error",     'title'=>__('Error','top navigation tab'), 'bg'=>"error"];
         $page->cur_tab='error';
 
         $page->title=__("Unknown Page");
@@ -31,7 +31,7 @@ function error()
     }
     echo (new PageContentOpen);
 
-    $block=new PageBlock(array('title'=>__('Error'), 'id'=>'error'));
+    $block=new PageBlock(['title'=>__('Error'), 'id'=>'error']);
     $block->render_blockStart();
     echo "<div class=text>";
     echo "<p>Sorry but you found a function that has not yet been implemented.<br>";
@@ -46,7 +46,7 @@ function error()
     if ($auth->cur_user->user_rights & RIGHT_VIEWALL)
     {
         $block->render_blockEnd();
-        $block=new PageBlock(array('title'=>'Details', 'id'=>'details'));
+        $block=new PageBlock(['title'=>'Details', 'id'=>'details']);
         $block->render_blockStart();
         echo "<div class=text>";
         echo "<pre>";

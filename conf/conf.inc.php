@@ -14,7 +14,7 @@ require_once("defines.inc.php");
 * assoc. array holding initial configuration variables
 */
 global $g_config;
-$g_config= array(
+$g_config= [
 
     'STREBER_VERSION'       => '0.0971',
     'STREBER_VERSION_DATE'  => '2014-05-05',
@@ -76,7 +76,7 @@ $g_config= array(
     *
     */
     'DB_TYPE'               => 'mysql',     # mysql is default
-    'DB_TYPES'              => array(),     # init defined database-types in db_types.inc
+    'DB_TYPES'              => [],     # init defined database-types in db_types.inc
     'HOSTNAME'              => 'localhost',
 
     'DB_USERNAME'           =>'',
@@ -358,7 +358,7 @@ $g_config= array(
     * posts by anonymous users are rejected, if they contain any of these keys.
     * The value is an indicator for spam probability.
     */
-    'SPAM_WORDS'=>array('viagra'=>10, 'cialis'=>10, 'porn'=>10, 'www.' =>3, '.com'=>3, '.de' =>2, 'sex'=>2, 'free'=>1, 'http'=>2, 'href'=>2, 'online'=>1, 'casino'=>3, 'buy'=>1,'order'=>2,'levitra'=>5,'softtabs'=>5, 'spam'=>1, 'site'=>2),
+    'SPAM_WORDS'=>['viagra'=>10, 'cialis'=>10, 'porn'=>10, 'www.' =>3, '.com'=>3, '.de' =>2, 'sex'=>2, 'free'=>1, 'http'=>2, 'href'=>2, 'online'=>1, 'casino'=>3, 'buy'=>1,'order'=>2,'levitra'=>5,'softtabs'=>5, 'spam'=>1, 'site'=>2],
 
     /**
     * if not 0 try to match SPAM_WORDS on comments and descriptions.
@@ -405,7 +405,7 @@ $g_config= array(
 	*/
 	'REPLY_ON_COMMENT_PREFIX' => '0',
 
-);
+];
 
 
 
@@ -458,7 +458,7 @@ if(!confGet('EMAIL_ADMINISTRATOR') && isset($_SERVER["HTTP_HOST"])) {
 /**
 * maps directory name => Title in person profile
 */
-$g_themes=array(
+$g_themes=[
     'clean'         => 'Clean',
     #'webbplatsen'   => 'webbplatsen',
     'custom'        => 'Custom',
@@ -467,7 +467,7 @@ $g_themes=array(
 #    'forclients' =>'Client Theme',
 #    'classic' =>'Classic Theme',
 
-);
+];
 $g_theme_names= array_keys($g_themes);
 
 
@@ -498,82 +498,82 @@ $g_theme_names= array_keys($g_themes);
 
 
 
-$g_user_profiles=array(
-    PROFILE_USER=>array(
+$g_user_profiles=[
+    PROFILE_USER=>[
         'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
         'level_create'          => PUB_LEVEL_OPEN,
         'level_edit'            => PUB_LEVEL_OPEN,
         'level_view'            => PUB_LEVEL_OPEN,
         'level_delete'          => PUB_LEVEL_PRIVATE,
         'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_ADMIN=>array(
+    ],
+    PROFILE_ADMIN=>[
         'default_user_rights'   =>RIGHT_ALL,
         'level_view'            => PUB_LEVEL_SUGGESTED,
         'level_create'          => PUB_LEVEL_CLIENTEDIT,
         'level_edit'            => PUB_LEVEL_SUGGESTED,
         'level_delete'          => PUB_LEVEL_SUGGESTED,
         'level_reduce'          => PUB_LEVEL_PRIVATE,
-    ),
-    PROFILE_PM=>array(
+    ],
+    PROFILE_PM=>[
         'default_user_rights'   => RIGHT_ALL & (~ (RIGHT_PERSON_EDIT_RIGHTS|RIGHT_VIEWALL|RIGHT_EDITALL)) ,
         'level_view'            => PUB_LEVEL_SUGGESTED,
         'level_create'          => PUB_LEVEL_CLIENTEDIT,
         'level_edit'            => PUB_LEVEL_SUGGESTED,
         'level_delete'          => PUB_LEVEL_SUGGESTED,
         'level_reduce'          => PUB_LEVEL_PRIVATE,
-    ),
-    PROFILE_DEVELOPER=>array(
+    ],
+    PROFILE_DEVELOPER=>[
         'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
         'level_create'          => PUB_LEVEL_OPEN,
         'level_edit'            => PUB_LEVEL_OPEN,
         'level_view'            => PUB_LEVEL_OPEN,
         'level_delete'          => PUB_LEVEL_PRIVATE,
         'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_ARTIST=>array(
+    ],
+    PROFILE_ARTIST=>[
         'default_user_rights'   =>RIGHT_PERSON_EDIT_SELF,
         'level_create'          => PUB_LEVEL_OPEN,
         'level_edit'            => PUB_LEVEL_OPEN,
         'level_view'            => PUB_LEVEL_OPEN,
         'level_delete'          => PUB_LEVEL_PRIVATE,
         'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_TESTER=>array(
+    ],
+    PROFILE_TESTER=>[
         'default_user_rights'   =>RIGHT_PERSON_EDIT_SELF,
         'level_create'          => PUB_LEVEL_OPEN,
         'level_edit'            => PUB_LEVEL_OPEN,
         'level_view'            => PUB_LEVEL_OPEN,
         'level_delete'          => PUB_LEVEL_PRIVATE,
         'level_reduce'          => PUB_LEVEL_OPEN,
-    ),
-    PROFILE_CLIENT=>array(
+    ],
+    PROFILE_CLIENT=>[
         'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
         'level_create'          => PUB_LEVEL_SUGGESTED,
         'level_edit'            => PUB_LEVEL_CLIENTEDIT,
         'level_view'            => PUB_LEVEL_CLIENT,
         'level_delete'          => PUB_LEVEL_OWNED,
         'level_reduce'          => PUB_LEVEL_NOTHING,
-    ),
-    PROFILE_CLIENT_TRUSTED=>array(
+    ],
+    PROFILE_CLIENT_TRUSTED=>[
         'default_user_rights'   => RIGHT_PERSON_EDIT_SELF,
         'level_create'          => PUB_LEVEL_SUGGESTED,
         'level_edit'            => PUB_LEVEL_CLIENTEDIT,
         'level_view'            => PUB_LEVEL_OPEN,
         'level_delete'          => PUB_LEVEL_CLIENTEDIT,
         'level_reduce'          => PUB_LEVEL_NOTHING,
-    ),
-    PROFILE_GUEST=>array(
+    ],
+    PROFILE_GUEST=>[
         'default_user_rights'   => RIGHT_NONE,
         'level_create'          => PUB_LEVEL_SUGGESTED,
         'level_edit'            => PUB_LEVEL_NOTHING,
         'level_view'            => PUB_LEVEL_CLIENT,
         'level_delete'          => PUB_LEVEL_NOTHING,
         'level_reduce'          => PUB_LEVEL_NOTHING,
-    ),
-);
+    ],
+];
 
-$g_languages=array(
+$g_languages=[
     'en'=>'English',
     'de'=>'German',
     'fr'=>'French',
@@ -588,7 +588,7 @@ $g_languages=array(
     'ru'=> 'Russian',
     'hu'=> 'Hungarian',
     'zh_CN'=> 'Chinese'
-);
+];
 $g_language_names= array_keys($g_languages);
 
 
@@ -635,12 +635,12 @@ function confAppendToValue($var,$value) {
     global $g_config;
     if(!isset($g_config[$var]) && !is_null($g_config[$var])) {
         trigger_error("confChange set undefined variable '$var' to array('$value')",E_USER_NOTICE);
-        $g_config[$var]= array($value);
+        $g_config[$var]= [$value];
         return true;
     }
     else if(!is_array($g_config[$var])) {
         trigger_error("confChange converting '$var' to array('$value')",E_USER_NOTICE);
-        $g_config[$var]=array($g_config[$var], $value);
+        $g_config[$var]=[$g_config[$var], $value];
         return true;
     }
     else {

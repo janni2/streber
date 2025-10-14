@@ -29,7 +29,7 @@ function itemsRemoveManySubmit()
     ### cancel ? ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -79,7 +79,7 @@ function revertDateOfCommentParentItem($item, $comment)
         if($last_version->date_from < $comment->created) {
             $item->modified= $last_version->date_from;
             $item->modified_by= $last_version->author;
-            $item->update(array('modified','modified_by'), false, false);
+            $item->update(['modified','modified_by'], false, false);
         }
     }    
 }

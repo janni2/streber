@@ -33,25 +33,25 @@ function itemView()
     if($item= DbProjectItem::getVisibleById($id)) {
         switch($item->type) {
             case ITEM_TASK:
-                $PH->show('taskView',array('tsk'=>$id));
+                $PH->show('taskView',['tsk'=>$id]);
                 return;
             case ITEM_FILE:
-                $PH->show('fileView',array('file'=>$id));
+                $PH->show('fileView',['file'=>$id]);
                 return;
             case ITEM_COMMENT:
-                $PH->show('commentView',array('comment'=>$id));
+                $PH->show('commentView',['comment'=>$id]);
                 return;
             case ITEM_EFFORT:
-                $PH->show('effortView',array('effort'=>$id));
+                $PH->show('effortView',['effort'=>$id]);
                 return;
             case ITEM_PERSON:
-                $PH->show('personView',array('person'=>$id));
+                $PH->show('personView',['person'=>$id]);
                 return;
             case ITEM_PROJECT:
-                $PH->show('projView',array('prj'=>$id));
+                $PH->show('projView',['prj'=>$id]);
                 return;
             case ITEM_COMPANY:
-                $PH->show('companyView',array('company'=>$id));
+                $PH->show('companyView',['company'=>$id]);
                 return;
             default:
                 $PH->abortWarning("Unknown item");
@@ -150,15 +150,15 @@ function itemsSendNotification()
     
     if($valid){
         foreach($ids as $id){
-            if($item = ItemPerson::getAll(array('person'=>$auth->cur_user->id, 'item'=>$id))){
+            if($item = ItemPerson::getAll(['person'=>$auth->cur_user->id, 'item'=>$id])){
                 $item[0]->notify_on_change = true;
                 $item[0]->update();
             }
             else{
-                $new_view = new ItemPerson(array(
+                $new_view = new ItemPerson([
                 'item'=>$id,
                 'person'=>$auth->cur_user->id,
-                'notify_on_change'=>1));
+                'notify_on_change'=>1]);
                 
                 $new_view->insert();
             }
@@ -209,7 +209,7 @@ function itemsRemoveNotification()
     
     if($valid){
         foreach($ids as $id){
-            if($item = ItemPerson::getAll(array('item'=>$id, 'notify_on_change'=>true))){
+            if($item = ItemPerson::getAll(['item'=>$id, 'notify_on_change'=>true])){
                 $item[0]->notify_on_change = false;
                 $item[0]->update();
             }
@@ -296,12 +296,12 @@ function itemViewDiff()
         ### page functions ###
         {
 
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'=>'itemView',
-                'params'=>array('item' => $item->id),
+                'params'=>['item' => $item->id],
                 'icon'=>'edit',
                 'name'=>__('View item')
-            )));
+            ]));
         }
 
         ### render title ###
@@ -349,8 +349,8 @@ function itemViewDiff()
                 $version_right = $versions[count($versions)-1];
             }
 
-            $options_left = array();
-            $options_right= array();
+            $options_left = [];
+            $options_right= [];
 
             ### list versions left ###
             for($i=0; $i< count($versions)-1; $i++) {
@@ -366,24 +366,24 @@ function itemViewDiff()
 
                 if($v->version_number == $version_left->version_number) {
 
-                    $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to));
+                    $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to]);
                     $name= ' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v.'.$v->version_number . ' -- '. $author. " -- ". $v->date_from ;
                     $options_left[]="<option selected=1 value='".$str_link ."'>". $name. "</option>";
                 }
                 else if($v->version_number > $version_left->version_number) {
 
                     if($v->version_number < $version_right->version_number) {
-                        $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to));
+                        $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to]);
                         $name= '&gt; &nbsp;&nbsp; v.'.$v->version_number . ' -- '. $author. " -- ". renderDate($v->date_from) ;
                     }
                     else {
-                        $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $version_right->date_to));
+                        $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $version_right->date_to]);
                         $name= '&gt;&gt;&nbsp;&nbsp; v.'.$v->version_number . ' -- '. $author. " -- ". renderDate($v->date_from) ;
                     }
                     $options_left[]="<option  value='".$str_link ."'>". $name. "</option>";
                 }
                 else {
-                    $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $version_right->date_from));
+                    $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $version_right->date_from]);
                     $name= '&lt; &nbsp;&nbsp; v.'.$v->version_number . ' -- '. $author. " -- ". renderDate($v->date_from) ;
                     $options_left[]="<option  value='".$str_link ."'>". $name. "</option>";
                 }
@@ -404,23 +404,23 @@ function itemViewDiff()
 
                 if($v->version_number == $version_right->version_number) {
 
-                    $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to));
+                    $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to]);
                     $name= ' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v.'.$v->version_number . ' -- '. $author. " -- ". $v->date_from ;
                     $options_right[]="<option selected=1 value='".$str_link ."'>". $name. "</option>";
                 }
                 else if($v->version_number > $version_right->version_number) {
-                    $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $version_left->date_from, 'date2'=> $versions[$i]->date_from));
+                    $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $version_left->date_from, 'date2'=> $versions[$i]->date_from]);
                     $name= '&gt; &nbsp;&nbsp; v.'.$v->version_number . ' -- '. $author. ' -- ' . renderDate($v->date_from);
                     $options_right[]="<option  value='".$str_link ."'>". $name. "</option>";
 
                 }
                 else {
                     if($v->version_number > $version_left->version_number) {
-                        $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $version_left->date_from, 'date2'=> $versions[$i]->date_from));
+                        $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $version_left->date_from, 'date2'=> $versions[$i]->date_from]);
                         $name= '&lt; &nbsp;&nbsp; v.'.$v->version_number . ' -- ' . $author. " -- ". renderDate($v->date_from);
                     }
                     else {
-                        $str_link= $PH->getUrl('itemViewDiff', array('item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to));
+                        $str_link= $PH->getUrl('itemViewDiff', ['item'=>$item->id, 'date1'=> $versions[$i]->date_from, 'date2'=> $versions[$i]->date_to]);
                         $name= '&lt;&lt;&nbsp;&nbsp; v.'.$v->version_number .  ' -- ' . $author. ' -- '. renderDate($v->date_from);
                     }
 
@@ -434,11 +434,11 @@ function itemViewDiff()
                 $link_prev= $PH->getLink(
                     'itemViewDiff',
                     '&lt;&lt; ' . __('prev change'),
-                    array(
+                    [
                         'item'=>$item->id,
                         'date1'=>$versions[$version_left->version_number - 2]->date_from,
                         'date2'=>$versions[$version_left->version_number - 2]->date_to,
-                   ), NULL, true
+                   ], NULL, true
                    );
             }
             else {
@@ -450,11 +450,11 @@ function itemViewDiff()
                 $link_next= $PH->getLink(
                     'itemViewDiff',
                     __('next') .  '&gt;&gt;',
-                    array(
+                    [
                         'item'=>$item->id,
                         'date1'=>$versions[$version_right->version_number-1]->date_from,
                         'date2'=>$versions[$version_right->version_number-1]->date_to,
-                   ), NULL, true);
+                   ], NULL, true);
             }
             else {
                 $link_next ='';
@@ -464,11 +464,11 @@ function itemViewDiff()
             $link_summary= $PH->getLink(
                 'itemViewDiff',
                 __('summary'),
-                array(
+                [
                     'item'=>$item->id,
                     'date1'=>$auth->cur_user->last_logout,
                     'date2'=> getGMTString(),
-               ), NULL, true);
+               ], NULL, true);
 
 
             echo "<div class=diff>";
@@ -504,8 +504,8 @@ function itemViewDiff()
 
 
             ### collect changes ###
-            $old_field_values=array();
-            $new_field_values=array();
+            $old_field_values=[];
+            $new_field_values=[];
             foreach($versions as $v) {
                 if($v->version_number <=  $version_left->version_number) {
                     foreach($v->values as $name=>$value) {
@@ -567,7 +567,7 @@ function itemViewDiff()
 
                     if($field_name == 'parent_item') {
                         if($task_parent_old= Task::getVisibleById($old_value)) {
-                            $ar= array();
+                            $ar= [];
                             foreach($task_parent_old->getFolder() as $f) {
                                 $ar[]=$f->name;
                             }
@@ -575,7 +575,7 @@ function itemViewDiff()
                             $old_value= join($ar," > ");
                         }
                         if($task_parent_new= Task::getVisibleById($new_value)) {
-                            $ar= array();
+                            $ar= [];
                             foreach($task_parent_new->getFolder() as $f) {
                                 $ar[]=$f->name;
                             }

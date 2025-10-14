@@ -9,7 +9,7 @@ require_once("db_item.inc.php");
 *
 */
 global $g_cache_tasks;
-$g_cache_tasks=array();
+$g_cache_tasks=[];
 
 
 
@@ -32,176 +32,176 @@ class Task extends DbProjectItem
         #self::$type= ITEM_TASK;
         addProjectItemFields(self::$fields_static);
 
-        foreach(array(
-            new FieldInternal(array('name'=>'id',
+        foreach([
+            new FieldInternal(['name'=>'id',
                 'default'=>0,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
                 'log_changes'=>false,
-            )),
-            new FieldString   (array('name'=>'name',
+            ]),
+            new FieldString   (['name'=>'name',
                 'title'=>__('Name'),
                 'view_in_forms'=>true,
                 'required'=>true,
-            )),
-            new FieldString   (array('name'=>'short',
+            ]),
+            new FieldString   (['name'=>'short',
                 'title'         =>__('Short'),
                 'view_in_forms' =>true,
-            )),
-            new FieldDate     (array('name'=>'date_start',
+            ]),
+            new FieldDate     (['name'=>'date_start',
                 'title'         =>__('Date start'),
                 'view_in_forms' =>true,
                 'default'       =>FINIT_TODAY,
                 'log_changes'   => false,
-            )),
-            new FieldDate     (array('name'=>'date_closed',
+            ]),
+            new FieldDate     (['name'=>'date_closed',
                 'title'         =>__('Date closed'),
                 'view_in_forms' =>true,
                 'default'       =>FINIT_NEVER,
                 'log_changes'   => false,
-            )),
-            new FieldOption   (array('name'=>'status',
+            ]),
+            new FieldOption   (['name'=>'status',
                 'title'=>__('Status'),
                 'view_in_forms'=>true,
                 'default'=>2,
-            )),
+            ]),
 
-            new FieldInt      (array('name'=>'prio',
+            new FieldInt      (['name'=>'prio',
                 'title'=>__('Priority'),
                 'view_in_forms'=>true,
                 'default'=>3,
-            )),
-            new FieldInt      (array('name'=>'for_milestone',
+            ]),
+            new FieldInt      (['name'=>'for_milestone',
                 'title'=>__('For Milestone'),
                 'view_in_forms'=>true,
                 'default'=>0,
-            )),
-            new FieldInt      (array('name'=>'resolved_version',
+            ]),
+            new FieldInt      (['name'=>'resolved_version',
                 'title'=>__('resolved in version'),
                 'view_in_forms'=>true,
                 'default'=>0,
-            )),
-            new FieldInt      (array('name'=>'resolve_reason',
+            ]),
+            new FieldInt      (['name'=>'resolve_reason',
                 'title'=>__('Resolve reason'),
                 'view_in_forms'=>true,
                 'default'=> RESOLVED_UNDEFINED,
-            )),
+            ]),
 
-            new FieldText     (array('name'=>'description',
+            new FieldText     (['name'=>'description',
                 'title'=>__('Description'),
                 'view_in_forms'=>true,
-            )),
+            ]),
 
             /**
             * DEPRECIATED !
             */
-            new FieldBool(  array('name'=>'is_folder',
+            new FieldBool(  ['name'=>'is_folder',
                 'title'=>__('show as folder (may contain other tasks)'),
                 'view_in_forms'=>true,
                 'default'   =>0,
-            )),
+            ]),
 
             /**
             * DEPRECIATED !
             */
-            new FieldBool(  array('name'=>'is_milestone',
+            new FieldBool(  ['name'=>'is_milestone',
                 'title'=>__('is a milestone'),
                 'tooltip'=> __('milestones are shown in a different list'),
                 'view_in_forms'=>false,
                 'default'   =>0,
-            )),
+            ]),
 
-            new FieldInternal(  array('name'=>'is_released',
+            new FieldInternal(  ['name'=>'is_released',
                 'title'         =>__('released'),
                 'view_in_forms' =>false,
                 'default'       =>RELEASED_UNDEFINED,
                 'log_changes'   => true,
-            )),
-            new FieldDatetime(  array('name'=>'time_released',
+            ]),
+            new FieldDatetime(  ['name'=>'time_released',
                 'title'         =>__('release time'),
                 'view_in_forms' =>true,
                 'default'       =>FINIT_NEVER
-            )),
+            ]),
 
-            new FieldPercentage(array('name'=>'completion',
+            new FieldPercentage(['name'=>'completion',
                 'title'=>__('Completion'),
                 'view_in_forms'=>true,
                 'default'       =>0,
-            )),
-            new FieldInternal(  array('name'=>'parent_task',
+            ]),
+            new FieldInternal(  ['name'=>'parent_task',
                 'view_in_forms'=>true,
                 'log_changes'   => true,
-            )),
+            ]),
             /**
             * estimated time in seconds
             *
             */
-            new FieldInt(      array('name'=>'estimated',
+            new FieldInt(      ['name'=>'estimated',
                 'title'=>__('Estimated time'),
                 'view_in_forms'=>true,
-            )),
-            new FieldInt(      array('name'=>'estimated_max',
+            ]),
+            new FieldInt(      ['name'=>'estimated_max',
                 'title'=>__('Estimated worst case'),
                 'view_in_forms'=>true,
-            )),
+            ]),
 
-            new FieldInternal(  array('name'=>'issue_report',
+            new FieldInternal(  ['name'=>'issue_report',
                 'log_changes'=>false,
-            )),
-            new FieldOption    (array('name'=>'label',
+            ]),
+            new FieldOption    (['name'=>'label',
                 'title'=>__('Label'),
                 'view_in_forms'=>true,
                 'log_changes'=>true,
-            )),
-            new FieldDateTime      (array('name'=>'planned_start',
+            ]),
+            new FieldDateTime      (['name'=>'planned_start',
                 'title'=>__('Planned Start'),
                 'view_in_forms'=>true,
                 'default'=>FINIT_NEVER,
-            )),
-            new FieldDateTime      (array('name'=>'planned_end',
+            ]),
+            new FieldDateTime      (['name'=>'planned_end',
                 'title'=>__('Planned End'),
                 'view_in_forms'=>true,
                 'default'=>FINIT_NEVER,
-            )),
-            new FieldInternal      (array('name'=>'view_collapsed',
+            ]),
+            new FieldInternal      (['name'=>'view_collapsed',
                 'default'=>0,
                 'log_changes'=>false,
-            )),
-            new FieldInternal      (array('name'=>'category',
+            ]),
+            new FieldInternal      (['name'=>'category',
                 'default'=>TCATEGORY_TASK,
                 'log_changes'   => true,
-            )),
+            ]),
 
             /**
             * additional int for defining position in lists
             */
-            new FieldInt      (array('name'=>'order_id',
+            new FieldInt      (['name'=>'order_id',
                 'title'=>__('Order Id'),
                 'default'       => 0,
                 'log_changes'   => true,
-            )),
+            ]),
 
-			new FieldString(array('name'=>'calculation',
+			new FieldString(['name'=>'calculation',
 			    'title'=>__('Calculation') . " " . __('in Euro'),
 				'default'=>0.0,
-			)),
+			]),
 
-            new FieldBool(  array('name'=>'is_news',
+            new FieldBool(  ['name'=>'is_news',
                 'title'=>__('Display in project news'),
                 'tooltip'=> __('List title and description in project overview'),
                 'view_in_forms'=> true,
                 'default'   =>0,
                 'log_changes' => true,
-            )),
-            new FieldBool(array('name'=>'show_folder_as_documentation',
+            ]),
+            new FieldBool(['name'=>'show_folder_as_documentation',
                 'title'=>__('Display folder as topic'),
                 'view_in_forms'=> true,
                 'default'   =>0,
                 'log_changes' => true,
-            )),
+            ]),
 
 
-        ) as $f) {
+        ] as $f) {
             self::$fields_static[$f->name] = $f;
         }
     }
@@ -339,14 +339,14 @@ foreach($filters_str as $fs=>$value) {
         }
 
 
-        return $project->getTasks(array(
+        return $project->getTasks([
             'order_by'      => $order_by,
             'sort_hierarchical'=>false,
             'parent_task'=> $this->id,
             'show_folders'=>true,
             'status_min'=> STATUS_UPCOMING,
             'status_max'=> STATUS_CLOSED,
-        ));
+        ]);
     }
 
     function getSubtasksRecursive()
@@ -355,16 +355,16 @@ foreach($filters_str as $fs=>$value) {
             $PH->abortWarning(__("task without project?"), ERROR_BUG);
         }
 
-        $tasks= array();
+        $tasks= [];
 
-        foreach($project->getTasks(array(
+        foreach($project->getTasks([
             'sort_hierarchical'=>false,
             'parent_task'=> $this->id,
             'show_folders'=>true,
             'status_min'=> STATUS_UPCOMING,
             'status_max'=> STATUS_CLOSED,
             'order_by' => 'order_id',
-        )) as $t) {
+        ]) as $t) {
             $tasks[]= $t;
             if($t->category == TCATEGORY_FOLDER) {
                 foreach($t->getSubtasksRecursive() as $st) {
@@ -378,7 +378,7 @@ foreach($filters_str as $fs=>$value) {
 
     function getSubtasksRecursiveAll($options)
     {
-        $tasks = array();
+        $tasks = [];
 
         $options['parent_task'] = $this->id;
 
@@ -404,12 +404,12 @@ foreach($filters_str as $fs=>$value) {
             $PH->abortWarning(__("task without project?"), ERROR_BUG);
         }
 
-        return $project->getTasks(array(
+        return $project->getTasks([
             'order_by'      => $order_by,
             'sort_hierarchical'=>false,
             'for_milestone'=> $this->id,
             'show_folders'=>true,
-        ));
+        ]);
     }
 
     /**
@@ -425,14 +425,14 @@ foreach($filters_str as $fs=>$value) {
         if(!$project= Project::getById($this->project)) {
             $PH->abortWarning(__("task without project?"), ERROR_BUG);
         }
-        $subtasks = Task::getAll(array(
+        $subtasks = Task::getAll([
             'folders_only'      =>false,
             'show_folders'      =>true,
             'sort_hierarchical' =>true,
             'use_collapsed'     =>false,
             'parent_task'       =>$this->id,
 
-        ));
+        ]);
         $count= 0;
         foreach($subtasks as $t) {
             if(!$t->is_folder) {
@@ -450,8 +450,8 @@ foreach($filters_str as $fs=>$value) {
     # returns array of tasks
     function getFolder()
     {
-        $folder=array();
-        $folder_ids=array();  #hash to detect cycle-lock
+        $folder=[];
+        $folder_ids=[];  #hash to detect cycle-lock
 
         $cur_task=$this;
         while($cur_task && intval($cur_task->parent_task)) {
@@ -476,7 +476,7 @@ foreach($filters_str as $fs=>$value) {
     {
         measure_start('col_TaskFolderlinks');
         global $PH;
-        $link_list= array();
+        $link_list= [];
 
         if($project) {
             $link_list[]= "<b>". $project->getLink() . "</b>";
@@ -484,10 +484,10 @@ foreach($filters_str as $fs=>$value) {
 
         foreach($this->getFolder() as $f) {
             if($shortnames) {
-                $link_list[]= $PH->getLink('taskView',$f->getShort(),array('tsk'=>$f->id));
+                $link_list[]= $PH->getLink('taskView',$f->getShort(),['tsk'=>$f->id]);
             }
             else {
-                $link_list[]= $PH->getLink('taskView',$f->name,array('tsk'=>$f->id));
+                $link_list[]= $PH->getLink('taskView',$f->name,['tsk'=>$f->id]);
             }
         }
         measure_stop('col_TaskFolderlinks');
@@ -518,7 +518,7 @@ foreach($filters_str as $fs=>$value) {
     }
 
 
-    function getComments($args=array())
+    function getComments($args=[])
     {
         if($project= Project::getVisibleById($this->project)) {
             $args['on_task']= $this->id;
@@ -529,7 +529,7 @@ foreach($filters_str as $fs=>$value) {
     }
 
 
-    function getLatestComment($args=array())
+    function getLatestComment($args=[])
     {
         if($project= Project::getVisibleById($this->project)) {
             $args['on_task']= $this->id;
@@ -679,20 +679,20 @@ foreach($filters_str as $fs=>$value) {
     #function getMilestoneTasks()
     {
         ### get subtasks if expanded
-        $tasks_open= Task::getAll(array(
+        $tasks_open= Task::getAll([
             'for_milestone' => $this->id,
             'status_min'    => STATUS_NEW,
             'status_max'    => STATUS_COMPLETED,
             'project'       => $this->project,
             'show_folders'  => false,
-        ));
-        $tasks_closed= Task::getAll(array(
+        ]);
+        $tasks_closed= Task::getAll([
             'for_milestone' => $this->id,
             'status_min'    => STATUS_APPROVED,
             'status_max'    => STATUS_CLOSED,
             'project'       => $this->project,
             'show_folders'  => false,
-        ));
+        ]);
 
         $num_closed= count($tasks_closed);
         $num_open  = count($tasks_open);
@@ -729,7 +729,7 @@ foreach($filters_str as $fs=>$value) {
             $sum_completion_max+= $tt->estimated_max;
         }
 
-        return array(
+        return [
             'tasks_closed'          => $tasks_closed,
             'tasks_open'            => $tasks_open,
             'num_open'              => $num_open,
@@ -740,7 +740,7 @@ foreach($filters_str as $fs=>$value) {
             'sum_estimated_max'     => $sum_estimated_max,
             'sum_completion_min'    => $sum_completion_min,
             'sum_completion_max'    => $sum_completion_max,
-        );
+        ];
     }
 
 
@@ -832,7 +832,7 @@ foreach($filters_str as $fs=>$value) {
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
 
-        $tasks=array();
+        $tasks=[];
         foreach($tmp as $t) {
 
             unset($t['due_sort']);                          # remove temporary sql-variable
@@ -967,7 +967,7 @@ foreach($filters_str as $fs=>$value) {
             $str_category='';
         }
         if(!is_null($category_in)) {
-            $clean_array= array();
+            $clean_array= [];
             foreach($category_in as $c) {
                 $clean_array[]= intval($c);
             }
@@ -1220,7 +1220,7 @@ foreach($filters_str as $fs=>$value) {
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
 		
-        $tasks=array();
+        $tasks=[];
         foreach($tmp as $t) {
             $task=new Task($t);
             $task->level= $level;
@@ -1228,7 +1228,7 @@ foreach($filters_str as $fs=>$value) {
 
             ### hierarchical / recursive sorting ###
             if($sort_hierarchical && $task->is_folder && (!$use_collapsed || !$task->view_collapsed)) {
-                if($sub_tasks=Task::getAll(array(
+                if($sub_tasks=Task::getAll([
                     'sort_hierarchical' =>true,
 
                     'use_collapsed'=> $use_collapsed,
@@ -1242,7 +1242,7 @@ foreach($filters_str as $fs=>$value) {
                     'level'         => $level+1,
                     'folders_only'  => $folders_only,
                     'project'       => $project,
-                ))) {
+                ])) {
                     foreach($sub_tasks as &$st) {
                         $tasks[]= $st;
                     }
@@ -1281,7 +1281,7 @@ foreach($filters_str as $fs=>$value) {
         $sth= $dbh->prepare($query_str);
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
-        $tps=array();
+        $tps=[];
         foreach($tmp as $tp) {
             $tps[]=new TaskPerson($tp);
         }
@@ -1352,7 +1352,7 @@ foreach($filters_str as $fs=>$value) {
         $sth->execute("",1);
         $tmp=$sth->fetchall_assoc();
 
-        $people=array();
+        $people=[];
 
 
         #--- return all ---
@@ -1383,22 +1383,22 @@ foreach($filters_str as $fs=>$value) {
 
         global $PH;
         if($short_name) {
-            return '<span  title="'.asHtml($this->name).'" class="item task">'.$PH->getLink('taskView',$this->getShort(),array('tsk'=>$this->id),$style_isdone).'</span>';
+            return '<span  title="'.asHtml($this->name).'" class="item task">'.$PH->getLink('taskView',$this->getShort(),['tsk'=>$this->id],$style_isdone).'</span>';
         }
         else {
-            return $PH->getLink('taskView',$this->name,array('tsk'=>$this->id),$style_isdone);
+            return $PH->getLink('taskView',$this->name,['tsk'=>$this->id],$style_isdone);
         }
     }
 
     public function isDone()
     {
-        return ($this->isOfCategory(array(TCATEGORY_TASK, TCATEGORY_BUG))) && $this->status >= STATUS_COMPLETED;
+        return ($this->isOfCategory([TCATEGORY_TASK, TCATEGORY_BUG])) && $this->status >= STATUS_COMPLETED;
     }
 
     public function getUrl()
     {
         global $PH;
-        return $PH->getUrl('taskView', array('tsk'=>$this->id));        
+        return $PH->getUrl('taskView', ['tsk'=>$this->id]);        
     }
 
     /**
@@ -1471,7 +1471,7 @@ foreach($filters_str as $fs=>$value) {
             trigger_error("task without project?", E_USER_WARNING);
         }
         $labels=preg_split("/,/",$project->labels);
-        $options = array(0=>__("undefined"));        
+        $options = [0=>__("undefined")];        
         for ($i=0; $i < count($labels); $i++) { 
             $options[$i+1] = $labels[$i];
         }
@@ -1487,16 +1487,16 @@ foreach($filters_str as $fs=>$value) {
     */
     public static function getDocuTasks($project_id, $parent_task_id= NULL)
     {
-        $tasks= array();
-        $tmp_options= array(
+        $tasks= [];
+        $tmp_options= [
             'use_collapsed'     => true,
             'order_by'          => 'order_id, i.id',
             'parent_task'       => $parent_task_id,
             'status_min'        => 0,
             'status_max'        => 100,
             'project'           => $project_id,
-            'category_in'       => array(TCATEGORY_DOCU, TCATEGORY_FOLDER),
-        );
+            'category_in'       => [TCATEGORY_DOCU, TCATEGORY_FOLDER],
+        ];
 
         foreach($pages= Task::getAll($tmp_options) as $p) {
             ### filter only folders with docu ###
@@ -1522,7 +1522,7 @@ foreach($filters_str as $fs=>$value) {
     
     public function isMilestoneOrVersion()
     {
-        return $this->isOfCategory(array(TCATEGORY_MILESTONE, TCATEGORY_VERSION));
+        return $this->isOfCategory([TCATEGORY_MILESTONE, TCATEGORY_VERSION]);
     }
 
     

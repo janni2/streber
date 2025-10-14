@@ -74,7 +74,7 @@
         }
 
         function testHashEquality() {
-            $this->assertEqual(array("a" => "A", "b" => "B"), array("b" => "B", "a" => "A"), "%s -> Pass");
+            $this->assertEqual(["a" => "A", "b" => "B"], ["b" => "B", "a" => "A"], "%s -> Pass");
         }
 
         function testWithin() {
@@ -191,7 +191,7 @@
         }
 
         function testHashEquality() {
-            $this->assertEqual(array("a" => "A", "b" => "B"), array("b" => "B", "a" => "Z"), "%s -> Fail");
+            $this->assertEqual(["a" => "A", "b" => "B"], ["b" => "B", "a" => "Z"], "%s -> Fail");
         }
 
         function testWithin() {
@@ -220,7 +220,7 @@
         }
 
         function testHashIdentity() {
-            $this->assertIdentical(array("a" => "A", "b" => "B"), array("b" => "B", "a" => "A"), "%s -> fail");        // Fail.
+            $this->assertIdentical(["a" => "A", "b" => "B"], ["b" => "B", "a" => "A"], "%s -> fail");        // Fail.
         }
 
         function testObjectEquality() {
@@ -287,49 +287,49 @@
 
         function testEmptyMatching() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array());
+            $dummy->expectArguments('a', []);
             $dummy->a();
             $dummy->a(null);        // Fail.
         }
 
         function testEmptyMatchingWithCustomMessage() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array(), 'My expectation message: %s');
+            $dummy->expectArguments('a', [], 'My expectation message: %s');
             $dummy->a();
             $dummy->a(null);        // Fail.
         }
 
         function testNullMatching() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array(null));
+            $dummy->expectArguments('a', [null]);
             $dummy->a(null);
             $dummy->a();        // Fail.
         }
 
         function testBooleanMatching() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array(true, false));
+            $dummy->expectArguments('a', [true, false]);
             $dummy->a(true, false);
             $dummy->a(true, true);        // Fail.
         }
 
         function testIntegerMatching() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array(32, 33));
+            $dummy->expectArguments('a', [32, 33]);
             $dummy->a(32, 33);
             $dummy->a(32, 34);        // Fail.
         }
 
         function testFloatMatching() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array(3.2, 3.3));
+            $dummy->expectArguments('a', [3.2, 3.3]);
             $dummy->a(3.2, 3.3);
             $dummy->a(3.2, 3.4);        // Fail.
         }
 
         function testStringMatching() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array('32', '33'));
+            $dummy->expectArguments('a', ['32', '33']);
             $dummy->a('32', '33');
             $dummy->a('32', '34');        // Fail.
         }
@@ -338,7 +338,7 @@
             $dummy = new MockDummy();
             $dummy->expectArguments(
                     'a',
-                    array(new EqualExpectation('A', 'My part expectation message: %s')),
+                    [new EqualExpectation('A', 'My part expectation message: %s')],
                     'My expectation message: %s');
             $dummy->a('A');
             $dummy->a('B');        // Fail.
@@ -346,9 +346,9 @@
 
         function testArrayMatching() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array(array(32), array(33)));
-            $dummy->a(array(32), array(33));
-            $dummy->a(array(32), array('33'));        // Fail.
+            $dummy->expectArguments('a', [[32], [33]]);
+            $dummy->a([32], [33]);
+            $dummy->a([32], ['33']);        // Fail.
         }
 
         function testObjectMatching() {
@@ -357,14 +357,14 @@
             $b = new Dummy();
             $b->b = 'b';
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array($a, $b));
+            $dummy->expectArguments('a', [$a, $b]);
             $dummy->a($a, $b);
             $dummy->a($a, $a);        // Fail.
         }
 
         function testBigList() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array(false, 0, 1, 1.0));
+            $dummy->expectArguments('a', [false, 0, 1, 1.0]);
             $dummy->a(false, 0, 1, 1.0);
             $dummy->a(true, false, 2, 2.0);        // Fail.
         }
@@ -373,15 +373,15 @@
     class TestOfPastBugs extends UnitTestCase {
 
         function testMixedTypes() {
-            $this->assertEqual(array(), null, "%s -> Pass");
-            $this->assertIdentical(array(), null, "%s -> Fail");    // Fail.
+            $this->assertEqual([], null, "%s -> Pass");
+            $this->assertIdentical([], null, "%s -> Fail");    // Fail.
         }
 
         function testMockWildcards() {
             $dummy = new MockDummy();
-            $dummy->expectArguments('a', array('*', array(33)));
-            $dummy->a(array(32), array(33));
-            $dummy->a(array(32), array('33'));        // Fail.
+            $dummy->expectArguments('a', ['*', [33]]);
+            $dummy->a([32], [33]);
+            $dummy->a([32], ['33']);        // Fail.
         }
     }
 
@@ -481,14 +481,14 @@
     $test->addTestCase(new TestOfSkippingTwiceOver());
     $test->addTestCase(new TestThatShouldNotBeSkipped());
 
-    if (isset($_GET['xml']) || in_array('xml', (isset($argv) ? $argv : array()))) {
+    if (isset($_GET['xml']) || in_array('xml', (isset($argv) ? $argv : []))) {
         $reporter = new XmlReporter();
     } elseif (TextReporter::inCli()) {
         $reporter = new TextReporter();
     } else {
         $reporter = new PassesAsWellReporter();
     }
-    if (isset($_GET['dry']) || in_array('dry', (isset($argv) ? $argv : array()))) {
+    if (isset($_GET['dry']) || in_array('dry', (isset($argv) ? $argv : []))) {
         $reporter->makeDry();
     }
     exit ($test->run($reporter) ? 0 : 1);

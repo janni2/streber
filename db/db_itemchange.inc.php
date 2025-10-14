@@ -27,23 +27,23 @@ class ItemVersion extends BaseObject
     public $date_from;
     public $date_to;
     public $author;
-    public $values=array();                         # hash with changed fields in this version
-    public $values_next=array();                         # hash with changed fields in this version
+    public $values=[];                         # hash with changed fields in this version
+    public $values_next=[];                         # hash with changed fields in this version
 
 
     static function getFromItem($item)
     {
 
         ### get changes ###
-        $all_changes= $all_changes= ItemChange::getItemChanges(array(
+        $all_changes= $all_changes= ItemChange::getItemChanges([
             'item'      => $item->id,
-        ));
+        ]);
 
-        $versions= array( new ItemVersion(array(
+        $versions= [ new ItemVersion([
             'version_number'=>1,
             'date_from'=> $item->created,
             'author'=> $item->created_by,
-        )));
+        ])];
 
         $last_version= $versions[0];
 
@@ -62,12 +62,12 @@ class ItemVersion extends BaseObject
             }
 
             if($flag_new) {
-                $version= new ItemVersion(array(
+                $version= new ItemVersion([
                     'version_number'=> $version_number++,
                     'date_from'     => $cf->modified,
                     'author'        => $cf->modified_by,
                    # 'changed_fields'=> array($cf)
-                ));
+                ]);
 
 
                 $modified_last = $cf->modified;
@@ -89,7 +89,7 @@ class ItemVersion extends BaseObject
             $versions[count($versions)-1]->date_to= getGMTString();
 
             ### fill in next values ###
-            $changed= array();
+            $changed= [];
             foreach(array_reverse($versions) as $v) {
                 foreach($v->values as $name=>$value) {
                     if(isset($changed[$name])) {
@@ -113,7 +113,7 @@ class ItemVersion extends BaseObject
 
 class ItemChange extends DbItem
 {
-    public static $itemchange_fields_static=array();
+    public static $itemchange_fields_static=[];
 
     /**
     * create empty object-item or querry database
@@ -175,43 +175,43 @@ class ItemChange extends DbItem
     public static function initFields()
     {
 
-        foreach(array(
+        foreach([
                     ### internal fields ###
-                    new FieldInternal  (array('name'=>'id',
+                    new FieldInternal  (['name'=>'id',
                         'default'=>0,
-                    )),
+                    ]),
                     /**
                     * id of the item being changed
                     */
                     
-                    new FieldInternal  (array('name'=>'item',
+                    new FieldInternal  (['name'=>'item',
                         'default'=>10,
-                    )),
-                    new FieldUser     (array('name'=>'modified_by',
+                    ]),
+                    new FieldUser     (['name'=>'modified_by',
                         'default'=> FINIT_CUR_USER,
                         'view_in_forms'=>false,
-                    )),
+                    ]),
 
-                    new FieldDatetime( array('name'=>'modified',
+                    new FieldDatetime( ['name'=>'modified',
                         'default'=>FINIT_NOW,
                         'view_in_forms'=>false,
-                    )),
+                    ]),
 
                     /**
                     * name of the changed field
                     */
-                    new FieldInternal(array(    'name'=>'field',
+                    new FieldInternal([    'name'=>'field',
                         'view_in_forms'=>false,
-                    )),
+                    ]),
 
                     /**
                     * old value
                     */
-                    new FieldInternal  (array('name'=>'value_old',
+                    new FieldInternal  (['name'=>'value_old',
                         'view_in_forms'=>false,
-                    )),
+                    ]),
 
-               ) as $f) {
+               ] as $f) {
                    self::$itemchange_fields_static[$f->name] = $f;
                }
     }
@@ -289,7 +289,7 @@ class ItemChange extends DbItem
 
     	$sth->execute("",1);
     	$tmp=$sth->fetchall_assoc();
-    	$item_changes=array();
+    	$item_changes=[];
         foreach($tmp as $t) {
             $c=new ItemChange($t);
             $item_changes[]=$c;

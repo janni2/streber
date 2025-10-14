@@ -81,7 +81,7 @@ class SimpleReflection {
      *    @access public
      */
     function getInterfaces() {
-        return array();
+        return [];
     }
 
     /**

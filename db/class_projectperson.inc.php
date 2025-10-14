@@ -32,67 +32,67 @@ class ProjectPerson extends DbProjectItem {
     static function initFields()
     {
         global $projectperson_fields;
-        $projectperson_fields=array();
+        $projectperson_fields=[];
         addProjectItemFields($projectperson_fields);
     
-        foreach(array(
-            new FieldInternal(array(    'name'=>'id',
+        foreach([
+            new FieldInternal([    'name'=>'id',
                 'default'=>0,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-            new FieldInternal(array(    'name'=>'state',
+            ]),
+            new FieldInternal([    'name'=>'state',
                 'default'=>1,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-            new FieldInternal(array(    'name'=>'person',
-            )),
-            new FieldInternal(array(    'name'=>'project',
+            ]),
+            new FieldInternal([    'name'=>'person',
+            ]),
+            new FieldInternal([    'name'=>'project',
                 'default'=>0,
                 'in_db_object'=>1,
                 'in_db_item'=>1,
-            )),
-            new FieldString(array(      'name'=>'name',
+            ]),
+            new FieldString([      'name'=>'name',
                 'default'=>'member',
                 'title'=>__('job'),
-            )),
+            ]),
     
-            new FieldInternal(array(    'name'=>'proj_rights',
-            )),
-            new FieldInternal(array(    'name'=>'level_create',
+            new FieldInternal([    'name'=>'proj_rights',
+            ]),
+            new FieldInternal([    'name'=>'level_create',
                 'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_view',
+            ]),
+            new FieldInternal([    'name'=>'level_view',
                 'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_edit',
+            ]),
+            new FieldInternal([    'name'=>'level_edit',
                 'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_reduce',
+            ]),
+            new FieldInternal([    'name'=>'level_reduce',
                 'default'=>PUB_LEVEL_OPEN,
-            )),
-            new FieldInternal(array(    'name'=>'level_delete',
+            ]),
+            new FieldInternal([    'name'=>'level_delete',
                 'default'=>PUB_LEVEL_OPEN,
-            )),
+            ]),
             /**
             * 0 - efforts logged as time_start - time_end
             * 1 - efforts looged in duration
             */
-            new FieldInternal(array(    'name'=>'adjust_effort_style',
+            new FieldInternal([    'name'=>'adjust_effort_style',
                 'default'=>EFFORT_STYLE_DURATION,
-            )),
+            ]),
     
-            new FieldInternal(array(    'name'=>'role',  # this is only a cache for string-output
+            new FieldInternal([    'name'=>'role',  # this is only a cache for string-output
                 'title'=>__('role'),
                 'default'=>PROFILE_USER,
-            )),
-			new FieldString(array('name'=>'salary_per_hour',
+            ]),
+			new FieldString(['name'=>'salary_per_hour',
 				'title'     =>__('Salary per hour') . " " . __('in Euro'),
                 'default'   =>0.0,
                 'export'    =>false,
-            )),
-        ) as $f) {
+            ]),
+        ] as $f) {
             $projectperson_fields[$f->name]=$f;
         }
     }
@@ -187,7 +187,7 @@ class ProjectPerson extends DbProjectItem {
 
 
         ### build assoc array of defined class members ###
-        $data=array();
+        $data=[];
         foreach(get_object_vars($this) as $key=>$value) {
             $data[$key]=true;
         }

@@ -36,11 +36,11 @@ function homeTimetracking()
     $person= $auth->cur_user;
 
     ### create from handle ###
-    $PH->defineFromHandle(array('person'=>$person->id));
+    $PH->defineFromHandle(['person'=>$person->id]);
 
     ### set up page ####
     {
-        $page= new Page(array('use_jscalendar'=>true));
+        $page= new Page(['use_jscalendar'=>true]);
         $page->cur_tab='home';
         $page->title=__("Time tracking");
         $page->use_d3js = true;
@@ -145,12 +145,12 @@ function ajaxUserEfforts()
         $numberOfDays = 7;  
     }
 
-    $efforts= Effort::getAll(array(
+    $efforts= Effort::getAll([
         'person'=> $auth->cur_user->id,
         'effort_time_min'=> getGMTString( (time() - $numberOfDays * 24 * 60*60 )),        
-    ));
+    ]);
     
-    $result = array();
+    $result = [];
     foreach( $efforts as $e ) {
         $p= Project::getById($e->project);
         
@@ -159,7 +159,7 @@ function ajaxUserEfforts()
             $task_name= $t->name . " — ";
         }
         
-        $result[$e->id] = array('start'=>strToClientTime($e->time_start), 
+        $result[$e->id] = ['start'=>strToClientTime($e->time_start), 
                                 'duration'=> (strToClientTime($e->time_end) - strToClientTime($e->time_start)) , 
                                 'id'=> $e->id,
                                 'productivity'=> $e->productivity,
@@ -167,7 +167,7 @@ function ajaxUserEfforts()
                                 'title'=> $p->name,
                                 'tooltip'=> $task_name . $e->name,
                                 'created'=> strToClientTime($e->created),
-                                );
+                                ];
     }
     echo json_encode($result);
 }
@@ -179,7 +179,7 @@ function ajaxUserProjects()
     global $auth;
     require_once(confGet('DIR_STREBER') . 'db/class_company.inc.php');
     
-    $projects = array();
+    $projects = [];
     
     if($q= getOnePassedId("q")) {
          $all_projects = Project::getAll();
@@ -194,14 +194,14 @@ function ajaxUserProjects()
          $projects = Project::getAll();
     }
     
-    $result = array();
+    $result = [];
     foreach($projects  as $p) {        
         
         $company_name = "";
         if($company= Company::getVisibleById($p->company)) {
             $company_name= $company->getShort(12);
         }
-        $result[] = array('name'=> $p->name ." – "  . $company_name , 'id'=>$p->id);
+        $result[] = ['name'=> $p->name ." – "  . $company_name , 'id'=>$p->id];
     }
     echo json_encode($result);
 }
@@ -216,11 +216,11 @@ function ajaxUserTasks()
     if ($prj == 0) $prj = NULL;
     if ($q == "") $q = NULL;
     
-    $tasks = Task::getAll(array('search'=>$q, 'project'=>$prj, 'order_by' => 'modified DESC'));
+    $tasks = Task::getAll(['search'=>$q, 'project'=>$prj, 'order_by' => 'modified DESC']);
 
-    $result = array();
+    $result = [];
     foreach( $tasks as $t) {        
-        $result[] = array('name'=> $t->name, 'id'=>$t->id);    
+        $result[] = ['name'=> $t->name, 'id'=>$t->id];    
     }
     echo json_encode($result);
 }
@@ -238,14 +238,14 @@ function newEffortFromTimeTracking()
         $time_end = null;
     }
 
-    $new_effort= new Effort(array(
+    $new_effort= new Effort([
             'id'=>0,
             'time_start'=> getGMTString(get('effort_start_seconds')),
             'time_end'=> getGMTString($time_end),
             'name'=> get('description'),
             'billing' => get('billing'),
             'productivity' => get('productivity'),
-    ));
+    ]);
 
     ### get project ###
     $new_effort->project=get('effort_project_id');
@@ -271,11 +271,11 @@ function newEffortFromTimeTracking()
     }
     else if ( get('task_name') != "") {
         ### create new task
-        $newtask= new Task(array(
+        $newtask= new Task([
             'id'=>0,
             'name'=> get('task_name'),
             'project' => $project->id,
-        ));
+        ]);
         $newtask->insert();
         $new_effort->task = $newtask->id;
     }
@@ -297,7 +297,7 @@ function newEffortFromTimeTracking()
 
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$effort->project));
+        $PH->show('projView',['prj'=>$effort->project]);
     }
 }
 

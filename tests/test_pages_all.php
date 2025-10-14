@@ -29,7 +29,7 @@ class TestPagesAll extends WebTestCase {
 
         # FIXME: Setting an absolute path is bad!
         $url_start      = $g_streber_url . '/index.php?go=logout';
-        $test_params    = array(
+        $test_params    = [
                              "_projectView_"=>12,
                              "_projectEdit_"=>12,
                              "_taskView_"=>18,
@@ -47,7 +47,7 @@ class TestPagesAll extends WebTestCase {
                              "_effortView_"=>35,
                              "_effortEdit_"=>35,
 
-                          );
+                          ];
         
         require_once("../conf/defines.inc.php");                # the order of those includes is tricky
         require_once('../std/class_auth.inc.php');
@@ -79,7 +79,7 @@ class TestPagesAll extends WebTestCase {
 
                 TestEnvironment::prepare('fixtures/project_setup.sql');
 
-                $params=array();
+                $params=[];
                 if(isset($handle->test_params)) {
                     foreach($handle->test_params as $param=>$value) {
                         if(isset($test_params[$value])){

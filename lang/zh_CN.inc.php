@@ -37,7 +37,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 'autodetect'                  =>'自动检测',
 'Summary'                     =>'摘要',
@@ -1474,7 +1474,7 @@ $g_lang_table= array(
 'update your account settings'=>'',
 
 
-);
+];
 
 
 

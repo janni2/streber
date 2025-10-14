@@ -45,7 +45,7 @@ class ListGroupingFolder extends ListGrouping
 class ListBlock_tasks extends ListBlock
 {
 
-    public $filters                 = array();                               # assoc arry of ListFilters
+    public $filters                 = [];                               # assoc arry of ListFilters
     public $tasks_assigned_to       = NULL;
     public $use_short_names         = false;
     public $show_summary            = false;
@@ -54,7 +54,7 @@ class ListBlock_tasks extends ListBlock
     public function __construct($args=NULL)
     {
         global $PH;
-        parent::__construct(array());
+        parent::__construct([]);
 
         $this->id           =  'tasks';
         $this->no_items_html=NULL;
@@ -85,56 +85,56 @@ class ListBlock_tasks extends ListBlock
 
         ### columns ###
         $this->add_col( new ListBlockColSelect());
-        $this->add_col( new ListBlockColPrio(array(
+        $this->add_col( new ListBlockColPrio([
             'key'=>'prio',
             'name'=>"P",
             'tooltip'=>__("Priority of task"),
             'sort'=>1
-        )));
-        $this->add_col(new ListBlockColMethod(array(
+        ]));
+        $this->add_col(new ListBlockColMethod([
             'key'=>'project',
             'name'=>__('Project'),
             'func'=>'getProjectLink'
-        )));
+        ]));
 
-        $this->add_col( new ListBlockColStatus(array(
+        $this->add_col( new ListBlockColStatus([
             'key'=>'status',
             'name'=>__("Status","Columnheader"),
             'tooltip'=>__("Task-Status"),
             'sort'=>0
-        )));
+        ]));
 
         $this->add_col( new ListBlockCol_TaskLabel());
-        $this->add_col( new ListBlockColMethod(array(
+        $this->add_col( new ListBlockColMethod([
             'key'=>'parent_task',
             'name'=>__('Folder'),
             'func'=>'getFolderLinks'
-        )));
+        ]));
 
         $this->add_col( new ListBlockCol_TasknameWithFolder());
-        $this->add_col( new ListBlockCol_TaskName(array(
+        $this->add_col( new ListBlockCol_TaskName([
             'use_short_names'=>$this->use_short_names,
             'indention'=>true
-        )));
-        $this->add_col( new ListBlockCol_TaskAssignedTo(array('use_short_names'=>false )));
+        ]));
+        $this->add_col( new ListBlockCol_TaskAssignedTo(['use_short_names'=>false ]));
 
-        $this->add_col( new listBlockColDate(array(
+        $this->add_col( new listBlockColDate([
             'key'=>'modified',
             'name'=>__('Modified','Column header'),
-        )));
+        ]));
 
-        $this->add_col( new listBlockColDate(array(
+        $this->add_col( new listBlockColDate([
             'key'=>'date_closed',
             'name'=>__('Closed'),
-        )));
+        ]));
         #$this->add_col( new ListBlockCol_TaskCreatedBy( array('use_short_names'=>false,'indention'=>true)));
 
-        $this->add_col( new ListBlockColTime(array(
+        $this->add_col( new ListBlockColTime([
             'key'=>'estimated',
             'name'=>__("Est."),
             'tooltip'=>__("Estimated time in hours"),
             'sort'=>0,
-        )));
+        ]));
         $this->add_col( new ListBlockCol_Milestone);
         $this->add_col( new ListBlockCol_EstimatedComplete);
         $this->add_col( new ListBlockCol_DaysLeft());
@@ -145,120 +145,120 @@ class ListBlock_tasks extends ListBlock
         $this->add_col( new ListBlockColPubLevel());
         
         ### functions ###
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('taskEdit')->id,
             'name'  =>__('Edit'),
             'id'    =>'taskEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('taskNew')->id,
             'name'  =>__('Add new Task'),
             'id'    =>'taskNew',
             'icon'  =>'new',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('taskNewBug')->id,
             'name'  =>__('Report new Bug'),
             'id'    =>'taskNewBug',
             'icon'  =>'new',
             'context_menu'=>'submit',
             'dropdown_menu'=>false,
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('commentNew')->id,
             'name'  =>__('Add comment'),
             'id'    =>'commentNew',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('tasksDelete')->id,
             'name'  =>__('Delete'),
             'id'    =>'tasksDelete',
             'icon'  =>'delete',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('tasksComplete')->id,
             'name'  =>__('Status->Completed'),
             'id'    =>'tasksCompleted',
             'icon'  =>'complete',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('tasksApproved')->id,
             'name'  =>__('Status->Approved'),
             'id'    =>'tasksApproved',
             'icon'  =>'approve',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('tasksClosed')->id,
             'name'  =>__('Status->Closed'),
             'id'    =>'tasksClosed',
             'icon'  =>'close',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('tasksMoveToFolder')->id,
             'name'  =>__('Move tasks'),
             'id'    =>'tasksMoveToFolder',
             'context_menu'=>'submit'
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('effortNew')->id,
             'name'  =>__('Log hours for select tasks'),
             'id'    =>'effortNew',
             'icon'    =>'loghours',
             'context_menu'=>'submit',
-        )));
+        ]));
 
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
         
 
         ### block style functions ###
-        $this->add_blockFunction(new BlockFunction(array(
+        $this->add_blockFunction(new BlockFunction([
             'target'=>'changeBlockStyle',
             'key'=>'list',
             'name'=>__('List','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'list',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
 #                'use_collapsed'=>true,
-             ),
-        )));
-        $this->add_blockFunction(new BlockFunction(array(
+             ],
+        ]));
+        $this->add_blockFunction(new BlockFunction([
             'target'=>'changeBlockStyle',
             'key'=>'tree',
             'name'=>__('Tree','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'tree',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
-            ),
+            ],
             #'default'=>true,
-        )));
-        $this->groupings= new BlockFunction_grouping(array(
+        ]));
+        $this->groupings= new BlockFunction_grouping([
             'target'=>'changeBlockStyle',
             'key'=>'grouped',
             'name'=>__('Grouped','List sort mode'),
-            'params'=>array(
+            'params'=>[
                 'style'=>'grouped',
                 'block_id'=>$this->id,
                 'page_id'=>$PH->cur_page->id,
-            ),
-        ));
+            ],
+        ]);
         $this->add_blockFunction($this->groupings);
 
         /**
@@ -271,12 +271,12 @@ class ListBlock_tasks extends ListBlock
         }
 
         ### list groupings ###
-        $this->groupings->groupings= array(
+        $this->groupings->groupings= [
             new ListGroupingFolder(),
             new ListGroupingStatus(),
             new ListGroupingPrio(),
             new ListGroupingCreatedBy(),
-        );
+        ];
         $this->initOrderQueryOption('order_id, status, prio');
     }
 
@@ -364,13 +364,13 @@ class ListBlock_tasks extends ListBlock
                             ### toggle ###
                             $description= '';
                             if($t->view_collapsed) {
-                                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_closed.gif") .'">',array('tsk'=>$t->id),'folder_collapsed', true);
+                                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_closed.gif") .'">',['tsk'=>$t->id],'folder_collapsed', true);
 
                                 ### number of subtasks with folded ###
                                 $description='<span class=diz>( ' . sprintf(__('%s hidden'), $t->getNumSubtasks()) .')</span>';
                             }
                             else {
-                                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_open.gif") . '">',array('tsk'=>$t->id),'folder_open', true);
+                                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_open.gif") . '">',['tsk'=>$t->id],'folder_open', true);
                             }
                             echo $toggle;
 
@@ -569,15 +569,15 @@ class ListBlock_tasks extends ListBlock
 
         if(!$this->no_items_html && $parent_task) {
             $this->no_items_html=
-            $PH->getLink('taskNewFolder',__('New folder'),array('parent_task'=>$parent_task->id, 'prj'=>$project->id))
+            $PH->getLink('taskNewFolder',__('New folder'),['parent_task'=>$parent_task->id, 'prj'=>$project->id])
             ." ". __("or")." "
-            . $PH->getLink('taskNew','',array('parent_task'=>$parent_task->id));
+            . $PH->getLink('taskNew','',['parent_task'=>$parent_task->id]);
         }
         else if(!$this->no_items_html && $project) {
             $this->no_items_html=
-            $PH->getLink('taskNewFolder',__('New folder'),array('prj'=>$project->id))
+            $PH->getLink('taskNewFolder',__('New folder'),['prj'=>$project->id])
             ." ". __("or")." "
-            . $PH->getLink('taskNew','',array('prj'=>$project->id));
+            . $PH->getLink('taskNew','',['prj'=>$project->id]);
         }
 
 
@@ -607,7 +607,7 @@ class ListBlock_tasks extends ListBlock
         if($auth->cur_user->user_rights & RIGHT_VIEWALL) {
             $this->query_options['visible_only']=false;
         }
-        $tasks = array();
+        $tasks = [];
 
         ### hide columns depending on project options ###
         if($project && !($project->settings & PROJECT_SETTING_ENABLE_MILESTONES)) {
@@ -696,7 +696,7 @@ class ListBlock_tasks extends ListBlock
                        ?     $this->query_options['order_by'] .  ",order_id,status,prio"
                        : 'order_id,status,prio';
             
-            $tmp_options= array(
+            $tmp_options= [
                 'visible_only'      => true,
                 'folders_only'      => true,
                 'sort_hierarchical' => true,
@@ -705,7 +705,7 @@ class ListBlock_tasks extends ListBlock
                 'parent_task'       => $parent_task_id,
                 'status_min'       => STATUS_NEW,
                 'status_max'       => STATUS_CLOSED,
-            );
+            ];
             
             if(isset($this->query_options['person'])){
                 $tmp_options['person']= $this->query_options['person'];
@@ -717,7 +717,7 @@ class ListBlock_tasks extends ListBlock
 
             $tmp_folders= Task::getAll($tmp_options);
                         
-            $folders= array();
+            $folders= [];
             foreach($tmp_folders as $f) {
                 $folders[$f->id]= $f;
             }
@@ -740,13 +740,13 @@ class ListBlock_tasks extends ListBlock
                 $tasks= Task::getAll($this->query_options);
 
                 ### build hash of tasks appended to a folder ###
-                $tasks_for_folder= array();
+                $tasks_for_folder= [];
                 foreach($tasks as $t) {
                     $tasks_for_folder[$t->parent_task][]= $t;
                 }
 
                 ### build full list ###
-                $full_list = array();
+                $full_list = [];
                 foreach($folders as $f) {
                     $full_list[]=$f;
                     #if(!$f->view_collapsed && isset($tasks_for_folder[$f->id])) {
@@ -807,7 +807,7 @@ class ListBlock_tasks extends ListBlock
                 : STATUS_CLOSED;
 
             {
-                $new_list=array();
+                $new_list=[];
                 $last_level=0;
                 foreach(array_reverse($full_list) as $t) {
                     if($t->category == TCATEGORY_FOLDER) {
@@ -1037,7 +1037,7 @@ class ListBlockCol_TaskName extends ListBlockCol
          
         ### task with zero-id is project-root ###
         if(!$task->id) {
-            $link=$PH->getLink('projView',"...project...",array('prj'=>$task->project));
+            $link=$PH->getLink('projView',"...project...",['prj'=>$task->project]);
             echo '<td>'.$link."</td>";
         }
 
@@ -1052,7 +1052,7 @@ class ListBlockCol_TaskName extends ListBlockCol
                 $name=__("- no name -","in task lists");
             }
 
-            $link= $PH->getLink('taskView',$name,array('tsk'=>$task->id));
+            $link= $PH->getLink('taskView',$name,['tsk'=>$task->id]);
 
 
             if($this->indention) {
@@ -1060,13 +1060,13 @@ class ListBlockCol_TaskName extends ListBlockCol
                 if($this->show_toggles) {
                     if($task->category == TCATEGORY_FOLDER) {
                         if($task->view_collapsed) {
-                            $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_closed.gif") . '">',array('tsk'=>$task->id),'folder_collapsed', true);
+                            $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_closed.gif") . '">',['tsk'=>$task->id],'folder_collapsed', true);
 
                             ### number of subtasks with folded ###
                             $description='<span class=diz title="'.__("number of subtasks").'">('.$task->getNumSubtasks().')</span>';
                         }
                         else {
-                            $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_open.gif"). '">',array('tsk'=>$task->id),'folder_open', true);
+                            $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_open.gif"). '">',['tsk'=>$task->id],'folder_open', true);
                         }
                     }
                 }
@@ -1114,15 +1114,15 @@ class ListBlockCol_TaskAsDocu extends ListBlockCol
             return;
         }
 
-        $link= $PH->getLink('taskViewAsDocu',$task->name,array('tsk'=>$task->id));
+        $link= $PH->getLink('taskViewAsDocu',$task->name,['tsk'=>$task->id]);
 
         $toggle='';
         if($task->category == TCATEGORY_FOLDER) {
             if($task->view_collapsed) {
-                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_closed.gif") . '">',array('tsk'=>$task->id),'folder_collapsed', true);
+                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_closed.gif") . '">',['tsk'=>$task->id],'folder_collapsed', true);
             }
             else {
-                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_open.gif"). '">',array('tsk'=>$task->id),'folder_open', true);
+                $toggle=$PH->getLink('taskToggleViewCollapsed','<img src="' . getThemeFile("img/toggle_folder_open.gif"). '">',['tsk'=>$task->id],'folder_open', true);
             }
         }
 
@@ -1158,7 +1158,7 @@ class ListBlockCol_TaskSumEfforts extends ListBlockCol
         }
         $sum=$obj->getSumEfforts();
 
-        $str=  $PH->getLink('taskViewEfforts',round($sum/60/60,1)."h", array('task'=>$obj->id));
+        $str=  $PH->getLink('taskViewEfforts',round($sum/60/60,1)."h", ['task'=>$obj->id]);
 
         print "<td class=nowrap title='" .__("Effort in hours") . "'>$str</td>";
     }
@@ -1218,7 +1218,7 @@ class ListBlockCol_TaskRelationEfforts extends ListBlockCol
             $diff_str = "(" .round($diff/60/60,1). "h)";
         }
         
-        $str =  $PH->getLink('taskViewEfforts', $estimated_str . " / " . round($sum/60/60,1) . "h {$diff_str}", array('task'=>$obj->id));
+        $str =  $PH->getLink('taskViewEfforts', $estimated_str . " / " . round($sum/60/60,1) . "h {$diff_str}", ['task'=>$obj->id]);
         $percent = __('Completion:') . " " . $completion . "%";
         
         print "<td class=nowrap title='" .__("Relation between estimated time and booked efforts") . "'>$str<br><span class='sub who'>$percent</span></td>";
@@ -1372,7 +1372,7 @@ class ListBlockCol_TasknameWithFolder extends ListBlockCol
 
         ### task with zero-id is project-root ###
         if(!$task->id) {
-            $link=$PH->getLink('projView',"...project...",array('prj'=>$task->project));
+            $link=$PH->getLink('projView',"...project...",['prj'=>$task->project]);
             echo '<td><b>'.$link."</b></td>";
         }
 
@@ -1401,7 +1401,7 @@ class ListBlockCol_TasknameWithFolder extends ListBlockCol
                    ? 'isDone'
                    : '';
 
-            $link= $PH->getLink('taskView',$name,array('tsk'=>$task->id));
+            $link= $PH->getLink('taskView',$name,['tsk'=>$task->id]);
             #echo "<td class=taskwithfolder><span class='name $isDone'>{$link}</span><br><span class=sub>$html_details</span></td>";
             echo "<td class=taskwithfolder><span class='$isDone'>{$link}</span><br><span class=sub>$html_details</span></td>";
         }

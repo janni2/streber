@@ -216,11 +216,11 @@ if($user) {
         $projects = $auth->cur_user->getProjects();
         if(count($projects) == 1) {
             setWelcomeToProjectMessage($projects[0]);
-            $PH->show('projView',array('prj'=>$projects[0]->id));
+            $PH->show('projView',['prj'=>$projects[0]->id]);
         }
         else {
             new FeedbackMessage(sprintf( __("Welcome to %s", "Notice after login"), confGet('APP_NAME')));
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }

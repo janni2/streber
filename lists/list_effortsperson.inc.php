@@ -27,11 +27,11 @@ class ListBlock_effortsPerson extends ListBlock
 		$this->title =  __("Efforts on team member");
 		$this->show_icons = true;
 		
-		$this->add_col(new ListBlockColMethod(array(
+		$this->add_col(new ListBlockColMethod([
 			'key'=>'person',
 			'name'=>__('person'),
 			'func'=>'getPersonLink'
-		)));
+		]));
 		$this->add_col( new ListBlockCol_EffortPersonRole);
 		$this->add_col( new ListBlockCol_EffortPersonAmount);
 		$this->add_col( new ListBlockCol_EffortGraph);
@@ -92,7 +92,7 @@ class ListBlock_effortsPerson extends ListBlock
 				$sum_proj = Effort::getSumEfforts(array('project'=>$efforts[0]->project, 'status'=>$efforts[0]->status));
 			}
 			else{*/
-				$sum_proj = Effort::getSumEfforts(array('project'=>$efforts[0]->project));
+				$sum_proj = Effort::getSumEfforts(['project'=>$efforts[0]->project]);
 			#}
 			
 			if($sum_proj)
@@ -125,7 +125,7 @@ class ListBlockCol_EffortPersonRole extends ListBlockCol
 		}
 		
 		if($project = Project::getVisibleById($obj->project)){
-			if($pp = $project->getProjectPeople(array('person_id'=>$obj->person))){
+			if($pp = $project->getProjectPeople(['person_id'=>$obj->person])){
 				$role = $g_user_profile_names[intval($pp[0]->role)];
 			}
 			else{
@@ -161,7 +161,7 @@ class ListBlockCol_EffortPersonAmount extends ListBlockCol
 			$sum_eff = Effort::getSumEfforts(array('project'=>$obj->project, 'person'=>$obj->person, 'status'=>$obj->status));
 		}
 		else{*/
-			$sum_eff = Effort::getSumEfforts(array('project'=>$obj->project, 'person'=>$obj->person));
+			$sum_eff = Effort::getSumEfforts(['project'=>$obj->project, 'person'=>$obj->person]);
 		#}
 		
 		if($sum_eff)
@@ -198,8 +198,8 @@ class ListBlockCol_EffortGraph extends ListBlockCol
 				$sum_proj = Effort::getSumEfforts(array('project'=>$obj->project, 'status'=>$obj->status));
 			}
 			else{*/
-				$sum_eff = Effort::getSumEfforts(array('project'=>$obj->project, 'person'=>$obj->person));
-				$sum_proj = Effort::getSumEfforts(array('project'=>$obj->project));
+				$sum_eff = Effort::getSumEfforts(['project'=>$obj->project, 'person'=>$obj->person]);
+				$sum_proj = Effort::getSumEfforts(['project'=>$obj->project]);
 			#}
 			
 			if($sum_eff && $sum_proj){

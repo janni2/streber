@@ -45,7 +45,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 
 ### ../conf/defines.inc.php   ###
@@ -1989,7 +1989,7 @@ $g_lang_table= array(
 
 
 
-);
+];
 
 
 

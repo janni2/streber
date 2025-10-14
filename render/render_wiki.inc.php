@@ -16,7 +16,7 @@
 
 
 global $g_replace_list;
-$g_replace_list=array();
+$g_replace_list=[];
 
 class FormatBlock
 {
@@ -78,7 +78,7 @@ class FormatBlockCode extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
         $found = false;
         foreach($blocks as $b) {
 
@@ -127,7 +127,7 @@ class FormatBlockLatex extends FormatBlockCode
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
         $found = false;
         foreach($blocks as $b) {
 
@@ -174,7 +174,7 @@ class FormatBlockLeadingSpaces extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -258,7 +258,7 @@ class FormatBlockChangemarks extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -304,7 +304,7 @@ class FormatBlockBold extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -351,7 +351,7 @@ class FormatBlockStrike extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -409,7 +409,7 @@ class FormatBlockHref extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -467,7 +467,7 @@ class FormatBlockQuote extends FormatBlock
             }
         }
 
-        $blocks= array(new FormatBlock(trim($str). "\n"));
+        $blocks= [new FormatBlock(trim($str). "\n")];
 
         $blocks= FormatBlockChangemarks::parseBlocks($blocks);
 
@@ -518,7 +518,7 @@ class FormatBlockQuote extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -565,7 +565,7 @@ class FormatBlockEmphasize extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -611,7 +611,7 @@ class FormatBlockEntity extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -655,7 +655,7 @@ class FormatBlockMonospaced extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -705,7 +705,7 @@ class FormatBlockSub extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -743,13 +743,13 @@ class FormatBlockSub extends FormatBlock
 class FormatBlockHeadline extends FormatBlock
 {
     public $level;
-    public $children= array();
+    public $children= [];
 
     public function __construct($str, $level)
     {
         measure_start("blockHeadlineConstruction");
 
-        $blocks= array(new FormatBlock($str));
+        $blocks= [new FormatBlock($str)];
         $blocks= FormatBlockChangemarks::parseBlocks($blocks);
 
         $blocks= FormatBlockBold::parseBlocks($blocks);
@@ -787,7 +787,7 @@ class FormatBlockHeadline extends FormatBlock
     static function parseBlocks(&$blocks)
     {
         measure_start("blockHeadline1");
-        $blocks_new= array();
+        $blocks_new= [];
         foreach($blocks as $b) {
             if($b->str && !($b instanceof FormatBlockCode)) {
 
@@ -816,7 +816,7 @@ class FormatBlockHeadline extends FormatBlock
             }
         }
         $blocks= $blocks_new;
-        $blocks_new= array();
+        $blocks_new= [];
         measure_stop("blockHeadline1");
         measure_start("blockHeadline2");
 
@@ -848,7 +848,7 @@ class FormatBlockHeadline extends FormatBlock
             }
         }
         $blocks= $blocks_new;
-        $blocks_new= array();
+        $blocks_new= [];
 
         measure_stop("blockHeadline2");
         measure_start("blockHeadline3");
@@ -882,7 +882,7 @@ class FormatBlockHeadline extends FormatBlock
             }
         }
         $blocks= $blocks_new;
-        $blocks_new= array();
+        $blocks_new= [];
 
         measure_stop("blockHeadline3");
         measure_start("blockHeadline4");
@@ -923,7 +923,7 @@ class FormatBlockHeadline extends FormatBlock
 class FormatBlockLinebreak extends FormatBlock
 {
     public $level;
-    public $children= array();
+    public $children= [];
 
 
     public function __construct()
@@ -938,7 +938,7 @@ class FormatBlockLinebreak extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
         foreach($blocks as $b) {
             if($b->str && !($b instanceof FormatBlockCode)) {
 
@@ -975,7 +975,7 @@ class FormatBlockLinebreak extends FormatBlock
 class FormatBlockHr extends FormatBlock
 {
     public $level;
-    public $children= array();
+    public $children= [];
 
 
     public function __construct()
@@ -990,7 +990,7 @@ class FormatBlockHr extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
         foreach($blocks as $b) {
             if($b->str && !($b instanceof FormatBlockCode)) {
 
@@ -1027,7 +1027,7 @@ class FormatBlockHr extends FormatBlock
 class FormatBlockLongMinus extends FormatBlock
 {
     public $level;
-    public $children= array();
+    public $children= [];
 
 
     public function __construct()
@@ -1042,7 +1042,7 @@ class FormatBlockLongMinus extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
         foreach($blocks as $b) {
             if($b->str && !($b instanceof FormatBlockCode)) {
 
@@ -1084,7 +1084,7 @@ class FormatBlockLink extends FormatBlock
 {
 
     public $level;
-    public $children= array();
+    public $children= [];
     public $name;
     public $target;
     public $options;
@@ -1200,15 +1200,15 @@ class FormatBlockLink extends FormatBlock
                         }
                         if($framed) {
                             $this->html = "<div class='frame $align'>"
-                                        . "<a href='" . $PH->getUrl('fileDownloadAsImage',array('file'=>$file->id))."'>"
+                                        . "<a href='" . $PH->getUrl('fileDownloadAsImage',['file'=>$file->id])."'>"
                                         . "<img class=uploaded title='".asHtml($file->name)."'"
                                         .     " alt='".asHtml($file->name)."'"
-                                        .     " src='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id,'max_size'=>$max_size))."'"
+                                        .     " src='".$PH->getUrl('fileDownloadAsImage',['file'=>$file->id,'max_size'=>$max_size])."'"
                                         .     " height=" .intval( $dimensions['new_height'])
                                         .     " width=" .intval( $dimensions['new_width'])    
                                         . "></a>"
                                         . '<span>'.asHtml($this->name)
-                                        . " (". "<a href='".$PH->getUrl('fileView',array('file'=>$file->id))."'>" .  __('Image details').   ")</a>"
+                                        . " (". "<a href='".$PH->getUrl('fileView',['file'=>$file->id])."'>" .  __('Image details').   ")</a>"
                                         . '</span>'
                                         . "</div>";
                             if(!$align) {
@@ -1216,7 +1216,7 @@ class FormatBlockLink extends FormatBlock
                             }
                         }
                         else {
-                            $this->html= "<a href='".$PH->getUrl('fileDownloadAsImage',array('file'=>$file->id))."'>"
+                            $this->html= "<a href='".$PH->getUrl('fileDownloadAsImage',['file'=>$file->id])."'>"
                                        . "<img class='$align uploaded'"
                                        .     " title='" . asHtml($file->name) ."'"
                                        .     " alt='" . asHtml($file->name) ."'"
@@ -1321,7 +1321,7 @@ class FormatBlockLink extends FormatBlock
                     if($task= Task::getVisibleById($item->id)) {
                         $style_isdone= $task->status >= STATUS_COMPLETED ? 'isDone' : '';
                         if($name) {
-                            $html= $PH->getLink('taskView',$name,array('tsk'=>$task->id), $style_isdone, true);
+                            $html= $PH->getLink('taskView',$name,['tsk'=>$task->id], $style_isdone, true);
                         }
                         else {
                             $html= $task->getLink(false);
@@ -1333,10 +1333,10 @@ class FormatBlockLink extends FormatBlock
                     require_once(confGet('DIR_STREBER') . "db/class_file.inc.php");
                     if($file= File::getVisibleById($item->id)) {
                         if($name) {
-                            $html= $PH->getLink('fileDownloadAsImage',$name,array('file'=>$file->id), NULL, true);
+                            $html= $PH->getLink('fileDownloadAsImage',$name,['file'=>$file->id], NULL, true);
                         }
                         else {
-                            $html= $PH->getLink('fileDownloadAsImage',$file->name,array('file'=>$file->id));
+                            $html= $PH->getLink('fileDownloadAsImage',$file->name,['file'=>$file->id]);
                         }
                     }
                     break;
@@ -1345,10 +1345,10 @@ class FormatBlockLink extends FormatBlock
                     require_once(confGet('DIR_STREBER') . "db/class_comment.inc.php");
                     if($comment= Comment::getVisibleById($item->id)) {
                         if($name) {
-                            $html= $PH->getLink('commentView',$name,array('comment'=>$comment->id), NULL, true);
+                            $html= $PH->getLink('commentView',$name,['comment'=>$comment->id], NULL, true);
                         }
                         else {
-                            $html= $PH->getLink('commentView',$comment->name,array('comment'=>$comment->id));
+                            $html= $PH->getLink('commentView',$comment->name,['comment'=>$comment->id]);
                         }
                     }
                     break;
@@ -1356,10 +1356,10 @@ class FormatBlockLink extends FormatBlock
                 case ITEM_PERSON:
                     if($person= Person::getVisibleById($item->id)) {
                         if($name) {
-                            $html= $PH->getLink('personView',$name,array('person'=>$person->id), NULL, true);
+                            $html= $PH->getLink('personView',$name,['person'=>$person->id], NULL, true);
                         }
                         else {
-                            $html= $PH->getLink('personView',$person->name,array('person'=>$person->id));
+                            $html= $PH->getLink('personView',$person->name,['person'=>$person->id]);
                         }
                     }
                     break;
@@ -1369,7 +1369,7 @@ class FormatBlockLink extends FormatBlock
                         if($name == "") {
                             $name = asHtml($project->name);
                         }
-                        $html= $PH->getLink('projView', $name, array('prj'=>$project->id), NULL, true);
+                        $html= $PH->getLink('projView', $name, ['prj'=>$project->id], NULL, true);
                     }
                     break;                
 
@@ -1397,18 +1397,18 @@ class FormatBlockLink extends FormatBlock
         measure_start("BlockLink::renderLinkFromTargetName::getTasks");
 
         if($g_wiki_project) {
-            $tasks= Task::getAll(array(
+            $tasks= Task::getAll([
                 'name'=>$decoded_name,
                 'project'=>$g_wiki_project->id,
                 'status_max'=>STATUS_CLOSED,
 
-            ));
+            ]);
         }
         else {
-            $tasks= Task::getAll(array(
+            $tasks= Task::getAll([
                 'name'=>$decoded_name,
                 'status_max'=>STATUS_CLOSED,
-            ));
+            ]);
         }
         measure_stop("BlockLink::renderLinkFromTargetName::getTasks");
 
@@ -1423,12 +1423,12 @@ class FormatBlockLink extends FormatBlock
                             : '';
 
                 if($name) {
-                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',array('tsk'=>intval($tasks[0]->id)))."'>". asHtml($name)."</a>";
+                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',['tsk'=>intval($tasks[0]->id)])."'>". asHtml($name)."</a>";
                     global $g_replace_list;
                     $g_replace_list[$target]='#'. $tasks[0]->id.'|'.$name;
                 }
                 else {
-                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',array('tsk'=>intval($tasks[0]->id)))."'>".asHtml($tasks[0]->name)."</a>";
+                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',['tsk'=>intval($tasks[0]->id)])."'>".asHtml($tasks[0]->name)."</a>";
                     global $g_replace_list;
                     $g_replace_list[$target]='#'. $tasks[0]->id.'|'.$tasks[0]->name;
                 }
@@ -1440,12 +1440,12 @@ class FormatBlockLink extends FormatBlock
                             : '';
 
                 if($name) {
-                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',array('tsk'=>intval($tasks[0]->id)))."'>". asHtml($name)."</a>";
+                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',['tsk'=>intval($tasks[0]->id)])."'>". asHtml($name)."</a>";
                     global $g_replace_list;
                     $g_replace_list[$target]='#'. $tasks[0]->id.'|'.$name;
                 }
                 else {
-                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',array('tsk'=>intval($tasks[0]->id)))."'>".asHtml($tasks[0]->name)."</a>";
+                    $html= "<a  class='item task $style_isdone' href='".$PH->getUrl('taskView',['tsk'=>intval($tasks[0]->id)])."'>".asHtml($tasks[0]->name)."</a>";
                     global $g_replace_list;
                     $g_replace_list[$target]='#'. $tasks[0]->id.'|'.$tasks[0]->short;
                 }
@@ -1454,13 +1454,13 @@ class FormatBlockLink extends FormatBlock
                 $title= __('No task matches this name exactly');
                 $title2= __('This task seems to be related');
                 $html= "<span title='$title' class=not_found>$name</span>"
-                           . "<a href='".$PH->getUrl('taskView',array('tsk'=>intval($tasks[0]->id)))."' title='$title2'>?</a>";
+                           . "<a href='".$PH->getUrl('taskView',['tsk'=>intval($tasks[0]->id)])."' title='$title2'>?</a>";
             }
         }
         else if(count($tasks) > 1) {
             measure_start("BlockLink::renderLinkFromTargetName::iterateSeveralTasks");
 
-            $matches= array();
+            $matches= [];
             $best= -1;
             $best_rate= 0;
 
@@ -1475,7 +1475,7 @@ class FormatBlockLink extends FormatBlock
             }
             if(count($matches) == 1) {
                 $html= "<a href='"
-                           . $PH->getUrl('taskView',array('tsk'=>intval($matches[0]->id)))
+                           . $PH->getUrl('taskView',['tsk'=>intval($matches[0]->id)])
                            . "'>".$matches[0]->name
                            ."</a>";
             }
@@ -1485,7 +1485,7 @@ class FormatBlockLink extends FormatBlock
                 $title2= sprintf(__('List %s related tasks'), count($tasks));
                 $html=
                            "<a class=not_found title= '$title2' href='"
-                           .$PH->getUrl('search',array('search_query'=>$target))
+                           .$PH->getUrl('search',['search_query'=>$target])
 
                            ."'> "
                            . $target
@@ -1495,7 +1495,7 @@ class FormatBlockLink extends FormatBlock
             else {
                 if($g_wiki_project) {
                     $title= __('No item matches this name. Create new task with this name?');
-                    $url= $PH->getUrl('taskNew', asHtml($target), array('prj'=>$g_wiki_project->id));
+                    $url= $PH->getUrl('taskNew', asHtml($target), ['prj'=>$g_wiki_project->id]);
                     $html= "<a href='$url' title='$title' class=not_found>$target</a>";
                 }
                 else {
@@ -1513,12 +1513,12 @@ class FormatBlockLink extends FormatBlock
             * now check for team-members...
             */
             if($g_wiki_project) {
-                $people = Person::getPeople(array(
+                $people = Person::getPeople([
                                 'project'=> $g_wiki_project->id,
                                 'search'=> $target,
-                            ));
+                            ]);
                 if(count($people) == 1) {
-                    return  "<a class='item person' title= '" .asHtml( $people[0]->name) . "' href='".$PH->getUrl('personView',array('person'=>$people[0]->id))."'>" . asHtml($target) . "</a>";
+                    return  "<a class='item person' title= '" .asHtml( $people[0]->name) . "' href='".$PH->getUrl('personView',['person'=>$people[0]->id])."'>" . asHtml($target) . "</a>";
                 }                
                 measure_stop("BlockLink::renderLinkFromTargetName::getPeople");
             }
@@ -1540,11 +1540,11 @@ class FormatBlockLink extends FormatBlock
                     $parent_task= 0;
                 }
 
-                $url= $PH->getUrl('taskNew',  array(
+                $url= $PH->getUrl('taskNew',  [
                                             'prj'=>$g_wiki_project->id,
                                             'new_name'=>urlencode($target),
                                             'parent_task'=>$parent_task,
-                                            ));
+                                            ]);
 
                 $html= "<a href='$url' title='$title' class=not_found>$target</a>";
             }
@@ -1566,7 +1566,7 @@ class FormatBlockLink extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
         foreach($blocks as $b) {
             if($b->str && !($b instanceof FormatBlockCode)) {
 
@@ -1609,7 +1609,7 @@ class FormatBlockItemId extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
 
         foreach($blocks as $b) {
 
@@ -1655,11 +1655,11 @@ class FormatBlockItemId extends FormatBlock
 class FormatBlockListLine extends FormatBlock
 {
     public $level;
-    public $children= array();
+    public $children= [];
 
     public function __construct($str, $level, $type)
     {
-        $blocks= array(new FormatBlock($str));
+        $blocks= [new FormatBlock($str)];
         $blocks= FormatBlockLatex::parseBlocks($blocks);
         $blocks= FormatBlockBold::parseBlocks($blocks);
         $blocks= FormatBlockStrike::parseBlocks($blocks);
@@ -1694,13 +1694,13 @@ class FormatBlockListLine extends FormatBlock
 
 class FormatBlockList extends FormatBlock
 {
-    public $children= array();
+    public $children= [];
 
     public function __construct($str)
     {
 
         $last_level='';
-        $levels=array();    #keep hash with levels
+        $levels=[];    #keep hash with levels
         while($str) {
             if(preg_match("/\A([ \t]*)(\*|\-|\#|\d+\.) ([^\n]*)\n(.*)/s",$str,$matches)) {
                 if(isset($levels[$matches[1]])) {
@@ -1741,7 +1741,7 @@ class FormatBlockList extends FormatBlock
             $type="ul";
         }
 
-        $types= array($type);
+        $types= [$type];
 
 
         $buffer="<$type>";
@@ -1808,7 +1808,7 @@ class FormatBlockList extends FormatBlock
 
     static function parseBlocks(&$blocks)
     {
-        $blocks_new= array();
+        $blocks_new= [];
         foreach($blocks as $b) {
             if($b->str && !($b instanceof FormatBlockCode)) {
 
@@ -1850,7 +1850,7 @@ class FormatBlockList extends FormatBlock
 
 class FormatBlockTable extends FormatBlock
 {
-    public $line_cells= array();
+    public $line_cells= [];
 
     /**
     * further parse the content of the cells
@@ -1858,9 +1858,9 @@ class FormatBlockTable extends FormatBlock
     public function __construct($line_cells)
     {
         foreach($line_cells as $cells) {
-            $new_cells= array();
+            $new_cells= [];
             foreach($cells as $cell) {
-                $cell_blocks= array(new FormatBlock($cell));
+                $cell_blocks= [new FormatBlock($cell)];
 
                 $cell_blocks= FormatBlockChangemarks::parseBlocks($cell_blocks);
 
@@ -1916,7 +1916,7 @@ class FormatBlockTable extends FormatBlock
     static function parseBlocks(&$blocks)
     {
         $placeholder_for_pipes = "\x03";
-        $blocks_new= array();
+        $blocks_new= [];
         foreach($blocks as $b) {
             if($b->str && !($b instanceof FormatBlockCode)) {
 
@@ -1935,7 +1935,7 @@ class FormatBlockTable extends FormatBlock
                         ### check number of pipes in each line...
 
                         $lines= explode("\n", $matches[2]);
-                        $line_cells=array();
+                        $line_cells=[];
                         $rest= $matches[3];
 
                         $last_num_cells=-1;
@@ -1944,7 +1944,7 @@ class FormatBlockTable extends FormatBlock
                             $line= trim($line);
                             if( $line ) {
 
-                                $tmp_cells=array();
+                                $tmp_cells=[];
                                 $line=trim($line);
 
                                 $cells= array_slice(explode("|", $line) , 1, -1);
@@ -1957,7 +1957,7 @@ class FormatBlockTable extends FormatBlock
                                     break;
                                 }
                                 
-                                $cells_clean = array();
+                                $cells_clean = [];
                                 foreach($cells as $cell_with_pipeplaceholder) {
                                     $cells_clean[] = str_replace($placeholder_for_pipes, '|', $cell_with_pipeplaceholder);
                                 }
@@ -2086,7 +2086,7 @@ function wikifieldAsHtml($item, $field_name=NULL, $args= NULL)
                   : '';
 
     
-    $tmp= array();
+    $tmp= [];
     $tmp[]= "<div class='wiki $str_editable' $str_item_id $str_field><div class=chapter>";
 
     foreach($blocks as $b) {
@@ -2124,7 +2124,7 @@ function applyAutoWikiAdjustments($text_org)
         foreach($g_replace_list as $org => $new) {
             $adjusted_text= str_replace('[['.$org.']]', '[['.$new.']]', $adjusted_text);
         }
-        $g_replace_list= array();
+        $g_replace_list= [];
         return $adjusted_text;
     }
     else {
@@ -2147,7 +2147,7 @@ function wiki2blocks(&$text)
 {
     measure_start("wiki2blocks");
 
-    $blocks= array(new FormatBlock($text));
+    $blocks= [new FormatBlock($text)];
 
     ### code-blocks ###
     measure_start("blockCode");
@@ -2227,7 +2227,7 @@ function wiki2purehtml($text, $project=NULL)
     $text= asHtml($text);
     $blocks = wiki2blocks($text);
 
-    $tmp = array();
+    $tmp = [];
     $out='';
     $tmp[]= "<div class=chapter>";
 
@@ -2286,14 +2286,14 @@ function getWikiChapters($text)
     if(!preg_match("/\n$/s", $text)) {
         $text.= "\n";
     }
-    $regex_headlines= array(
+    $regex_headlines= [
         "/(.*?)(\r?==[ \t]*[^\n=]+==\s*\r?\n[ \t]*)(.*)/s",
         "/(.*?)(\r?===[ \t]*[^\n=]+===\s*\n[ \t]*)(.*)/s",
         "/(.*?)([^\r\n]+[\r\n]+===+[ \t]*[\r\n]+)(.*)/s",
         "/(.*?)([^\n\r]+\r?\n---+[\t]*[\r\n]+)(.*)/s",
-    );
+    ];
 
-    $blocks= array();
+    $blocks= [];
     
 
     ### split into codeblocks ###
@@ -2346,7 +2346,7 @@ function getWikiChapters($text)
         $b->str= $rest;
     }
     
-    $tmp= array();
+    $tmp= [];
     foreach($blocks as $b) {
         $tmp[]= $b->str;
     }

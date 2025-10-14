@@ -7,7 +7,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 #--- top navigation tabs -------------------------------------------------------
 '<span class=accesskey>H</span>ome'
@@ -2058,7 +2058,7 @@ $g_lang_table= array(
 'supplier|person category'    =>'leverandør',
 'partner|person category'     =>'partner',
 
-);
+];
 
 
 ?>

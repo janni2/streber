@@ -78,7 +78,7 @@ function testInstallDirectoryExists() {
 function validateEnvironment()
 {
     # NOTE: it's weird that we have to use strings for referring to functions...
-    foreach( array('testPhpVersion', 'testDb', 'testInstallDirectoryExists' ) as $test_function) {
+    foreach( ['testPhpVersion', 'testDb', 'testInstallDirectoryExists' ] as $test_function) {
         $result = $test_function();
     
         if(

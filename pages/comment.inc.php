@@ -37,7 +37,7 @@ function commentView(){
     : NULL;
 
     ### create from handle ###
-    $from_handle= $PH->defineFromHandle(array('comment'=>$comment->id));
+    $from_handle= $PH->defineFromHandle(['comment'=>$comment->id]);
 
     ## is viewed by user ##
     $comment->nowViewedByUser();
@@ -52,50 +52,50 @@ function commentView(){
         }
 
         ### page functions ###
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'    =>'commentEdit',
-            'params'    =>array('comment'=>$comment->id),
+            'params'    =>['comment'=>$comment->id],
             'icon'      =>'edit',
             'tooltip'   =>__('Edit this comment'),
             'name'      =>__('Edit')
-        )));
+        ]));
         
-        $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$comment->id));
+        $item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$comment->id]);
         if((!$item) || ($item[0]->is_bookmark == 0)){
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'itemsAsBookmark',
-                'params'    =>array('comment'=>$comment->id),
+                'params'    =>['comment'=>$comment->id],
                 'tooltip'   =>__('Mark this comment as bookmark'),
                 'name'      =>__('Bookmark'),
-            )));
+            ]));
         }
         else{
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'itemsRemoveBookmark',
-                'params'    =>array('comment'=>$comment->id),
+                'params'    =>['comment'=>$comment->id],
                 'tooltip'   =>__('Remove this bookmark'),
                 'name'      =>__('Remove Bookmark'),
-            )));
+            ]));
         } 
         
         if($comment->state == ITEMSTATE_DELETED) {
 
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'commentsUndelete',
-                'params'    =>array('comment'=>$comment->id),
+                'params'    =>['comment'=>$comment->id],
                 'icon'      =>'delete',
                 'tooltip'   =>__('Delete this comment'),
                 'name'      =>__('Restore')
-            )));
+            ]));
         }
         else {
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'commentsDelete',
-                'params'    =>array('comment'=>$comment->id),
+                'params'    =>['comment'=>$comment->id],
                 'icon'      =>'delete',
                 'tooltip'   =>__('Delete this comment'),
                 'name'      =>__('Delete')
-            )));
+            ]));
 
         }
 
@@ -108,11 +108,11 @@ function commentView(){
 
     #--- summary ----------------------------------------------------------------
     {
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title'     =>__('Description'),
             'id'        =>'description',
             'noshade'   =>true,
-        ));
+        ]);
         $block->render_blockStart();
         $str= wikifieldAsHtml($comment, 'description');
 
@@ -155,10 +155,10 @@ function commentNew() {
 
 
     ### build new object ###
-    $newComment= new Comment(array(
+    $newComment= new Comment([
         'id'=>0,
         'name'=>$name,
-    ));
+    ]);
 
     ### try single project-id ###
     if($id=getOnePassedId('prj','projects_*',false)) { #no not abort if not found
@@ -259,7 +259,7 @@ function commentNew() {
     }
 
     ### render form ###
-    $PH->show('commentEdit',array('comment'=>$newComment->id), $newComment);
+    $PH->show('commentEdit',['comment'=>$newComment->id], $newComment);
 }
 
 
@@ -293,7 +293,7 @@ function commentEdit($comment=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'comment_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'comment_name']);
         initPageForComment($page, $comment, $project);
 
 
@@ -315,9 +315,9 @@ function commentEdit($comment=NULL)
         global $PUB_LEVEL_VALUES;
         require_once(confGet('DIR_STREBER') . 'render/render_form.inc.php');
 
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'id'    =>'edit',
-        ));
+        ]);
         $block->render_blockStart();
 
 
@@ -382,7 +382,7 @@ function commentEditSubmit(){
 
     ### new object? ###
     if($id == 0) {
-        $comment= new Comment(array());
+        $comment= new Comment([]);
     }
     ### ...or from db ###
     else {
@@ -434,7 +434,7 @@ function commentEditSubmit(){
             global $auth;
             if($task->created < $auth->cur_user->last_login) {
                 $task->status = STATUS_OPEN;
-                $task->update(array('modified','status'));
+                $task->update(['modified','status']);
             }
         }
         $task->nowChangedByUser();
@@ -778,7 +778,7 @@ function commentsMoveToFolder()
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>false, 'autofocus_field'=>'company_name'));
+        $page= new Page(['use_jscalendar'=>false, 'autofocus_field'=>'company_name']);
         $page->cur_tab='projects';
         $page->type= __("Edit tasks");
         $page->title= $project->name;
@@ -786,9 +786,9 @@ function commentsMoveToFolder()
 
         $page->crumbs= build_project_crumbs($project);
 
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id'     =>'commentsMoveToFolder',
-        ));
+        ]);
 
         echo(new PageHeader);
     }
@@ -824,7 +824,7 @@ function commentsMoveToFolder()
             unset($list->columns['label']);
             $list->no_items_html=__("No folders in this project...");
 
-            $list->functions= array();
+            $list->functions= [];
 
             $list->active_block_function = 'tree';
 

@@ -235,7 +235,7 @@ class SimpleCookieJar {
      *    @access public
      */
     function SimpleCookieJar() {
-        $this->_cookies = array();
+        $this->_cookies = [];
     }
     
     /**
@@ -245,7 +245,7 @@ class SimpleCookieJar {
      *    @access public
      */
     function restartSession($date = false) {
-        $surviving_cookies = array();
+        $surviving_cookies = [];
         for ($i = 0; $i < count($this->_cookies); $i++) {
             if (! $this->_cookies[$i]->getValue()) {
                 continue;
@@ -370,7 +370,7 @@ class SimpleCookieJar {
      *    @access public
      */
     function selectAsPairs($url) {
-        $pairs = array();
+        $pairs = [];
         foreach ($this->_cookies as $cookie) {
             if ($this->_isMatch($cookie, $url->getHost(), $url->getPath(), $cookie->getName())) {
                 $pairs[] = $cookie->getName() . '=' . $cookie->getValue();

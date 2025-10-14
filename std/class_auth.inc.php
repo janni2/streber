@@ -71,7 +71,7 @@ class Auth
         $this->cur_user= $user;
 
         $user->last_login= getGMTString();
-        $this->cur_user->update(array('last_login'),false);
+        $this->cur_user->update(['last_login'],false);
 
         return $user;
     }
@@ -109,7 +109,7 @@ class Auth
         $this->cur_user= $user;
 
         $user->last_login= getGMTString();
-        $this->cur_user->update(array('last_login'),false);
+        $this->cur_user->update(['last_login'],false);
 
         return $user;
     }
@@ -148,7 +148,7 @@ class Auth
             $this->cur_user->cookie_string= $this->cur_user->calcCookieString();
         }
 
-        $this->cur_user->update(array('last_login','cookie_string','ip_address'), false);
+        $this->cur_user->update(['last_login','cookie_string','ip_address'], false);
 
         log_message("setCurUserByIdentifier()->success", LOG_MESSAGE_DEBUG);
         return $user;
@@ -276,7 +276,7 @@ class Auth
         */
         log_message("tryLoginUser()->update cur_user", LOG_MESSAGE_DEBUG);
         $this->cur_user->last_login= getGMTString();
-        $this->cur_user->update(array('last_login','cookie_string','ip_address','time_offset'),false);
+        $this->cur_user->update(['last_login','cookie_string','ip_address','time_offset'],false);
 
         log_message("tryLoginUser()->success", LOG_MESSAGE_DEBUG);
         log_message("'$name' logged in from ". getServerVar('REMOTE_ADDR', true), LOG_MESSAGE_LOGIN_SUCCESS);
@@ -403,7 +403,7 @@ class Auth
         */
         log_message("tryLoginUser()->update cur_user", LOG_MESSAGE_DEBUG);
         $this->cur_user->last_login= getGMTString();
-        $this->cur_user->update(array('last_login','cookie_string','ip_address','time_offset'),false);
+        $this->cur_user->update(['last_login','cookie_string','ip_address','time_offset'],false);
 
         log_message("tryLoginUser()->success", LOG_MESSAGE_DEBUG);
         log_message("'$name' logged in from ". getServerVar('REMOTE_ADDR', true), LOG_MESSAGE_LOGIN_SUCCESS);
@@ -485,7 +485,7 @@ class Auth
     {
         log_message("setCurUserByHttpAuth()", LOG_MESSAGE_DEBUG);
         $tmp_auth = '';
-        foreach(array('REMOTE_USER','REDIRECT_REMOTE_USER', 'REDIRECT_REDIRECT_REMOTE_USER') as $t) {
+        foreach(['REMOTE_USER','REDIRECT_REMOTE_USER', 'REDIRECT_REDIRECT_REMOTE_USER'] as $t) {
             if(isset($_SERVER[$t]) && $_SERVER[$t]) {
                 $tmp_auth= $_SERVER[$t];
             }
@@ -550,7 +550,7 @@ class Auth
     * checks if a string matches a known crawler agent-string.
     */
     public static function agentStringMatchesCrawler($agent) {
-        $crawlers= array(
+        $crawlers= [
             "/Googlebot/",
             "/Yahoo! Slurp;/",
             "/msnbot/",                 # msnbot/1.1 (+http://search.msn.com/msnbot.htm)) 
@@ -599,7 +599,7 @@ class Auth
             "/Purebot/",
             "/bingbot/",
             "/archive.org_bot/"
-        );
+        ];
         foreach($crawlers as $c) {
             if(preg_match($c, $agent)) {
                 return true;
@@ -614,11 +614,11 @@ class Auth
     public static function isUglyCrawler()
     {
         if($agent= getServerVar('HTTP_USER_AGENT')){
-            $crawlers= array(
+            $crawlers= [
                 "/HTTrack/",
                 "/Mozilla\/4.0 \(compatible; MSIE 6.0; Windows NT 5.1; SV1\)/",  #'', #(Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)) 
                 "/Mail\.Ru\/1.0/",
-            );
+            ];
             foreach($crawlers as $c) {
                 if(preg_match($c, $agent)) {
                     return true;

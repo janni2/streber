@@ -22,103 +22,103 @@ function companyList() {
     global $PH;
     global $auth;
 
-    $presets= array(
+    $presets= [
         ### all ###
-        'all_companies' => array(
+        'all_companies' => [
             'name'=> __('all'),
-            'filters'=> array(
-                'company_category'=> array(
+            'filters'=> [
+                'company_category'=> [
                     'id'        => 'company_category',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => CCATEGORY_UNDEFINED,
                     'max'       => CCATEGORY_PARTNER,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'tree',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### clients ###
-        'clients' => array(
+        'clients' => [
             'name'=> __('clients'),
-            'filters'=> array(
-                'company_category'=> array(
+            'filters'=> [
+                'company_category'=> [
                     'id'        => 'company_category',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => CCATEGORY_CLIENT,
                     'max'       => CCATEGORY_CLIENT,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'tree',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### prospective clients ###
-        'pros_clients' => array(
+        'pros_clients' => [
             'name'=> __('prospective clients'),
-            'filters'=> array(
-                'company_category'=> array(
+            'filters'=> [
+                'company_category'=> [
                     'id'        => 'company_category',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => CCATEGORY_PROSCLIENT,
                     'max'       => CCATEGORY_PROSCLIENT,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'tree',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### supplier ###
-        'supplier' => array(
+        'supplier' => [
             'name'=> __('supplier'),
-            'filters'=> array(
-                'company_category'=> array(
+            'filters'=> [
+                'company_category'=> [
                     'id'        => 'company_category',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => CCATEGORY_SUPPLIER,
                     'max'       => CCATEGORY_SUPPLIER,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'tree',
-                )
-            )
-        ),
+                ]
+            ]
+        ],
         ### partner ###
-        'partner' => array(
+        'partner' => [
             'name'=> __('partner'),
-            'filters'=> array(
-                'company_category'=> array(
+            'filters'=> [
+                'company_category'=> [
                     'id'        => 'company_category',
                     'visible'   => true,
                     'active'    => true,
                     'min'       => CCATEGORY_PARTNER,
                     'max'       => CCATEGORY_PARTNER,
-                ),
-            ),
-            'list_settings' => array(
-                'tasks' =>array(
-                    'hide_columns'  => array(''),
+                ],
+            ],
+            'list_settings' => [
+                'tasks' =>[
+                    'hide_columns'  => [''],
                     'style'=> 'tree',
-                )
-            )
-        ),
-    );
+                ]
+            ]
+        ],
+    ];
 
     ## set preset location ##
     $preset_location = 'companyList';
@@ -148,7 +148,7 @@ function companyList() {
     }
     
     ### create from handle ###
-    $PH->defineFromHandle(array('preset_id'=>$preset_id));
+    $PH->defineFromHandle(['preset_id'=>$preset_id]);
 
     ### set up page and write header ####
     {
@@ -170,14 +170,14 @@ function companyList() {
         if($auth->cur_user->user_rights & RIGHT_COMPANY_CREATE) {
 
             ### page functions ###
-            $page->add_function(new PageFunctionGroup(array(
+            $page->add_function(new PageFunctionGroup([
                 'name'      => __('new')
-            )));
-            $page->add_function(new PageFunction(array(
+            ]));
+            $page->add_function(new PageFunction([
                 'target'=>'companyNew',
                 'name'=>__('Company'),
-                'params'=>array('company_category'=>CCATEGORY_UNDEFINED),
-            )));
+                'params'=>['company_category'=>CCATEGORY_UNDEFINED],
+            ]));
         }
 
         ### render title ###
@@ -195,12 +195,12 @@ function companyList() {
             foreach($preset['filters'] as $f_name=>$f_settings) {
                 switch($f_name) {
                     case 'company_category':
-                        $list->filters[]= new ListFilter_company_category_min(array(
+                        $list->filters[]= new ListFilter_company_category_min([
                             'value'=>$f_settings['min'],
-                        ));
-                        $list->filters[]= new ListFilter_company_category_max(array(
+                        ]);
+                        $list->filters[]= new ListFilter_company_category_max([
                             'value'=>$f_settings['max'],
-                        ));
+                        ]);
                         break;
                     default:
                         trigger_error("Unknown filter setting $f_name", E_USER_WARNING);
@@ -215,7 +215,7 @@ function companyList() {
         
         ### may user create companies? ###
         if($auth->cur_user->user_rights & RIGHT_COMPANY_CREATE) {
-            $list->no_items_html=$PH->getLink('companyNew','',array('person'=>$auth->cur_user->id));
+            $list->no_items_html=$PH->getLink('companyNew','',['person'=>$auth->cur_user->id]);
         }
         else {
             $list->no_items_html=__("no companies");
@@ -229,12 +229,12 @@ function companyList() {
                 
         $list->title= $page->title;
         
-        $page->print_presets(array(
+        $page->print_presets([
             'target' => $preset_location,
             'project_id' => '',
             'preset_id' => $preset_id,
             'presets' => $presets,
-            'person_id' => ''));
+            'person_id' => '']);
             
         $list->print_automatic();
 
@@ -277,7 +277,7 @@ function companyView()
     $company->validateView();
 
     ### create from handle ###
-    $PH->defineFromHandle(array('company'=>$company->id));
+    $PH->defineFromHandle(['company'=>$company->id]);
 
 
 
@@ -295,71 +295,71 @@ function companyView()
 
 
         ### page functions ###
-        $page->add_function(new PageFunctionGroup(array(
+        $page->add_function(new PageFunctionGroup([
             'name'      => __('edit')
-        )));
+        ]));
 
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'    =>'companyEdit',
-            'params'    =>array('company'=>$company->id),
+            'params'    =>['company'=>$company->id],
             'icon'      =>'edit',
             'tooltip'   =>__('Edit this company'),
             'name'      =>__('Company'),
-        )));
+        ]));
         
-        $item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$company->id));
+        $item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$company->id]);
         if((!$item) || ($item[0]->is_bookmark == 0)){
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'itemsAsBookmark',
-                'params'    =>array('company'=>$company->id),
+                'params'    =>['company'=>$company->id],
                 'tooltip'   =>__('Mark this company as bookmark'),
                 'name'      =>__('Bookmark'),
-            )));
+            ]));
         }
         else{
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'    =>'itemsRemoveBookmark',
-                'params'    =>array('company'=>$company->id),
+                'params'    =>['company'=>$company->id],
                 'tooltip'   =>__('Remove this bookmark'),
                 'name'      =>__('Remove Bookmark'),
-            )));
+            ]));
         } 
         
         if($company->state == 1) {
-            $page->add_function(new PageFunction(array(
+            $page->add_function(new PageFunction([
                 'target'=>'companyDelete',
-                'params'=>array('company'=>$company->id),
+                'params'=>['company'=>$company->id],
                 'icon'=>'delete',
                 'tooltip'=>__('Delete this company'),
                 'name'=>__('Delete')
-            )));
+            ]));
         }
 
-        $page->add_function(new PageFunctionGroup(array(
+        $page->add_function(new PageFunctionGroup([
             'name'      => __('new')
-        )));
+        ]));
 
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'    =>'personNew',
-            'params'    =>array('company'=>$company->id),
+            'params'    =>['company'=>$company->id],
             'icon'      =>'new',
             'tooltip'   =>__('Create new person for this company'),
             'name'      =>__('Person'),
-        )));
-        $page->add_function(new PageFunction(array(
+        ]));
+        $page->add_function(new PageFunction([
             'target'    =>'projNew',
-            'params'    =>array('company'=>$company->id),
+            'params'    =>['company'=>$company->id],
             'icon'      =>'new',
             'tooltip'   =>__('Create new project for this company'),
             'name'      =>__('Project'),
-        )));
-        $page->add_function(new PageFunction(array(
+        ]));
+        $page->add_function(new PageFunction([
             'target'    =>'companyLinkPeople',
-            'params'    =>array('company'=>$company->id),
+            'params'    =>['company'=>$company->id],
             'icon'      =>'add',
             'tooltip'   =>__('Add existing people to this company'),
             'name'      =>__('People'),
-        )));
+        ]));
 
         ### render title ###
         echo(new PageHeader);
@@ -369,7 +369,7 @@ function companyView()
 
     #--- write info block ------------
     {
-        $block=new PageBlock(array('title'=>__('Summary'), 'id'=>'summary'));
+        $block=new PageBlock(['title'=>__('Summary'), 'id'=>'summary']);
         $block->render_blockStart();
         echo "<div class=text>";
 
@@ -449,26 +449,26 @@ function companyView()
         * people to this company. But therefore we would need to
         * pass the company's id, which is not possible right now...
         */
-        $list->add_function(new ListFunction(array(
+        $list->add_function(new ListFunction([
             'target'=>$PH->getPage('companyLinkPeople')->id,
             #'params'    =>array('company'=>$company->id),
             'name'  =>__('Link People'),
             'id'    =>'companyLinkPeople',
             'icon'  =>'add',
-        )));
-        $list->add_function(new ListFunction(array(
+        ]));
+        $list->add_function(new ListFunction([
             'target'=>$PH->getPage('companyPeopleDelete')->id,
             'name'  =>__('Remove person from company'),
             'id'    =>'companyPeopleDelete',
             'icon'  =>'sub',
             'context_menu'=>'submit',
-        )));
+        ]));
 
         if($auth->cur_user->user_rights & RIGHT_COMPANY_EDIT) {
             $list->no_items_html=
-                $PH->getLink('companyLinkPeople',__('link existing Person'),array('company'=>$company->id))
+                $PH->getLink('companyLinkPeople',__('link existing Person'),['company'=>$company->id])
                 ." ". __("or")." "
-                .$PH->getLink('personNew',__('create new'),array('company'=>$company->id));
+                .$PH->getLink('personNew',__('create new'),['company'=>$company->id]);
         }
         else {
             $list->no_items_html=__("no people related");
@@ -506,7 +506,7 @@ function companyView()
 
 
         if($auth->cur_user->user_rights & RIGHT_PROJECT_CREATE) {
-            $list->no_items_html=$PH->getLink('projNew',__('Create new project'),array('company'=>$company->id))." ".
+            $list->no_items_html=$PH->getLink('projNew',__('Create new project'),['company'=>$company->id])." ".
             __(" Hint: for already existing projects please edit those and adjust company-setting.");
         }
         else {
@@ -569,13 +569,13 @@ function companyNew() {
     }
 
     ### build new object ###
-    $newCompany= new Company(array(
+    $newCompany= new Company([
         'id'=>0,
         'name'=>$name,
         'category'=>$category,
-        )
+        ]
     );
-    $PH->show('companyEdit',array('company'=>$newCompany->id),$newCompany);
+    $PH->show('companyEdit',['company'=>$newCompany->id],$newCompany);
 }
 
 
@@ -600,23 +600,23 @@ function companyEdit($company=NULL)
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'company_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'company_name']);
         $page->cur_tab='companies';
         $page->type=__("Edit Company");
         $page->title=$company->name;
 
         $page->crumbs= build_company_crumbs($company);
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id'     => 'companyEdit',
-        ));
+        ]);
 
         echo(new PageHeader);
     }
     echo (new PageContentOpen);
 
-    $block=new PageBlock(array(
+    $block=new PageBlock([
         'id'    =>'edit',
-    ));
+    ]);
     $block->render_blockStart();
 
     ### write form #####
@@ -685,7 +685,7 @@ function companyEditSubmit()
     ### cancel ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('home',array());
+            $PH->show('home',[]);
         }
         exit();
     }
@@ -700,7 +700,7 @@ function companyEditSubmit()
 
     ### temporary object ###
     if($id == 0) {
-        $company=new Company(array());
+        $company=new Company([]);
     }
     ### get from db ###
     else {
@@ -740,11 +740,11 @@ function companyEditSubmit()
 
                 if($p = Person::getVisibleById($p_id)) {
                     require_once(confGet('DIR_STREBER') . 'db/class_employment.inc.php');
-                    $e = new Employment(array(
+                    $e = new Employment([
                         'id'=>0,
                         'person'=>$p->id,
                         'company'=>$company->id
-                    ));
+                    ]);
                     $e->insert();
                 }
             }
@@ -753,7 +753,7 @@ function companyEditSubmit()
 
         ### show 'create another' -form
         if(get('create_another')) {
-            $PH->show('companyNew',array());
+            $PH->show('companyNew',[]);
             exit();
         }
     }
@@ -766,7 +766,7 @@ function companyEditSubmit()
 
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('home',array());
+        $PH->show('home',[]);
     }
 }
 
@@ -787,7 +787,7 @@ function companyLinkPeople() {
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'company_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'company_name']);
         $page->cur_tab='companies';
         $page->type=__("Edit Company");
         $page->title=sprintf(__("Edit %s"),$company->name);
@@ -795,9 +795,9 @@ function companyLinkPeople() {
 
 
         $page->crumbs= build_company_crumbs($company);
-        $page->options[]= new NaviOption(array(
+        $page->options[]= new NaviOption([
             'target_id'     => 'companyLinkPeople',
-        ));
+        ]);
 
         echo(new PageHeader);
     }
@@ -865,11 +865,11 @@ function companyLinkPeopleSubmit()
             }
         }
         if(!$already_in) {
-            $e_new= new Employment(array(
+            $e_new= new Employment([
                 'id'=>0,
                 'person'=>$person->id,
                 'company'=>$company->id,
-            ));
+            ]);
             $e_new->insert();
         }
         else {
@@ -878,7 +878,7 @@ function companyLinkPeopleSubmit()
     }
     ### display taskView ####
     if(!$PH->showFromPage()) {
-        $PH->show('companyView',array('company'=>$company->id));
+        $PH->show('companyView',['company'=>$company->id]);
     }
 }
 
@@ -946,7 +946,7 @@ function companyPeopleDelete()
     }
 
     if(!$PH->showFromPage()) {
-        $PH->show('companyView',array('company'=>$company->id));
+        $PH->show('companyView',['company'=>$company->id]);
     }
 }
 

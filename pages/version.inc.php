@@ -41,13 +41,13 @@ function versionNew()
     }
 
     ### build new object ###
-    $newVersion= new Version(array(
+    $newVersion= new Version([
         'id'        =>0,
         'name'      =>$name,
         'project'   =>$project->id,
-        )
+        ]
     );
-    $PH->show('versionEdit',array('version'=>$newVersion->id),$newVersion);
+    $PH->show('versionEdit',['version'=>$newVersion->id],$newVersion);
 }
 
 
@@ -71,15 +71,15 @@ function versionEdit($version=NULL) {
 
     ### set up page and write header ####
     {
-        $page= new Page(array('use_jscalendar'=>true, 'autofocus_field'=>'version_name'));
+        $page= new Page(['use_jscalendar'=>true, 'autofocus_field'=>'version_name']);
     	$page->cur_tab='projects';
         $page->type=__('Edit Version','page type');
         $page->title=$version->name;
 
         $page->crumbs= build_project_crumbs($project);
-        $page->crumbs[]= new NaviCrumb(array(
+        $page->crumbs[]= new NaviCrumb([
             'target_id' => 'versionEdit',
-        ));
+        ]);
 
         if($version->id) {
             $page->title=__('Edit Version','page title');
@@ -139,7 +139,7 @@ function versionEditSubmit()
     $id= getOnePassedId('version');
 
     if($id == 0) {
-        $version= new Version(array('id'=>0));
+        $version= new Version(['id'=>0]);
     }
     else {
         $version= Version::getEditableById($id);
@@ -152,7 +152,7 @@ function versionEditSubmit()
     ### cancel ###
     if(get('form_do_cancel')) {
         if(!$PH->showFromPage()) {
-            $PH->show('projView',array('prj'=>$version->project));
+            $PH->show('projView',['prj'=>$version->project]);
         }
         exit;
     }
@@ -219,7 +219,7 @@ function versionEditSubmit()
     }
 
     if(!$PH->showFromPage()) {
-        $PH->show('projView',array('prj'=>$version->project));
+        $PH->show('projView',['prj'=>$version->project]);
     }
 }
 
@@ -284,7 +284,7 @@ function versionView(){
     }
 
     ### create from handle ###
-    $from_handle= $PH->defineFromHandle(array('version'=>$version->id));
+    $from_handle= $PH->defineFromHandle(['version'=>$version->id]);
 	
 	## is viewed by user ##
 	$version->isViewedByUser($auth->cur_user);
@@ -315,30 +315,30 @@ function versionView(){
         }
 
         ### page functions ###
-        $page->add_function(new PageFunction(array(
+        $page->add_function(new PageFunction([
             'target'    =>'versionEdit',
-            'params'    =>array('version'=>$version->id),
+            'params'    =>['version'=>$version->id],
             'icon'      =>'edit',
             'tooltip'   =>__('Edit this version'),
             'name'      =>__('Edit')
-        )));
+        ]));
 		
-		$item = ItemPerson::getAll(array('person'=>$auth->cur_user->id,'item'=>$version->id));
+		$item = ItemPerson::getAll(['person'=>$auth->cur_user->id,'item'=>$version->id]);
 		if((!$item) || ($item[0]->is_bookmark == 0)){
-			$page->add_function(new PageFunction(array(
+			$page->add_function(new PageFunction([
 				'target'    =>'itemsAsBookmark',
-				'params'    =>array('version'=>$version->id),
+				'params'    =>['version'=>$version->id],
 				'tooltip'   =>__('Mark this version as bookmark'),
 				'name'      =>__('Bookmark'),
-			)));
+			]));
 		}
 		else{
-			$page->add_function(new PageFunction(array(
+			$page->add_function(new PageFunction([
 				'target'    =>'itemsRemoveBookmark',
-				'params'    =>array('version'=>$version->id),
+				'params'    =>['version'=>$version->id],
 				'tooltip'   =>__('Remove this bookmark'),
 				'name'      =>__('Remove Bookmark'),
-			)));
+			]));
 		} 
 
     	### render title ###
@@ -349,11 +349,11 @@ function versionView(){
 
     #--- summary ----------------------------------------------------------------
     {
-        $block=new PageBlock(array(
+        $block=new PageBlock([
             'title'     =>__('Description'),
             'id'        =>'description',
             'noshade'   =>true,
-        ));
+        ]);
         $block->render_blockStart();
         $str= wikifieldAsHtml($version, 'description');
 

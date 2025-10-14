@@ -33,7 +33,7 @@
 */
 
 global $g_lang_table;
-$g_lang_table= array(
+$g_lang_table= [
 
 
 
@@ -1965,5 +1965,5 @@ commento. La struttura del database potrebbe essere corrotta',  # line 2297
 'rejected|Resolve reason'     =>'rigettato',  # line 159
 'deferred|Resolve reason'     =>'rinviato',  # line 160
 
-);
+];
 ?>

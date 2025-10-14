@@ -59,7 +59,7 @@ class ProjectSummaryBlock extends PageBlock
             ### efforts ###
             if($openEfforts = $this->project->getOpenEffortsSum() > 0) {
                 echo "<div class=labeled><label>".__("Open efforts","Label in Task summary")."</label>"
-                    . $PH->getLink('projViewEfforts', round($this->project->getOpenEffortsSum()/60/60,1) . "h", array('prj'=> $this->project->id, 'preset' => 'open_efforts' ))
+                    . $PH->getLink('projViewEfforts', round($this->project->getOpenEffortsSum()/60/60,1) . "h", ['prj'=> $this->project->id, 'preset' => 'open_efforts' ])
                     . "</div>";            
             }
             

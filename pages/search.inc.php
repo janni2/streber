@@ -106,7 +106,7 @@ class SearchResult extends BaseObject
 
     static function GetExtract($item,$search)
     {
-        $strings=array();
+        $strings=[];
         foreach(explode(" ",$search) as $s) {
             if($s=trim($s)) {
                 $s=str_replace('+','',$s);
@@ -135,7 +135,7 @@ class SearchResult extends BaseObject
     {
         $rate=1;
 
-        $strings=array();
+        $strings=[];
         foreach(explode(" ",$search) as $s) {
             if($s=trim($s)) {
                 $s=str_replace('+','',$s);
@@ -180,7 +180,7 @@ class SearchResult extends BaseObject
     static function getForQuery($search_query, $project=NULL)
     {
         $count_overall=0;
-        $results=array();
+        $results=[];
         global $PH;
 
 
@@ -190,24 +190,24 @@ class SearchResult extends BaseObject
         {
             require_once(confGet('DIR_STREBER') . "db/class_company.inc.php");
 
-			$args = array('order_str'=>NULL,
+			$args = ['order_str'=>NULL,
 						  'has_id'=>NULL,
-						  'search'=>$search_query);
+						  'search'=>$search_query];
 
             foreach($companies= Company::getAll($args) as $company) {
                 $rate= RATE_TYPE_COMPANY;
                 $rate*= SearchResult::RateItem($company);
                 $rate*= SearchResult::RateTitle($company, $search_query);
 
-                $results[]= new SearchResult(array(
+                $results[]= new SearchResult([
                             'name'  => $company->name,
                             'rating'=> $rate,
                             'type'=> __('Company'),
                             'jump_id'=>'companyView',
-                            'jump_params'=> array('company'=>$company->id,'q'=>$search_query),
+                            'jump_params'=> ['company'=>$company->id,'q'=>$search_query],
                             'item' => $company,
 
-                            ));
+                            ]);
             }
         }
 
@@ -216,23 +216,23 @@ class SearchResult extends BaseObject
         */
         {
             require_once(confGet('DIR_STREBER') . "db/class_person.inc.php");
-            foreach($people= Person::getPeople(array(
+            foreach($people= Person::getPeople([
                             'search'=>$search_query   #$search=NULL
-                            ))
+                            ])
             as $person) {
                 $rate= RATE_TYPE_PERSON;
                 $rate*= SearchResult::RateItem($person);
                 $rate*= SearchResult::RateTitle($person, $search_query);
 
-                $results[]= new SearchResult(array(
+                $results[]= new SearchResult([
                             'name'  => $person->name,
                             'rating'=> $rate,
                             'type'=> __('Person'),
                             'jump_id'=>'personView',
-                            'jump_params'=> array('person'=>$person->id,'q'=> $search_query),
+                            'jump_params'=> ['person'=>$person->id,'q'=> $search_query],
                             'item' => $person,
 
-                            ));
+                            ]);
             }
         }
 
@@ -241,12 +241,12 @@ class SearchResult extends BaseObject
         */
         {
             require_once(confGet('DIR_STREBER') . "db/class_project.inc.php");
-            $projects= Project::getAll(array(
+            $projects= Project::getAll([
                                    'status_min'=>0,   #$status_min=2,
                                    'status_max'=>10,  #$status_max=5,
                                    'search'=>$search_query #$search=NULL
 
-                                   ));
+                                   ]);
             if($projects)
             {
                 foreach($projects as $project) {
@@ -286,18 +286,18 @@ class SearchResult extends BaseObject
                     $rate*= SearchResult::RateItem($project);
                     $rate*= SearchResult::RateTitle($project, $search_query);
 
-                    $results[]= new SearchResult(array(
+                    $results[]= new SearchResult([
                                 'name'  => $project->name,
                                 'rating'=> $rate,
                                 'item'=> $project,
                                 'type'=> __('Project'),
                                 'jump_id'=>'projView',
-                                'jump_params'=> array('prj'=>$project->id,'q' => $search_query),
+                                'jump_params'=> ['prj'=>$project->id,'q' => $search_query],
                                 'extract' => $diz,
                                 'status' => $status,
                                 'html_location' => $html_location,
 
-                                ));
+                                ]);
                 }
             }
         }
@@ -308,12 +308,12 @@ class SearchResult extends BaseObject
         {
             require_once(confGet('DIR_STREBER') . "db/class_task.inc.php");
             $order_str=get('sort_'.$PH->cur_page->id."_tasks");
-            $tasks= Task::getAll(array(
+            $tasks= Task::getAll([
                                 'order_by'=>$order_str,     #$order_by=NULL,
                                 'search'=>$search_query,   #$search=NULL
                                 'status_min'=>STATUS_UPCOMING,
                                 'status_max'=>STATUS_CLOSED,
-                                ));
+                                ]);
 
             if($tasks) {
                 foreach($tasks as $task) {
@@ -354,7 +354,7 @@ class SearchResult extends BaseObject
                             ? false
                             : true;
 
-                    $results[]= new SearchResult(array(
+                    $results[]= new SearchResult([
                                 'name'  => $task->name,
                                 'rating'=> $rate,
                                 'extract'=> $diz,
@@ -364,9 +364,9 @@ class SearchResult extends BaseObject
                                 'html_location' => $html_location,
                                 'is_done'=> $is_done,
                                 'jump_id'=>'taskView',
-                                'jump_params'=> array('tsk'=>$task->id, 'q'=> $search_query),
+                                'jump_params'=> ['tsk'=>$task->id, 'q'=> $search_query],
 
-                                ));
+                                ]);
 
                 }
             }
@@ -378,9 +378,9 @@ class SearchResult extends BaseObject
         */
         {
             require_once(confGet('DIR_STREBER') . "db/class_comment.inc.php");
-            $comments= Comment::getAll(array(
+            $comments= Comment::getAll([
                                 'search'=>$search_query   #$search=NULL
-                                ));
+                                ]);
 
             if($comments) {
                 foreach($comments as $comment) {
@@ -416,17 +416,17 @@ class SearchResult extends BaseObject
                     }
 
 
-                    $results[]= new SearchResult(array(
+                    $results[]= new SearchResult([
                                 'name'  => $comment->name,
                                 'rating'=> $rate,
                                 'extract'=> $diz,
                                 'type'=> __('Comment'),
                                 'html_location' => $html_location,
                                 'jump_id'=>'commentView',
-                                'jump_params'=> array('comment'=>$comment->id,'q'=>$search_query),
+                                'jump_params'=> ['comment'=>$comment->id,'q'=>$search_query],
                                 'item' => $comment,
                                 'is_done' => $is_done,
-                                ));
+                                ]);
                 }
             }
 
@@ -515,7 +515,7 @@ function search()
     * note: Default search uses boolean mode. This leads to the problem that a lot of search requests
     * fail, because they include stop words.
     */
-    $mysql_default_stopwords=array(
+    $mysql_default_stopwords=[
         "a"=>1, "able"=>1, "about"=>1, "above"=>1, "according"=>1, "accordingly"=>1, "across"=>1, "actually"=>1, "after"=>1,
         "afterwards"=>1, "again"=>1, "against"=>1, "ain't"=>1, "all"=>1, "allow"=>1, "allows"=>1, "almost"=>1, "alone"=>1, "along"=>1,
         "already"=>1, "also"=>1, "although"=>1, "always"=>1, "am"=>1, "among"=>1, "amongst"=>1, "an"=>1, "and"=>1, "another"=>1,
@@ -570,7 +570,7 @@ function search()
         "whoever"=>1, "whole"=>1, "whom"=>1, "whose"=>1, "why"=>1, "will"=>1, "willing"=>1, "wish"=>1, "with"=>1, "within"=>1,
         "without"=>1, "won't"=>1, "wonder"=>1, "would"=>1, "would"=>1, "wouldn't"=>1, "yes"=>1, "yet"=>1, "you"=>1, "you'd"=>1,
         "you'll"=>1, "you're"=>1, "you've"=>1, "your"=>1, "yours"=>1, "yourself"=>1, "yourselves"=>1, "zero"=>1
-    );
+    ];
 
 
     $search_query=get('search_query');
@@ -595,22 +595,22 @@ function search()
 
             switch($item->type) {
                 case ITEM_TASK:
-                    $PH->show('taskView',array('tsk'=>$id));
+                    $PH->show('taskView',['tsk'=>$id]);
                     exit();
                 case ITEM_PROJECT:
-                    $PH->show('projView', array('prj'=>$id));
+                    $PH->show('projView', ['prj'=>$id]);
                     exit();
                 case ITEM_COMPANY:
-                    $PH->show('companyView', array('company'=>$id));
+                    $PH->show('companyView', ['company'=>$id]);
                     exit();
                 case ITEM_COMMENT:
-                    $PH->show('commentView', array('comment'=>$id));
+                    $PH->show('commentView', ['comment'=>$id]);
                     exit();
                 case ITEM_FILE:
-                    $PH->show('fileView', array('file'=>$id));
+                    $PH->show('fileView', ['file'=>$id]);
                     exit();
                 case ITEM_COMPANY:
-                    $PH->show('companyView', array('company'=>$id));
+                    $PH->show('companyView', ['company'=>$id]);
                     exit();
                 default:
                     new FeedbackMessage(__('cannot jump to this item type'));
@@ -619,7 +619,7 @@ function search()
         }
     }
 
-    $a= array('q'=>$search_query);
+    $a= ['q'=>$search_query];
     addRequestVars($a);
 
     $flag_jump= false;
@@ -629,8 +629,8 @@ function search()
     }
 
 
-    $found_stop_words=array();
-    $found_ok_words=array();
+    $found_stop_words=[];
+    $found_ok_words=[];
 
     /**
     * adjust query with more than one word...
@@ -680,7 +680,7 @@ function search()
 
         if($results= SearchResult::getForQuery($search_query))
         {
-            usort($results,  array("SearchResult", "cmp"));
+            usort($results,  ["SearchResult", "cmp"]);
             $results= array_reverse($results);
         }
     // }
@@ -706,12 +706,12 @@ function search()
         $page= new Page();
 
         #$page->tabs['search']=  array('target'=>"index.php?go=error",     'title'=>"Error", 'bg'=>"error");
-        $PH->defineFromHandle(array('search_query'=>$search_query));
+        $PH->defineFromHandle(['search_query'=>$search_query]);
 
     	$page->cur_tab='search';
-    	$page->options[]= new NaviOption(array(
+    	$page->options[]= new NaviOption([
     	    'target_id' => 'search',
-    	));
+    	]);
 
         if(count($results)) {
             $page->title= sprintf(__("%s search results for `%s`"), count($results), $search_query."*");

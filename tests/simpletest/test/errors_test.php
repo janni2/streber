@@ -28,19 +28,19 @@ class TestOfErrorQueue extends UnitTestCase {
         $queue->add(512, 'Yuk', 'there.php', 101);
         $this->assertEqual(
                 $queue->extract(),
-                array(1024, 'Ouch', 'here.php', 100));
+                [1024, 'Ouch', 'here.php', 100]);
         $this->assertEqual(
                 $queue->extract(),
-                array(512, 'Yuk', 'there.php', 101));
+                [512, 'Yuk', 'there.php', 101]);
         $this->assertFalse($queue->extract());
     }
 
     function testAssertNoErrorsGivesTrueWhenNoErrors() {
         $test = new MockSimpleTestCase();
-        $test->expectOnce('assert', array(
+        $test->expectOnce('assert', [
                 new IdenticalExpectation(new TrueExpectation()),
                 true,
-                'Should be no errors'));
+                'Should be no errors']);
         $test->setReturnValue('assert', true);
         $queue = new SimpleErrorQueue();
         $queue->setTestCase($test);
@@ -49,10 +49,10 @@ class TestOfErrorQueue extends UnitTestCase {
 
     function testAssertNoErrorsIssuesFailWhenErrors() {
         $test = new MockSimpleTestCase();
-        $test->expectOnce('assert', array(
+        $test->expectOnce('assert', [
                 new IdenticalExpectation(new TrueExpectation()),
                 false,
-                'Should be no errors'));
+                'Should be no errors']);
         $test->setReturnValue('assert', false);
         $queue = new SimpleErrorQueue();
         $queue->setTestCase($test);
@@ -62,7 +62,7 @@ class TestOfErrorQueue extends UnitTestCase {
 
     function testAssertErrorFailsWhenNoError() {
         $test = new MockSimpleTestCase();
-        $test->expectOnce('fail', array('Expected error not found'));
+        $test->expectOnce('fail', ['Expected error not found']);
         $test->setReturnValue('assert', false);
         $queue = new SimpleErrorQueue();
         $queue->setTestCase($test);
@@ -71,10 +71,10 @@ class TestOfErrorQueue extends UnitTestCase {
 
     function testAssertErrorFailsWhenErrorDoesntMatchTheExpectation() {
         $test = new MockSimpleTestCase();
-        $test->expectOnce('assert', array(
+        $test->expectOnce('assert', [
                 new IdenticalExpectation(new FailedExpectation()),
                 'B',
-                'Expected PHP error [B] severity [E_USER_NOTICE] in [b.php] line [100]'));
+                'Expected PHP error [B] severity [E_USER_NOTICE] in [b.php] line [100]']);
         $test->setReturnValue('assert', false);
         $queue = new SimpleErrorQueue();
         $queue->setTestCase($test);
@@ -84,10 +84,10 @@ class TestOfErrorQueue extends UnitTestCase {
 
     function testExpectationMatchCancelsIncomingError() {
         $test = new MockSimpleTestCase();
-        $test->expectOnce('assert', array(
+        $test->expectOnce('assert', [
                 new IdenticalExpectation(new AnythingExpectation()),
                 'B',
-                'a message'));
+                'a message']);
         $test->setReturnValue('assert', true);
         $test->expectNever('error');
         $queue = new SimpleErrorQueue();

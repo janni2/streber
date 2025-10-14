@@ -22,7 +22,7 @@ class TestOfCollector extends UnitTestCase {
         $suite->expectMinimumCallCount('addTestFile', 2);
         $suite->expectArguments(
                 'addTestFile',
-                array(new PatternExpectation('/collectable\\.(1|2)$/')));
+                [new PatternExpectation('/collectable\\.(1|2)$/')]);
         $collector = new SimpleCollector();
         $collector->collect($suite, dirname(__FILE__) . '/support/collector/');
     }
@@ -35,15 +35,15 @@ class TestOfPatternCollector extends UnitTestCase {
         $suite->expectCallCount('addTestFile', 2);
         $suite->expectArguments(
                 'addTestFile',
-                array(new PatternExpectation('/collectable\\.(1|2)$/')));
+                [new PatternExpectation('/collectable\\.(1|2)$/')]);
         $collector = new SimplePatternCollector('/.*/');
         $collector->collect($suite, dirname(__FILE__) . '/support/collector/');
     }
 
     function testOnlyMatchedFilesAreAddedToGroup() {
         $suite = new MockTestSuite();
-        $suite->expectOnce('addTestFile', array(new PathEqualExpectation(
-        		dirname(__FILE__) . '/support/collector/collectable.1')));
+        $suite->expectOnce('addTestFile', [new PathEqualExpectation(
+        		dirname(__FILE__) . '/support/collector/collectable.1')]);
         $collector = new SimplePatternCollector('/1$/');
         $collector->collect($suite, dirname(__FILE__) . '/support/collector/');
     }

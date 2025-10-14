@@ -18,60 +18,60 @@ require_once ("db/db.inc.php");
 
 
 global $g_itemperson_fields;
-$g_itemperson_fields=array();
-foreach(array(
+$g_itemperson_fields=[];
+foreach([
             ### internal fields ###
-            new FieldInternal(array('name'=>'id',
+            new FieldInternal(['name'=>'id',
                 'default'=>0,
-            )),
-            new FieldInternal(array('name'=>'person',
+            ]),
+            new FieldInternal(['name'=>'person',
                 'default'=>0,
-            )),
-            new FieldInternal(array('name'=>'item',
+            ]),
+            new FieldInternal(['name'=>'item',
                 'default'=>0,
-            )),
-            new FieldInternal(array('name'=>'viewed',
+            ]),
+            new FieldInternal(['name'=>'viewed',
                 'view_in_forms'=>false,
-            )),
-            new FieldDatetime(array('name'=>'viewed_last',
+            ]),
+            new FieldDatetime(['name'=>'viewed_last',
                 'default'=>FINIT_NEVER,
                 'view_in_forms'=>false,
-            )),
-            new FieldInternal(array('name'=>'view_count',
+            ]),
+            new FieldInternal(['name'=>'view_count',
                 'view_in_forms'=>false,
                 'default'       => 1,
-            )),
-            new FieldInternal(array('name'=>'is_bookmark',
+            ]),
+            new FieldInternal(['name'=>'is_bookmark',
                 'default'=>0,
                 'view_in_forms'=>false,
-            )),
-            new FieldInternal(array('name'=>'notify_on_change',
+            ]),
+            new FieldInternal(['name'=>'notify_on_change',
                 'default'=>0,
                 'view_in_forms'=>false,
-            )),
-            new FieldInternal(array('name'=>'notify_if_unchanged',  # time
+            ]),
+            new FieldInternal(['name'=>'notify_if_unchanged',  # time
                 'default'=>0,
                 'view_in_forms'=>false,
-            )),
-            new FieldText(array(
+            ]),
+            new FieldText([
                 'name'=>'comment',
                 'title'=>__('Comment','form label for items'),
                 'tooltip'=>__('Optional'),
                 'log_changes'=>true,
-            )),
-            new FieldDatetime(array('name'=>'notify_date',
+            ]),
+            new FieldDatetime(['name'=>'notify_date',
                 'default'=>FINIT_NEVER,
                 'view_in_forms'=>false,
-            )),
-            new FieldDatetime(array('name'=>'created',
+            ]),
+            new FieldDatetime(['name'=>'created',
                 'default'=>FINIT_NEVER,
                 'view_in_forms'=>false,
-            )),
-            new FieldInternal(array('name'=>'feedback_requested_by',
+            ]),
+            new FieldInternal(['name'=>'feedback_requested_by',
                 'default'=>0,
                 'view_in_forms'=>false,
-            )),
-       ) as $f) {
+            ]),
+       ] as $f) {
             $g_itemperson_fields[$f->name]=$f;
        }
 
@@ -79,8 +79,8 @@ class ItemPerson extends DbItem
 {
 
     public $fields_itemperson;
-    private $_values_org = array();
-    public $children = array();
+    private $_values_org = [];
+    public $children = [];
 
     public function __construct($id_or_array=NULL)
     {
@@ -256,7 +256,7 @@ class ItemPerson extends DbItem
             $sth = $dbh->prepare($str_query);
             $sth->execute("",1);
             $tmp = $sth->fetchall_assoc();
-            $itempeople = array();
+            $itempeople = [];
             foreach($tmp as $t){
                 $itemperson = new ItemPerson($t);
                 $itempeople[] = $itemperson;
@@ -348,7 +348,7 @@ class ItemPerson extends DbItem
 
         ### build hash to fast access ##
         if($args) {
-            $update_fields = array();
+            $update_fields = [];
             foreach($args as $a) {
                 $update_fields[$a] = true;
             }
@@ -361,7 +361,7 @@ class ItemPerson extends DbItem
             trigger_error("need members to update to database. e.g. 'firstname,lastname,data'", E_USER_WARNING);
         }
 
-        $t_pairs=array();          # the 'id' field is skipped later, because it's defined as project-item-field. so we have to add it here
+        $t_pairs=[];          # the 'id' field is skipped later, because it's defined as project-item-field. so we have to add it here
         foreach($this->fields as $f) {
             $name= $f->name;
 

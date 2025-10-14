@@ -81,7 +81,7 @@ class ChangeLine extends BaseObject
     static function getChangeLinesForPerson(&$person, $project=NULL, $date_compare=NULL)
     {
         global $PH;
-        $query_options= array();
+        $query_options= [];
 
         if(!$date_compare) {
             $date_compare= $person->last_logout;
@@ -90,11 +90,11 @@ class ChangeLine extends BaseObject
         if($project) {
             $query_options['project']= $project->id;
         }
-        fillMissingValues($query_options, array(
+        fillMissingValues($query_options, [
             'alive_only'     => false,
             'date_min'       => $date_compare,
             'not_modified_by'=> $person->id,
-        ));
+        ]);
 
         $change_lines= ChangeLine::getChangeLines($query_options);
         return $change_lines;
@@ -106,9 +106,9 @@ class ChangeLine extends BaseObject
         global $PH;
 
         global $auth;
-        fillMissingValues($query_options, array(
+        fillMissingValues($query_options, [
             'alive_only' => false,
-        ));
+        ]);
 
 
         $date_compare= isset($query_options['date_min'])
@@ -126,7 +126,7 @@ class ChangeLine extends BaseObject
         * go through list
         */
 
-        $changes= array();
+        $changes= [];
         foreach($changed_items as $i) {
 
             $change_type= NULL;
@@ -165,7 +165,7 @@ class ChangeLine extends BaseObject
                     }
 
                     if($assigned_people= $task->getAssignedPeople()) {
-                        $tmp=array();
+                        $tmp=[];
 
                         foreach($assigned_people as $ap) {
                             $tmp[]= $ap->getLink();
@@ -190,7 +190,7 @@ class ChangeLine extends BaseObject
                     }
 
 
-                    $change= new ChangeLine(array(
+                    $change= new ChangeLine([
                         'item'      =>      $task,
                         'person_by' =>      $i->created_by,
                         'timestamp' =>      $i->created,
@@ -201,14 +201,14 @@ class ChangeLine extends BaseObject
                         'type'      =>      ChangeLine::NEW_TASK,
                         'html_assignment'=> $html_assignment,
                         'html_details'=>    $html_details,
-                    ));
+                    ]);
                     $changes[]= $change;
 
                 }
                 else if ($i->type == ITEM_FILE) {
                     require_once(confGet('DIR_STREBER') . 'db/class_file.inc.php');
                     if($file= File::getVisibleById($i->id)) {                    
-                        $change= new ChangeLine(array(
+                        $change= new ChangeLine([
                             'item'      =>      $file,
                             'person_by' =>      $i->created_by,
                             'timestamp' =>      $i->created,
@@ -217,7 +217,7 @@ class ChangeLine extends BaseObject
                             'txt_what'  =>      __('New file'),
                             'type'      =>      ChangeLine::NEW_FILE,
                             'html_details'=>    $file->name,
-                        ));
+                        ]);
                         $changes[]= $change;
                     }
                 }
@@ -239,7 +239,7 @@ class ChangeLine extends BaseObject
                     }
 
                     if($assigned_people= $task->getAssignedPeople()) {
-                        $tmp=array();
+                        $tmp=[];
 
                         foreach($assigned_people as $ap) {
                             $tmp[]= $ap->getLink();
@@ -262,13 +262,13 @@ class ChangeLine extends BaseObject
                     ### try to get comments
                     {
                         $html_comment= '';
-                        if($comments = Comment::getAll(array(
+                        if($comments = Comment::getAll([
                             'person' => $i->modified_by,
                             'task' => $task->id,
                             'date_min'  => $timestamp_last_change,
                             'order_by' => 'created ASC',
 
-                        ))) {
+                        ])) {
                             $last_comment= $comments[count($comments)-1];
                             $timestamp_last_change= $last_comment->created;
 
@@ -282,14 +282,14 @@ class ChangeLine extends BaseObject
                     }
 
                     ### get changed fields ###
-                    $changed_fields_hash=array();
+                    $changed_fields_hash=[];
                     $html_functions= false; # this is to be added after the details
                     {
-                        if($changed_fields_list= ItemChange::getItemChanges(array(
+                        if($changed_fields_list= ItemChange::getItemChanges([
                             'item'      => $i->id,
                             'person'    => $i->modified_by,
                             'date_min'  => $date_compare,
-                        ))) {
+                        ])) {
                             foreach($changed_fields_list as $cf) {
                                 $changed_fields_hash[$cf->field]= $cf;
                             }
@@ -298,7 +298,7 @@ class ChangeLine extends BaseObject
                                 $status_old= $changed_fields_hash['status']->value_old;
                                 if($task->status == STATUS_COMPLETED && $task->status > $status_old) {
                                     $txt_what= $html_what= __('completed') .' '. $task->getLabel();
-                                    $html_functions= $PH->getLink('tasksApproved', __('Approve Task'),array('tsk' => $task->id));
+                                    $html_functions= $PH->getLink('tasksApproved', __('Approve Task'),['tsk' => $task->id]);
                                     unset($changed_fields_hash['status']);
                                 }
                                 else if ($task->status == STATUS_APPROVED && $task->status > $status_old) {
@@ -362,11 +362,11 @@ class ChangeLine extends BaseObject
 
                     require_once "db/class_taskperson.inc.php";
                     $count_assignments=0;
-                    if($assignments= TaskPerson::getTaskPeople(array(
+                    if($assignments= TaskPerson::getTaskPeople([
                         'task'      => $task->id,
                         'project'   => $task->project,
                         'date_min'  => $task->modified,
-                    ))) {
+                    ])) {
                         $t_timestamp= '';
                         foreach($assignments as $a) {
 
@@ -397,12 +397,12 @@ class ChangeLine extends BaseObject
                     * any recents attachments by last editor ?
                     */
                     require_once "db/class_file.inc.php";
-                    if($files= File::getAll(array(
+                    if($files= File::getAll([
                         'parent_item'      => $task->id,
                         'project'   => $task->project,
                         'date_min'  => $date_compare,
                         'created_by' => $task->modified_by,
-                    ))) {
+                    ])) {
                         $count_attached_files= 0;
                         $html_attached=__("attached").": ";
                         $t_timestamp='';
@@ -412,7 +412,7 @@ class ChangeLine extends BaseObject
                             if($task->modified_by == $f->modified_by) {
                                 $t_timestamp= $f->created;
                                 $count_attached_files++;
-                                $html_attached.= $separator . $PH->getLink('fileView', $f->name, array('file'=>$f->id));
+                                $html_attached.= $separator . $PH->getLink('fileView', $f->name, ['file'=>$f->id]);
                                 $separator= ', ';
                             }
                         }
@@ -427,14 +427,14 @@ class ChangeLine extends BaseObject
                     }
 
                     if(count($changed_fields_hash)){
-                        $html_details.=" / ". $PH->getLink('itemViewDiff',NULL, array('item'=>$task->id, 'date1' => $date_compare, 'date2' => gmdate("Y-m-d H:i:s")));
+                        $html_details.=" / ". $PH->getLink('itemViewDiff',NULL, ['item'=>$task->id, 'date1' => $date_compare, 'date2' => gmdate("Y-m-d H:i:s")]);
                     }
 
                     if($html_functions) {
                         $html_details.= " | ". $html_functions;
                     }
 
-                    $change= new ChangeLine(array(
+                    $change= new ChangeLine([
                         'person_by' =>      $i->modified_by,
                         'timestamp' =>      $i->modified,
                         'item_id'   =>      $i->id,
@@ -446,7 +446,7 @@ class ChangeLine extends BaseObject
                         'html_assignment'=> $html_assignment,
                         'html_details'=>    $html_details,
                         #'project_id'=> $i->project,
-                    ));
+                    ]);
                     $changes[]= $change;
                 }
                 
@@ -454,7 +454,7 @@ class ChangeLine extends BaseObject
                 {
                     require_once(confGet('DIR_STREBER') . 'db/class_file.inc.php');
                     if($file= File::getVisibleById($i->id)) {                    
-                        $change= new ChangeLine(array(
+                        $change= new ChangeLine([
                             'item'      =>      $file,
                             'person_by' =>      $i->created_by,
                             'timestamp' =>      $i->created,
@@ -463,7 +463,7 @@ class ChangeLine extends BaseObject
                             'txt_what'  =>      __('changed File'),
                             'type'      =>      ChangeLine::NEW_FILE,
                             'html_details'=>    $file->name,
-                        ));
+                        ]);
                         $changes[]= $change;
                     }
                 }                
@@ -482,7 +482,7 @@ class ChangeLine extends BaseObject
                     }
 
                     if($assigned_people= $task->getAssignedPeople()) {
-                        $tmp=array();
+                        $tmp=[];
 
                         foreach($assigned_people as $ap) {
                             $tmp[]= $ap->getLink();
@@ -500,11 +500,11 @@ class ChangeLine extends BaseObject
                         $html_details .=__('in', 'very short for IN folder...'). ' '. $tmp;
                     }
 
-                    $html_details.= '|' .  $PH->getLink('itemsRestore',__('restore'),array('item'=>$task->id));
+                    $html_details.= '|' .  $PH->getLink('itemsRestore',__('restore'),['item'=>$task->id]);
 
                     $txt_what= $html_what= __('deleted');
 
-                    $change= new ChangeLine(array(
+                    $change= new ChangeLine([
                         'item'      =>      $task,
                         'person_by' =>      $i->deleted_by,
                         'timestamp' =>      $i->deleted,
@@ -515,7 +515,7 @@ class ChangeLine extends BaseObject
                         'html_what' =>      $html_what,
                         'html_assignment'=> $html_assignment,
                         'html_details'=>    $html_details,
-                    ));
+                    ]);
                     $changes[]= $change;
                 }
 
@@ -526,7 +526,7 @@ class ChangeLine extends BaseObject
 
                     require_once(confGet('DIR_STREBER') . 'db/class_file.inc.php');
                     if($file= File::getVisibleById($i->id)) {                    
-                        $change= new ChangeLine(array(
+                        $change= new ChangeLine([
                             'item'      =>      $file,
                             'person_by' =>      $i->created_by,
                             'timestamp' =>      $i->created,
@@ -534,7 +534,7 @@ class ChangeLine extends BaseObject
                             'html_what' =>      __('deleted File'),
                             'txt_what'  =>      ChangeLine::DELETED,
                             'html_details'=>    $file->name,
-                        ));
+                        ]);
                         $changes[]= $change;
                     }
                 }

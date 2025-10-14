@@ -70,7 +70,7 @@ function classes_defined_in_initial_file() {
     if (preg_match_all('/\bclass\s+(\w+)/i', file_get_contents(initial_file()), $matches)) {
         return array_map('strtolower', $matches[1]);
     }
-    return array();
+    return [];
 }
 
 /**
@@ -82,6 +82,6 @@ function capture_new_classes() {
     global $SIMPLETEST_AUTORUNNER_INITIAL_CLASSES;
     return array_map('strtolower', array_diff(get_declared_classes(),
                             $SIMPLETEST_AUTORUNNER_INITIAL_CLASSES ?
-                            $SIMPLETEST_AUTORUNNER_INITIAL_CLASSES : array()));
+                            $SIMPLETEST_AUTORUNNER_INITIAL_CLASSES : []));
 }
 ?>

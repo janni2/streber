@@ -74,8 +74,8 @@ class EmailNotification extends Email
     private function initRecipientProjects()
     {
         ### recently assigned to projects ###
-        $this->projects     = array(); # keep for later reference
-        $this->projects_new = array();
+        $this->projects     = []; # keep for later reference
+        $this->projects_new = [];
         
         foreach($this->recipient->getProjectPeople() as $pp) {
             if($project= Project::getVisibleById($pp->project)) {
@@ -124,10 +124,10 @@ class EmailNotification extends Email
         $changes_body_html = '';
         $changes_body_plaintext = '';
         
-        $monitored_items = ItemPerson::getAll(array(
+        $monitored_items = ItemPerson::getAll([
                            'is_bookmark'=>1,
                            'notify_on_change'=>1,
-                           'person'=>$this->recipient->id));
+                           'person'=>$this->recipient->id]);
                            
         if(!$monitored_items) {
             return;
@@ -167,10 +167,10 @@ class EmailNotification extends Email
         $unchanged_body_html = '';
         $unchanged_body_plaintext = '';
         
-        $monitored_items_unchanged = ItemPerson::getAll(array(
+        $monitored_items_unchanged = ItemPerson::getAll([
                                    'is_bookmark'=>1,
                                    'notify_if_unchanged_min'=>NOTIFY_1DAY,
-                                   'person'=>$this->recipient->id));
+                                   'person'=>$this->recipient->id]);
                            
         if(!$monitored_items_unchanged) {
             return;

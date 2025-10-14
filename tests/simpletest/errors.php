@@ -89,8 +89,8 @@ class SimpleErrorQueue {
      *    @access public
      */
     function clear() {
-        $this->_queue = array();
-        $this->_expectation_queue = array();
+        $this->_queue = [];
+        $this->_expectation_queue = [];
     }
 
     /**
@@ -113,7 +113,7 @@ class SimpleErrorQueue {
      */
     function expectError($expected, $message) {
         $this->_using_expect_style = true;
-        array_push($this->_expectation_queue, array($expected, $message));
+        array_push($this->_expectation_queue, [$expected, $message]);
     }
 
     /**
@@ -131,7 +131,7 @@ class SimpleErrorQueue {
         } else {
             array_push(
                     $this->_queue,
-                    array($severity, $content, $filename, $line));
+                    [$severity, $content, $filename, $line]);
         }
     }
     
@@ -235,7 +235,7 @@ class SimpleErrorQueue {
      *    @static
      */
     function getSeverityAsString($severity) {
-        static $map = array(
+        static $map = [
                 E_STRICT => 'E_STRICT',
                 E_ERROR => 'E_ERROR',
                 E_WARNING => 'E_WARNING',
@@ -247,7 +247,7 @@ class SimpleErrorQueue {
                 E_COMPILE_WARNING => 'E_COMPILE_WARNING',
                 E_USER_ERROR => 'E_USER_ERROR',
                 E_USER_WARNING => 'E_USER_WARNING',
-                E_USER_NOTICE => 'E_USER_NOTICE');
+                E_USER_NOTICE => 'E_USER_NOTICE'];
         if (defined('E_RECOVERABLE_ERROR')) {
             $map[E_RECOVERABLE_ERROR] = 'E_RECOVERABLE_ERROR';
         }

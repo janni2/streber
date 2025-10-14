@@ -122,7 +122,7 @@ class ListBlockColMethod extends ListBlockCol
 			trigger_error("ListBlock->render_tr() called without valid object",E_USER_WARNING);
    			return;
 		}
-        $out=call_user_func(array($obj,$this->func));
+        $out=call_user_func([$obj,$this->func]);
         if($this->style) {
     		print "<td class='$this->style'>$out</td>";
         }

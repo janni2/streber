@@ -61,19 +61,19 @@ class ListBlock_versions extends ListBlock
         global $PH;
 
         ### functions ###
-        $this->add_function(new ListFunction(array(
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('taskEdit')->id,
             'name'  =>__('Edit'),
             'id'    =>'taskEdit',
             'icon'  =>'edit',
             'context_menu'=>'submit',
-        )));
-        $this->add_function(new ListFunction(array(
+        ]));
+        $this->add_function(new ListFunction([
             'target'=>$PH->getPage('itemsAsBookmark')->id,
             'name'  =>__('Mark as bookmark'),
             'id'    =>'itemsAsBookmark',
             'context_menu'=>'submit',
-        )));
+        ]));
 
 
         $this->query_options['category']=    TCATEGORY_VERSION;
@@ -162,12 +162,12 @@ class ListBlockCol_VersionName extends ListBlockCol
         ### collapsed view ###
         $html_link= '<b>'. $task->getLink(false, false) .'</b>';
         if($task->view_collapsed) {
-            $buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"". getThemeFile("img/toggle_folder_closed.gif") ."\">",array('tsk'=>$task->id),NULL, true)
+            $buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"". getThemeFile("img/toggle_folder_closed.gif") ."\">",['tsk'=>$task->id],NULL, true)
                     . $html_link;
         }
         ### detailed view with change log ###
         else {
-            $buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"".getThemeFile("img/toggle_folder_open.gif") ."\">",array('tsk'=>$task->id),NULL, true)
+            $buffer.= $PH->getLink('taskToggleViewCollapsed',"<img src=\"".getThemeFile("img/toggle_folder_open.gif") ."\">",['tsk'=>$task->id],NULL, true)
             . $html_link
             . '<br>';
 
