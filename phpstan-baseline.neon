@@ -2036,11 +2036,6 @@ parameters:
 			path: pages/project_view_tasks_in_groups.inc.php
 
 		-
-			message: "#^Array has 2 duplicate keys with value 'would' \\(\"would\", \"would\"\\)\\.$#"
-			count: 1
-			path: pages/search.inc.php
-
-		-
 			message: "#^Class DbProjectItem referenced with incorrect case\\: DBProjectItem\\.$#"
 			count: 1
 			path: pages/search.inc.php
