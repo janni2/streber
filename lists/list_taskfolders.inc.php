@@ -136,7 +136,7 @@ class ListBlock_taskfolders extends ListBlock
     public function __toString()
     {
         if ($this->hidden) {
-            return;
+            return '';
         }
 
         $this->render_header();

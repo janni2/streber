@@ -701,7 +701,7 @@ class PageHandler extends BaseObject
         $this->cur_page = $handle;
 
         ### submit ###
-        if ($handle->type = 'subm') {
+        if ($handle->type == 'subm') {
             $tmp = get('from');
             if ($tmp) {
                 $this->cur_page_md5 = $tmp;
