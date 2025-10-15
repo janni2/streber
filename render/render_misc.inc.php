@@ -20,6 +20,72 @@ if (!function_exists('startedIndexPhp')) {
  */
 
 /**
+ * Polyfill for deprecated strftime() function (PHP 8.1+)
+ * Converts strftime format to DateTime format and uses gmdate/date
+ */
+if (!function_exists('streber_strftime')) {
+    function streber_strftime($format, $timestamp = null)
+    {
+        if ($timestamp === null) {
+            $timestamp = time();
+        }
+
+        // Convert common strftime formats to date() formats
+        $format_map = [
+            '%A' => 'l',      // Full weekday name
+            '%a' => 'D',      // Abbreviated weekday name
+            '%B' => 'F',      // Full month name
+            '%b' => 'M',      // Abbreviated month name
+            '%d' => 'd',      // Day of month (01-31)
+            '%e' => 'j',      // Day of month (1-31) without leading zero
+            '%H' => 'H',      // Hour (00-23)
+            '%I' => 'h',      // Hour (01-12)
+            '%M' => 'i',      // Minutes (00-59)
+            '%m' => 'm',      // Month (01-12)
+            '%p' => 'A',      // AM/PM
+            '%P' => 'a',      // am/pm
+            '%S' => 's',      // Seconds (00-59)
+            '%Y' => 'Y',      // 4-digit year
+            '%y' => 'y',      // 2-digit year
+        ];
+
+        $date_format = str_replace(array_keys($format_map), array_values($format_map), $format);
+        return date($date_format, $timestamp);
+    }
+}
+
+if (!function_exists('streber_gmstrftime')) {
+    function streber_gmstrftime($format, $timestamp = null)
+    {
+        if ($timestamp === null) {
+            $timestamp = time();
+        }
+
+        // Convert common strftime formats to date() formats
+        $format_map = [
+            '%A' => 'l',      // Full weekday name
+            '%a' => 'D',      // Abbreviated weekday name
+            '%B' => 'F',      // Full month name
+            '%b' => 'M',      // Abbreviated month name
+            '%d' => 'd',      // Day of month (01-31)
+            '%e' => 'j',      // Day of month (1-31) without leading zero
+            '%H' => 'H',      // Hour (00-23)
+            '%I' => 'h',      // Hour (01-12)
+            '%M' => 'i',      // Minutes (00-59)
+            '%m' => 'm',      // Month (01-12)
+            '%p' => 'A',      // AM/PM
+            '%P' => 'a',      // am/pm
+            '%S' => 's',      // Seconds (00-59)
+            '%Y' => 'Y',      // 4-digit year
+            '%y' => 'y',      // 2-digit year
+        ];
+
+        $date_format = str_replace(array_keys($format_map), array_values($format_map), $format);
+        return gmdate($date_format, $timestamp);
+    }
+}
+
+/**
 * Handy function to set a message that welcomes a user after login.
 * This message can be adjusted conf
 */
@@ -787,7 +853,7 @@ function getUserFormatDate()
         $g_userFormatDate = __('%b %e, %Y', 'strftime format string');
 
         // fix %e formatter if not supported (e.g. on Windows)
-        if (strftime('%e', mktime(12, 0, 0, 1, 1)) != '1') {
+        if (streber_strftime('%e', mktime(12, 0, 0, 1, 1)) != '1') {
             $g_userFormatDate = str_replace('%e', '%d', $g_userFormatDate);
         }
     }
@@ -815,7 +881,7 @@ function getUserFormatTimestamp()
         $g_userFormatTimestamp = __('%a %b %e, %Y %H:%M', 'strftime format string');
 
         # Fix %e formatter if not supported (e.g. on Windows)
-        if (strftime('%e', mktime(12, 0, 0, 1, 1)) != '1') {
+        if (streber_strftime('%e', mktime(12, 0, 0, 1, 1)) != '1') {
             $g_userFormatTimestamp = str_replace('%e', '%d', $g_userFormatTimestamp);
         }
     }
@@ -839,9 +905,9 @@ function renderTimestamp($t)
 
     ### omit time with exactly midnight
     if (gmdate('H:i:s', $t) == '00:00:00') {
-        $str = gmstrftime(getUserFormatDate(), $t);
+        $str = streber_gmstrftime(getUserFormatDate(), $t);
     } else {
-        $str = gmstrftime(getUserFormatTimestamp(), $t);
+        $str = streber_gmstrftime(getUserFormatTimestamp(), $t);
     }
     return $str;
 }
@@ -874,7 +940,7 @@ function renderTime($t)
     if (is_string($t)) {
         $t = strToClientTime($t);
     }
-    return gmstrftime(getUserFormatTime(), $t);
+    return streber_gmstrftime(getUserFormatTime(), $t);
 }
 
 function renderDuration($t)
@@ -927,10 +993,10 @@ function renderDate($t, $smartnames = true)
     } elseif ($smartnames && gmdate('Y-m-d', time()) == gmdate('Y-m-d', $t + 60 * 60 * 24)) {
         $str = __('Yesterday');
         #if(gmdate('H:i:s',$t) !== '00:00:00') {
-        #    $str.= ' ' . gmstrftime(getUserFormatTime(), $t);
+        #    $str.= ' ' . streber_gmstrftime(getUserFormatTime(), $t);
         #}
     } else {
-        $str = gmstrftime(getUserFormatDate(), $t);
+        $str = streber_gmstrftime(getUserFormatDate(), $t);
     }
     return $str;
 }
@@ -959,7 +1025,7 @@ function renderDateHtml($t)
     ### tooltip ? ###
     $str_tooltip = '';
     if (gmdate('H:i:s', $t) != '00:00:00') {
-        $str_tooltip = gmstrftime(getUserFormatTimestamp(), $t);
+        $str_tooltip = streber_gmstrftime(getUserFormatTimestamp(), $t);
     }
 
     if ($str_tooltip) {
@@ -1127,7 +1193,7 @@ function renderTitleDate($t)
     if ($g_lang == 'en') {
         $str = date('l, F jS', $t);
     } else {
-        $str = strftime(__('%A, %B %e', 'strftime format string'), $t);
+        $str = streber_strftime(__('%A, %B %e', 'strftime format string'), $t);
     }
     return $str;
 }

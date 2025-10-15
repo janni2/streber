@@ -30,8 +30,8 @@ if ($db_version < 0.046) {
     $update_queries[] = "DROP TABLE `{$db_table_prefix}task_effort`;";
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `show_tasks_at_home` TINYINT DEFAULT '1' NOT NULL ;";
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `language` VARCHAR( 5 ) NOT NULL;";
-    $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` CHANGE `date_due` `planned_start` DATETIME DEFAULT '0000-00-00' NOT NULL;";
-    $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` CHANGE `date_due_end` `planned_end` DATETIME DEFAULT '0000-00-00' NOT NULL;";
+    $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` CHANGE `date_due` `planned_start` DATETIME NULL DEFAULT NULL;";
+    $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` CHANGE `date_due_end` `planned_end` DATETIME NULL DEFAULT NULL;";
 }
 
 ### update from 0.046 to 0.047
@@ -71,7 +71,7 @@ if ($db_version < 0.048) {
 ### update to v0.049
 if ($db_version < 0.049) {
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `settings` INT NOT NULL ;";
-    $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `notification_last` DATETIME NOT NULL;";
+    $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `notification_last` DATETIME NULL DEFAULT NULL;";
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `notification_period` TINYINT DEFAULT '7' NOT NULL;";
 }
 
@@ -98,11 +98,11 @@ if ($db_version < 0.05) {
       KEY `is_latest` (`is_latest`)
     ) TYPE=MyISAM;";
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}file`  ADD FULLTEXT (name,description,org_filename);";
-    $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `last_login` DATETIME NOT NULL AFTER `can_login`;";
+    $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `last_login` DATETIME NULL DEFAULT NULL AFTER `can_login`;";
 }
 
 if ($db_version < 0.051) {
-    $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `last_logout` DATETIME NOT NULL AFTER `last_login`;";
+    $update_queries[] = "ALTER TABLE `{$db_table_prefix}person` ADD `last_logout` DATETIME NULL DEFAULT NULL AFTER `last_login`;";
 }
 
 if ($db_version < 0.056) {
@@ -116,7 +116,7 @@ if ($db_version < 0.057) {
         `id` INT NOT NULL AUTO_INCREMENT ,
         `item` INT DEFAULT '0' NOT NULL ,
         `modified_by` INT DEFAULT '0' NOT NULL ,
-        `modified` DATETIME NOT NULL ,
+        `modified` DATETIME NULL DEFAULT NULL ,
         `field` VARCHAR( 32 ) NOT NULL ,
         `value_old` LONGTEXT NOT NULL ,
         PRIMARY KEY ( `id` ) ,
@@ -156,7 +156,7 @@ if ($db_version < 0.068) {
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` ADD `is_released` TINYINT DEFAULT '0' NOT NULL AFTER `is_milestone` ;";
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` ADD INDEX ( `is_released` ) ;";
 
-    $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` ADD `time_released` DATETIME NOT NULL AFTER `is_released` ;";
+    $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` ADD `time_released` DATETIME NULL DEFAULT NULL AFTER `is_released` ;";
     $update_queries[] = "ALTER TABLE `{$db_table_prefix}task` ADD INDEX ( `time_released` ) ;";
 }
 
@@ -219,7 +219,7 @@ if ($db_version < 0.0708) {
 		`person` INT(11) DEFAULT '0' NOT NULL ,
         `item` INT(11) DEFAULT '0' NOT NULL ,
         `viewed` TINYINT(4) DEFAULT '0' NOT NULL ,
-        `viewed_last` DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL ,
+        `viewed_last` DATETIME NULL DEFAULT NULL ,
         `remember_unchanged` INT(11) NULL ,
         `is_bookmark` TINYINT(4) DEFAULT '0' NOT NULL ,
 		`notify_on_change` TINYINT(4) DEFAULT '0' NOT NULL ,
@@ -230,7 +230,7 @@ if ($db_version < 0.0708) {
 if ($db_version < 0.0709) {
     $update_queries[] = "
         ALTER TABLE `{$db_table_prefix}person`
-        ADD `date_highlight_changes` DATETIME NOT NULL AFTER `show_tasks_at_home` ;";
+        ADD `date_highlight_changes` DATETIME NULL DEFAULT NULL AFTER `show_tasks_at_home` ;";
 }
 
 if ($db_version < 0.0710) {
@@ -247,7 +247,7 @@ if ($db_version < 0.0711) {
     $update_queries[] =
         "ALTER TABLE `{$db_table_prefix}itemperson` ADD `comment` LONGTEXT NULL;";
     $update_queries[] =
-        "ALTER TABLE `{$db_table_prefix}itemperson` ADD `notify_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `notify_on_change`;";
+        "ALTER TABLE `{$db_table_prefix}itemperson` ADD `notify_date` DATETIME NULL DEFAULT NULL AFTER `notify_on_change`;";
     $update_queries[] =
         "ALTER TABLE `{$db_table_prefix}itemperson` CHANGE `notify_if_unchanged` `notify_if_unchanged` INT( 11 ) DEFAULT '0' NOT NULL;";
 }
@@ -262,7 +262,7 @@ if ($db_version < 0.0781) {
 
 if ($db_version < 0.0782) {
     $update_queries[] =
-        "ALTER TABLE `{$db_table_prefix}itemperson` ADD `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `comment`;";
+        "ALTER TABLE `{$db_table_prefix}itemperson` ADD `created` DATETIME NULL DEFAULT NULL AFTER `comment`;";
 }
 
 if ($db_version < 0.0783) {
@@ -279,14 +279,14 @@ if ($db_version < 0.0793) {
 }
 
 if ($db_version < 0.0794) {
-    $update_queries[] = " ALTER TABLE `{$db_table_prefix}person` 
+    $update_queries[] = " ALTER TABLE `{$db_table_prefix}person`
                         CHANGE `ip_address` `ip_address` VARCHAR( 15 )  DEFAULT '' NOT NULL ;";
 
-    $update_queries[] = " ALTER TABLE `{$db_table_prefix}itemperson` 
+    $update_queries[] = " ALTER TABLE `{$db_table_prefix}itemperson`
                         CHANGE `notify_if_unchanged` `notify_if_unchanged` INT( 11 )  DEFAULT 0 NOT NULL ;";
 
-    $update_queries[] = " ALTER TABLE `{$db_table_prefix}person` 
-                        CHANGE `date_highlight_changes` `date_highlight_changes` DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL";
+    $update_queries[] = " ALTER TABLE `{$db_table_prefix}person`
+                        CHANGE `date_highlight_changes` `date_highlight_changes` DATETIME NULL DEFAULT NULL";
 }
 
 if ($db_version < 0.0795) {

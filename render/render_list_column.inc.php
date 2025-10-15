@@ -20,6 +20,7 @@ if (!function_exists('startedIndexPhp')) {
 * base-class for list columns is derived
 *
 */
+#[\AllowDynamicProperties]
 class ListBlockCol
 {
     public $width = '1%';
